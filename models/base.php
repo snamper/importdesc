@@ -48,20 +48,44 @@ class base
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
 	}
-	function getCarMark($carTypeID)
+	function getCarMark($carTypeID = 1)
 	{
-		$dbDriver = new db_driver1();
+		$dbDriver = new db_driver();
 		$sql = "SELECT * FROM `car_make` WHERE `id_car_type` = '$carTypeID'";
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
 	}
+    function createCarMark($mark)
+    {
+        $dbDriver = new db_driver();
+        $sql = "INSERT INTO `car_make` (`name`, `date_create`, `date_update`, `id_car_type`) VALUES ('".$mark->name."', '".$mark->date_create."', '".$mark->date_update."', '".$mark->id_car_type."')";
+        $dbDriver->query($sql);
+    }
+    function updateCarMark($mark)
+    {
+        $dbDriver = new db_driver();
+        $sql = "UPDATE `car_make` SET `name` = '".$mark->name."' WHERE `car_make`.`id_car_make` = " . $mark->id_car_make;
+        $dbDriver->query($sql);
+    }
 	function getCarModel($markID)
 	{
-		$dbDriver = new db_driver1();
+		$dbDriver = new db_driver();
 		$sql = "SELECT * FROM `car_model` WHERE `id_car_make` = '$markID'";
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
 	}
+    function createCarModel($model)
+    {
+        $dbDriver = new db_driver();
+        $sql = "INSERT INTO `car_model` (`id_car_make`, `name`, `date_create`, `date_update`, `id_car_type`) VALUES ('".$model->id_car_make."', '".$model->name."', '".$model->date_create."', '".$model->date_update."', '".$model->id_car_type."')";
+        $dbDriver->query($sql);
+    }
+    function updateCarModel($model)
+    {
+        $dbDriver = new db_driver();
+        $sql = "UPDATE `car_model` SET `name` = '".$model->name."' WHERE `car_model`.`id_car_model` = " . $model->id_car_model;
+        $dbDriver->query($sql);
+    }
 	function getCarGeneration($generationID)
 	{
 		$dbDriver = new db_driver1();
