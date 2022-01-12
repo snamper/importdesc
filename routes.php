@@ -43,8 +43,11 @@
 	$route['edit_car'] = 'controllers/edit_car_controller.php';
 
 	$route['calculation'] = 'controllers/calculation_controller.php';
-	
 
+	$route['show_calculations'] = 'controllers/show_calculations_controller.php';
+	
+	$route['edit_car_calculation'] = 'controllers/edit_car_calculation_controller.php';
+	
 	
 //============================================================================//
 return $route;

@@ -35,7 +35,7 @@
                                     <input type="checkbox" name="switchPrice" id="switchPrice" checked />
                                     <label for="switchPrice"></label>
                                 </div>
-                               <!-- <div class="col-sm-2">
+                                <!-- <div class="col-sm-2">
                                     Toon alle regels op offerte
                                 </div>
                                 <div class="col-sm-4">
@@ -69,7 +69,7 @@
                                     <input type="checkbox" name="foo" value="1" name="display_opknapkosten_ex" id="checkOpknapkosten" class="foo">
                                 </div>-->
                             </div>
-                             <br/>
+                            <br />
                             <div class="row str">
                                 <div class="col-sm-2">
                                     Inkoopprijs totaal
@@ -81,9 +81,9 @@
                                     <input type="checkbox" name="foo" value="1" name="display_opknapkosten_ex" id="checkOpknapkosten" class="foo">
                                 </div>-->
                             </div>
-                            <br/>
+                            <br />
                             <div class="row str">
-                               <div class="col-sm-2">
+                                <div class="col-sm-2">
                                     Opknapkosten
                                 </div>
                                 <div class="col-sm-3">
@@ -144,7 +144,7 @@
                                 </div>-->
                             </div>
 
-                            <br/>
+                            <br />
                             <div class="row str">
                                 <div class="col-sm-2">
                                     Totaal kosten
@@ -160,7 +160,7 @@
                                     <input type="checkbox" name="display_taxatie_kosten1" value="1" id="checkKosten_Totaal" class="foo">
                                 </div>-->
                             </div>
-                                <br/>
+                            <br />
 
 
 
@@ -179,9 +179,9 @@
                                     <input type="checkbox" name="display_verkoopprijs_netto" value="1" id="checkVerkoopprijs_Marge_Excl" class="foo">
                                 </div>-->
                             </div>
-                            <br/>
+                            <br />
 
-                             <div class="row str">
+                            <div class="row str">
                                 <div class="col-sm-2">
                                     Verkoopprijs ex/ex
                                 </div>
@@ -202,7 +202,7 @@
                                     BTW 21%
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="number" class="form-control" id="btw" name="btw" placeholder="BTW 21%">
+                                    <input type="text" class="form-control" id="btw" name="btw" placeholder="BTW 21%">
                                 </div>
                                 <!--<div class="col-sm-1">
                                     <input type="checkbox" name="display_btw" value="1" id="BTW_21" class="foo">
@@ -222,7 +222,7 @@
                                 </div>-->
 
                             </div>
-                            <br/>
+                            <br />
 
 
 
@@ -269,5 +269,5 @@
             </form>
         </div>
     </div>
+    <hr />    
 </div>
-

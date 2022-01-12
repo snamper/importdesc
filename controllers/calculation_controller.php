@@ -53,18 +53,28 @@ class calculation extends view{
 		// displayed page index
 		$obj = (object)[];
 		$this->base = $_SESSION['base'];
-		// $_SESSION['carType'] = $this->getCarTypes();
+		$cars = $this->base->getAllCars();
 
-		
 		if(isset($_POST['add_calculation'])) {
 			$this->base->insertCalculation($_POST);
 		}
-	
 
+		if(isset($_POST['car_id_to_connect'])) {
+			$this->connectCalculationCar($_POST['calculation_id'], $_POST['car_id_to_connect']);
+			header("Location: /show_calculations");  
+			exit;
+		}
+	
 		if(isset($_SESSION['user']))parent::__construct('calculation_view.php');
 		else parent::__construct('login_view.php');
 
     }
+
+	private function connectCalculationCar($calculation_id, $car_id) {
+
+		$this->base->connectCalculationCar($calculation_id, $car_id);
+
+	}
 
 
 }

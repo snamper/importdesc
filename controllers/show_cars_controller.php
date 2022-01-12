@@ -37,7 +37,6 @@ class show_cars extends view
         $this->setData("car_doors", $car_doors);
 
         
-        
         if (isset($_SESSION['user'])) parent::__construct('show_cars_view.php');
         else parent::__construct('login_view.php');
 

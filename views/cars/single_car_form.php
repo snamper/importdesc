@@ -25,7 +25,7 @@
                 <div class="col-sm-2">Make</div>
                 <div class="col-sm-4">
                     <select class="form-control" data-name="car_merk" name="carMark" id="carMark">
-                        <option value="">-</option>
+                       
                     </select>
                 </div>
 

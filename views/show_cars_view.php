@@ -113,6 +113,8 @@
 
                         <td style='vertical-align: middle;' class="text-center">
                             <a class="btn btn-default btn-xs js-fill-car-info" data-id="{$car['carID'][0]}" data-toggle="modal" data-target="#editCarForm"><i class="ti-pencil"></i></a>
+
+                            <a href="edit_car_calculation?car_id={$car['carID'][0]}" class="btn btn-default btn-xs"><i class="ti-brush"></i></a>
                         </td>                   
                         
                     </tr>
@@ -146,6 +148,4 @@
             </div>
         </div>
     </div>
-
-
 </div>

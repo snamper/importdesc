@@ -919,12 +919,32 @@ for (const filler of carFillEditButtons) {
     filler.addEventListener("click", getCarInfo);
 }
 
+window.addEventListener('DOMContentLoaded', (event) => {
+    if(location.pathname == "/edit_car_calculation") {
+        getCarInfo();
+    }
+
+});
+
 function getCarInfo(e) {
-    const trigger = e.currentTarget;
-    const thisId = trigger.getAttribute("data-id");
+
+    let thisId = 0;
+
+    if(location.pathname == "/edit_car_calculation") { 
+        const queryString = window.location.search;
+        const parameters = new URLSearchParams(queryString);
+        const value = parameters.get('car_id');
+        thisId = value;
+    
+    }else {
+        const trigger = e.currentTarget;
+        thisId = trigger.getAttribute("data-id");
+    }
 
 
-    const url = `${location.origin}/edit_car?car_id=${thisId}`;   
+
+    const url = `${location.origin}/edit_car?car_id=${thisId}`;  
+   
 
     fetch(url)
         .then(function (response) {
@@ -932,6 +952,7 @@ function getCarInfo(e) {
             return response.json();
         })
         .then(function (response) {
+            console.log(response[0])
             setEditInputFormData(response[0]);
             return response[0];
         })
@@ -957,7 +978,10 @@ function setEditInputFormData(data) {
         field.value = data[fieldName];
     }
 
-    $('#carMark').change();
+    setTimeout(() => {
+        $('#carMark').change();
+    }, 700);
+    
 
 }
 
@@ -989,4 +1013,89 @@ for(sender of sendFormButtons) {
         thisForm.submit();
     })
 }
+
+
+$('#inkoopprijs_ex_ex,#feeleverancier,#opknapkosten,#transport_buitenland,#transport_binnenland,#taxatie_kosten,#fee, #restbpm,#leges').keyup(function () {
+    if ($('#switchPrice').is(":checked")){
+       $('#btw').val('21%');
+       var btw = 0.21;
+    } else{
+        var btw = 0;
+    }
+    var feeleverancier =   $('#feeleverancier').val();
+    var inkoopprijs_ex_ex =   $('#inkoopprijs_ex_ex').val();
+    var opknapkosten =   $('#opknapkosten').val();
+    var transport_buitenland =   $('#transport_buitenland').val();
+    var transport_binnenland =   $('#transport_binnenland').val();
+    var taxatie_kosten =   $('#taxatie_kosten').val();
+    var fee =   $('#fee').val();
+    if (feeleverancier){}else{feeleverancier = 0;}
+    if (inkoopprijs_ex_ex){}else{inkoopprijs_ex_ex = 0;}
+    if (opknapkosten){}else{opknapkosten = 0;}
+    if (transport_buitenland){}else{transport_buitenland = 0;}
+    if (transport_binnenland){}else{transport_binnenland = 0;}
+    if (taxatie_kosten){}else{taxatie_kosten = 0;}
+    if (fee){}else{fee = 0;}
+    var total = parseInt(feeleverancier) + parseInt(inkoopprijs_ex_ex);
+    var tax = parseInt(opknapkosten) + parseInt(transport_buitenland) + parseInt(transport_binnenland)+parseInt(taxatie_kosten);
+    var late = total + tax +  parseInt(fee);
+    var restbpm = $('#restbpm').val();
+    var leges = $('#leges').val();
+    if (restbpm){}else{restbpm = 0;}
+    if (leges){}else{leges = 0;}
+
+$('#inkoopprijstotaal').val(total);
+$('#totaalkosten').val(tax);
+$('#verkoopprijs_ex').val(late);
+$('#verkoopprijsbtw').val(late + late*btw);
+$('#verkoopprijsin').val(late + late*btw + parseInt(restbpm) +  parseInt(leges));
+
+
+});
+
+
+var timer;
+var timeout = 1000;
+$('#BPMCO2WLTP,#BPMCO2,#percentage').keyup(function(){
+    clearTimeout(timer);
+    if ($('#SoortVoertuig').val() > 0 && $('#BPMbrandstof').val() > 0   && $('#datepicker1').val() != null && $('#datepicker2').val() != null && $('#BPMCO2WLTP').val() != null) {
+        console.log($('#datepicker1').val() != null);
+        console.log($('#datepicker2').val() != null);
+        timer = setTimeout(function(){
+             var carSelector = $('#SoortVoertuig').val();
+            var bpmbrandstof = $('#BPMbrandstof').val();
+            var datepicker1 = $('#datepicker1').val();
+            var datepicker2 = $('#datepicker2').val();
+            var co2wltp = $('#BPMCO2WLTP').val();
+            var percentage3 = $('#percentage').val();
+            if (percentage3 == '') {
+                  percentage3 = 0;
+            }
+            $.ajax({
+                  type: "POST",
+                  url: '../bpm/BPMUpdateTest.php' ,
+                  data: {
+                      SoortVoertuig: carSelector,
+                      BPMbrandstof: bpmbrandstof,
+                      BPMproductiedatum: datepicker1,
+                      BPMtenaamstellingNL: datepicker2,
+                      variabeledatumbpm: datepicker2,
+                      BPMCO2WLTP: co2wltp,
+                      percentage: percentage3,
+                    },
+                  success: function(data){
+                        var json = JSON.parse(data);
+                        // console.log(json[0]['BPMCO2WLTP']);
+                        $('#brutobpm').val(json[0]['bpmprice']);
+                        $('#forfaitaire').val(json[0]['a']);
+                        $('#PercentageBerekening').val(json[0]['percentage']);
+                        if ( $('#addRest_BPM').length) {
+                              $('#addRest_BPM').val(json[0]['percentage']);
+                        }
+                  }
+            });
+        }, timeout);
+    }
+});
+
 

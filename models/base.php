@@ -596,4 +596,24 @@ class base
 			$_post['verkoopprijsin']
 		]);
 	}
+
+	public function getAllCalculations() {
+
+		$dbDriver = new db_driver();
+
+		$query = "SELECT * FROM calculations";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([]);
+		$result = $stmt->fetchAll(PDO::FETCH_NAMED);
+
+		return $result;
+	}
+
+	public function connectCalculationCar($calculation_id, $car_id) {
+		$dbDriver = new db_driver();
+
+		$query = "UPDATE calculations SET calculation_for_car_id = ? WHERE calclulation_id =?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$car_id, $calculation_id]);
+	}
 }

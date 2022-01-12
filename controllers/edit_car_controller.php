@@ -64,8 +64,10 @@ class edit_car extends view
             header("Location: /show_cars");  
             exit;
         }
+        
 
         if (isset($_SESSION['user'])) {
+
             if(isset($_GET['car_id'])) {
                 $carJson = $this->base->getCarInfo($_GET['car_id']);
                 echo json_encode($carJson);
