@@ -51,18 +51,19 @@
                 // var_dump($car);
                 // echo '</pre>';
                 // exit;
+                $date = date('Y-m-d', strtotime($car['DateIn'][0]));
                 echo <<<HTML
                     <tr>
                         <td style='vertical-align: middle;' class="text-center">
-                            ????
+                            $date
                         </td>
 
                         <td style='vertical-align: middle;' class="text-center">
-                            {$car['name'][0]} - {$car['name'][1]} - ???
+                            {$car['name'][0]} - {$car['name'][1]} - $date
                         </td>
 
                         <td style='vertical-align: middle;' class="text-center">
-                            ?????????
+                            
                         </td>
 
                         <td style='vertical-align: middle;' class="text-center">

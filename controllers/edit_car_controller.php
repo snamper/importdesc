@@ -61,7 +61,8 @@ class edit_car extends view
         if(isset($_POST['car_id'])) {         
         
             $this->base->updateCarInfo($_POST, $_POST['car_id']);
-            
+            header("Location: /show_cars");  
+            exit;
         }
 
         if (isset($_SESSION['user'])) {
