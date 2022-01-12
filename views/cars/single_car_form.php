@@ -213,8 +213,5 @@
                     <label for="switchPrice"></label>
                 </div>
                 <div class="col-sm-6">
-                    <div>
-                        < Bij schuifje ingeschakeld wordt calculatie module hieronder uitgeklapt</div>
-                            <div> Zie sheets (Calc module) Calc_BTW en (Calc module) Calc_Marge</div>
-                    </div>
+                    input
                 </div>

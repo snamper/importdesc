@@ -538,4 +538,62 @@ class base
 		// 	echo 'Error: ' .  $e->getMessage() . "\n";
 		// }
 	}
+
+	public function insertCalculation($_post)  {
+
+		$dbDriver = new db_driver();
+
+
+		$query = "INSERT INTO calculations (
+			inkoopprijs_ex_ex,
+			feeleverancier,
+			inkoopprijstotaal,
+			opknapkosten,
+			transport_buitenland,
+			transport_binnenland,
+			taxatie_kosten,
+			totaalkosten,
+			fee,
+			verkoopprijs_ex,
+			btw,
+			verkoopprijsbtw,
+			restbpm,
+			leges,
+			verkoopprijsin
+		) VALUES (
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?
+		)";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([
+			$_post['inkoopprijs_ex_ex'],
+			$_post['feeleverancier'],
+			$_post['inkoopprijstotaal'],
+			$_post['opknapkosten'],
+			$_post['transport_buitenland'],
+			$_post['transport_binnenland'],
+			$_post['taxatie_kosten'],
+			$_post['totaalkosten'],
+			$_post['fee'],
+			$_post['verkoopprijs_ex'],
+			$_post['btw'],
+			$_post['verkoopprijsbtw'],
+			$_post['restbpm'],
+			$_post['leges'],
+			$_post['verkoopprijsin']
+		]);
+	}
 }
