@@ -19,7 +19,7 @@ class db_driver{
         }
     }
     //return query data
-    public function query($sql, $activity_type){
+    public function query($sql, $activity_type = null){
             $this->saveLogQuery($sql,$activity_type);
             return $this->dbQuery=$this->dbCon->query($sql);
     }

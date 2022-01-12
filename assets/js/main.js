@@ -250,6 +250,7 @@ $( document ).ready(function() {
 
 $('#carMark').change(function(){
      var carvalue = $(this).val();
+    const firstOptionHTML = "<option value='0'> - </option>";
 
      if (carvalue > 0) {
 
@@ -258,13 +259,17 @@ $('#carMark').change(function(){
             type: "POST",
            data:  'carMarkSelect=' + carvalue,
             success:function(data){
-                document.getElementById('carModel').innerHTML = data;
+                document.getElementById('carModel').innerHTML = firstOptionHTML + data;
                 $('#carModel').change();
             }
         })
 
+     } else {
+         document.getElementById('carModel').innerHTML = firstOptionHTML;
      }
 
+     if (carvalue == 0) $('#carMarkInput').val('');
+     else $('#carMarkInput').val($(this).find('option:selected').text());
 });
 // $('#carMark_dip').change(function(){
 //      var carvalue = $(this).val();
@@ -322,7 +327,8 @@ $('#carModel').change(function(){
         })
 
      }
-
+    if (carvalue == 0) $('#carModelInput').val('');
+    else $('#carModelInput').val($(this).find('option:selected').text());
 });
 // $('#carGeneration').change(function(){
 //      var carvalue = $(this).val();

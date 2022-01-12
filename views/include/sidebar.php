@@ -34,7 +34,7 @@
                             <li><a href="btw"><i class="ti-plus"></i><span>Prijs berekening BTW</span></a></li>
                             <li><a href="nedc"><i class="ti-plus"></i><span>BPM calculator NEDC</span></a></li>
                             <li><a href="wltp"><i class="ti-plus"></i><span>BPM calculator WLTP</span></a></li>
-
+                            <li><a href="create_make"><i class="ti-plus"></i><span>Create Make</span></a></li>
                         <li class="nav-divider"></li>
                         <li class="nav-copyright">&copy; 2020 powered by Software Inc.</li>
                     </ul>
