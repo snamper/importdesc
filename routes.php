@@ -39,6 +39,8 @@
 	$route['create_car'] = 'controllers/create_car_controller.php';
 
 	$route['show_cars'] = 'controllers/show_cars_controller.php';
+
+	$route['edit_car'] = 'controllers/edit_car_controller.php';
 	
 
 	

@@ -3,20 +3,10 @@
 </div>
 <div class="dashboardBoxBg mb30">
     <div class="row">
-        <div class="table-list body1" style="width: 100%;">
-            <input name="merkA" type="hidden" value="<!-- <?php echo $quotation['price_merk']; ?> -->" />
-            <input name="modelA" type="hidden" value="<!-- <?php echo $quotation['price_model']; ?> -->" />
-
-            <input type="hidden" name="create_cars">
-            <div class="row str justify-content-end" style="padding-bottom: 23px; margin-top: -18px;">
-                <div class="col-sm-4" style="position: fixed; top: 0; z-index: 99999999; left: 0; right: 200; width: 200px; margin: auto; top: 5px;">
-                    <button type="submit" class="btn btn-primary" style="width: 100%">Insert</button>
-                </div>
-                <div class="col-sm-4" style="position: fixed; top: 0; z-index: 99999999; left: 200; right: 0; width: 200px; margin: auto; top: 5px;">
-                    <button type="submit" class="btn btn-primary" style="width: 100%; background-color: orange; border: 1px solid orange;">Button</button>
-                </div>
-            </div>
-
+        <div class="table-list body1" style="width: 100%;">      
+        
+            <input type="hidden" id="editCarHiddenInput" name="car_id" value="">
+        
             <div class="row str">
                 <div class="col-sm-12">
                     <h4>Auto toevoegen</h4>
@@ -34,25 +24,25 @@
             <div class=" row str">
                 <div class="col-sm-2">Make</div>
                 <div class="col-sm-4">
-                    <select class="form-control" name="carMark" id="carMark">
+                    <select class="form-control" data-name="car_merk" name="carMark" id="carMark">
                         <option value="">-</option>
                     </select>
                 </div>
 
                 <div class="col-sm-2">Model</div>
                 <div class="col-sm-4">
-                    <select class="form-control" name="carModel" id="carModel">
+                    <select class="form-control" data-name="car_model" name="carModel" id="carModel">
                         <option value="">-</option>
                     </select>
                 </div>
                 <div class="col-sm-2">Uitvoering</div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" name="caUitvoering" id="carUitvoering">
+                    <input type="text" class="form-control" data-name="uitvoering" name="caUitvoering" id="carUitvoering">
                 </div>
 
                 <div class="col-sm-2">Motor</div>
                 <div class="col-sm-4">
-                    <input class="form-control" type="text" name="carModification">
+                    <input class="form-control" type="text" data-name="motor" name="carModification">
                 </div>
 
             </div>
@@ -60,7 +50,7 @@
             <div class="row str">
                 <div class="col-sm-2">Aantal deuren</div>
                 <div class="col-sm-4">
-                    <select class="form-control" name="doors_number" id="doorNumber">
+                    <select class="form-control" data-name="aantal_deuren" name="doors_number" id="doorNumber">
                         <option value="">-</option>
                         <?php
                         foreach ($data['car_doors'] as $car_doors_type) {
@@ -73,14 +63,14 @@
 
                 <div class="col-sm-2">Kleur</div>
                 <div class="col-sm-4">
-                    <input class="form-control" type="text" name="kleur">
+                    <input class="form-control" type="text" data-name="kleur" name="kleur">
                 </div>
             </div>
 
             <div class="row str">
                 <div class="col-sm-2">Opties</div>
                 <div class="col-sm-4">
-                    <textarea class="w-100" name="opties" id="opties"></textarea>
+                    <textarea class="w-100" data-name="optie" name="opties" id="opties"></textarea>
                 </div>
             </div>
 
@@ -95,7 +85,7 @@
 
                 <div class="col-sm-2">Brandstof soort</div>
                 <div class="col-sm-4">
-                    <select name="BPMbrandstof" id="BPMbrandstof" class="form-control">
+                    <select data-name="brandstof" name="BPMbrandstof" id="BPMbrandstof" class="form-control">
                         <option value="0"> - </option>
                         <?php
 
@@ -110,7 +100,7 @@
             <div class="row str">
                 <div class="col-sm-2">Transmissie</div>
                 <div class="col-sm-4">
-                    <select name="transmissieSoort" id="transmissieSoort" class="text-input form-control" required>
+                    <select data-name="transmissieSoort" name="transmissieSoort" id="transmissieSoort" class="text-input form-control" required>
                         <option value="">Maak een keuze </option>
                         <?php
                         foreach ($data['transmitions'] as $transmition) {
@@ -124,7 +114,7 @@
                     CO² NEDC
                 </div>
                 <div class="col-sm-4">
-                    <input type="number" class="form-control" id="BPMCO2" name="BPMCO2" placeholder="CO² NEDC" value="">
+                    <input type="number" class="form-control" id="BPMCO2" data-name="co2" name="BPMCO2" placeholder="CO² NEDC" value="">
                 </div>
             </div>
 
@@ -133,7 +123,7 @@
                     CO² WLTP
                 </div>
                 <div class="col-sm-4">
-                    <input type="number" class="form-control" id="BPMCO2WLTP" name="BPMCO2WLTP" placeholder="CO² WLTP" value="">
+                    <input type="number" class="form-control" id="BPMCO2WLTP" data-name="" name="BPMCO2WLTP" placeholder="CO² WLTP" value="">
                 </div>
             </div>
 
@@ -149,14 +139,14 @@
                     Datum eerste toelating
                 </div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control text-input" id="datepicker1" value="" name="productiedatum">
+                    <input type="text" class="form-control text-input" id="datepicker1" value="" data-name="productiedatum" name="productiedatum">
                 </div>
 
                 <div class="col-sm-2">
                     Huidig land geregistreerd
                 </div>
                 <div class="col-sm-4">
-                    <input class="form-control" type="text" name="huidigland">
+                    <input class="form-control" type="text" data-name="huidigland" name="huidigland">
                 </div>
             </div>
 
@@ -166,14 +156,14 @@
                     Kilometerstand
                 </div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" value="" name="km_stand">
+                    <input type="text" class="form-control" value="" data-name="km_stand" name="km_stand">
                 </div>
 
                 <div class="col-sm-2">
                     VIN
                 </div>
                 <div class="col-sm-4">
-                    <input class="form-control" type="text" name="vinnummer">
+                    <input class="form-control" type="text" data-name="vinnummer" name="vinnummer">
                 </div>
             </div>
 
@@ -183,14 +173,14 @@
                     NL kenteken
                 </div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control text-input" value="" name="kenteken">
+                    <input type="text" class="form-control text-input" value="" data-name="kenteken" name="kenteken">
                 </div>
 
                 <div class="col-sm-2">
                     Leverancier
                 </div>
                 <div class="col-sm-4">
-                    <select class="form-control" name="levering">
+                    <select class="form-control" data-name="levering" name="levering">
                         <?php
                         foreach ($data['creditors'] as $creditor) {
                             echo "<option value='$creditor[CreditorId]'> $creditor[CreditorName]</option>";
@@ -210,7 +200,7 @@
             <div class="row str">
                 <div class="col-sm-2">Opmerkingen</div>
                 <div class="col-sm-4">
-                    <textarea class="w-100" name="opmerkingen" id="opmerkingen"></textarea>
+                    <textarea class="w-100" data-name="opmerkingen" name="opmerkingen" id="opmerkingen"></textarea>
                 </div>
             </div>
 
@@ -219,7 +209,7 @@
             <div class="row">
                 <div class="col-sm-3">Calculatie</div>
                 <div class="col-sm-2 switcher" style="padding-bottom: 5px;">
-                    <input type="checkbox" name="switchPrice" id="switchPrice" checked />
+                    <input type="checkbox" data-name="" name="switchPrice" id="switchPrice" checked />
                     <label for="switchPrice"></label>
                 </div>
                 <div class="col-sm-6">
