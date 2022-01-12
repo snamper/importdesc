@@ -1,7 +1,7 @@
 <div class="content">
     <div class="form-auto">
         <div class="col-xs-12 table-list">
-            <form action="marge" method="POST" class="listing__form">
+            <form action="calculation" method="POST" class="listing__form">
                 <div class="dashboardPageTitle text-center">
                     <h2 style="opacity: 0;">Placeholder</h2>
                 </div>
@@ -11,7 +11,7 @@
                             <input name="merkA" type="hidden" value="<!-- <?php echo $quotation['price_merk']; ?> -->" />
                             <input name="modelA" type="hidden" value="<!-- <?php echo $quotation['price_model']; ?> -->" />
 
-                            <input type="hidden" name="merge_insert">
+                            <input type="hidden" name="add_calculation">
                             <div class="row str justify-content-end" style="padding-bottom: 23px; margin-top: -18px;">
                                 <div class="col-sm-4" style="position: fixed; top: 0; z-index: 99999999; left: 0; right: 200; width: 200px; margin: auto; top: 5px;">
                                     <button type="submit" class="btn btn-primary" style="width: 100%">Insert</button>
@@ -47,7 +47,7 @@
                                     Inkoopprijs ex/ex
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" id="inkoopprijs_ex_ex" name="inkoopprijs_ex_ex" placeholder="Inkoopprijs ex/ex">
+                                    <input type="number" class="form-control" id="inkoopprijs_ex_ex" name="inkoopprijs_ex_ex" placeholder="Inkoopprijs ex/ex">
                                 </div>
                                 <!--<div class="col-sm-1 ">
                                     <input type="checkbox" name="display_inkoopprijs_ex_ex" value="1" value="Inkoopprijs_Marge" id="checkInkoopprijs_Marge" class="foo">
@@ -63,7 +63,7 @@
                                     Fee leverancier/bemiddelaar
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" id="feeleverancier" name="feeleverancier" placeholder="Fee leverancier/bemiddelaar">
+                                    <input type="number" class="form-control" id="feeleverancier" name="feeleverancier" placeholder="Fee leverancier/bemiddelaar">
                                 </div>
                                 <!--<div class="col-sm-1">
                                     <input type="checkbox" name="foo" value="1" name="display_opknapkosten_ex" id="checkOpknapkosten" class="foo">
@@ -75,7 +75,7 @@
                                     Inkoopprijs totaal
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" id="inkoopprijstotaal" name="inkoopprijstotaal" placeholder="Inkoopprijs totaal">
+                                    <input type="number" class="form-control" id="inkoopprijstotaal" name="inkoopprijstotaal" placeholder="Inkoopprijs totaal">
                                 </div>
                                 <!--<div class="col-sm-1">
                                     <input type="checkbox" name="foo" value="1" name="display_opknapkosten_ex" id="checkOpknapkosten" class="foo">
@@ -87,7 +87,7 @@
                                     Opknapkosten
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" id="opknapkosten" name="opknapkosten" placeholder="Opknapkosten">
+                                    <input type="number" class="form-control" id="opknapkosten" name="opknapkosten" placeholder="Opknapkosten">
                                 </div>
                                 <!--<div class="col-sm-1">
                                     <input type="checkbox" name="foo" value="1" name="display_opknapkosten_ex" id="checkOpknapkosten" class="foo">
@@ -99,7 +99,7 @@
                                     Transport buitenland
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" id="transport_buitenland" name="transport_buitenland" placeholder="Transport buitenland">
+                                    <input type="number" class="form-control" id="transport_buitenland" name="transport_buitenland" placeholder="Transport buitenland">
                                 </div>
                                 <!--<div class="col-sm-1">
                                     <input type="checkbox" name="display_transport_buitenland" value="1" id="checkTransport_Buitenland" class="foo">
@@ -115,7 +115,7 @@
                                     Transport binnenland
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" id="transport_binnenland" name="transport_binnenland" placeholder="Transport binnenland">
+                                    <input type="number" class="form-control" id="transport_binnenland" name="transport_binnenland" placeholder="Transport binnenland">
                                 </div>
                                 <!--<div class="col-sm-1">
                                     <input type="checkbox" name="display_transport_buitenland" value="1" id="checkTransport_Buitenland" class="foo">
@@ -133,7 +133,7 @@
                                     Taxatie kosten
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" id="taxatie_kosten" name="taxatie_kosten" placeholder="Taxatie kostene">
+                                    <input type="number" class="form-control" id="taxatie_kosten" name="taxatie_kosten" placeholder="Taxatie kostene">
                                 </div>
                                 <!--<div class="col-sm-1">
                                     <input type="checkbox" name="display_taxatie_kosten" value="1" id="checkTaxatie_Kostene" class="foo">
@@ -150,7 +150,7 @@
                                     Totaal kosten
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" id="totaalkosten" name="totaalkosten" placeholder="Totaal kosten">
+                                    <input type="number" class="form-control" id="totaalkosten" name="totaalkosten" placeholder="Totaal kosten">
                                 </div>
                                 <!--<div class="col-sm-1">
                                     <input type="checkbox" name="display_taxatie_kosten" value="1" id="checkTaxatie_Kostene" class="foo">
@@ -169,7 +169,7 @@
                                     Fee GWI
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" id="fee" name="fee" placeholder="Fee GWI">
+                                    <input type="number" class="form-control" id="fee" name="fee" placeholder="Fee GWI">
                                 </div>
                                 <!--<div class="col-sm-1">
                                     <input type="checkbox" name="display_fee" value="1" id="checkFee" class="foo">
@@ -186,7 +186,7 @@
                                     Verkoopprijs ex/ex
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" id="verkoopprijs_ex" name="verkoopprijs_ex" placeholder="Verkoopprijs ex/ex">
+                                    <input type="number" class="form-control" id="verkoopprijs_ex" name="verkoopprijs_ex" placeholder="Verkoopprijs ex/ex">
                                 </div>
                                 <!--<div class="col-sm-1">
                                     <input type="checkbox" name="display_fee" value="1" id="checkFee" class="foo">
@@ -202,7 +202,7 @@
                                     BTW 21%
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" id="btw" name="btw" placeholder="BTW 21%">
+                                    <input type="number" class="form-control" id="btw" name="btw" placeholder="BTW 21%">
                                 </div>
                                 <!--<div class="col-sm-1">
                                     <input type="checkbox" name="display_btw" value="1" id="BTW_21" class="foo">
@@ -215,7 +215,7 @@
                                     Verkoopprijs incl. BTW
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" id="verkoopprijsbtw" name="verkoopprijsbtw" placeholder="Verkoopprijs incl. BTW">
+                                    <input type="number" class="form-control" id="verkoopprijsbtw" name="verkoopprijsbtw" placeholder="Verkoopprijs incl. BTW">
                                 </div>
                                 <!--<div class="col-sm-1">
                                     <input type="checkbox" name="display_rest_bpm_indicatief" value="1" id="checkRest_BPM" class="foo">
@@ -229,10 +229,34 @@
 
                             <div class="row str">
                                 <div class="col-sm-2">
+                                    Rest BPM (indicatief)
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="number" class="form-control" id="restbpm" name="restbpm" placeholder="Rest BPM">
+                                </div>
+                                <!--<div class="col-sm-1">
+                                    <input type="checkbox" name="display_leges" value="1" id="checkLeges" class="foo">
+                                </div>-->
+                            </div>
+
+                            <div class="row str">
+                                <div class="col-sm-2">
+                                    Leges (BTW vrij)
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="number" class="form-control" id="leges" name="leges" placeholder="Leges">
+                                </div>
+                                <!--<div class="col-sm-1">
+                                    <input type="checkbox" name="display_leges" value="1" id="checkLeges" class="foo">
+                                </div>-->
+                            </div>
+
+                            <div class="row str">
+                                <div class="col-sm-2">
                                     Verkoopprijs in/in
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" id="verkoopprijsin" name="verkoopprijsin" placeholder="Verkoopprijs in/in">
+                                    <input type="number" class="form-control" id="verkoopprijsin" name="verkoopprijsin" placeholder="Verkoopprijs in/in">
                                 </div>
                                 <!--<div class="col-sm-1">
                                     <input type="checkbox" name="display_leges" value="1" id="checkLeges" class="foo">

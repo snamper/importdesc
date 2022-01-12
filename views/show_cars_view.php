@@ -51,18 +51,19 @@
                 // var_dump($car);
                 // echo '</pre>';
                 // exit;
+                $date = date('Y-m-d', strtotime($car['DateIn'][0]));
                 echo <<<HTML
                     <tr>
                         <td style='vertical-align: middle;' class="text-center">
-                            ????
+                            $date
                         </td>
 
                         <td style='vertical-align: middle;' class="text-center">
-                            {$car['name'][0]} - {$car['name'][1]} - ???
+                            {$car['name'][0]} - {$car['name'][1]} - $date
                         </td>
 
                         <td style='vertical-align: middle;' class="text-center">
-                            ?????????
+                            
                         </td>
 
                         <td style='vertical-align: middle;' class="text-center">
@@ -111,7 +112,7 @@
                         </td>
 
                         <td style='vertical-align: middle;' class="text-center">
-                            <a class="btn btn-default btn-xs"  data-toggle="modal" data-target="#editCarForm"><i class="ti-pencil"></i></a>
+                            <a class="btn btn-default btn-xs js-fill-car-info" data-id="{$car['carID'][0]}" data-toggle="modal" data-target="#editCarForm"><i class="ti-pencil"></i></a>
                         </td>                   
                         
                     </tr>
@@ -133,12 +134,15 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                <?php include_once realpath("views/cars/single_car_form.php"); ?>
+                    <form id="editCarForm" method="POST" action="edit_car">
+                        <?php include_once realpath("views/cars/single_car_form.php"); ?>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary send-form">Save changes</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+
             </div>
         </div>
     </div>
