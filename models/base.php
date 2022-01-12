@@ -308,8 +308,6 @@ class base
 		$transmissieSoort = $transmissies[0];
 		try {
 
-
-
 			$query = "INSERT INTO car 
 		(
 			car_merk,
@@ -449,5 +447,177 @@ class base
 		
 
 		return $result;
+	}
+
+	public function getCarInfo($car_id) {
+		$dbDriver = new db_driver();
+
+		$sql = "SELECT * FROM dossier
+		LEFT JOIN car ON car.carID = dossier.carID
+		INNER JOIN car_make cm on car.car_merk = cm.id_car_make 
+		INNER JOIN car_model cmod on car.car_model = cmod.id_car_model
+		INNER JOIN car_type ct on cmod.id_car_type = ct.id_car_type
+		INNER JOIN conversie_tabel_gwi ctw on car.brandstof = ctw.conversie_tabel_ID
+		WHERE car.carID = ?";
+
+		$stmt = $dbDriver->dbCon->prepare($sql);
+		$stmt->execute([$car_id]);
+		$result = $stmt->fetchAll();
+
+		return $result;
+	}
+
+	public function updateCarInfo($post, $car_id) {
+
+		$dbDriver = new db_driver();
+
+		// $dbDriver->dbCon->beginTransaction();
+		
+		$transmissies = explode("|", $post['transmissieSoort']);
+		$transmissie = $transmissies[1];
+		$transmissieSoort = $transmissies[0];
+
+	
+		// try {
+			$query1 = "UPDATE car SET 
+			car_merk = ?,
+			car_model = ?,
+			uitvoering = ?,
+			aantal_deuren = ?,
+			motor = ?,
+			brandstof = ?, 
+			transmissieSoort = ?,
+			productiedatum = ?,
+			co2 = ?,
+			kleur = ?,
+			dossierID = ?,
+			km_stand = ?,
+			vinnummer = ?,
+			kenteken = ?,
+			levering = ?,
+			transmissie = ?,
+			huidigland = ?,
+			optie = ?,
+			opmerkingen = ?
+			WHERE carID = ?";
+
+
+			$stmt1 = $dbDriver->dbCon->prepare($query1);
+			$stmt1->execute(
+				[
+					$post['carMark'],
+					$post['carModel'],
+					$post['caUitvoering'],
+					$post['doors_number'],
+					$post['carModification'],
+					$post['BPMbrandstof'],
+					$transmissieSoort,
+					$post['productiedatum'],
+					$post['BPMCO2'],
+					$post['kleur'],
+					$car_id,
+					$post['km_stand'],
+					$post['vinnummer'],
+					$post['kenteken'],
+					$post['levering'],
+					$transmissie,
+					$post['huidigland'],
+					$post['opties'],
+					$post['opmerkingen'],
+					$car_id
+				]
+			);
+
+			// // QUERY 2
+
+			// $query2 = "UPDATE berekening_forms SET
+			// 	vehicleType = ?,
+			// 	make = ?,
+			// 	model = ?,
+			// 	`trim` = ?,
+			// 	brandstofSoort = ?,
+			// 	eersteToelating = ?,
+			// 	co2NEDC = ?,
+			// 	co2WLTP = ?
+			// 	WHERE 
+		 	// ";
+
+			// $stmt2 = $dbDriver->dbCon->prepare($query2);
+			// $productiedatum = explode("-", $post['productiedatum'])[0];
+			// $stmt2->execute([
+			// 	1,
+			// 	$post['carMark'],
+			// 	$post['carModel'],
+			// 	$post['carModification'],
+			// 	$post['BPMbrandstof'],
+			// 	$productiedatum,
+			// 	$post['BPMCO2'],
+			// 	$post['BPMCO2WLTP']
+			// ]);
+
+
+			
+		// }catch (Exception $e) {
+		// 	$dbDriver->dbCon->rollBack();
+		// 	echo 'Error: ' .  $e->getMessage() . "\n";
+		// }
+	}
+
+	public function insertCalculation($_post)  {
+
+		$dbDriver = new db_driver();
+
+
+		$query = "INSERT INTO calculations (
+			inkoopprijs_ex_ex,
+			feeleverancier,
+			inkoopprijstotaal,
+			opknapkosten,
+			transport_buitenland,
+			transport_binnenland,
+			taxatie_kosten,
+			totaalkosten,
+			fee,
+			verkoopprijs_ex,
+			btw,
+			verkoopprijsbtw,
+			restbpm,
+			leges,
+			verkoopprijsin
+		) VALUES (
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?
+		)";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([
+			$_post['inkoopprijs_ex_ex'],
+			$_post['feeleverancier'],
+			$_post['inkoopprijstotaal'],
+			$_post['opknapkosten'],
+			$_post['transport_buitenland'],
+			$_post['transport_binnenland'],
+			$_post['taxatie_kosten'],
+			$_post['totaalkosten'],
+			$_post['fee'],
+			$_post['verkoopprijs_ex'],
+			$_post['btw'],
+			$_post['verkoopprijsbtw'],
+			$_post['restbpm'],
+			$_post['leges'],
+			$_post['verkoopprijsin']
+		]);
 	}
 }
