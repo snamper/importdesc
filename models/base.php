@@ -447,12 +447,13 @@ class base
 
 		$dbDriver = new db_driver();
 
-		$dbDriver->dbCon->beginTransaction();
+		// $dbDriver->dbCon->beginTransaction();
 		
 		$transmissies = explode("|", $post['transmissieSoort']);
 		$transmissie = $transmissies[1];
 		$transmissieSoort = $transmissies[0];
 
+	
 		// try {
 			$query1 = "UPDATE car SET 
 			car_merk = ?,
