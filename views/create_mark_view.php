@@ -10,7 +10,7 @@
                         <div class="col-sm-12 table-list">
 
                             <div class="row str">
-                                <div class="col-sm-2"><label for="carMark">Select Mark</label></div>
+                                <div class="col-sm-2"><label for="carMark">Select Make</label></div>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="carMark" id="carMark">
                                         <option value="">-</option>
@@ -25,7 +25,7 @@
                             </div>
 
                             <div class="row str">
-                                <div class="col-sm-2"><label for="carMarkInput">Add/Edit Mark</label>
+                                <div class="col-sm-2"><label for="carMarkInput">Add/Edit Make</label>
                                 </div>
                                 <div class="col-sm-4">
                                     <input type="text" class="form-control" name="carMarkInput" id="carMarkInput">
