@@ -21,7 +21,7 @@
     <!-- BEGIN table sample-table-1-->
 
     <?php
-        
+
     ?>
 
 
@@ -42,14 +42,11 @@
             <th style="white-space: nowrap">Huidig land geregistreerd</th>
             <th style="white-space: nowrap">Vin</th>
             <th style="white-space: nowrap">Edit/duplic</th>
-            
-
-            <th style="white-space: nowrap" class="text-center">Edit</th>
 
         </thead>
         <tbody>
             <?php
-            foreach($data['cars'] as $car) {
+            foreach ($data['cars'] as $car) {
                 // echo '<pre>';
                 // var_dump($car);
                 // echo '</pre>';
@@ -105,18 +102,46 @@
                             $car[km_stand]
                         </td>
 
-                        
-                        
+                        <td style='vertical-align: middle;' class="text-center">
+                            $car[huidigland]
+                        </td>                        
 
-          
+                        <td style='vertical-align: middle;' class="text-center">
+                            $car[vinnummer]
+                        </td>
+
+                        <td style='vertical-align: middle;' class="text-center">
+                            <a class="btn btn-default btn-xs"  data-toggle="modal" data-target="#editCarForm"><i class="ti-pencil"></i></a>
+                        </td>                   
+                        
                     </tr>
                 HTML;
             }
             ?>
-       
         </tbody>
     </table>
-
     <!-- END table -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="editCarForm" tabindex="-1" role="dialog" aria-labelledby="editCarForm" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Edit car</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                <?php include_once realpath("views/cars/single_car_form.php"); ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 </div>

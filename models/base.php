@@ -304,11 +304,13 @@ class base
 			kenteken,
 			levering,
 			transmissie,
+			huidigland,
 			optie,
 			opmerkingen
 		) 
 			VALUES (
 							
+				?,
 				?,
 				?,
 				?,
@@ -348,6 +350,7 @@ class base
 					$post['kenteken'],
 					$post['levering'],
 					$transmissie,
+					$post['huidigland'],
 					$post['opties'],
 					$post['opmerkingen']
 				]
@@ -371,12 +374,10 @@ class base
 				`trim`,
 				brandstofSoort,
 				eersteToelating,
-				huidigland,
 				co2NEDC,
 				co2WLTP
 			)
 			 VALUES (
-				?,
 				?,
 				?,
 				?,
@@ -395,7 +396,6 @@ class base
 				$post['carModification'],
 				$post['BPMbrandstof'],
 				$productiedatum,
-				$post['huidigland'],
 				$post['BPMCO2'],
 				$post['BPMCO2WLTP']
 
