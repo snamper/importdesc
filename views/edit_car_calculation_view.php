@@ -13,3 +13,6 @@
             </div>
                 <?php include_once realpath("views/cars/single_car_form.php"); ?>
             </form>
+
+            <?php include realpath("views/marge_view_include.php"); ?>
+

@@ -85,7 +85,7 @@
 
                 <div class="col-sm-2">Brandstof soort</div>
                 <div class="col-sm-4">
-                    <select data-name="brandstof" name="BPMbrandstof" id="BPMbrandstof" class="form-control">
+                    <select data-name="brandstof" name="BPMbrandstof" id="BPMbrandstof2" class="form-control">
                         <option value="0"> - </option>
                         <?php
 
@@ -114,7 +114,7 @@
                     CO² NEDC
                 </div>
                 <div class="col-sm-4">
-                    <input type="number" class="form-control" id="BPMCO2" data-name="co2" name="BPMCO2" placeholder="CO² NEDC" value="">
+                    <input type="number" class="form-control" id="BPMCO23" data-name="co2" name="BPMCO2" placeholder="CO² NEDC" value="">
                 </div>
             </div>
 
@@ -123,7 +123,7 @@
                     CO² WLTP
                 </div>
                 <div class="col-sm-4">
-                    <input type="number" class="form-control" id="BPMCO2WLTP" data-name="" name="BPMCO2WLTP" placeholder="CO² WLTP" value="">
+                    <input type="number" class="form-control" id="BPMCO2WLTP2" data-name="" name="BPMCO2WLTP" placeholder="CO² WLTP" value="">
                 </div>
             </div>
 
@@ -139,7 +139,7 @@
                     Datum eerste toelating
                 </div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control text-input" id="datepicker1" value="" data-name="productiedatum" name="productiedatum">
+                    <input type="text" class="form-control text-input" id="datepicker10" value="" data-name="productiedatum" name="productiedatum">
                 </div>
 
                 <div class="col-sm-2">
@@ -206,7 +206,7 @@
 
             <h4>Bij SUBMIT wordt auto toegevoegd aan auto templates tabel</h4>
 
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-sm-3">Calculatie</div>
                 <div class="col-sm-2 switcher" style="padding-bottom: 5px;">
                     <input type="checkbox" data-name="" name="switchPrice" id="switchPrice" checked />
@@ -214,4 +214,4 @@
                 </div>
                 <div class="col-sm-6">
                     input
-                </div>
+                </div> -->

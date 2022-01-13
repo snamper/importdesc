@@ -18,6 +18,7 @@ $('#BPMCO2WLTP,#BPMCO2,#percentage').keyup(function () {
             if (percentage3 == '') {
                 percentage3 = 0;
             }
+            
             $.ajax({
                 type: "POST",
                 url: '../bpm/BPMUpdateTest.php',
@@ -957,13 +958,12 @@ function getCarInfo(e) {
             return response.json();
         })
         .then(function (response) {
-            console.log(response[0])
-            setEditInputFormData(response[0]);
+            // setEditInputFormData(response[0]);
             return response[0];
         })
         .then((data) => {
             
-            setEditFormSelectsData(data); 
+            // setEditFormSelectsData(data); 
             const hiddenInput = document.querySelector("#editCarHiddenInput");
             hiddenInput.value = thisId;
 
@@ -1059,48 +1059,5 @@ $('#verkoopprijsin').val(late + late*btw + parseInt(restbpm) +  parseInt(leges))
 });
 
 
-var timer;
-var timeout = 1000;
-$('#BPMCO2WLTP,#BPMCO2,#percentage').keyup(function(){
-    clearTimeout(timer);
-    if ($('#SoortVoertuig').val() > 0 && $('#BPMbrandstof').val() > 0   && $('#datepicker1').val() != null && $('#datepicker2').val() != null && $('#BPMCO2WLTP').val() != null) {
-        console.log($('#datepicker1').val() != null);
-        console.log($('#datepicker2').val() != null);
-        timer = setTimeout(function(){
-             var carSelector = $('#SoortVoertuig').val();
-            var bpmbrandstof = $('#BPMbrandstof').val();
-            var datepicker1 = $('#datepicker1').val();
-            var datepicker2 = $('#datepicker2').val();
-            var co2wltp = $('#BPMCO2WLTP').val();
-            var percentage3 = $('#percentage').val();
-            if (percentage3 == '') {
-                  percentage3 = 0;
-            }
-            $.ajax({
-                  type: "POST",
-                  url: '../bpm/BPMUpdateTest.php' ,
-                  data: {
-                      SoortVoertuig: carSelector,
-                      BPMbrandstof: bpmbrandstof,
-                      BPMproductiedatum: datepicker1,
-                      BPMtenaamstellingNL: datepicker2,
-                      variabeledatumbpm: datepicker2,
-                      BPMCO2WLTP: co2wltp,
-                      percentage: percentage3,
-                    },
-                  success: function(data){
-                        var json = JSON.parse(data);
-                        // console.log(json[0]['BPMCO2WLTP']);
-                        $('#brutobpm').val(json[0]['bpmprice']);
-                        $('#forfaitaire').val(json[0]['a']);
-                        $('#PercentageBerekening').val(json[0]['percentage']);
-                        if ( $('#addRest_BPM').length) {
-                              $('#addRest_BPM').val(json[0]['percentage']);
-                        }
-                  }
-            });
-        }, timeout);
-    }
-});
 
 
