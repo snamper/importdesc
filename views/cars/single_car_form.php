@@ -1,5 +1,5 @@
 <div class="dashboardPageTitle text-center">
-    <h2 style="opacity: 0;">Placeholder</h2>
+    <h2 style="opacity: 0; margin-top: 1.5%"></h2>
 </div>
 <div class="dashboardBoxBg mb30">
     <div class="row">
@@ -8,9 +8,9 @@
             <input type="hidden" id="editCarHiddenInput" name="car_id" value="">
         
             <div class="row str">
-                <div class="col-sm-12">
+               <!-- <div class="col-sm-12">
                     <h4>Auto toevoegen</h4>
-                </div>
+                </div>-->
             </div>
 
             <div class="row str">
@@ -78,13 +78,13 @@
             <div class="row str">
                 <div class="col-sm-2">Opties</div>
                 <div class="col-sm-4">
-                    <textarea class="w-100" data-name="optie" name="opties" id="opties"></textarea>
+                    <textarea style="resize: none;" class="w-100 form-control" data-name="optie" name="opties" id="opties"></textarea>
                 </div>
             </div>
 
             <div class="row str">
                 <div class="col-sm-12">
-                    <h6 class="font-weight-bold"> Technische gegevens</h6>
+                    <h6 style="font-weight: 500"> Technische gegevens</h6>
                 </div>
             </div>
 
@@ -103,6 +103,13 @@
                         ?>
                     </select>
                 </div>
+
+                <div class="col-sm-2">
+                    CO² NEDC
+                </div>
+                <div class="col-sm-4">
+                    <input type="number" class="form-control" id="BPMCO23" data-name="co2" name="BPMCO2" placeholder="CO² NEDC" value="">
+                </div>
             </div>
 
             <div class="row str">
@@ -117,28 +124,17 @@
                         ?>
                     </select>
                 </div>
-
-                <div class="col-sm-2">
-                    CO² NEDC
-                </div>
-                <div class="col-sm-4">
-                    <input type="number" class="form-control" id="BPMCO23" data-name="co2" name="BPMCO2" placeholder="CO² NEDC" value="">
-                </div>
-            </div>
-
-            <div class="row str">
-                <div class="col-sm-2">
+                      <div class="col-sm-2">
                     CO² WLTP
                 </div>
                 <div class="col-sm-4">
                     <input type="number" class="form-control" id="BPMCO2WLTP2" data-name="" name="BPMCO2WLTP" placeholder="CO² WLTP" value="">
                 </div>
+
             </div>
-
-
             <div class="row str">
                 <div class="col-sm-12">
-                    <h6 class="font-weight-bold">Herkomst en Registratie</h6>
+                    <h6 style="font-weight: 500">Herkomst en Registratie</h6>
                 </div>
             </div>
 
@@ -200,7 +196,7 @@
 
             <div class="row str">
                 <div class="col-sm-12">
-                    <h6 class="font-weight-bold"> Overig</h6>
+                    <h6 style="font-weight: 500"> Overig</h6>
                 </div>
             </div>
 
@@ -208,11 +204,11 @@
             <div class="row str">
                 <div class="col-sm-2">Opmerkingen</div>
                 <div class="col-sm-4">
-                    <textarea class="w-100" data-name="opmerkingen" name="opmerkingen" id="opmerkingen"></textarea>
+                    <textarea style="resize: none;" class="w-100 form-control" data-name="opmerkingen" name="opmerkingen" id="opmerkingen"></textarea>
                 </div>
             </div>
 
-            <h4>Bij SUBMIT wordt auto toegevoegd aan auto templates tabel</h4>
+
 
             <!-- <div class="row">
                 <div class="col-sm-3">Calculatie</div>
