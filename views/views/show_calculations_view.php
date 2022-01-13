@@ -43,12 +43,6 @@
             <?php
             foreach ($data['calculations'] as $calc) { ?>
 
-                // echo '<pre>';
-                // var_dump($calc);
-                // echo '</pre>';
-                // exit;
-               
-                
                     <tr>
                         <td style='vertical-align: middle;' class="text-center">
                             <?php echo $calc['inkoopprijs_ex_ex'] ?>
@@ -100,7 +94,7 @@
                        
                             Connect with a car:
                             <form action="calculation" method="POST" >
-                                <input type="hidden" name="calculation_id" value="<?php echo $calc[calclulation_id] ?>" />
+                                <input type="hidden" name="calculation_id" value="<?php echo $calc['calclulation_id'] ?>" />
                                 <select class="form-control" name="car_id_to_connect" id="">
                                     <option value=""> - </option>
                                     <?php
@@ -112,7 +106,7 @@
                                            $selected = "";
                                        }
                                         ?>
-                                        <option $selected value="<?php $car['carID'][0] ?>"> <?php $car['carID'][0] :  $car['name'][0].' '.$car['name'][1] .' - ' .$car['motor']  ?></option>
+                                        <option <?php echo $selected ?> value="<?php echo $car['carID'][0] ?>"> <?php echo $car['carID'][0] .' : '.  $car['name'][0].' '.$car['name'][1] .' - ' .$car['motor'] ; ?></option>
                                       
                                     <?php }
                                     ?>

@@ -958,12 +958,12 @@ function getCarInfo(e) {
             return response.json();
         })
         .then(function (response) {
-            // setEditInputFormData(response[0]);
+            setEditInputFormData(response[0]);
             return response[0];
         })
         .then((data) => {
             
-            // setEditFormSelectsData(data); 
+            setEditFormSelectsData(data); 
             const hiddenInput = document.querySelector("#editCarHiddenInput");
             hiddenInput.value = thisId;
 
@@ -977,6 +977,7 @@ function getCarInfo(e) {
 function setEditInputFormData(data) {
     // console.log(data);
     const editCarForm = document.querySelector("#editCarForm");
+    console.log(editCarForm);
     const inputFields = editCarForm.querySelectorAll("[name]");
     for (const field of inputFields) {
         const fieldName = field.getAttribute("data-name");

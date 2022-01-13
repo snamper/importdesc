@@ -1,7 +1,6 @@
-<div class="content">
-    <div class="form-auto">
+<div class="form-auto">
         <div class="col-xs-12 table-list">
-            <form action="marge" method="POST" class="listing__form">
+            <form action="calculation" method="POST" class="listing__form">
                 <div class="dashboardPageTitle text-center">
                     <h2 style="opacity: 0;">Placeholder</h2>
                 </div>
@@ -11,7 +10,8 @@
                             <input name="merkA" type="hidden" value="<!-- <?php echo $quotation['price_merk']; ?> -->" />
                             <input name="modelA" type="hidden" value="<!-- <?php echo $quotation['price_model']; ?> -->" />
 
-                            <input type="hidden" name="merge_insert">
+                            <input type="hidden" name="add_calculation" value ="">
+                            <input type="hidden" name="fromCarView" value ="<?php echo $_GET['car_id'] ?>">
                             <div class="row str justify-content-end" style="padding-bottom: 23px; margin-top: -18px;">
                                 <div class="col-sm-4" style="position: fixed; top: 0; z-index: 99999999; left: 0; right: 200; width: 200px; margin: auto; top: 5px;">
                                     <button type="submit" class="btn btn-primary" style="width: 100%">Insert</button>
@@ -286,10 +286,11 @@
                         </div>
                     </div>
                 </div>
+                    <button type="submit" class="btn btn-primary" >Insert Calculation
+                </button>
             </form>
         </div>
     </div>
-</div>
 
 <script>
     function toggle(source) {

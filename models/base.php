@@ -1,5 +1,4 @@
 <?php
-
 include_once "engine/db_driver.php";
 include_once "engine/db_driver1.php";
 class base
@@ -563,12 +562,44 @@ class base
 		// }
 	}
 
-	public function insertCalculation($_post)  {
+	public function insertCalculation($_request)  {
 
 		$dbDriver = new db_driver();
 
+		
+		
+		$calculation_for_car_id=$_request['fromCarView'];
+		$inkoopprijs_ex_ex=$_request['inkoopprijs_ex_ex'];
+		$feeleverancier=$_request['feeleverancier'];
+		$inkoopprijstotaal=$_request['taxatie_kosten1'];
+		$opknapkosten=$_request['opknapkosten_ex'];
+		$transport_buitenland=$_request['transport_buitenland'];
+		$transport_binnenland=$_request['transport_binnenland'];
+		$taxatie_kosten=$_request['taxatie_kosten'];
+		$totaalkosten=$_request['taxatie_kosten1'];
+		$fee=$_request['fee'];
+		$verkoopprijs_ex=$_request['verkoopprijs_netto'];
+		$btw=$_request['btw'];
+		$verkoopprijsbtw=$_request['addVerkoopprijs_Marge_incl'];
+		$restbpm=$_request['gekozen_bpm_bedrag'];
+		$leges=$_request['leges'];
+		$verkoopprijsin=$_request['addVerkoopprijs_Marge_incl'];
+		$SoortVoertuig=$_request['SoortVoertuig'];
+		$BPMbrandstof=$_request['BPMbrandstof'];
+		$huidigedatumbpm=$_request['huidigedatumbpm'];
+		$referentie=$_request['referentie'];
+		$BPMproductiedatum=$_request['BPMproductiedatum'];
+		$BPMtenaamstellingNL=$_request['BPMtenaamstellingNL'];
+		$carUitvoering=$_request['caUitvoering'];
+		$BPMCO2=$_request['BPMCO2'];
+		$BPMCO2WLTP=$_request['BPMCO2WLTP'];
+		$percentage=$_request['percentage'];
+		$delivery_costs=$_request['delivery_costs'];
+		$inkoopprijs_btw=$_request['inkoopprijs_btw'];
 
-		$query = "INSERT INTO calculations (
+		  // $dbDriver = new db_driver();
+        $sql = "INSERT INTO calculations (
+			calculation_for_car_id,
 			inkoopprijs_ex_ex,
 			feeleverancier,
 			inkoopprijstotaal,
@@ -583,42 +614,51 @@ class base
 			verkoopprijsbtw,
 			restbpm,
 			leges,
-			verkoopprijsin
+			verkoopprijsin,
+			SoortVoertuig,
+			BPMbrandstof,
+			huidigedatumbpm,
+			referentie,
+			BPMproductiedatum,
+			BPMtenaamstellingNL,
+			carUitvoering,
+			BPMCO2,
+			BPMCO2WLTP,
+			percentage,
+			delivery_costs,
+			inkoopprijs_btw
 		) VALUES (
-			?,
-			?,
-			?,
-			?,
-			?,
-			?,
-			?,
-			?,
-			?,
-			?,
-			?,
-			?,
-			?,
-			?,
-			?
+			'$calculation_for_car_id',
+		'$inkoopprijs_ex_ex',
+		'$feeleverancier',
+		'$inkoopprijstotaal',
+		'$opknapkosten',
+		'$transport_buitenland',
+		'$transport_binnenland',
+		'$taxatie_kosten',
+		'$totaalkosten',
+		'$fee',
+		'$verkoopprijs_ex',
+		'$btw',
+		'$verkoopprijsbtw',
+		'$restbpm',
+		'$leges',
+		'$verkoopprijsin',
+		'$SoortVoertuig',
+		'$BPMbrandstof',
+		'$huidigedatumbpm',
+		'$referentie',
+		'$BPMproductiedatum',
+		'$BPMtenaamstellingNL',
+		'$carUitvoering',
+		'$BPMCO2',
+		'$BPMCO2WLTP',
+		'$percentage',
+		'$delivery_costs',
+		'$inkoopprijs_btw'
 		)";
-		$stmt = $dbDriver->dbCon->prepare($query);
-		$stmt->execute([
-			$_post['inkoopprijs_ex_ex'],
-			$_post['feeleverancier'],
-			$_post['inkoopprijstotaal'],
-			$_post['opknapkosten'],
-			$_post['transport_buitenland'],
-			$_post['transport_binnenland'],
-			$_post['taxatie_kosten'],
-			$_post['totaalkosten'],
-			$_post['fee'],
-			$_post['verkoopprijs_ex'],
-			$_post['btw'],
-			$_post['verkoopprijsbtw'],
-			$_post['restbpm'],
-			$_post['leges'],
-			$_post['verkoopprijsin']
-		]);
+        $dbDriver->query($sql);
+
 	}
 
 	public function getAllCalculations() {
@@ -640,4 +680,15 @@ class base
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$car_id, $calculation_id]);
 	}
+
+	public function getCarCalculations($car_id) {
+        $dbDriver = new db_driver();
+        $query = "SELECT * FROM calculations WHERE calculation_for_car_id = ?";
+        $stmt = $dbDriver->dbCon->prepare($query);
+        $stmt->execute([$car_id]);
+        $result = $stmt->fetchAll(PDO::FETCH_NAMED);
+        return $result;
+    }
 }
+
+
