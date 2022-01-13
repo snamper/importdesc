@@ -256,13 +256,15 @@ $('#carMark').change(function () {
             type: "POST",
             data: 'carMarkSelect=' + carvalue,
             success: function (data) {
-                document.getElementById('carModel').innerHTML = firstOptionHTML + data;
+                document.getElementById('carModel').innerHTML = data;
                 $('#carModel').change();
             }
         })
     } else {
         document.getElementById('carModel').innerHTML = firstOptionHTML;
     }
+
+    addResumeEditCarHeader();
 
     if (carvalue == 0) $('#carMarkInput').val('');
     else $('#carMarkInput').val($(this).find('option:selected').text());
@@ -326,6 +328,8 @@ $('#carModel').change(function () {
             }
         })
     }
+
+    addResumeEditCarHeader();
     if (carvalue == 0) $('#carModelInput').val('');
     else $('#carModelInput').val($(this).find('option:selected').text());
 });
@@ -898,9 +902,9 @@ $('#carEquipment').change(function () {
     getData();
 });
 
-// $('#carModification').change(function(){
-//     getData();
-// });
+$('#carUitvoering, #levering').change(function(){
+    addResumeEditCarHeader();
+});
 
 function getData() {
     var equipment = $('#carEquipment').val();
@@ -959,11 +963,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
     if (location.pathname == "/edit_car_calculation") {
         getCarInfo(); // runs on 700ms
     }
-
-    // setTimeout(() => {
-    //     addResumeEditCarHeader(); // runs on 900ms
-    // }, 900); 
-
+    setTimeout(() => {
+        addResumeEditCarHeader();
+    }, 900); // runs on 900ms 
+    
 });
 
 function getCarInfo(e) {
@@ -1015,10 +1018,9 @@ function setEditInputFormData(data) {
         const fieldName = field.getAttribute("data-name");
         field.value = data[fieldName];
     }
-
     setTimeout(() => {
         $('#carMark').change();
-    }, 900);
+    }, 700);
 
 
 }

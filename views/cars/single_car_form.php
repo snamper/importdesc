@@ -188,9 +188,9 @@
                     Leverancier
                 </div>
                 <div class="col-sm-4">
-                    <select class="form-control js-resume-fill" data-name="levering" name="levering">
+                    <select class="form-control js-resume-fill" id="levering" data-name="levering" name="levering">
                         <?php
-                        foreach ($data['creditors'] as $creditor) {
+                        foreach ($data['creditors'] as $creditor) { 
                             echo "<option value='$creditor[CreditorId]'> $creditor[CreditorName]</option>";
                         }
                         ?>
