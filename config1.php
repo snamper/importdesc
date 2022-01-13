@@ -7,11 +7,11 @@
    
 $config1['hostName'] = 'localhost'; 
     
-$config1['userName'] = 'db_user';
+$config1['userName'] = 'deb64406n9_gwicarmodule';
 
-$config1['passWord'] = 'vE^fBKG^*X7oMTHfhpP!';
+$config1['passWord'] = 'OkFR0yno';
 
-$config1['dbName'] = 'importdesc2';
+$config1['dbName'] = 'deb64406n9_gwicarmodule';
 
 $config1['dbport'] = '3306';
 
