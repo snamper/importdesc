@@ -329,10 +329,14 @@ class base
 			transmissie,
 			huidigland,
 			optie,
-			opmerkingen
+			opmerkingen,
+			auto_referentie,
+			custom_ref
 		) 
 			VALUES (
 							
+				?,
+				?,
 				?,
 				?,
 				?,
@@ -375,7 +379,9 @@ class base
 					$transmissie,
 					$post['huidigland'],
 					$post['opties'],
-					$post['opmerkingen']
+					$post['opmerkingen'],
+					$post['auto_referentie'],
+					$post['custom_ref']					
 				]
 			);
 			$last_car_id = $dbDriver->dbCon->lastInsertId();
@@ -499,7 +505,9 @@ class base
 			transmissie = ?,
 			huidigland = ?,
 			optie = ?,
-			opmerkingen = ?
+			opmerkingen = ?,
+			auto_referentie = ?,
+			custom_ref = ?
 			WHERE carID = ?";
 
 
@@ -525,6 +533,8 @@ class base
 					$post['huidigland'],
 					$post['opties'],
 					$post['opmerkingen'],
+					$post['auto_referentie'],
+					$post['custom_ref'],										
 					$car_id
 				]
 			);
@@ -691,6 +701,18 @@ class base
         $result = $stmt->fetchAll(PDO::FETCH_NAMED);
         return $result;
     }
+
+	public function duplicateCar($car_id) {
+		$dbDriver = new db_driver();
+
+		$query = "CREATE TEMPORARY TABLE temp_car_table AS SELECT * FROM car WHERE carID = ?;
+		ALTER TABLE temp_car_table DROP COLUMN carID;
+		INSERT INTO car (SELECT * FROM temp_car_table);";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$car_id]);
+	}
+
+	
 }
 
 

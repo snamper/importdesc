@@ -962,10 +962,13 @@ for (const filler of carFillEditButtons) {
 window.addEventListener('DOMContentLoaded', (event) => {
     if (location.pathname == "/edit_car_calculation") {
         getCarInfo(); // runs on 700ms
+
+        setTimeout(() => {
+            addResumeEditCarHeader();
+        }, 900); // runs on 900ms 
     }
-    setTimeout(() => {
-        addResumeEditCarHeader();
-    }, 900); // runs on 900ms 
+    
+   
     
 });
 
@@ -1013,7 +1016,7 @@ function getCarInfo(e) {
 
 function setEditInputFormData(data) {
     const editCarForm = document.querySelector("#editCarForm");
-    const inputFields = editCarForm.querySelectorAll("[name]");
+    const inputFields = editCarForm.querySelectorAll("[data-name]");
     for (const field of inputFields) {
         const fieldName = field.getAttribute("data-name");
         field.value = data[fieldName];
@@ -1097,20 +1100,30 @@ function addResumeEditCarHeader() {
 
     const resumeFillers = document.querySelectorAll(".js-resume-fill");
     let fillerText = "";
+    let completeText = "";
 
     for (const filler of resumeFillers) {
 
         if (filler.tagName == "SELECT") {
-            fillerText = filler.options[filler.selectedIndex].innerText;
+            if(filler.options[filler.selectedIndex]) {
+                fillerText = filler.options[filler.selectedIndex].innerText;
+            }else {
+                fillerText = "";
+            }
+            
         } else {
             fillerText = filler.value;
         }
 
+        completeText += fillerText + " ";
+
         const resumeFieldId = filler.getAttribute("data-name");
-        const resumeField = document.querySelector(`#${resumeFieldId}`);
+        const resumeField = document.querySelector(`#${resumeFieldId}`);       
 
         resumeField.innerHTML = fillerText;
     }
+
+    document.querySelector("#referentieHiddenInput").value = completeText;
 }
 
 

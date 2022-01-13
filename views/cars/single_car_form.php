@@ -14,20 +14,29 @@
             </div>
 
             <div class="row str">
-                <div class="col-sm-12">
+                <div class="col-sm-8">
                     <!-- <h6>Auto referentie* A-()(merk)(model)(uitvoering)(datumvandaag) / AUTOMATISCH INVULLEN</h6> -->
-                    <p>
+                    <input type="hidden" id="referentieHiddenInput" name="auto_referentie" value="">
+                    <p>                       
                         <span id="levering"></span>
                         <span id="car_merk"></span>
                         <span id="car_model"></span>
                         <span id="uitvoering"></span>
-                        <span></span><span></span>
-                    </p>
-<!--                     
+                        <span id="productiedatum"></span>
+                        <span></span>
+                    </p>                  
+<!--                    
                     <h6>Auto referentie (CUSTOM) Zelf iets invullen, niet verplicht</h6>
                     <h6 class="font-weight-bold"> Basis gegevens</h6> -->
+                </div>              
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <input id="refCustom" type="text" class="form-control my-1" name="custom_ref" value="" data-name="custom_ref" placeholder="Custem referentie">
                 </div>
             </div>
+            <hr />
 
             <div class=" row str">
                 <div class="col-sm-2">Make</div>
@@ -147,7 +156,7 @@
                     Datum eerste toelating
                 </div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control text-input" id="datepicker10" value="" data-name="productiedatum" name="productiedatum">
+                    <input type="text" class="form-control text-input js-resume-fill" id="datepicker10" value="" data-name="productiedatum" name="productiedatum">
                 </div>
 
                 <div class="col-sm-2">
@@ -189,6 +198,7 @@
                 </div>
                 <div class="col-sm-4">
                     <select class="form-control js-resume-fill" id="levering" data-name="levering" name="levering">
+                        <option value="">-</option>
                         <?php
                         foreach ($data['creditors'] as $creditor) { 
                             echo "<option value='$creditor[CreditorId]'> $creditor[CreditorName]</option>";

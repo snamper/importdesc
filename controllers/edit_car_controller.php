@@ -71,11 +71,23 @@ class edit_car extends view
             if(isset($_GET['car_id'])) {
                 $carJson = $this->base->getCarInfo($_GET['car_id']);
                 echo json_encode($carJson);
+                exit;
+            }
+
+            if(isset($_GET['duplicate'])) {
+                
+                $this->duplicateCar($_GET['duplicate']);
+                // header("Location: /show_cars");  
+                // exit;
             }
         } 
         else parent::__construct('login_view.php');
 
     }
+
+   private function duplicateCar($car_id){
+        $this->base->duplicateCar($car_id);
+   }
 
 
 

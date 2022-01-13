@@ -24,7 +24,7 @@
 
     ?>
 
-
+<div class="table-responsive">
     <table id="sample-table-1" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
         <thead>
             <th class="text-center">Datum aangemaakt</th>
@@ -41,7 +41,8 @@
             <th style="white-space: nowrap">Km-stand</th>
             <th style="white-space: nowrap">Huidig land geregistreerd</th>
             <th style="white-space: nowrap">Vin</th>
-            <th style="white-space: nowrap">Edit/duplic</th>
+            <th style="white-space: nowrap">Edit</th>
+            <th style="white-space: nowrap">Duplicate</th>
 
         </thead>
         <tbody>
@@ -114,13 +115,21 @@
                             <a class="btn btn-default btn-xs js-fill-car-info" data-id="<?php echo $car['carID'][0] ?>" data-toggle="modal" data-target="#editCarForm"><i class="ti-pencil"></i></a>
 
                             <a href="edit_car_calculation?car_id=<?php echo $car['carID'][0] ?>" class="btn btn-default btn-xs"><i class="ti-brush"></i></a>
+                        </td>           
+                        
+                        <td style='vertical-align: middle;' class="text-center">
+                            
+                            <a href="edit_car?duplicate=<?php echo $car['carID'][0] ?>" class="btn btn-default btn-xs"><i class="ti-files"></i></a>
+                            
                         </td>                   
+                        
                         
                     </tr>
             <?php }
             ?>
         </tbody>
     </table>
+</div>
     <!-- END table -->
 
     <!-- Modal -->
