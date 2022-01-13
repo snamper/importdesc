@@ -10,7 +10,6 @@ class BaseModel
     protected $date_create;
     protected $date_update;
 
-
     public function __construct() {
         $this->date_create = $this->date_update = time();
     }
@@ -48,18 +47,17 @@ class create_make extends view
             if ($_POST['carMarkInput']) {
                 $mark->id_car_make = $_POST['carMark'];
                 $mark->name = $_POST['carMarkInput'];
-                $this->setData('mark', $mark);
 
                 if ($_POST['carMark'] == 0) {
-                    $this->createCarMark($mark);
+                    $insertId = $this->createCarMark($mark);
                 } else {
                     $this->updateCarMark($mark);
                 }
             }
 
-            if (($_POST['carMark'] /*|| $_POST['carMarkInput']*/) && $_POST['carModelInput']) {
+            if (($_POST['carMark'] || $insertId) && $_POST['carModelInput']) {
+                $model->id_car_make = $insertId ?? $_POST['carMark'];
                 $model->id_car_model = $_POST['carModel'];
-                $model->id_car_make = $_POST['carMark'];
                 $model->name = $_POST['carModelInput'];
 
                 if ($_POST['carModel'] == 0) {
@@ -68,7 +66,7 @@ class create_make extends view
                     $this->updateCarModel($model);
                 }
             }
-            
+
             header('Location: /create_make');
         }
 
@@ -77,7 +75,7 @@ class create_make extends view
     }
 
     protected function createCarMark($mark) {
-        $this->base->createCarMark($mark);
+        return $this->base->createCarMark($mark);
     }
 
     protected function updateCarMark($mark) {

@@ -59,6 +59,8 @@ class base
         $dbDriver = new db_driver();
         $sql = "INSERT INTO `car_make` (`name`, `date_create`, `date_update`, `id_car_type`) VALUES ('".$mark->name."', '".$mark->date_create."', '".$mark->date_update."', '".$mark->id_car_type."')";
         $dbDriver->query($sql);
+        return $dbDriver->insert_id();
+        //return $dbDriver->query("SELECT MAX(id_car_make) FROM `car_make`")->fetchColumn();
     }
     function updateCarMark($mark)
     {

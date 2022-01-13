@@ -329,6 +329,37 @@ $('#carModel').change(function () {
     if (carvalue == 0) $('#carModelInput').val('');
     else $('#carModelInput').val($(this).find('option:selected').text());
 });
+
+$('#carMarkForm').submit(function (e) {
+    let carMark = $('#carMark').val();
+    let carMarkInput = $('#carMarkInput').val();
+    let carModelInput = $('#carModelInput').val();
+
+    if (($('#carMark').find('option:selected').text() == carMarkInput) && ($('#carModel').find('option:selected').text() == carModelInput)) {
+        e.preventDefault();
+    }
+
+    if (!carMarkInput && !carModelInput) {
+        e.preventDefault();
+        $('#carMarkInput').focus();
+    }
+
+    if ((!carMarkInput && !carModelInput) && carMark) {
+        e.preventDefault();
+        $('#carModelInput').focus();
+    }
+
+    if ($('#carMark').find('option:selected').text() == carMarkInput && !carModelInput) {
+        e.preventDefault();
+        $('#carModelInput').focus();
+    }
+
+    if ((carMark == 0 && !carMarkInput) || (carMark == 0 && !carMarkInput && carModelInput)) {
+        e.preventDefault();
+        $('#carMarkInput').focus();
+    }
+});
+
 // $('#carGeneration').change(function(){
 //      var carvalue = $(this).val();
 
