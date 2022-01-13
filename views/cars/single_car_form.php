@@ -15,29 +15,37 @@
 
             <div class="row str">
                 <div class="col-sm-12">
-                    <h6>Auto referentie* A-(leverancier)(merk)(model)(uitvoering)(datumvandaag) / AUTOMATISCH INVULLEN</h6>
+                    <!-- <h6>Auto referentie* A-()(merk)(model)(uitvoering)(datumvandaag) / AUTOMATISCH INVULLEN</h6> -->
+                    <p>
+                        <span id="levering"></span>
+                        <span id="car_merk"></span>
+                        <span id="car_model"></span>
+                        <span id="uitvoering"></span>
+                        <span></span><span></span>
+                    </p>
+<!--                     
                     <h6>Auto referentie (CUSTOM) Zelf iets invullen, niet verplicht</h6>
-                    <h6 class="font-weight-bold"> Basis gegevens</h6>
+                    <h6 class="font-weight-bold"> Basis gegevens</h6> -->
                 </div>
             </div>
 
             <div class=" row str">
                 <div class="col-sm-2">Make</div>
                 <div class="col-sm-4">
-                    <select class="form-control" data-name="car_merk" name="carMark" id="carMark">
+                    <select class="form-control js-resume-fill" data-name="car_merk" name="carMark" id="carMark">
                        
                     </select>
                 </div>
 
                 <div class="col-sm-2">Model</div>
                 <div class="col-sm-4">
-                    <select class="form-control" data-name="car_model" name="carModel" id="carModel">
+                    <select class="form-control js-resume-fill" data-name="car_model" name="carModel" id="carModel">
                         <option value="">-</option>
                     </select>
                 </div>
                 <div class="col-sm-2">Uitvoering</div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" data-name="uitvoering" name="caUitvoering" id="carUitvoering">
+                    <input type="text" class="form-control js-resume-fill" data-name="uitvoering" name="caUitvoering" id="carUitvoering">
                 </div>
 
                 <div class="col-sm-2">Motor</div>
@@ -180,7 +188,7 @@
                     Leverancier
                 </div>
                 <div class="col-sm-4">
-                    <select class="form-control" data-name="levering" name="levering">
+                    <select class="form-control js-resume-fill" data-name="levering" name="levering">
                         <?php
                         foreach ($data['creditors'] as $creditor) {
                             echo "<option value='$creditor[CreditorId]'> $creditor[CreditorName]</option>";

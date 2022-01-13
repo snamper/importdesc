@@ -18,7 +18,7 @@ $('#BPMCO2WLTP,#BPMCO2,#percentage').keyup(function () {
             if (percentage3 == '') {
                 percentage3 = 0;
             }
-            
+
             $.ajax({
                 type: "POST",
                 url: '../bpm/BPMUpdateTest.php',
@@ -246,27 +246,26 @@ $(document).ready(function () {
 });
 
 
-$('#carMark').change(function(){
-     var carvalue = $(this).val();
+$('#carMark').change(function () {
+    var carvalue = $(this).val();
     const firstOptionHTML = "<option value='0'> - </option>";
 
     if (carvalue > 0) {
-
-        $.ajax({
+         $.ajax({
             url: 'marge',
             type: "POST",
-           data:  'carMarkSelect=' + carvalue,
-            success:function(data){
+            data: 'carMarkSelect=' + carvalue,
+            success: function (data) {
                 document.getElementById('carModel').innerHTML = firstOptionHTML + data;
                 $('#carModel').change();
             }
         })
-     } else {
-         document.getElementById('carModel').innerHTML = firstOptionHTML;
-     }
+    } else {
+        document.getElementById('carModel').innerHTML = firstOptionHTML;
+    }
 
-     if (carvalue == 0) $('#carMarkInput').val('');
-     else $('#carMarkInput').val($(this).find('option:selected').text());
+    if (carvalue == 0) $('#carMarkInput').val('');
+    else $('#carMarkInput').val($(this).find('option:selected').text());
 });
 // $('#carMark_dip').change(function(){
 //      var carvalue = $(this).val();
@@ -326,7 +325,7 @@ $('#carModel').change(function () {
                 console.log(request.responseText);
             }
         })
-     }
+    }
     if (carvalue == 0) $('#carModelInput').val('');
     else $('#carModelInput').val($(this).find('option:selected').text());
 });
@@ -926,9 +925,13 @@ for (const filler of carFillEditButtons) {
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {
-    if(location.pathname == "/edit_car_calculation") {
-        getCarInfo();
+    if (location.pathname == "/edit_car_calculation") {
+        getCarInfo(); // runs on 700ms
     }
+
+    // setTimeout(() => {
+    //     addResumeEditCarHeader(); // runs on 900ms
+    // }, 900); 
 
 });
 
@@ -936,21 +939,21 @@ function getCarInfo(e) {
 
     let thisId = 0;
 
-    if(location.pathname == "/edit_car_calculation") { 
+    if (location.pathname == "/edit_car_calculation") {
         const queryString = window.location.search;
         const parameters = new URLSearchParams(queryString);
         const value = parameters.get('car_id');
         thisId = value;
-    
-    }else {
+
+    } else {
         const trigger = e.currentTarget;
         thisId = trigger.getAttribute("data-id");
     }
 
 
 
-    const url = `${location.origin}/edit_car?car_id=${thisId}`;  
-   
+    const url = `${location.origin}/edit_car?car_id=${thisId}`;
+
 
     fetch(url)
         .then(function (response) {
@@ -962,8 +965,8 @@ function getCarInfo(e) {
             return response[0];
         })
         .then((data) => {
-            
-            setEditFormSelectsData(data); 
+
+            setEditFormSelectsData(data);
             const hiddenInput = document.querySelector("#editCarHiddenInput");
             hiddenInput.value = thisId;
 
@@ -975,9 +978,7 @@ function getCarInfo(e) {
 }
 
 function setEditInputFormData(data) {
-    // console.log(data);
     const editCarForm = document.querySelector("#editCarForm");
-    console.log(editCarForm);
     const inputFields = editCarForm.querySelectorAll("[name]");
     for (const field of inputFields) {
         const fieldName = field.getAttribute("data-name");
@@ -986,8 +987,8 @@ function setEditInputFormData(data) {
 
     setTimeout(() => {
         $('#carMark').change();
-    }, 700);
-    
+    }, 900);
+
 
 }
 
@@ -996,22 +997,22 @@ function setEditFormSelectsData(data) {
     setTimeout(() => {
         const editCarForm = document.querySelector("#editCarForm");
         const editCarSelects = editCarForm.querySelectorAll("select");
-    
+
         for (const field of editCarSelects) {
             const fieldName = field.getAttribute("data-name");
-            if(fieldName == "transmissieSoort") {
+            if (fieldName == "transmissieSoort") {
                 field.value = `${data[fieldName]}|${data.transmissie}`;
-            }else {
-                field.value = data[fieldName];                
+            } else {
+                field.value = data[fieldName];
             }
-           
+
         }
     }, 500);
-   
+
 }
 
 const sendFormButtons = document.querySelectorAll(".send-form");
-for(sender of sendFormButtons) {
+for (sender of sendFormButtons) {
     sender.addEventListener("click", (e) => {
         const trigger = e.currentTarget;
         const thisForm = trigger.closest("form");
@@ -1022,42 +1023,65 @@ for(sender of sendFormButtons) {
 
 
 $('#inkoopprijs_ex_ex,#feeleverancier,#opknapkosten,#transport_buitenland,#transport_binnenland,#taxatie_kosten,#fee, #restbpm,#leges').keyup(function () {
-    if ($('#switchPrice').is(":checked")){
-       $('#btw').val('21%');
-       var btw = 0.21;
-    } else{
+    if ($('#switchPrice').is(":checked")) {
+        $('#btw').val('21%');
+        var btw = 0.21;
+    } else {
         var btw = 0;
     }
-    var feeleverancier =   $('#feeleverancier').val();
-    var inkoopprijs_ex_ex =   $('#inkoopprijs_ex_ex').val();
-    var opknapkosten =   $('#opknapkosten').val();
-    var transport_buitenland =   $('#transport_buitenland').val();
-    var transport_binnenland =   $('#transport_binnenland').val();
-    var taxatie_kosten =   $('#taxatie_kosten').val();
-    var fee =   $('#fee').val();
-    if (feeleverancier){}else{feeleverancier = 0;}
-    if (inkoopprijs_ex_ex){}else{inkoopprijs_ex_ex = 0;}
-    if (opknapkosten){}else{opknapkosten = 0;}
-    if (transport_buitenland){}else{transport_buitenland = 0;}
-    if (transport_binnenland){}else{transport_binnenland = 0;}
-    if (taxatie_kosten){}else{taxatie_kosten = 0;}
-    if (fee){}else{fee = 0;}
+    var feeleverancier = $('#feeleverancier').val();
+    var inkoopprijs_ex_ex = $('#inkoopprijs_ex_ex').val();
+    var opknapkosten = $('#opknapkosten').val();
+    var transport_buitenland = $('#transport_buitenland').val();
+    var transport_binnenland = $('#transport_binnenland').val();
+    var taxatie_kosten = $('#taxatie_kosten').val();
+    var fee = $('#fee').val();
+    if (feeleverancier) { } else { feeleverancier = 0; }
+    if (inkoopprijs_ex_ex) { } else { inkoopprijs_ex_ex = 0; }
+    if (opknapkosten) { } else { opknapkosten = 0; }
+    if (transport_buitenland) { } else { transport_buitenland = 0; }
+    if (transport_binnenland) { } else { transport_binnenland = 0; }
+    if (taxatie_kosten) { } else { taxatie_kosten = 0; }
+    if (fee) { } else { fee = 0; }
     var total = parseInt(feeleverancier) + parseInt(inkoopprijs_ex_ex);
-    var tax = parseInt(opknapkosten) + parseInt(transport_buitenland) + parseInt(transport_binnenland)+parseInt(taxatie_kosten);
-    var late = total + tax +  parseInt(fee);
+    var tax = parseInt(opknapkosten) + parseInt(transport_buitenland) + parseInt(transport_binnenland) + parseInt(taxatie_kosten);
+    var late = total + tax + parseInt(fee);
     var restbpm = $('#restbpm').val();
     var leges = $('#leges').val();
-    if (restbpm){}else{restbpm = 0;}
-    if (leges){}else{leges = 0;}
+    if (restbpm) { } else { restbpm = 0; }
+    if (leges) { } else { leges = 0; }
 
-$('#inkoopprijstotaal').val(total);
-$('#totaalkosten').val(tax);
-$('#verkoopprijs_ex').val(late);
-$('#verkoopprijsbtw').val(late + late*btw);
-$('#verkoopprijsin').val(late + late*btw + parseInt(restbpm) +  parseInt(leges));
-
+    $('#inkoopprijstotaal').val(total);
+    $('#totaalkosten').val(tax);
+    $('#verkoopprijs_ex').val(late);
+    $('#verkoopprijsbtw').val(late + late * btw);
+    $('#verkoopprijsin').val(late + late * btw + parseInt(restbpm) + parseInt(leges));
 
 });
+
+
+function addResumeEditCarHeader() {
+
+    const resumeFillers = document.querySelectorAll(".js-resume-fill");
+    let fillerText = "";
+
+    for (const filler of resumeFillers) {
+
+        if (filler.tagName == "SELECT") {
+            fillerText = filler.options[filler.selectedIndex].innerText;
+        } else {
+            fillerText = filler.value;
+        }
+
+        const resumeFieldId = filler.getAttribute("data-name");
+        const resumeField = document.querySelector(`#${resumeFieldId}`);
+
+        resumeField.innerHTML = fillerText;
+    }
+}
+
+
+
 
 
 
