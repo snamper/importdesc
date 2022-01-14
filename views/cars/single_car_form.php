@@ -38,7 +38,7 @@
             </div>
             <hr />
 
-            <div class=" row str">
+            <div class=" row str " style="align-items: center; margin-bottom:5px;">
                 <div class="col-sm-2">Make</div>
                 <div class="col-sm-4">
                     <select class="form-control js-resume-fill" data-name="car_merk" name="carMark" id="carMark">
@@ -52,6 +52,8 @@
                         <option value="">-</option>
                     </select>
                 </div>
+            </div>
+            <div class=" row str " style="align-items: center; margin-bottom:5px;">
                 <div class="col-sm-2">Uitvoering</div>
                 <div class="col-sm-4">
                     <input type="text" class="form-control js-resume-fill" data-name="uitvoering" name="caUitvoering" id="carUitvoering">
@@ -63,8 +65,7 @@
                 </div>
 
             </div>
-
-            <div class="row str">
+            <div class="row str " style="align-items: center; margin-bottom:5px;">
                 <div class="col-sm-2">Aantal deuren</div>
                 <div class="col-sm-4">
                     <select class="form-control" data-name="aantal_deuren" name="doors_number" id="doorNumber">
@@ -83,22 +84,21 @@
                     <input class="form-control" type="text" data-name="kleur" name="kleur">
                 </div>
             </div>
-
-            <div class="row str">
+            <div class="row str " style="align-items: center; margin-bottom:5px;">
                 <div class="col-sm-2">Opties</div>
                 <div class="col-sm-4">
                     <textarea style="resize: none;" class="w-100 form-control" data-name="optie" name="opties" id="opties"></textarea>
                 </div>
             </div>
 
-            <div class="row str">
+            <div class="row str " style="align-items: center; margin-bottom:5px;">
                 <div class="col-sm-12">
                     <h6 style="font-weight: 500"> Technische gegevens</h6>
                 </div>
             </div>
 
 
-            <div class="row str">
+            <div class="row str " style="align-items: center; margin-bottom:5px;">
 
                 <div class="col-sm-2">Brandstof soort</div>
                 <div class="col-sm-4">
@@ -121,7 +121,7 @@
                 </div>
             </div>
 
-            <div class="row str">
+            <div class="row str " style="align-items: center; margin-bottom:5px;">
                 <div class="col-sm-2">Transmissie</div>
                 <div class="col-sm-4">
                     <select data-name="transmissieSoort" name="transmissieSoort" id="transmissieSoort" class="text-input form-control" required>
@@ -141,13 +141,13 @@
                 </div>
 
             </div>
-            <div class="row str">
+            <div class="row str " style="align-items: center; margin-bottom:5px;">
                 <div class="col-sm-12">
                     <h6 style="font-weight: 500">Herkomst en Registratie</h6>
                 </div>
             </div>
 
-            <div class="row str">
+            <div class="row str " style="align-items: center; margin-bottom:5px;">
                 <div class="col-sm-2">
                     Datum eerste toelating
                 </div>
@@ -164,7 +164,7 @@
             </div>
 
 
-            <div class="row str">
+            <div class="row str " style="align-items: center; margin-bottom:5px;">
                 <div class="col-sm-2">
                     Kilometerstand
                 </div>
@@ -181,7 +181,7 @@
             </div>
 
 
-            <div class="row str">
+            <div class="row str " style="align-items: center; margin-bottom:5px;">
                 <div class="col-sm-2">
                     NL kenteken
                 </div>
@@ -204,14 +204,14 @@
                 </div>
             </div>
 
-            <div class="row str">
+            <div class="row str " style="align-items: center; margin-bottom:5px;">
                 <div class="col-sm-12">
                     <h6 style="font-weight: 500"> Overig</h6>
                 </div>
             </div>
 
 
-            <div class="row str">
+            <div class="row str " style="align-items: center; margin-bottom:5px;">
                 <div class="col-sm-2">Opmerkingen</div>
                 <div class="col-sm-4">
                     <textarea style="resize: none;" class="w-100 form-control" data-name="opmerkingen" name="opmerkingen" id="opmerkingen"></textarea>

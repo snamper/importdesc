@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 include_once 'views/view.php';
 class element
 {
@@ -72,6 +70,11 @@ class edit_car_calculation extends view
        $this->setData("transmitions", $transmitions);
        $this->setData("car_doors", $car_doors);
        $this->setData("calculations", $calculations);
+       if (isset($_REQUEST['disable_calc'])) {
+            $disID = addslashes($_REQUEST['disable_calc']);
+            $this->disableCalc($disID);
+            header("Location: /show_calculations");
+        }
 
         
         if (isset($_SESSION['user'])) parent::__construct('edit_car_calculation_view.php');
@@ -123,5 +126,9 @@ class edit_car_calculation extends view
         }
 
         return $this->base->getCarCalculations($_GET['car_id']);
+    }
+
+    protected function disableCalc($disID) {
+        $this->base->disableCalc($disID);
     }
 }

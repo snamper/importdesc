@@ -87,9 +87,14 @@
 		    { "width": "5%", "targets": 4 },
 		    { "width": "5%", "targets": 3 }
 		  ],
-        select: true,
+        select: false,
         dom: 'Blfrtip',
         // 'order': [[1, 'asc']],
+        'createdRow': function( row, data, dataIndex){
+              if( data[7] == 0 || data[8] == 0 ){
+                  $(row).addClass('redClass');
+              }
+          },
          initComplete: function () {
             this.api().columns('.select-filter').every( function () {
                 var column = this;
@@ -116,6 +121,47 @@
        
             // select: true,
     });
+    var oTable36 = $('#datatable-calculations')
+    .DataTable({
+        "bprocessing": true,
+        "bserverSide": true,
+        "sServerMethod": "POST",
+        "sAjaxSource": "./data/data-calculations.php",
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "columnDefs": [
+            { "width": "5%", "targets": 4 },
+            { "width": "5%", "targets": 3 }
+          ],
+        select: false,
+        dom: 'Blfrtip',
+        'createdRow': function( row, data, dataIndex){
+              if( data[18] == 0 ){
+                  $(row).addClass('redClass');
+              }
+          },
+        // 'order': [[1, 'asc']],
+    });
+     var oTable3 = $('#datatable-inside')
+    .DataTable({
+        "bprocessing": true,
+        "bserverSide": true,
+        "sServerMethod": "POST",
+        "sAjaxSource": "./data/data-insidecar.php",
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "columnDefs": [
+            { "width": "5%", "targets": 4 },
+            { "width": "5%", "targets": 3 }
+          ],
+        select: false,
+        dom: 'Blfrtip',
+        'createdRow': function( row, data, dataIndex){
+              if( data[18] == 0 ){
+                  $(row).addClass('redClass');
+                  console.log(data);
+              }
+          },
+        // 'order': [[1, 'asc']],
+    });
 
 
 	$('#datatables-makemodel').on( 'click','tr', function () {
@@ -125,6 +171,13 @@
 		document.getElementById('edit_model').value = ( oTable366.row( this ).data()[5] );
 		console.log(oTable366.row( this ).data());
 	} );
+
+    $('#datatable-calculations').on( 'click','tr', function () {
+        var selectedcountry = oTable36.row( this ).data()[17];
+        $('#car_id_to_connect').val(selectedcountry).change();
+        document.getElementById('connect_car').value = ( oTable36.row( this ).data()[0] );
+        console.log(oTable36.row( this ).data());
+    } );
         </script>
 
 

@@ -13,15 +13,14 @@ include("connection.php");
 /* Array of database columns which should be read and sent back to DataTables. Use a space where
  * you want to insert a non-database field (for example a counter or static image)
  */
-$aColumns = array( 'c.id_car_make','c.name', 'cm.name','cm.id_car_model','cm.id_car_make as edit','cm.id_car_model as modelid','c.id_car_make as carid','c.active','cm.active');
+$aColumns = array( 'calclulation_id','inkoopprijs_ex_ex', 'feeleverancier', 'inkoopprijstotaal', 'opknapkosten', 'transport_buitenland', 'transport_binnenland', 'taxatie_kosten', 'totaalkosten', 'fee', 'verkoopprijs_ex', 'btw', 'verkoopprijsbtw', 'restbpm', 'leges', 'verkoopprijsin','calclulation_id as connect','calculation_for_car_id as carid','active');
 
 /* Indexed column (used for fast and accurate table cardinality) */
-$sIndexColumn = "translate.transID as number";
+$sIndexColumn = "calclulation_id";
 
 /* DB table to use */
-$sTable = "car_make c";
+$sTable = "calculations";
 
-$sJoin .= ' LEFT JOIN car_model cm ON c.id_car_make = cm.id_car_make ';
 // $sJoin .= ' WHERE `translate.langID`= $langID';
 /*
  * Local functions
@@ -231,11 +230,9 @@ while ( $aRow = mysqli_fetch_array( $rResult ) ) {
             $row[] = ( $aRow[ $aColumns[ $i ] ] == "0" ) ? '-' : $aRow[ $aColumns[ $i ] ];
         }   elseif ( $aColumns[ $i ] == 'c.id_car_make' ) {
              $row[] = '<center>'.$j.'</center>';
-        } elseif ( $aColumns[ $i ] == 'cm.id_car_model' ) {
-            $row[] = '<center style="display:flex;"><a href="#edit-model" data-toggle="modal" class="btn btn-default btn-xs"><i class="ti-pencil" ></i></a><a href="?disable_model='.$aRow[$i].'" class="btn btn-default btn-xs"><i class="ti-close" ></i></a></center>';
-        }elseif ( $aColumns[ $i ] == 'cm.id_car_make as edit' ) {
-            $row[] = '<center style="display:flex;"><a href="#edit-mark" data-toggle="modal" class="btn btn-default btn-xs"><i class="ti-pencil" ></i></a><a href="?disable_mark='.$aRow[$i].'"  class="btn btn-default btn-xs"><i class="ti-close" ></i></a></center>';
-        }  elseif ( $aColumns[ $i ] != ' ' ) {
+        } elseif ( $aColumns[ $i ] == 'calclulation_id as connect' ) {
+            $row[] = '<center style="display:flex;"><a href="#connect_calculation" data-toggle="modal" class="btn btn-default btn-xs"><i class="ti-pencil" ></i></a><a href="?disable_calc='.$aRow[$i].'" class="btn btn-default btn-xs"><i class="ti-close" ></i></a></center>';
+        } elseif ( $aColumns[ $i ] != ' ' ) {
             /* General output */
             $row[] = $aRow[$i];
         }

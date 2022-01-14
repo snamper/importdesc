@@ -17,112 +17,33 @@
     </div>
     
 
-            <?php include realpath("views/marge_view_include.php"); ?>
 
 <h5>Car calculations</h5>
-    <div class="">
-    <table id="sample-table-2" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
+    <div class="table-responsive">
+    <table id="datatable-inside" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
         <thead>
-            <th class="text-center">Soort Voertuig</th>
-            <th style="white-space: nowrap">Brandstof soort</th>
-            <th style="white-space: nowrap">Eerste toelating</th>
-            <th style="white-space: nowrap">Huidige datum BPM</th>
-            <th style="white-space: nowrap">Tenaamstelling NL</th>
-            <th style="white-space: nowrap">Referentie</th>
-            <th style="white-space: nowrap">Uitvoering</th>
-            <th style="white-space: nowrap">CO² NEDC</th>
-            <th style="white-space: nowrap">CO² WLTP</th>
-            <th style="white-space: nowrap">Restwaarde Percentage</th>
-            <th style="white-space: nowrap">Inkoopprijs Netto BTW</th>
-            <th style="white-space: nowrap">Afleverkosten</th>
-            <th style="white-space: nowrap">Opknapkosten ex</th>
-            <th style="white-space: nowrap">Transport Buitenland</th>
-            <th style="white-space: nowrap">Transport Binnenland</th>
-            <th style="white-space: nowrap">Taxatie Kosten</th>
-            <th style="white-space: nowrap">Kosten Totaal</th>
-            <th style="white-space: nowrap">Fee</th>
-            <th style="white-space: nowrap">Verkoopprijs Netto</th>
+            <th class="text-center">id</th>
+            <th style="white-space: nowrap">Inkoopprijs ex/ex</th>
+            <th style="white-space: nowrap">Fee leverancier/bemiddelaar</th>
+            <th style="white-space: nowrap">Inkoopprijs totaal</th>
+            <th style="white-space: nowrap">Opknapkosten</th>
+            <th style="white-space: nowrap">Transport buitenland</th>
+            <th style="white-space: nowrap">Transport binnenland</th>
+            <th style="white-space: nowrap">Taxatie kosten</th>
+            <th style="white-space: nowrap">Totaal kosten</th>
+            <th style="white-space: nowrap">Fee GWI</th>
+            <th style="white-space: nowrap">Verkoopprijs ex/ex</th>
             <th style="white-space: nowrap">BTW 21%</th>
-            <th style="white-space: nowrap">Rest BPM Indicatief</th>
-            <th style="white-space: nowrap">Leges</th>
-            <th style="white-space: nowrap">Verkoopprijs Marge incl. BPM</th>
+            <th style="white-space: nowrap">Verkoopprijs incl. BTW</th>
+            <th style="white-space: nowrap">Rest BPM (indicatief)</th>
+            <th style="white-space: nowrap">Leges (BTW vrij)</th>
+            <th style="white-space: nowrap">Verkoopprijs in/in</th>
+            <th style="white-space: nowrap">Disable</th>
         </thead>
         <tbody>
-            <?php
-            foreach ($data['calculations'] as $c) { ?>
-                    <tr>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['SoortVoertuig'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['BPMbrandstof'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['BPMproductiedatum'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['huidigedatumbpm'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['BPMtenaamstellingNL'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['referentie'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['carUitvoering'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['BPMCO2'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['BPMCO2WLTP'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['percentage'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['inkoopprijs_ex_ex'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['delivery_costs'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['opknapkosten'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['transport_buitenland'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['transport_binnenland'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['taxatie_kosten'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['totaalkosten'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['fee'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['verkoopprijs_ex'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['btw'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['restbpm'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['leges'] ?>
-                        </td>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $c['verkoopprijsin'] ?>
-                        </td>
-                    </tr>
-            <?php }
-            ?>
+            
         </tbody>
     </table>
+</div>
+</div>
     <!-- END table -->

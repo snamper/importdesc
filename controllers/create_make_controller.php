@@ -89,15 +89,29 @@ class create_make extends view
         }
         if (isset($_POST['edit_mark']))   {
             $mark->id_car_make = $_POST['edit_mark'];
+            $mark->date_update = time();
             $mark->name = $_POST['mark_new_name'];
             $this->updateCarMark($mark);
              header('Location: /create_make');
         }
         if (isset($_POST['edit_model']))   {
             $model->id_car_model = $_POST['edit_model'];
+            $model->date_update = time();
             $model->name = $_POST['model_name_new'];
             $this->updateCarModel($model);
              header('Location: /create_make');
+        }
+
+
+        if (isset($_REQUEST['disable_mark'])) {
+            $disID = addslashes($_REQUEST['disable_mark']);
+            $this->disableMark($disID);
+            header("Location: /create_make");
+        }
+        if (isset($_REQUEST['disable_model'])) {
+            $disID = addslashes($_REQUEST['disable_model']);
+            $this->disableModel($disID);
+            header("Location: /create_make");
         }
 
         if (isset($_SESSION['user'])) parent::__construct('create_mark_view.php');
@@ -118,5 +132,11 @@ class create_make extends view
 
     protected function updateCarModel($model) {
         $this->base->updateCarModel($model);
+    }
+    protected function disableMark($disID) {
+        $this->base->disableMark($disID);
+    }
+    protected function disableModel($disID) {
+        $this->base->disableModel($disID);
     }
 }

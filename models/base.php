@@ -698,6 +698,30 @@ class base
 		$stmt->execute([$car_id, $calculation_id]);
 	}
 
+
+	public function disableModel($disID) {
+		$dbDriver = new db_driver();
+
+		$query = "UPDATE `car_model` SET `active`= `active` ^ 1 WHERE `id_car_model`= ?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$disID]);
+	}
+	public function disableCalc($disID) {
+		$dbDriver = new db_driver();
+
+		$query = "UPDATE `calculations` SET `active`=`active` ^ 1 WHERE `calclulation_id`= ?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$disID]);
+	}
+
+	public function disableMark($disID) {
+		$dbDriver = new db_driver();
+
+		$query = "UPDATE `car_make` SET `active`= `active` ^ 1  WHERE `id_car_make`=?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$disID]);
+	}
+
 	public function getCarCalculations($car_id) {
         $dbDriver = new db_driver();
         $query = "SELECT * FROM calculations WHERE calculation_for_car_id = ?";

@@ -58,7 +58,17 @@ class show_calculations extends view{
 
     	$this->setData("cars", $cars); 
         $this->setData("calculations", $calculations); 
-
+        if (isset($_POST['connect_car'])) {
+            $calculation_id = addslashes($_POST['connect_car']);
+            $car_id = addslashes($_POST['car_id_to_connect']);
+            $this->connectCalculationCar($calculation_id, $car_id);
+            header("Location: /show_calculations");
+        }
+         if (isset($_REQUEST['disable_calc'])) {
+            $disID = addslashes($_REQUEST['disable_calc']);
+            $this->disableCalc($disID);
+            header("Location: /show_calculations");
+        }
 
 		if(isset($_SESSION['user']))parent::__construct('show_calculations_view.php');
 		else parent::__construct('login_view.php');
@@ -70,5 +80,11 @@ class show_calculations extends view{
         return $this->base->getAllCalculations();
     }
 
+    protected function connectCalculationCar($calculation_id, $car_id) {
+        $this->base->connectCalculationCar($calculation_id, $car_id);
+    }
+    protected function disableCalc($disID) {
+        $this->base->disableCalc($disID);
+    }
 
 }

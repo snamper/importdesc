@@ -38,8 +38,12 @@
                                 <div class="col-sm-2">
                                     Toon alle regels op offerte
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-2">
                                     <input type="checkbox" class="form-check-input" onClick="toggle(this)" style="margin-left: 0;" />
+                                </div>
+                                <div class="col-sm-2 switcher" style="padding-bottom: 5px;">
+                                    <input type="checkbox" name="switchBTW" id="switchBTW" checked />
+                                    <label for="switchBTW"></label>
                                 </div>
                             </div>
 
@@ -269,20 +273,7 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-sm-2">
-                                </div>
-                                <div class="col-sm-4">
-                                    <h4>Specifications:</h4>
-                                    <div id="carCharValue" class="char-value-list">-</div>
-                                </div>
-                                <div class="col-sm-2">
-                                </div>
-                                <div class="col-sm-4">
-                                    <h4>Options:</h4>
-                                    <div id="carOptionValue" class="option-value-list">-</div>
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
