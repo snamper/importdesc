@@ -707,21 +707,26 @@ class base
 		$dbDriver = new db_driver();
 
 
-		$query = "INSERT INTO car (";
-		foreach($obj as $key => $val) {
-			$query .= "`$key`, ";
-			echo $obj->gettype($key);
-		}
-		$query = substr($query, 0, -2);
-		$query .= ") VALUES (";
+		// $query = "INSERT INTO car (";
+		// foreach($obj as $key => $val) {
+		// 	$query .= "`$key`, ";
+		// 	echo $obj->gettype($key);
+		// }
+		// $query = substr($query, 0, -2);
+		// $query .= ") VALUES (";
 
-		foreach($obj as $value) { 
-			$query .= "$value, ";
-		}
+		// foreach($obj as $value) { 
+		// 	$query .= "$value, ";
+		// }
 
-		$query = substr($query, 0, -2);
+		// $query = substr($query, 0, -2);
 
-		$query .= ")";
+		// $query .= ")";
+
+		$query = "DROP TABLE IF EXISTS temp_car_table;
+		CREATE TEMPORARY TABLE IF NOT EXISTS temp_car_table AS (SELECT * FROM car WHERE carID=58);
+		ALTER TABLE temp_car_table DROP carID;
+		SELECT * FROM temp_car_table;";
 
 		
 		$stmt = $dbDriver->dbCon->prepare($query);
