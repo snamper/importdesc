@@ -13,6 +13,7 @@
     <link href="../assets/plugins/icon/themify-icons/themify-icons.css" rel="stylesheet" />
     <link href="../assets/css/animate.min.css" rel="stylesheet" />
     <link href="../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../assets/css/custom.css" rel="stylesheet" />
     
     <!-- ================== END BASE CSS STYLE ================== -->
 

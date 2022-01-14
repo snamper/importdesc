@@ -70,6 +70,31 @@ class create_make extends view
             header('Location: /create_make');
         }
 
+        if (isset($_POST['create_brand'])) {
+            $mark->name = $_POST['create_brand_name'];
+            $this->createCarMark($mark);
+             header('Location: /create_make');
+        }
+        
+        if (isset($_POST['create_model']))   {
+            $model->name = $_POST['create_model_name'];
+            $model->id_car_make = $_POST['carMark'];
+            $this->createCarModel($model);
+             header('Location: /create_make');
+        }
+        if (isset($_POST['edit_mark']))   {
+            $mark->id_car_make = $_POST['edit_mark'];
+            $mark->name = $_POST['mark_new_name'];
+            $this->updateCarMark($mark);
+             header('Location: /create_make');
+        }
+        if (isset($_POST['edit_model']))   {
+            $model->id_car_make = $_POST['edit_model'];
+            $model->name = $_POST['model_name_new'];
+            $this->updateCarModel($model);
+             header('Location: /create_make');
+        }
+
         if (isset($_SESSION['user'])) parent::__construct('create_mark_view.php');
         else parent::__construct('login_view.php');
     }
