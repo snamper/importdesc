@@ -926,12 +926,7 @@ for (const filler of carFillEditButtons) {
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {
-<<<<<<< HEAD
-    if(location.pathname == "/edit_car_calculation") {
-        getCarInfo();
-    }
 
-=======
     if (location.pathname == "/edit_car_calculation") {
         getCarInfo(); // runs on 700ms
 
@@ -941,8 +936,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
     
    
-    
->>>>>>> ec0a9188be82489fc5bffe03eb522548aeaee09c
 });
 
 function getCarInfo(e) {
@@ -990,12 +983,8 @@ function getCarInfo(e) {
 function setEditInputFormData(data) {
     // console.log(data);
     const editCarForm = document.querySelector("#editCarForm");
-<<<<<<< HEAD
-    console.log(editCarForm);
-    const inputFields = editCarForm.querySelectorAll("[name]");
-=======
+
     const inputFields = editCarForm.querySelectorAll("[data-name]");
->>>>>>> ec0a9188be82489fc5bffe03eb522548aeaee09c
     for (const field of inputFields) {
         const fieldName = field.getAttribute("data-name");
         field.value = data[fieldName];
@@ -1064,10 +1053,6 @@ $('#inkoopprijs_ex_ex,#feeleverancier,#opknapkosten,#transport_buitenland,#trans
     var late = total + tax +  parseInt(fee);
     var restbpm = $('#restbpm').val();
     var leges = $('#leges').val();
-<<<<<<< HEAD
-    if (restbpm){}else{restbpm = 0;}
-    if (leges){}else{leges = 0;}
-=======
     if (restbpm) { } else { restbpm = 0; }
     if (leges) { } else { leges = 0; }
 
@@ -1109,16 +1094,10 @@ function addResumeEditCarHeader() {
 
     document.querySelector("#referentieHiddenInput").value = completeText;
 }
->>>>>>> ec0a9188be82489fc5bffe03eb522548aeaee09c
-
-$('#inkoopprijstotaal').val(total);
-$('#totaalkosten').val(tax);
-$('#verkoopprijs_ex').val(late);
-$('#verkoopprijsbtw').val(late + late*btw);
-$('#verkoopprijsin').val(late + late*btw + parseInt(restbpm) +  parseInt(leges));
 
 
-});
+
+
 
 
 
