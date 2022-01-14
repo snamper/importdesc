@@ -38,12 +38,11 @@
                                 <div class="col-sm-2">
                                     Toon alle regels op offerte
                                 </div>
-                                <div class="col-sm-4">
-                                    <input type="checkbox" class="form-check-input" onClick="toggle(this)" style="margin-left: 0;" />
+                                <div class="col-sm-4 switcher" style="padding-bottom: 5px;">
+                                    <input type="checkbox" name="switchBTW" id="switchBTW" checked />
+                                    <label for="switchBTW"></label>
                                 </div>
-                            </div>
-
-                            
+                            </div>                            
 
 
                             <div class="row str">

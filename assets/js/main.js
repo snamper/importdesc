@@ -127,10 +127,7 @@ $('#inkoopprijs_ex_ex').keyup(function () {
     clearTimeout(timer);
 
     timer = setTimeout(function () {
-        $('#addBTW_21').val(btw);
-        if ($('#addBTW_21no').length) {
-            $('#addBTW_21no').val(btw);
-        }
+       
         $('#addVerkoopprijs_Marge_incl').val(total);
         $('#addKosten_Totaal').val(feetotal);
         $('#addTransport_Buitenland').val(addTransport_Buitenland);
@@ -141,11 +138,12 @@ $('#inkoopprijs_ex_ex').keyup(function () {
         $('#addFee').val(addFee);
         $('#addLeges').val(addLeges);
         $('#addTransport_Binnenland').val(transport_binnenland);
-        $('#addVerkoopprijs_Marge_Excl').val(Verkoopprijs);
+        // $('#addVerkoopprijs_Marge_Excl').val(Verkoopprijs);
 
 
     }, timeout);
 });
+
 $('#addVerkoopprijs_Marge_incl').keyup(function () {
     var value = $(this).val();
 
@@ -190,7 +188,7 @@ $('#addVerkoopprijs_Marge_incl').keyup(function () {
         $('#addLeges').val(addLeges);
         $('#addTransport_Binnenland').val(transport_binnenland);
         $('#inkoopprijs_ex_ex').val(total);
-        $('#addVerkoopprijs_Marge_Excl').val(Verkoopprijs);
+        // $('#addVerkoopprijs_Marge_Excl').val(Verkoopprijs);
 
 
     }, timeout);
@@ -236,7 +234,11 @@ $(document).ready(function () {
             data: 'carTypeSelect=' + carvalue,
             success: function (data) {
                 const firstOptionHTML = "<option value='0'> - </option>";
-                document.getElementById('carMark').innerHTML = firstOptionHTML + data;
+                const carMark = document.querySelector('#carMark');
+                if(carMark) {
+                    carMark.innerHTML = firstOptionHTML + data;
+                }
+              
                 $('#carMark').change();
             }
         })
@@ -1028,19 +1030,19 @@ for(sender of sendFormButtons) {
 
 
 $('#inkoopprijs_ex_ex,#feeleverancier,#opknapkosten,#transport_buitenland,#transport_binnenland,#taxatie_kosten,#fee, #restbpm,#leges').keyup(function () {
-    if ($('#switchPrice').is(":checked")){
-       $('#btw').val('21%');
-       var btw = 0.21;
-    } else{
-        var btw = 0;
-    }
+    if ($('#switchBTW').is(":checked")){
+        var btw = 0.21;
+     } else{
+         var btw = 0;
+     }
+
     var feeleverancier =   $('#feeleverancier').val();
     var inkoopprijs_ex_ex =   $('#inkoopprijs_ex_ex').val();
     var opknapkosten =   $('#opknapkosten').val();
     var transport_buitenland =   $('#transport_buitenland').val();
     var transport_binnenland =   $('#transport_binnenland').val();
     var taxatie_kosten =   $('#taxatie_kosten').val();
-    var fee =   $('#fee').val();
+    var fee =   $('#fee').val();  
     if (feeleverancier){}else{feeleverancier = 0;}
     if (inkoopprijs_ex_ex){}else{inkoopprijs_ex_ex = 0;}
     if (opknapkosten){}else{opknapkosten = 0;}
@@ -1053,14 +1055,20 @@ $('#inkoopprijs_ex_ex,#feeleverancier,#opknapkosten,#transport_buitenland,#trans
     var late = total + tax +  parseInt(fee);
     var restbpm = $('#restbpm').val();
     var leges = $('#leges').val();
+    var price = $('#inkoopprijs_ex_ex').val();
+    var priceVAT = price * 0.21;    
+    var total = parseFloat(price) + parseFloat(priceVAT);
     if (restbpm) { } else { restbpm = 0; }
     if (leges) { } else { leges = 0; }
+
 
     $('#inkoopprijstotaal').val(total);
     $('#totaalkosten').val(tax);
     $('#verkoopprijs_ex').val(late);
     $('#verkoopprijsbtw').val(late + late * btw);
     $('#verkoopprijsin').val(late + late * btw + parseInt(restbpm) + parseInt(leges));
+    $('#addBTW_21no').val(priceVAT);    
+    $('#addVerkoopprijs_Marge_Excl').val(total);
 
 });
 
