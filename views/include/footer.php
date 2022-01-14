@@ -119,6 +119,10 @@
 
 
 	$('#datatables-makemodel').on( 'click','tr', function () {
+		document.getElementById('mark_old_name').value = ( oTable366.row( this ).data()[1] );
+		document.getElementById('edit_mark').value = ( oTable366.row( this ).data()[6] );
+		document.getElementById('model_name_old').value = ( oTable366.row( this ).data()[2] );
+		document.getElementById('edit_model').value = ( oTable366.row( this ).data()[5] );
 		console.log(oTable366.row( this ).data());
 	} );
         </script>

@@ -89,7 +89,7 @@ class create_make extends view
              header('Location: /create_make');
         }
         if (isset($_POST['edit_model']))   {
-            $model->id_car_make = $_POST['edit_model'];
+            $model->id_car_model = $_POST['edit_model'];
             $model->name = $_POST['model_name_new'];
             $this->updateCarModel($model);
              header('Location: /create_make');
