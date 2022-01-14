@@ -67,7 +67,7 @@ class create_make extends view
                     $this->createCarModel($model);
                 } else {
                     $model->date_update = time();
-                    $model->active = 0;//$_POST['active'];
+                    $model->active = $_POST['active'];
                     $this->updateCarModel($model);
                 }
             }

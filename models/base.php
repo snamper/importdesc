@@ -443,7 +443,7 @@ class base
 		$dbDriver->dbCon->commit();
 	}
 
-	public function getAllCars() {
+	public function getAllCars($carID = 0) {
 		$dbDriver = new db_driver();
 
 		$sql = "SELECT * FROM dossier
@@ -453,6 +453,9 @@ class base
 		INNER JOIN car_type ct on cmod.id_car_type = ct.id_car_type
 		INNER JOIN conversie_tabel_gwi ctw on car.brandstof = ctw.conversie_tabel_ID
 		";
+        if ($carID) {
+            $sql .= ' WHERE `dossier`.`carID` = ' . $carID;
+        }
 		$stmt = $dbDriver->dbCon->prepare($sql);
 		$stmt->execute([]);
 		$result = $stmt->fetchAll(PDO::FETCH_NAMED);
