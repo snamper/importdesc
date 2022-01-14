@@ -307,8 +307,9 @@ class base
 		$transmissies = explode("|", $post['transmissieSoort']);
 		$transmissie = $transmissies[1];
 		$transmissieSoort = $transmissies[0];
-		try {
 
+		try {
+						
 			$query = "INSERT INTO car 
 		(
 			car_merk,
@@ -702,17 +703,33 @@ class base
         return $result;
     }
 
-	public function duplicateCar($car_id) {
+	public function duplicateCar($obj) {
 		$dbDriver = new db_driver();
 
-		$query = "CREATE TEMPORARY TABLE temp_car_table AS SELECT * FROM car WHERE carID = ?;
-		ALTER TABLE temp_car_table DROP COLUMN carID;
-		INSERT INTO car (SELECT * FROM temp_car_table);";
+
+		$query = "INSERT INTO car (";
+		foreach($obj as $key => $val) {
+			$query .= "`$key`, ";
+			echo $obj->gettype($key);
+		}
+		$query = substr($query, 0, -2);
+		$query .= ") VALUES (";
+
+		foreach($obj as $value) { 
+			$query .= "$value, ";
+		}
+
+		$query = substr($query, 0, -2);
+
+		$query .= ")";
+
+		
 		$stmt = $dbDriver->dbCon->prepare($query);
-		$stmt->execute([$car_id]);
+		$stmt->execute([]);
+		// $this->createCar($result);
+
 	}
 
-	
 }
 
 
