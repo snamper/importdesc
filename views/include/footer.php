@@ -2,9 +2,11 @@
 
 <script src="assets/plugins/jquery/jquery-3.2.1.min.js"></script>
 <script src="assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+<script src="assets/yadcf.js"></script>
 <script src="assets/plugins/cookie/js/js.cookie.js"></script>
 <script src="assets/plugins/tooltip/popper/popper.min.js"></script>
 <script src="assets/plugins/bootstrap/bootstrap4/js/bootstrap.min.js"></script>
+<script src="assets/plugins/bootstrap/bootstrap4/js/bootstrap-select.min.js"></script>
 <script src="assets/plugins/scrollbar/slimscroll/jquery.slimscroll.min.js"></script>
 
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
@@ -72,7 +74,54 @@
 <!-- <script src="assets/js/apps.min.js"></script> -->
 <script src="assets/js/main.js"></script>
 
+  <script>
+            
+    var oTable366 = $('#datatables-makemodel')
+    .DataTable({
+        "bprocessing": true,
+        "bserverSide": true,
+        "sServerMethod": "POST",
+        "sAjaxSource": "./data/data-makemodel.php",
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "columnDefs": [
+		    { "width": "5%", "targets": 4 },
+		    { "width": "5%", "targets": 3 }
+		  ],
+        select: true,
+        dom: 'Blfrtip',
+        // 'order': [[1, 'asc']],
+         initComplete: function () {
+            this.api().columns('.select-filter').every( function () {
+                var column = this;
+                var select = $('<select class="selecter" id="'+ column.header().innerText+'"><option value="">'+column.header().innerText+'</option></select>')
+                    .appendTo( '.dataTables_length' )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+                
+                column.data().unique().sort().each( function ( d, j ) {
+                    if (d != null) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' );
 
+                    }
+                } );
+           }  );
+        },   
+       
+            // select: true,
+    });
+
+
+	$('#datatables-makemodel').on( 'click','tr', function () {
+		console.log(oTable366.row( this ).data());
+	} );
+        </script>
 
 
 
