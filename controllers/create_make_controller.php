@@ -9,6 +9,7 @@ class BaseModel
     protected $id_car_type = 1;
     protected $date_create;
     protected $date_update;
+    protected $active = 1;
 
     public function __construct() {
         $this->date_create = $this->date_update = time();
@@ -51,6 +52,8 @@ class create_make extends view
                 if ($_POST['carMark'] == 0) {
                     $insertId = $this->createCarMark($mark);
                 } else {
+                    $mark->date_update = time();
+                    $mark->active = $_POST['active'];
                     $this->updateCarMark($mark);
                 }
             }
@@ -63,6 +66,8 @@ class create_make extends view
                 if ($_POST['carModel'] == 0) {
                     $this->createCarModel($model);
                 } else {
+                    $model->date_update = time();
+                    $model->active = 0;//$_POST['active'];
                     $this->updateCarModel($model);
                 }
             }

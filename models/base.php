@@ -47,17 +47,19 @@ class base
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
 	}
-	function getCarMark($carTypeID = 1)
+	function getCarMark($carTypeID = 1, $active = 1)
 	{
 		$dbDriver = new db_driver();
 		$sql = "SELECT * FROM `car_make` WHERE `id_car_type` = '$carTypeID'";
+        if ($active == 0 || $active == 1)
+            $sql .= " AND `active` = ".$active;
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
 	}
     function createCarMark($mark)
     {
         $dbDriver = new db_driver();
-        $sql = "INSERT INTO `car_make` (`name`, `date_create`, `date_update`, `id_car_type`) VALUES ('".$mark->name."', '".$mark->date_create."', '".$mark->date_update."', '".$mark->id_car_type."')";
+        $sql = "INSERT INTO `car_make` (`name`, `date_create`, `date_update`, `id_car_type`, `active`) VALUES ('".$mark->name."', '".$mark->date_create."', '".$mark->date_update."', '".$mark->id_car_type."', '".$mark->id_car_type."')";
         $dbDriver->query($sql);
         return $dbDriver->insert_id();
         //return $dbDriver->query("SELECT MAX(id_car_make) FROM `car_make`")->fetchColumn();
@@ -65,13 +67,15 @@ class base
     function updateCarMark($mark)
     {
         $dbDriver = new db_driver();
-        $sql = "UPDATE `car_make` SET `name` = '".$mark->name."' WHERE `car_make`.`id_car_make` = " . $mark->id_car_make;
+        $sql = "UPDATE `car_make` SET `name` = '".$mark->name."', `date_update` = '".$mark->date_update."', `active` = '".$mark->active."' WHERE `car_make`.`id_car_make` = " . $mark->id_car_make;
         $dbDriver->query($sql);
     }
-	function getCarModel($markID)
+	function getCarModel($markID, $active = 1)
 	{
 		$dbDriver = new db_driver();
 		$sql = "SELECT * FROM `car_model` WHERE `id_car_make` = '$markID'";
+        if ($active == 0 || $active == 1)
+            $sql .= " AND `active` = ".$active;
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
 	}
@@ -84,7 +88,7 @@ class base
     function updateCarModel($model)
     {
         $dbDriver = new db_driver();
-        $sql = "UPDATE `car_model` SET `name` = '".$model->name."' WHERE `car_model`.`id_car_model` = " . $model->id_car_model;
+        $sql = "UPDATE `car_model` SET `name` = '".$model->name."', `date_update` = '".$model->date_update."', `active` = '".$model->active."' WHERE `car_model`.`id_car_model` = " . $model->id_car_model;
         $dbDriver->query($sql);
     }
 	function getCarGeneration($generationID)
