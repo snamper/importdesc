@@ -307,8 +307,9 @@ class base
 		$transmissies = explode("|", $post['transmissieSoort']);
 		$transmissie = $transmissies[1];
 		$transmissieSoort = $transmissies[0];
-		try {
 
+		try {
+						
 			$query = "INSERT INTO car 
 		(
 			car_merk,
@@ -329,10 +330,14 @@ class base
 			transmissie,
 			huidigland,
 			optie,
-			opmerkingen
+			opmerkingen,
+			auto_referentie,
+			custom_ref
 		) 
 			VALUES (
 							
+				?,
+				?,
 				?,
 				?,
 				?,
@@ -375,7 +380,9 @@ class base
 					$transmissie,
 					$post['huidigland'],
 					$post['opties'],
-					$post['opmerkingen']
+					$post['opmerkingen'],
+					$post['auto_referentie'],
+					$post['custom_ref']					
 				]
 			);
 			$last_car_id = $dbDriver->dbCon->lastInsertId();
@@ -499,7 +506,9 @@ class base
 			transmissie = ?,
 			huidigland = ?,
 			optie = ?,
-			opmerkingen = ?
+			opmerkingen = ?,
+			auto_referentie = ?,
+			custom_ref = ?
 			WHERE carID = ?";
 
 
@@ -525,6 +534,8 @@ class base
 					$post['huidigland'],
 					$post['opties'],
 					$post['opmerkingen'],
+					$post['auto_referentie'],
+					$post['custom_ref'],										
 					$car_id
 				]
 			);
@@ -691,6 +702,39 @@ class base
         $result = $stmt->fetchAll(PDO::FETCH_NAMED);
         return $result;
     }
+
+	public function duplicateCar($obj) {
+		$dbDriver = new db_driver();
+
+
+		// $query = "INSERT INTO car (";
+		// foreach($obj as $key => $val) {
+		// 	$query .= "`$key`, ";
+		// 	echo $obj->gettype($key);
+		// }
+		// $query = substr($query, 0, -2);
+		// $query .= ") VALUES (";
+
+		// foreach($obj as $value) { 
+		// 	$query .= "$value, ";
+		// }
+
+		// $query = substr($query, 0, -2);
+
+		// $query .= ")";
+
+		$query = "DROP TABLE IF EXISTS temp_car_table;
+		CREATE TEMPORARY TABLE IF NOT EXISTS temp_car_table AS (SELECT * FROM car WHERE carID=58);
+		ALTER TABLE temp_car_table DROP carID;
+		SELECT * FROM temp_car_table;";
+
+		
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([]);
+		// $this->createCar($result);
+
+	}
+
 }
 
 

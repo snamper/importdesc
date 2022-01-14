@@ -1,5 +1,5 @@
 <div class="dashboardPageTitle text-center">
-    <h2 style="opacity: 0;">Placeholder</h2>
+    <h2 style="opacity: 0; margin-top: 1.5%"></h2>
 </div>
 <div class="dashboardBoxBg mb30">
     <div class="row">
@@ -8,26 +8,35 @@
             <input type="hidden" id="editCarHiddenInput" name="car_id" value="">
         
             <div class="row str">
-                <div class="col-sm-12">
+               <!-- <div class="col-sm-12">
                     <h4>Auto toevoegen</h4>
-                </div>
+                </div>-->
             </div>
 
             <div class="row str">
-                <div class="col-sm-12">
+                <div class="col-sm-8">
                     <!-- <h6>Auto referentie* A-()(merk)(model)(uitvoering)(datumvandaag) / AUTOMATISCH INVULLEN</h6> -->
-                    <p>
+                    <input type="hidden" id="referentieHiddenInput" name="auto_referentie" value="">
+                    <p>                       
                         <span id="levering"></span>
                         <span id="car_merk"></span>
                         <span id="car_model"></span>
                         <span id="uitvoering"></span>
-                        <span></span><span></span>
-                    </p>
-<!--                     
+                        <span id="productiedatum"></span>
+                        <span></span>
+                    </p>                  
+<!--                    
                     <h6>Auto referentie (CUSTOM) Zelf iets invullen, niet verplicht</h6>
                     <h6 class="font-weight-bold"> Basis gegevens</h6> -->
+                </div>              
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <input id="refCustom" type="text" class="form-control my-1" name="custom_ref" value="" data-name="custom_ref" placeholder="Custem referentie">
                 </div>
             </div>
+            <hr />
 
             <div class=" row str">
                 <div class="col-sm-2">Make</div>
@@ -78,13 +87,13 @@
             <div class="row str">
                 <div class="col-sm-2">Opties</div>
                 <div class="col-sm-4">
-                    <textarea class="w-100" data-name="optie" name="opties" id="opties"></textarea>
+                    <textarea style="resize: none;" class="w-100 form-control" data-name="optie" name="opties" id="opties"></textarea>
                 </div>
             </div>
 
             <div class="row str">
                 <div class="col-sm-12">
-                    <h6 class="font-weight-bold"> Technische gegevens</h6>
+                    <h6 style="font-weight: 500"> Technische gegevens</h6>
                 </div>
             </div>
 
@@ -103,6 +112,13 @@
                         ?>
                     </select>
                 </div>
+
+                <div class="col-sm-2">
+                    CO² NEDC
+                </div>
+                <div class="col-sm-4">
+                    <input type="number" class="form-control" id="BPMCO23" data-name="co2" name="BPMCO2" placeholder="CO² NEDC" value="">
+                </div>
             </div>
 
             <div class="row str">
@@ -117,28 +133,17 @@
                         ?>
                     </select>
                 </div>
-
-                <div class="col-sm-2">
-                    CO² NEDC
-                </div>
-                <div class="col-sm-4">
-                    <input type="number" class="form-control" id="BPMCO23" data-name="co2" name="BPMCO2" placeholder="CO² NEDC" value="">
-                </div>
-            </div>
-
-            <div class="row str">
-                <div class="col-sm-2">
+                      <div class="col-sm-2">
                     CO² WLTP
                 </div>
                 <div class="col-sm-4">
                     <input type="number" class="form-control" id="BPMCO2WLTP2" data-name="" name="BPMCO2WLTP" placeholder="CO² WLTP" value="">
                 </div>
+
             </div>
-
-
             <div class="row str">
                 <div class="col-sm-12">
-                    <h6 class="font-weight-bold">Herkomst en Registratie</h6>
+                    <h6 style="font-weight: 500">Herkomst en Registratie</h6>
                 </div>
             </div>
 
@@ -147,7 +152,7 @@
                     Datum eerste toelating
                 </div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control text-input" id="datepicker10" value="" data-name="productiedatum" name="productiedatum">
+                    <input type="text" class="form-control text-input js-resume-fill" id="datepicker10" value="" data-name="productiedatum" name="productiedatum">
                 </div>
 
                 <div class="col-sm-2">
@@ -189,6 +194,7 @@
                 </div>
                 <div class="col-sm-4">
                     <select class="form-control js-resume-fill" id="levering" data-name="levering" name="levering">
+                        <option value="">-</option>
                         <?php
                         foreach ($data['creditors'] as $creditor) { 
                             echo "<option value='$creditor[CreditorId]'> $creditor[CreditorName]</option>";
@@ -200,7 +206,7 @@
 
             <div class="row str">
                 <div class="col-sm-12">
-                    <h6 class="font-weight-bold"> Overig</h6>
+                    <h6 style="font-weight: 500"> Overig</h6>
                 </div>
             </div>
 
@@ -208,11 +214,11 @@
             <div class="row str">
                 <div class="col-sm-2">Opmerkingen</div>
                 <div class="col-sm-4">
-                    <textarea class="w-100" data-name="opmerkingen" name="opmerkingen" id="opmerkingen"></textarea>
+                    <textarea style="resize: none;" class="w-100 form-control" data-name="opmerkingen" name="opmerkingen" id="opmerkingen"></textarea>
                 </div>
             </div>
 
-            <h4>Bij SUBMIT wordt auto toegevoegd aan auto templates tabel</h4>
+
 
             <!-- <div class="row">
                 <div class="col-sm-3">Calculatie</div>

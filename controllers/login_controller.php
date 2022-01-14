@@ -23,7 +23,7 @@ class login extends view{
 		// displayed page index
 		if(isset($_SESSION['user'])) header("Location: home");
 		$this->base = $_SESSION['base'];
-		$obj = (object)[];
+		$obj = new element;
 
 		if(isset($_POST['login']) && isset($_POST['username']) && isset($_POST['userPassword'])){	
 				
