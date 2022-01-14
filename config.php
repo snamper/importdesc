@@ -6,11 +6,11 @@
 //==============================Db_driver=====================================//
     $config['hostName'] = 'localhost'; 
     
-    $config['userName'] = 'db_user';
+    $config['userName'] = 'deb64406n9_import1';
     
-    $config['passWord'] = 'vE^fBKG^*X7oMTHfhpP!'; 
+    $config['passWord'] = 'RbB38eSQ'; 
     
-    $config['dbName'] = 'importdesc';
+    $config['dbName'] = 'deb64406n9_import1';
     
     $config['dbport'] = '3306';
     

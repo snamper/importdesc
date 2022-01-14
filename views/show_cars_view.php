@@ -147,7 +147,7 @@
                         <?php include_once realpath("views/cars/single_car_form.php"); ?>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary send-form">Save changes</button>
+                            <button type="button" style="position: absolute; right: 10;" class="btn btn-primary send-form ">Save changes</button>
                         </div>
                     </form>
                 </div>
