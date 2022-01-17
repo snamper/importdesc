@@ -991,11 +991,12 @@ function getCarInfo(e) {
             return response[0];
         }).then(function (data) {
             setTimeout(() => {
+                setEditInputFormData(data)
                 $('#carMark').change();
             }, 700);
             setTimeout(() => {
                 setEditFormSelectsData(data); 
-            }, 1000);
+            }, 1200);
            
             
         })
@@ -1029,6 +1030,10 @@ function setEditFormSelectsData(data) {
             field.value = `${data[fieldName]}|${data.transmissie}`;
         } else {
             field.value = data[fieldName];
+        }
+
+        if(fieldName == "car_merk") {
+            
         }
 
     }

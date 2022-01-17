@@ -1,13 +1,9 @@
 <?php
 session_start();
-<<<<<<< HEAD
 //error_reporting(0);
 // var_dump($_SERVER['HTTP_REFERER']);
 $test = explode('?car_id=',$_SERVER['HTTP_REFERER']);
-=======
-error_reporting(0);
 
->>>>>>> 9b3c5181561b00a6277434a90229da84050e681d
 include("connection.php");
 
 
