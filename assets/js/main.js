@@ -947,16 +947,9 @@ for (const filler of carFillEditButtons) {
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {
-
     if (location.pathname == "/edit_car_calculation") {
-        getCarInfo(); // runs on 800ms
-
-        setTimeout(() => {
-            addResumeEditCarHeader();
-        }, 1200); // runs on 900ms 
+        getCarInfo();
     }
-
-
 });
 
 function getCarInfo(e) {
@@ -995,10 +988,9 @@ function getCarInfo(e) {
                 $('#carMark').change();
             }, 700);
             setTimeout(() => {
-                setEditFormSelectsData(data); 
+                setEditFormSelectsData(data);
+                addResumeEditCarHeader();
             }, 1200);
-           
-            
         })
         .catch((error) => {
             console.log(error);

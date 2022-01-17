@@ -137,7 +137,7 @@
                     CO² WLTP
                 </div>
                 <div class="col-sm-4">
-                    <input type="number" class="form-control" id="BPMCO2WLTP2" data-name="" name="BPMCO2WLTP" placeholder="CO² WLTP" value="">
+                    <input type="number" class="form-control" id="BPMCO2WLTP2" data-name="co2_wltp" name="BPMCO2WLTP" placeholder="CO² WLTP" value="">
                 </div>
 
             </div>

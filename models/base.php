@@ -304,144 +304,133 @@ class base
 
 	public function createCar($post)
 	{
-		$dbDriver = new db_driver();
-
-		$dbDriver->dbCon->beginTransaction();
-		
-		$transmissies = explode("|", $post['transmissieSoort']);
-		$transmissie = $transmissies[1];
-		$transmissieSoort = $transmissies[0];
-
-		try {
-						
-			$query = "INSERT INTO car 
-		(
-			car_merk,
-			car_model,
-			uitvoering,
-			aantal_deuren,
-			motor, 
-			brandstof, 
-			transmissieSoort,
-			productiedatum,
-			co2,
-			kleur,
-			dossierID,
-			km_stand,
-			vinnummer,
-			kenteken,
-			levering,
-			transmissie,
-			huidigland,
-			optie,
-			opmerkingen,
-			auto_referentie,
-			custom_ref
-		) 
-			VALUES (
-							
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?
-			)";
-
-			$stmt = $dbDriver->dbCon->prepare($query);
-			$stmt->execute(
-				[
-					$post['carMark'],
-					$post['carModel'],
-					$post['caUitvoering'],
-					$post['doors_number'],
-					$post['carModification'],
-					$post['BPMbrandstof'],
-					$transmissieSoort,
-					$post['productiedatum'],
-					$post['BPMCO2'],
-					$post['kleur'],
-					$dbDriver->dbCon->lastInsertId(),
-					$post['km_stand'],
-					$post['vinnummer'],
-					$post['kenteken'],
-					$post['levering'],
-					$transmissie,
-					$post['huidigland'],
-					$post['opties'],
-					$post['opmerkingen'],
-					$post['auto_referentie'],
-					$post['custom_ref']					
-				]
-			);
-			$last_car_id = $dbDriver->dbCon->lastInsertId();
-
-			$query2 = "INSERT INTO dossier (carID, created_by) VALUES (?, ?)";
-			$stmt2 = $dbDriver->dbCon->prepare($query2);
-			$stmt2->execute([$last_car_id, $_SESSION['user'][0]['expo_users_ID']]);
-			$last_dossier_id = $dbDriver->dbCon->lastInsertId();
-
-
-			$stmt3 = $dbDriver->dbCon->prepare("UPDATE car SET dossierID = ? WHERE carID = ? ");
-			$stmt3->execute([$last_dossier_id, $last_car_id]);
-
-
-			$query4 = "INSERT INTO berekening_forms ( 
-				vehicleType,
-				make,
-				model,
-				`trim`,
-				brandstofSoort,
-				eersteToelating,
-				co2NEDC,
-				co2WLTP
-			)
-			 VALUES (
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?
-			)";
-			$stmt4 = $dbDriver->dbCon->prepare($query4);
-			$productiedatum = explode("-", $post['productiedatum'])[0];
-			$stmt4->execute([
-				1,
-				$post['carMark'],
-				$post['carModel'],
-				$post['carModification'],
-				$post['BPMbrandstof'],
-				$productiedatum,
-				$post['BPMCO2'],
-				$post['BPMCO2WLTP']
-
-			]);
-
-		} catch (Exception $e) {
-			$dbDriver->dbCon->rollBack();
-			echo 'Error: ' .  $e->getMessage() . "\n";
-		}
-
-		$dbDriver->dbCon->commit();
-	}
+		 $dbDriver = new db_driver();
+        $dbDriver->dbCon->beginTransaction();
+        $transmissies = explode("|", $post['transmissieSoort']);
+        $transmissie = $transmissies[1];
+        $transmissieSoort = $transmissies[0];
+        try {
+            $query = "INSERT INTO car
+        (
+            car_merk,
+            car_model,
+            uitvoering,
+            aantal_deuren,
+            motor,
+            brandstof,
+            transmissieSoort,
+            productiedatum,
+            co2,
+            co2_wltp,
+            kleur,
+            dossierID,
+            km_stand,
+            vinnummer,
+            kenteken,
+            levering,
+            transmissie,
+            huidigland,
+            optie,
+            opmerkingen,
+            auto_referentie,
+            custom_ref
+        )
+            VALUES (
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?
+            )";
+            $stmt = $dbDriver->dbCon->prepare($query);
+            $stmt->execute(
+                [
+                    $post['carMark'],
+                    $post['carModel'],
+                    $post['caUitvoering'],
+                    $post['doors_number'],
+                    $post['carModification'],
+                    $post['BPMbrandstof'],
+                    $transmissieSoort,
+                    $post['productiedatum'],
+                    $post['BPMCO2'],
+                    $post['BPMCO2WLTP'],
+                    $post['kleur'],
+                    $dbDriver->dbCon->lastInsertId(),
+                    $post['km_stand'],
+                    $post['vinnummer'],
+                    $post['kenteken'],
+                    $post['levering'],
+                    $transmissie,
+                    $post['huidigland'],
+                    $post['opties'],
+                    $post['opmerkingen'],
+                    $post['auto_referentie'],
+                    $post['custom_ref']
+                ]
+            );
+            $last_car_id = $dbDriver->dbCon->lastInsertId();
+            $query2 = "INSERT INTO dossier (carID, created_by) VALUES (?, ?)";
+            $stmt2 = $dbDriver->dbCon->prepare($query2);
+            $stmt2->execute([$last_car_id, $_SESSION['user'][0]['expo_users_ID']]);
+            $last_dossier_id = $dbDriver->dbCon->lastInsertId();
+            $stmt3 = $dbDriver->dbCon->prepare("UPDATE car SET dossierID = ? WHERE carID = ? ");
+            $stmt3->execute([$last_dossier_id, $last_car_id]);
+            $query4 = "INSERT INTO berekening_forms (
+                vehicleType,
+                make,
+                model,
+                `trim`,
+                brandstofSoort,
+                eersteToelating,
+                co2NEDC,
+                co2WLTP
+            )
+             VALUES (
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?
+            )";
+            $stmt4 = $dbDriver->dbCon->prepare($query4);
+            $productiedatum = explode("-", $post['productiedatum'])[0];
+            $stmt4->execute([
+                1,
+                $post['carMark'],
+                $post['carModel'],
+                $post['carModification'],
+                $post['BPMbrandstof'],
+                $productiedatum,
+                $post['BPMCO2'],
+                $post['BPMCO2WLTP']
+            ]);
+        } catch (Exception $e) {
+            $dbDriver->dbCon->rollBack();
+            echo 'Error: ' .  $e->getMessage() . "\n";
+        }
+        $dbDriver->dbCon->commit();
+    }
 
 	public function getAllCars($carID = 0) {
 		$dbDriver = new db_driver();
@@ -485,67 +474,63 @@ class base
 	public function updateCarInfo($post, $car_id) {
 
 		$dbDriver = new db_driver();
-
-		// $dbDriver->dbCon->beginTransaction();
-		
-		$transmissies = explode("|", $post['transmissieSoort']);
-		$transmissie = $transmissies[1];
-		$transmissieSoort = $transmissies[0];
-
-			
-		// try {
-			$query1 = "UPDATE car SET 
-			car_merk = ?,
-			car_model = ?,
-			uitvoering = ?,
-			aantal_deuren = ?,
-			motor = ?,
-			brandstof = ?, 
-			transmissieSoort = ?,
-			productiedatum = ?,
-			co2 = ?,
-			kleur = ?,
-			dossierID = ?,
-			km_stand = ?,
-			vinnummer = ?,
-			kenteken = ?,
-			levering = ?,
-			transmissie = ?,
-			huidigland = ?,
-			optie = ?,
-			opmerkingen = ?,
-			auto_referentie = ?,
-			custom_ref = ?
-			WHERE carID = ?";
-
-
-			$stmt1 = $dbDriver->dbCon->prepare($query1);
-			$stmt1->execute(
-				[
-					$post['carMark'],
-					$post['carModel'],
-					$post['caUitvoering'],
-					$post['doors_number'],
-					$post['carModification'],
-					$post['BPMbrandstof'],
-					$transmissieSoort,
-					$post['productiedatum'],
-					$post['BPMCO2'],
-					$post['kleur'],
-					$car_id,
-					$post['km_stand'],
-					$post['vinnummer'],
-					$post['kenteken'],
-					$post['levering'],
-					$transmissie,
-					$post['huidigland'],
-					$post['opties'],
-					$post['opmerkingen'],
-					$post['auto_referentie'],
-					$post['custom_ref'],										
-					$car_id
-				]
-			);
+        // $dbDriver->dbCon->beginTransaction();
+        $transmissies = explode("|", $post['transmissieSoort']);
+        $transmissie = $transmissies[1];
+        $transmissieSoort = $transmissies[0];
+        // try {
+            $query1 = "UPDATE car SET
+            car_merk = ?,
+            car_model = ?,
+            uitvoering = ?,
+            aantal_deuren = ?,
+            motor = ?,
+            brandstof = ?,
+            transmissieSoort = ?,
+            productiedatum = ?,
+            co2 = ?,
+            co2_wltp = ?,
+            kleur = ?,
+            dossierID = ?,
+            km_stand = ?,
+            vinnummer = ?,
+            kenteken = ?,
+            levering = ?,
+            transmissie = ?,
+            huidigland = ?,
+            optie = ?,
+            opmerkingen = ?,
+            auto_referentie = ?,
+            custom_ref = ?
+            WHERE carID = ?";
+            $stmt1 = $dbDriver->dbCon->prepare($query1);
+            $stmt1->execute(
+                [
+                    $post['carMark'],
+                    $post['carModel'],
+                    $post['caUitvoering'],
+                    $post['doors_number'],
+                    $post['carModification'],
+                    $post['BPMbrandstof'],
+                    $transmissieSoort,
+                    $post['productiedatum'],
+                    $post['BPMCO2'],
+                    $post['BPMCO2WLTP'],
+                    $post['kleur'],
+                    $car_id,
+                    $post['km_stand'],
+                    $post['vinnummer'],
+                    $post['kenteken'],
+                    $post['levering'],
+                    $transmissie,
+                    $post['huidigland'],
+                    $post['opties'],
+                    $post['opmerkingen'],
+                    $post['auto_referentie'],
+                    $post['custom_ref'],
+                    $car_id
+                ]
+            );
 
 			// // QUERY 2
 
