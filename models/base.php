@@ -569,11 +569,15 @@ class base
 
 	public function insertCalculation($_request)  {
 
-		$dbDriver = new db_driver();
-
+		$dbDriver = new db_driver();		
 		
+		if(isset($_request['fromCarView'])) {
+			$calculation_for_car_id=$_request['fromCarView'];
+		}else {
+			$calculation_for_car_id = 0;
+		}
+	
 		
-		$calculation_for_car_id=$_request['fromCarView'];
 		$inkoopprijs_ex_ex=$_request['inkoopprijs_ex_ex'];
 		$feeleverancier=$_request['feeleverancier'];
 		$inkoopprijstotaal=$_request['taxatie_kosten1'];
@@ -633,7 +637,7 @@ class base
 			delivery_costs,
 			inkoopprijs_btw
 		) VALUES (
-			'$calculation_for_car_id',
+			$calculation_for_car_id,
 		'$inkoopprijs_ex_ex',
 		'$feeleverancier',
 		'$inkoopprijstotaal',
