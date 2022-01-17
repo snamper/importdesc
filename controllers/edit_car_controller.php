@@ -103,6 +103,7 @@ class CarModel extends BaseModel
     protected $opmerkingen;
     //protected $UpdatedAt;
     //protected $DateIn;
+    protected ?int $co2_wltp;
 }
 
 class DossierModel extends BaseModel
