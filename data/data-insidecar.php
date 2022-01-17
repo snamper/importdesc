@@ -1,7 +1,8 @@
 <?php
 session_start();
 //error_reporting(0);
-
+// var_dump($_SERVER['HTTP_REFERER']);
+$test = explode('?car_id=',$_SERVER['HTTP_REFERER']);
 include("connection.php");
 
 
@@ -20,7 +21,7 @@ $sIndexColumn = "calclulation_id";
 /* DB table to use */
 $sTable = "calculations";
 
-$sWhere .= 'WHERE calculation_for_car_id ='.$_REQUEST['car_id'];
+$sWhere .= "WHERE calculation_for_car_id =".$test[1];
 // $sJoin .= ' WHERE `translate.langID`= $langID';
 /*
  * Local functions
@@ -107,7 +108,6 @@ if ( isset($_GET['sSearch']) && $_GET['sSearch'] != "" )
     $sWhere .= ')';
 }
  replace end */
-$sWhere = "";
 if ( $_GET['sSearch'] != "" )
 {
     $aWords = preg_split('/\s+/', $_GET['sSearch']);
@@ -160,6 +160,7 @@ $sQuery = "
         $sOrder
         $sLimit
     ";
+
 $rResult = mysqli_query($gaSql['link'], $sQuery, $gaSql['link'] ) or fatal_error( 'MySQL Error: ' . mysqli_errno($gaSql['link']) );
 mysqli_query($gaSql['link'], "SET character_set_results=utf8", $gaSql['link']);
 
