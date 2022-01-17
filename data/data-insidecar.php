@@ -1,6 +1,6 @@
 <?php
 session_start();
-//error_reporting(0);
+error_reporting(0);
 
 include("connection.php");
 
@@ -39,6 +39,7 @@ $gaSql['charset']  = 'utf8';
 //$_POST['24conn'] = new mysqli($gaSql['server'], $gaSql['user'], $gaSql['password'], $gaSql['db']);
 if ( ! $gaSql['link'] = new mysqli($gaSql['server'], $gaSql['user'], $gaSql['password'], $gaSql['db'] ) )
 {
+
     fatal_error( 'Could not open connection to server' );
 }
 

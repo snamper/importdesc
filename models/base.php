@@ -492,7 +492,7 @@ class base
 		$transmissie = $transmissies[1];
 		$transmissieSoort = $transmissies[0];
 
-	
+			
 		// try {
 			$query1 = "UPDATE car SET 
 			car_merk = ?,
