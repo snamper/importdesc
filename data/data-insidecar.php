@@ -1,8 +1,13 @@
 <?php
 session_start();
+<<<<<<< HEAD
 //error_reporting(0);
 // var_dump($_SERVER['HTTP_REFERER']);
 $test = explode('?car_id=',$_SERVER['HTTP_REFERER']);
+=======
+error_reporting(0);
+
+>>>>>>> 9b3c5181561b00a6277434a90229da84050e681d
 include("connection.php");
 
 
@@ -40,6 +45,7 @@ $gaSql['charset']  = 'utf8';
 //$_POST['24conn'] = new mysqli($gaSql['server'], $gaSql['user'], $gaSql['password'], $gaSql['db']);
 if ( ! $gaSql['link'] = new mysqli($gaSql['server'], $gaSql['user'], $gaSql['password'], $gaSql['db'] ) )
 {
+
     fatal_error( 'Could not open connection to server' );
 }
 

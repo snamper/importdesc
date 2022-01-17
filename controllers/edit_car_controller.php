@@ -53,8 +53,9 @@ class BaseModel
     public function executeQuery($query)
     {
         $dbDriver = new db_driver();
-        $stmt = $dbDriver->dbCon->prepare($query);
-        $stmt->execute();
+        $dbDriver->query($query);
+
+        return $dbDriver->insert_id();
     }
 }
 
@@ -64,6 +65,8 @@ class CarModel extends BaseModel
     protected int $car_model;
     protected int $carID;
     protected ?int $autotelex;
+    protected $auto_referentie;
+    protected $custom_ref;
     protected ?int $dossierID;
     protected ?int $car_merk;
     protected $uitvoering;
@@ -145,30 +148,25 @@ class edit_car extends view
 
             if (! empty($_GET['duplicate'])) {
                 $result = $this->base->getAllCars($_GET['duplicate'])[0];
-                $carID = $result['carID'];
                 unset($result['carID']);
 
                 foreach($result as $key => $val) {
                     $car->$key = $val;
                 }
 
+                $carID = $car->executeQuery($car->duplicateQuery());
                 $result['carID'] = $carID;
                 unset($result['dossierID']);
 
                 foreach($result as $key => $val) {
                     $dossier->$key = $val;
                 }
-                //dump($result, $car, $car->duplicateQuery(), $dossier, $dossier->duplicateQuery());
-                $car->executeQuery($car->duplicateQuery());
                 $dossier->executeQuery($dossier->duplicateQuery());
+                //dump($result, $car, $car->duplicateQuery(), $carID, $dossier, $dossier->duplicateQuery());
                 header("Location: /show_cars");
                 exit;
             }
         }
         else parent::__construct('login_view.php');
     }
-
-   protected function duplicateCar($car) {
-        $this->base->duplicateCar($car);
-   }
 }

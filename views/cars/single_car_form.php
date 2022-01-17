@@ -48,7 +48,7 @@
 
                 <div class="col-sm-2">Model</div>
                 <div class="col-sm-4">
-                    <select class="form-control js-resume-fill" data-name="car_model" name="carModel" id="carModel">
+                    <select class="form-control js-resume-fill" data-name="car_model" name="carModel" id="carModel" required>
                         <option value="">-</option>
                     </select>
                 </div>
