@@ -63,7 +63,7 @@
                         </td>
 
                         <td style='vertical-align: middle;' class="text-center">
-                            
+                            <?php echo $car['custom_ref']?>
                         </td>
 
                         <td style='vertical-align: middle;' class="text-center">
