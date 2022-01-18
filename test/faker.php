@@ -1,6 +1,6 @@
 <?php
-include_once 'engine/db_driver.php';
-require_once 'vendor/autoload.php';
+include_once '../engine/db_driver.php';
+require_once '../vendor/autoload.php';
 session_start();
 
 $faker = Faker\Factory::create();
