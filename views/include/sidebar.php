@@ -38,6 +38,8 @@
                             <li><a href="wltp"><i class="ti-plus"></i><span>BPM calculator WLTP</span></a></li>-->
                             <li><a href="create_make"><i class="ti-plus"></i><span>Create Make</span></a></li>
                             <li><a href="click_model"><i class="ti-plus"></i><span>Click Model</span></a></li>
+
+                            <li><a href="click_model2"><i class="ti-plus"></i><span>Click Model No buttons</span></a></li>
                         <li class="nav-divider"></li>
                         <li class="nav-copyright">&copy; 2020 powered by Software Inc.</li>
                     </ul>

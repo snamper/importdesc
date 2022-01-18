@@ -50,6 +50,7 @@
 	$route['show_calculations'] = 'controllers/show_calculations_controller.php';
 	
 	$route['click_model'] = 'controllers/click_model_controller.php';
+	$route['click_model2'] = 'controllers/click_model_controller-2.php';
 
 	
 	
