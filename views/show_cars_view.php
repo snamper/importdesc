@@ -7,10 +7,10 @@
     <br /><br />
 
     <!-- BEGIN breadcrumb -->
-    <ul class="breadcrumb">
+    <!-- <ul class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Overzichten</a></li>
         <li class="breadcrumb-item active">Alle dossiers </li>
-    </ul>
+    </ul> -->
     <!-- END breadcrumb -->
     <!-- BEGIN page-header -->
     <h1 class="page-header">
@@ -25,7 +25,7 @@
     ?>
 
 <div class="table-responsive">
-    <table id="sample-table-1" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
+    <table id="table_show_car" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
         <thead>
             <th class="text-center">Datum aangemaakt</th>
             <th style="white-space: nowrap">Auto referentie</th>
@@ -46,87 +46,6 @@
 
         </thead>
         <tbody>
-            <?php
-            foreach ($data['cars'] as $car) {
-                // echo '<pre>';
-                // var_dump($car);
-                // echo '</pre>';
-                // exit;
-                $date = date('Y-m-d', strtotime($car['DateIn'][0])); ?>
-                    <tr>
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $date ?>
-                        </td>
-
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $car['name'][0]. ' - ' . $car['name'][1] . ' - ' .  $date ?>
-                        </td>
-
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $car['custom_ref']?>
-                        </td>
-
-                        <td style='vertical-align: middle;' class="text-center">
-                        <?php echo $car['name'][2] ?>
-                        </td>
-
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $car['name'][0] ?>
-                        </td>
-
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $car['name'][1] ?>
-                        </td>
-
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $car['uitvoering'] ?>
-                        </td>
-
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $car['motor'] ?>
-                        </td>
-
-                        <td style='vertical-align: middle;' class="text-center">
-                           <?php echo  $car['conversie_naam'] ?>
-                        </td>
-
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $car['transmissie'] ?>
-                        </td>
-
-
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $car['productiedatum'] ?>
-                        </td>
-
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $car['km_stand'] ?>
-                        </td>
-
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $car['huidigland'] ?>
-                        </td>                        
-
-                        <td style='vertical-align: middle;' class="text-center">
-                            <?php echo $car['vinnummer'] ?>
-                        </td>
-
-                        <td style='vertical-align: middle;' class="text-center">
-                            <a class="btn btn-default btn-xs js-fill-car-info" data-id="<?php echo $car['carID'][0] ?>" data-toggle="modal" data-target="#editCarForm"><i class="ti-pencil"></i></a>
-
-                            <a href="edit_car_calculation?car_id=<?php echo $car['carID'][0] ?>" class="btn btn-default btn-xs"><i class="ti-brush"></i></a>
-                        </td>           
-                        
-                        <td style='vertical-align: middle;' class="text-center">
-                            
-                            <a href="edit_car?duplicate=<?php echo $car['carID'][0] ?>" class="btn btn-default btn-xs"><i class="ti-files"></i></a>
-                            
-                        </td>                   
-                        
-                        
-                    </tr>
-            <?php }
-            ?>
         </tbody>
     </table>
 </div>

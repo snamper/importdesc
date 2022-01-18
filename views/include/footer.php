@@ -10,7 +10,7 @@
 <script src="assets/plugins/scrollbar/slimscroll/jquery.slimscroll.min.js"></script>
 
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
-
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script src="assets/plugins/table/DataTables/JSZip-3.1.3/jszip.min.js"></script>
 <script src="assets/plugins/table/DataTables/pdfmake-0.1.27/build/pdfmake.js"></script>
@@ -69,8 +69,18 @@
 
 
 
+<script>
 
-
+    var oTable362 = $('#table_show_car')
+    .DataTable({
+        "bprocessing": true,
+        "bserverSide": true,
+        "sServerMethod": "POST",
+        "sAjaxSource": "./data/data-showcar.php",
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        dom: 'Blfrtip',
+    });
+</script>
 <!-- <script src="assets/js/apps.min.js"></script> -->
 <script src="assets/js/main.js"></script>
 
@@ -141,6 +151,8 @@
           },
         // 'order': [[1, 'asc']],
     });
+
+    
      var oTable3 = $('#datatable-inside')
     .DataTable({
         "bprocessing": true,
@@ -178,8 +190,35 @@
         document.getElementById('connect_car').value = ( oTable36.row( this ).data()[0] );
         console.log(oTable36.row( this ).data());
     } );
-        </script>
 
+
+
+                
+$('#car_id_to_connect').select2({
+                    allowClear: false,
+                    maximumSelectionLength: 999,
+                    closeOnSelect: false,
+                    placeholder: "Изберете",
+                    allowClear: true,
+                    width: '100%',
+                    templateResult: function (data, container) {
+                        if (data.element) {
+                            $(container).addClass($(data.element).attr("select2class"));
+                        }
+                        return data.text;
+                    }
+                });
+
+
+
+setTimeout(() => {
+    if ($(".dataTables_empty").length) {
+        $("#datatable-inside_wrapper").addClass("hidden");
+    }
+            }, 600);
+
+    
+        </script>
 
 
 

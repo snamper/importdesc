@@ -1,19 +1,30 @@
 <?php
 session_start();
 //error_reporting(0);
+
 include("connection.php");
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Easy set variables
  */
+
 /* Array of database columns which should be read and sent back to DataTables. Use a space where
  * you want to insert a non-database field (for example a counter or static image)
  */
-$aColumns = array( 'c.id_car_make','c.name', 'cm.name','cm.id_car_model','cm.id_car_make as edit','cm.id_car_model as modelid','c.id_car_make as carid','c.active','cm.active');
+$aColumns = array( 'c.DateIn','CONCAT_WS( "-", cm.name, cmod.name, c.productiedatum)', 'c.custom_ref','ct.name','cm.name','cmod.name','c.uitvoering','c.motor','ctw.conversie_naam','c.transmissie','c.productiedatum','c.km_stand','c.huidigland','c.vinnummer','c.carID as edit','c.carID as duplicate');
+
 /* Indexed column (used for fast and accurate table cardinality) */
-$sIndexColumn = "c.id_car_make as number";
+$sIndexColumn = "c.carID as number";
+
 /* DB table to use */
-$sTable = "car_make c";
-$sJoin .= ' LEFT JOIN car_model cm ON c.id_car_make = cm.id_car_make ';
+$sTable = "dossier d";
+
+$sJoin = ' LEFT JOIN car c ON c.carID = d.carID ';
+$sJoin .= ' INNER JOIN car_make cm on c.car_merk = cm.id_car_make  ';
+$sJoin .= ' INNER JOIN car_model cmod on c.car_model = cmod.id_car_model ';
+$sJoin .= ' INNER JOIN car_type ct on cmod.id_car_type = ct.id_car_type ';
+$sJoin .= ' INNER JOIN conversie_tabel_gwi ctw on c.brandstof = ctw.conversie_tabel_ID ';
 // $sJoin .= ' WHERE `translate.langID`= $langID';
 /*
  * Local functions
@@ -23,7 +34,9 @@ function fatal_error ( $sErrorMessage = '' )
 //    header( $_SERVER['SERVER_PROTOCOL'] .' 500 Internal Server Error' );
 //    die( $sErrorMessage );
 }
+
 $gaSql['charset']  = 'utf8';
+
 /*
  * MySQL connection
  */
@@ -32,6 +45,7 @@ if ( ! $gaSql['link'] = new mysqli($gaSql['server'], $gaSql['user'], $gaSql['pas
 {
     fatal_error( 'Could not open connection to server' );
 }
+
 if ( ! mysqli_select_db($gaSql['link'], $gaSql['db']))
 {
     fatal_error( 'Could not select database ' );
@@ -39,6 +53,7 @@ if ( ! mysqli_select_db($gaSql['link'], $gaSql['db']))
 if (!$gaSql['link']->set_charset($gaSql['charset'])) {
     die( 'Error loading character set "'.$gaSql['charset'].'": '.$db->error );
 }
+
 /*
  * Paging
  */
@@ -48,6 +63,8 @@ if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
     $sLimit = "LIMIT ".intval( $_GET['iDisplayStart'] ).", ".
         intval( $_GET['iDisplayLength'] );
 }
+
+
 /*
  * Ordering
  */
@@ -63,12 +80,15 @@ if ( isset( $_GET['iSortCol_0'] ) )
                     ".($_GET['sSortDir_'.$i]==='asc' ? 'asc' : 'desc') .", ";
         }
     }
+
     $sOrder = substr_replace( $sOrder, "", -2 );
     if ( $sOrder == "ORDER BY" )
     {
         $sOrder = "";
     }
 }
+
+
 /*
  * Filtering
  * NOTE this does not match the built-in DataTables filtering which does it
@@ -91,11 +111,11 @@ if ( isset($_GET['sSearch']) && $_GET['sSearch'] != "" )
     $sWhere .= ')';
 }
  replace end */
-$sWhere = "";
 if ( $_GET['sSearch'] != "" )
 {
     $aWords = preg_split('/\s+/', $_GET['sSearch']);
     $sWhere = "WHERE (";
+
     for ( $j=0 ; $j<count($aWords) ; $j++ )
     {
         if ( $aWords[$j] != "" )
@@ -112,6 +132,7 @@ if ( $_GET['sSearch'] != "" )
     $sWhere = substr_replace( $sWhere, "", -4 );
     $sWhere .= ')';
 }
+
 /* Individual column filtering */
 for ( $i=0 ; $i<count($aColumns) ; $i++ )
 {
@@ -128,6 +149,8 @@ for ( $i=0 ; $i<count($aColumns) ; $i++ )
         $sWhere .= $aColumns[$i]." LIKE '%".mysqli_real_escape_string($gaSql['link'], $_GET['sSearch_'.$i])."%' ";
     }
 }
+
+
 /*
  * SQL queries
  * Get data to display
@@ -140,8 +163,10 @@ $sQuery = "
         $sOrder
         $sLimit
     ";
+
 $rResult = mysqli_query($gaSql['link'], $sQuery, $gaSql['link'] ) or fatal_error( 'MySQL Error: ' . mysqli_errno($gaSql['link']) );
 mysqli_query($gaSql['link'], "SET character_set_results=utf8", $gaSql['link']);
+
 $rResult = mysqli_query($gaSql['link'], $sQuery ) or die(mysql_error());
 /* Data set length after filtering */
 $sQuery = "
@@ -150,6 +175,7 @@ $sQuery = "
 $rResultFilterTotal =  mysqli_query($gaSql['link'], $sQuery, $gaSql['link'] ) or fatal_error( 'MySQL Error: ' . mysqli_errno($gaSql['link']) );
 $aResultFilterTotal = mysqli_fetch_array($rResultFilterTotal);
 $iFilteredTotal = $aResultFilterTotal[0];
+
 /* Total data set length */
 $sQuery = "
         SELECT COUNT(".$sIndexColumn.")
@@ -158,6 +184,8 @@ $sQuery = "
 $rResultTotal = mysqli_query($gaSql['link'], $sQuery, $gaSql['link'] ) or fatal_error( 'MySQL Error: ' . mysqli_errno($gaSql['link']) );
 $aResultTotal = mysqli_fetch_array($rResultTotal);
 $iTotal = $aResultTotal[0];
+
+
 /*
  * Output
  */
@@ -186,6 +214,8 @@ $iTotal = $aResultTotal[0];
 //    }
 //    $output['aaData'][] = $row;
 //}
+
+
 $output = array(
     "sEcho"                => intval( $_GET['sEcho'] ),
     "iTotalRecords"        => $iTotal,
@@ -204,16 +234,17 @@ while ( $aRow = mysqli_fetch_array( $rResult ) ) {
             $row[] = ( $aRow[ $aColumns[ $i ] ] == "0" ) ? '-' : $aRow[ $aColumns[ $i ] ];
         }   elseif ( $aColumns[ $i ] == 'c.id_car_make' ) {
              $row[] = '<center>'.$j.'</center>';
-        } elseif ( $aColumns[ $i ] == 'cm.id_car_model' ) {
-            $row[] = '<center style="display:flex;"><a href="#edit-model" data-toggle="modal" class="btn btn-default btn-xs"><i class="ti-pencil" ></i></a><a href="?disable_model='.$aRow[$i].'" class="btn btn-default btn-xs"><i class="ti-close" ></i></a></center>';
-        }elseif ( $aColumns[ $i ] == 'cm.id_car_make as edit' ) {
-            $row[] = '<center style="display:flex;"><a href="#edit-mark" data-toggle="modal" class="btn btn-default btn-xs"><i class="ti-pencil" ></i></a><a href="?disable_mark='.$aRow[$i].'"  class="btn btn-default btn-xs"><i class="ti-close" ></i></a></center>';
+        } elseif ( $aColumns[ $i ] == 'c.carID as edit' ) {
+            $row[] = '<center style="display:flex;"><a class="btn btn-default btn-xs js-fill-car-info" data-id="'.$aRow[$i].'" data-toggle="modal" data-target="#editCarForm"><i class="ti-pencil"></i></a><a href="edit_car_calculation?car_id='.$aRow[$i].'" class="btn btn-default btn-xs"><i class="ti-brush"></i></a></center>';
+        }elseif ( $aColumns[ $i ] == 'c.carID as duplicate' ) {
+            $row[] = '<center style="display:flex;"><a href="edit_car?duplicate='.$aRow[$i].'" class="btn btn-default btn-xs"><i class="ti-files"></i></a></center>';
         }  elseif ( $aColumns[ $i ] != ' ' ) {
             /* General output */
             $row[] = $aRow[$i];
         }
     }
     $output['aaData'][] = $row;
+
 }
 echo json_encode( $output );
 ?>

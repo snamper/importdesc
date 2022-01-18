@@ -1,4 +1,7 @@
 <?php
+
+use element as GlobalElement;
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include_once 'views/view.php';
@@ -24,6 +27,7 @@ class login extends view{
 		// displayed page index
 		// if(!isset($_SESSION['user'])) header("Location: index");
 		$this->base = $_SESSION['base'];
+		$obj = new element;
 
 		if(isset($_POST['login']) && isset($_POST['EmailAddress']) && isset($_POST['userPassword'])){
 				 	$obj->EmailAddress = $_POST['EmailAddress'];
