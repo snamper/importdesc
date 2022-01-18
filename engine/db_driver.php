@@ -5,7 +5,7 @@ class db_driver{
     public $dbCon = NULL;
     
     public function __construct() {
-       $config = include dirname(__DIR__)."/config.php";
+       $config = include "config.php";
        $this->connect($config);
     }
     //connect to database

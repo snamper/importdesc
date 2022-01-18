@@ -23,7 +23,7 @@ class LinkStub extends ConstStub
     private static $vendorRoots;
     private static $composerRoots;
 
-    public function __construct(string $label, int $line = 0, string $href = null)
+    public function __construct($label, $line = 0, $href = null)
     {
         $this->value = $label;
 
@@ -33,17 +33,17 @@ class LinkStub extends ConstStub
         if (!\is_string($href)) {
             return;
         }
-        if (str_starts_with($href, 'file://')) {
+        if (0 === strpos($href, 'file://')) {
             if ($href === $label) {
                 $label = substr($label, 7);
             }
             $href = substr($href, 7);
-        } elseif (str_contains($href, '://')) {
+        } elseif (false !== strpos($href, '://')) {
             $this->attr['href'] = $href;
 
             return;
         }
-        if (!is_file($href)) {
+        if (!file_exists($href)) {
             return;
         }
         if ($line) {
@@ -63,16 +63,16 @@ class LinkStub extends ConstStub
         }
     }
 
-    private function getComposerRoot(string $file, bool &$inVendor)
+    private function getComposerRoot($file, &$inVendor)
     {
         if (null === self::$vendorRoots) {
             self::$vendorRoots = [];
 
             foreach (get_declared_classes() as $class) {
-                if ('C' === $class[0] && str_starts_with($class, 'ComposerAutoloaderInit')) {
+                if ('C' === $class[0] && 0 === strpos($class, 'ComposerAutoloaderInit')) {
                     $r = new \ReflectionClass($class);
-                    $v = \dirname($r->getFileName(), 2);
-                    if (is_file($v.'/composer/installed.json')) {
+                    $v = \dirname(\dirname($r->getFileName()));
+                    if (file_exists($v.'/composer/installed.json')) {
                         self::$vendorRoots[] = $v.\DIRECTORY_SEPARATOR;
                     }
                 }
@@ -85,13 +85,13 @@ class LinkStub extends ConstStub
         }
 
         foreach (self::$vendorRoots as $root) {
-            if ($inVendor = str_starts_with($file, $root)) {
+            if ($inVendor = 0 === strpos($file, $root)) {
                 return $root;
             }
         }
 
         $parent = $dir;
-        while (!@is_file($parent.'/composer.json')) {
+        while (!@file_exists($parent.'/composer.json')) {
             if (!@file_exists($parent)) {
                 // open_basedir restriction in effect
                 break;
