@@ -49,7 +49,8 @@
 
 	$route['show_calculations'] = 'controllers/show_calculations_controller.php';
 	
-	$route['edit_car_calculation'] = 'controllers/edit_car_calculation_controller.php';
+	$route['click_model'] = 'controllers/click_model_controller.php';
+
 	
 	
 //============================================================================//
