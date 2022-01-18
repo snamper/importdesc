@@ -1,3 +1,14 @@
+/* Helpers  */
+
+.hidden{ 
+    display: none!important;
+}
+
+/* Template  */
+.row {
+    align-items: center;
+}
+
 .dt-buttons.btn-group{
         display: flex;
         justify-content: flex-end;

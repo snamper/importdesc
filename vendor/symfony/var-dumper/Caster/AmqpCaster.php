@@ -17,12 +17,10 @@ use Symfony\Component\VarDumper\Cloner\Stub;
  * Casts Amqp related classes to array representation.
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
- *
- * @final
  */
 class AmqpCaster
 {
-    private const FLAGS = [
+    private static $flags = [
         \AMQP_DURABLE => 'AMQP_DURABLE',
         \AMQP_PASSIVE => 'AMQP_PASSIVE',
         \AMQP_EXCLUSIVE => 'AMQP_EXCLUSIVE',
@@ -39,14 +37,14 @@ class AmqpCaster
         \AMQP_REQUEUE => 'AMQP_REQUEUE',
     ];
 
-    private const EXCHANGE_TYPES = [
+    private static $exchangeTypes = [
         \AMQP_EX_TYPE_DIRECT => 'AMQP_EX_TYPE_DIRECT',
         \AMQP_EX_TYPE_FANOUT => 'AMQP_EX_TYPE_FANOUT',
         \AMQP_EX_TYPE_TOPIC => 'AMQP_EX_TYPE_TOPIC',
         \AMQP_EX_TYPE_HEADERS => 'AMQP_EX_TYPE_HEADERS',
     ];
 
-    public static function castConnection(\AMQPConnection $c, array $a, Stub $stub, bool $isNested)
+    public static function castConnection(\AMQPConnection $c, array $a, Stub $stub, $isNested)
     {
         $prefix = Caster::PREFIX_VIRTUAL;
 
@@ -79,7 +77,7 @@ class AmqpCaster
         return $a;
     }
 
-    public static function castChannel(\AMQPChannel $c, array $a, Stub $stub, bool $isNested)
+    public static function castChannel(\AMQPChannel $c, array $a, Stub $stub, $isNested)
     {
         $prefix = Caster::PREFIX_VIRTUAL;
 
@@ -102,7 +100,7 @@ class AmqpCaster
         return $a;
     }
 
-    public static function castQueue(\AMQPQueue $c, array $a, Stub $stub, bool $isNested)
+    public static function castQueue(\AMQPQueue $c, array $a, Stub $stub, $isNested)
     {
         $prefix = Caster::PREFIX_VIRTUAL;
 
@@ -125,7 +123,7 @@ class AmqpCaster
         return $a;
     }
 
-    public static function castExchange(\AMQPExchange $c, array $a, Stub $stub, bool $isNested)
+    public static function castExchange(\AMQPExchange $c, array $a, Stub $stub, $isNested)
     {
         $prefix = Caster::PREFIX_VIRTUAL;
 
@@ -133,7 +131,7 @@ class AmqpCaster
             $prefix.'flags' => self::extractFlags($c->getFlags()),
         ];
 
-        $type = isset(self::EXCHANGE_TYPES[$c->getType()]) ? new ConstStub(self::EXCHANGE_TYPES[$c->getType()], $c->getType()) : $c->getType();
+        $type = isset(self::$exchangeTypes[$c->getType()]) ? new ConstStub(self::$exchangeTypes[$c->getType()], $c->getType()) : $c->getType();
 
         // Recent version of the extension already expose private properties
         if (isset($a["\x00AMQPExchange\x00name"])) {
@@ -153,7 +151,7 @@ class AmqpCaster
         return $a;
     }
 
-    public static function castEnvelope(\AMQPEnvelope $c, array $a, Stub $stub, bool $isNested, int $filter = 0)
+    public static function castEnvelope(\AMQPEnvelope $c, array $a, Stub $stub, $isNested, $filter = 0)
     {
         $prefix = Caster::PREFIX_VIRTUAL;
 
@@ -193,11 +191,11 @@ class AmqpCaster
         return $a;
     }
 
-    private static function extractFlags(int $flags): ConstStub
+    private static function extractFlags($flags)
     {
         $flagsArray = [];
 
-        foreach (self::FLAGS as $value => $name) {
+        foreach (self::$flags as $value => $name) {
             if ($flags & $value) {
                 $flagsArray[] = $name;
             }

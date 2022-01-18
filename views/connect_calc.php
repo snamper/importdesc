@@ -2,9 +2,9 @@
     <div class="panel-body">
         <p class="desc">Fill the fields to create model.</p>
         <form action="show_calculations" method="post">
-            <div class="form-group">
+            <div class="form-group" style="display: grid; gap:10px;width: 100%;">
                 <label class="control-label">Select Brand<span class="text-danger">*</span></label>
-                    <select class="form-control" name="car_id_to_connect" id="car_id_to_connect">
+                    <select class="form-control" name="car_id_to_connect" id="car_id_to_connect" class="js-example-basic-multiple">
                         <option value=""> - </option>
                         <?php
                         foreach ($data['cars'] as $car) {

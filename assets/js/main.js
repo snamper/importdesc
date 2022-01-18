@@ -940,11 +940,13 @@ function getData() {
     });
 }
 
-
+setTimeout(() => {
+               
 const carFillEditButtons = document.querySelectorAll(".js-fill-car-info");
 for (const filler of carFillEditButtons) {
     filler.addEventListener("click", getCarInfo);
 }
+}, 200);
 
 window.addEventListener('DOMContentLoaded', (event) => {
     if (location.pathname == "/edit_car_calculation") {
@@ -1074,10 +1076,7 @@ function addResumeEditCarHeader() {
     document.querySelector("#referentieHiddenInput").value = completeText;
 }
 
+$('#datepicker2, #datepicker3').datepicker({
+ format:'mm/dd/yyyy',}).datepicker("setDate",'now');
 
-
-
-
-
-
-
+$('.js-example-basic-multiple').select2();

@@ -219,7 +219,7 @@
                 </div>
                     <div class="col-sm-2"></div>
                     <div class="col-sm-4">
-                        <button type="submit"  class="btn btn-primary" style="width:100%;" >Insert Calculation </button>
+                        <button type="submit"  class="btn btn-primary" style="width:100%;" >Insert</button>
                     </div>
             </div>
 
