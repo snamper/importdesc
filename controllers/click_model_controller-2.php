@@ -17,7 +17,7 @@ class element
 	}
 }
 
-class click_model extends view{
+class click_model2 extends view{
 
     public function __construct() {
 		// displayed page index
@@ -26,7 +26,7 @@ class click_model extends view{
 		// $cars = $this->base->getAllCars();
 
 
-		if(isset($_SESSION['user']))parent::__construct('click_model_view.php');
+		if(isset($_SESSION['user']))parent::__construct('click_model_view-2.php');
 		else parent::__construct('login_view.php');
 
     }

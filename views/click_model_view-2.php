@@ -245,7 +245,6 @@
                                 <div class="col col-2">
                                     <input type="number" class="form-control" name="" id="">
                                 </div>
-                                <div class="col col-1"><button class="btn btn-warning right-buttons">Upload VIN</button></div>
                             </div>
                             <!-- ./ ROW  -->
 
@@ -303,7 +302,6 @@
                                 <div class="col col-2">
                                     <input type="number" class="form-control" name="" id="">
                                 </div>
-                                <div class="col col-1"> <button class="btn btn-warning right-buttons">Upload kenteken data</button></div>
                             </div>
                             <!-- ./ ROW  -->
 
