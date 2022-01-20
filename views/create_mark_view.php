@@ -50,7 +50,7 @@
         </div>
     </div>
 </div> -->
-        <div id="content" class="content" style="padding-top:4vh;">
+        <div id="createBrandPage" class="content" style="padding-top:4vh;">
             <!-- BEGIN page-header -->
             <h1 class="page-header">
                 Mark/Model
@@ -61,11 +61,14 @@
             <div class="table-responsive">
             <table id="datatables-makemodel" class="table table-striped table-condensed table-bordered bg-white vacations">
                 <thead>
-                    <tr>
+                    <tr>                       
                         <!-- <th class="no-sort" style="white-space: nowrap"></th> -->
                         <th class="no-sort" style="width:1%">#</th>
                         <th class="select-filter" style="white-space: nowrap">Make</th>
                         <th class="select-filter" style="white-space: nowrap">Model</th>
+                        <th class="select-filter" style="white-space: nowrap">Motor</th>
+                        <th class="select-filter" style="white-space: nowrap">Fuel</th>
+                        <th class="select-filter" style="white-space: nowrap">Versie</th>
                         <th style="white-space: nowrap">Model Actions</th>
                         <th style="white-space: nowrap">Mark Actions</th>
                         <!-- <th style="white-space: nowrap">C1</th> -->
@@ -77,15 +80,23 @@
                     <tr>
                 <th class="select-filter" style="white-space: nowrap"></th>
                 <th class="select-filter" style="white-space: nowrap"></th>
+                
             </tr>
         </tfoot>
             </table>
         </div>
             <!-- END table -->
-            
-<td style="width:1%" class="valign-middle"><a href="#create-mark" data-toggle="modal" class="btn btn-sm btn-primary">Create Brand</a></td>
-<td style="width:1%" class="valign-middle"><a href="#create-model" data-toggle="modal" class="btn btn-sm btn-primary">Create Model</a></td>
-        </div>
+
+     
+    <td style="width:1%" class="valign-middle"><a href="#create-mark" data-toggle="modal" class="btn btn-sm btn-primary">Create Brand</a></td>
+    <td style="width:1%" class="valign-middle"><a href="#create-model" data-toggle="modal" class="btn btn-sm btn-primary">Create Model</a></td>
+    <span class="btn btn-sm btn-primary js-add-motor">Add Information</span>  
+
+
+</div>
+     
+
+      
       
 
 

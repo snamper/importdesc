@@ -56,6 +56,18 @@ class base
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
 	}
+
+	public function getCarBrandByName($brand_name) {
+		$dbDriver = new db_driver();
+		$query = "SELECT * FROM car_make WHERE `name` = ?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$brand_name]);
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+		return $result;
+	
+
+	}
     function createCarMark($mark)
     {
         $dbDriver = new db_driver();
@@ -70,6 +82,21 @@ class base
         $sql = "UPDATE `car_make` SET `name` = '".$mark->name."', `date_update` = '".$mark->date_update."', `active` = '".$mark->active."' WHERE `car_make`.`id_car_make` = " . $mark->id_car_make;
         $dbDriver->query($sql);
     }
+
+	function getCarModelByBrandName($_get_value, $active = 1)
+	{
+		$dbDriver = new db_driver();
+
+		$query = "SELECT * FROM car_make cm INNER JOIN car_model cmod on cm.id_car_make = cmod.id_car_make
+		WHERE cm.name = ? ";
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$_get_value]);
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		 return $result;
+	
+	}
 	function getCarModel($markID, $active = 1)
 	{
 		$dbDriver = new db_driver();
@@ -120,6 +147,17 @@ class base
 
 
 		return $dbDriver->fetchAssoc();
+	}
+	public function getCarMotorByModelName($model_name) {
+		
+		$dbDriver = new db_driver();
+        $query = "SELECT ct.name FROM car_model cm INNER JOIN car_trim ct on cm.id_car_model = ct.id_car_model 
+		WHERE cm.name = ?";
+        $stmt = $dbDriver->dbCon->prepare($query);
+        $stmt->execute([$model_name]);
+        $result = $stmt->fetchAll(PDO::FETCH_NAMED);
+        return $result;
+
 	}
 	function getCarEquipment($equipmentID)
 	{
@@ -270,6 +308,56 @@ class base
 	{
 		$dbDriver = new db_driver();
 		$query = "SELECT * FROM conversie_tabel_gwi WHERE `conversie_soort` = 'brandstof'";
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([]);
+		$result = $stmt->fetchAll();
+
+		return $result;
+	}
+
+	public function addMotorFuelToCar($_post) {
+
+		$brand = $this->getCarBrandByName($_post['brandName']);
+	
+
+		$dbDriver = new db_driver();
+		$query1 = "INSERT INTO car_trim (id_car_model, `name`) VALUES (
+			?,
+			?
+		)";
+		// $dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
+		$stmt1 = $dbDriver->dbCon->prepare($query1);
+		$stmt1->execute([ $_post['modelId'], $_post['addMotor'] ]);
+		$motor_id = $dbDriver->dbCon->lastInsertId();
+
+		// SECOND QUERY 		
+		$query2 = "INSERT INTO car_fuel (cf_name, cf_car_trim_id, cf_car_model_id, cf_car_make_id) VALUES (
+			?,
+			?,
+			?,
+			?
+		)";
+		// $dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
+		$stmt2 = $dbDriver->dbCon->prepare($query2);
+		$stmt2->execute([ $_post['addFuel'], $motor_id, $_post['modelId'], $brand['id_car_make']]);
+
+		// QUERY 3 
+		$query3 = "INSERT INTO car_versie (cv_name, cv_car_brand_id, cv_car_model_id, cv_car_motor_id) VALUES (
+			?,
+			?,
+			?,
+			?
+		)";
+		// $dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
+		$stmt3 = $dbDriver->dbCon->prepare($query3);
+		$stmt3->execute([ $_post['versie'], $brand['id_car_make'], $_post['modelId'], $motor_id]);
+	}
+
+	public function getFuelByMotorName($motor_name) {
+
+		$dbDriver = new db_driver();
+		$query = "SELECT * FROM ";
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([]);
