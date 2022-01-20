@@ -1,5 +1,3 @@
-
-
 <script src="assets/plugins/jquery/jquery-3.2.1.min.js"></script>
 <script src="assets/plugins/jquery-ui/jquery-ui.min.js"></script>
 <script src="assets/yadcf.js"></script>
@@ -54,9 +52,9 @@
 
 
 <script src="assets/plugins/chart/chart-js/Chart.min.js"></script>
-	<script src="assets/js/page/dashboard.demo.min.js"></script>
-	<script src="assets/js/apps.min.js"></script>
-	<script src="assets/js/apps.js"></script>
+<script src="assets/js/page/dashboard.demo.min.js"></script>
+<script src="assets/js/apps.min.js"></script>
+<script src="assets/js/apps.js"></script>
 
 
 <!-- ================== BEGIN BASE JS ================== -->
@@ -70,155 +68,322 @@
 
 
 <script>
-
     var oTable362 = $('#table_show_car')
-    .DataTable({
-        "bprocessing": true,
-        "bserverSide": true,
-        "sServerMethod": "POST",
-        "sAjaxSource": "./data/data-showcar.php",
-        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-        dom: 'Blfrtip',
-    });
+        .DataTable({
+            "bprocessing": true,
+            "bserverSide": true,
+            "sServerMethod": "POST",
+            "sAjaxSource": "./data/data-showcar.php",
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+            dom: 'Blfrtip',
+        });
 </script>
 <!-- <script src="assets/js/apps.min.js"></script> -->
 <script src="assets/js/main.js"></script>
 
-  <script>
-            
+<script>
     var oTable366 = $('#datatables-makemodel')
-    .DataTable({
-        "bprocessing": true,
-        "bserverSide": true,
-        "sServerMethod": "POST",
-        "sAjaxSource": "./data/data-makemodel.php",
-        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-        "columnDefs": [
-		    { "width": "5%", "targets": 4 },
-		    { "width": "5%", "targets": 3 }
-		  ],
-        select: false,
-        dom: 'Blfrtip',
-        // 'order': [[1, 'asc']],
-        'createdRow': function( row, data, dataIndex){
-              if( data[7] == 0 || data[8] == 0 ){
-                  $(row).addClass('redClass');
-              }
-          },
-         initComplete: function () {
-            this.api().columns('.select-filter').every( function () {
-                var column = this;
-                var select = $('<select class="selecter" id="'+ column.header().innerText+'"><option value="">'+column.header().innerText+'</option></select>')
-                    .appendTo( '.dataTables_length' )
-                    .on( 'change', function () {
-                        var val = $.fn.dataTable.util.escapeRegex(
-                            $(this).val()
-                        );
- 
-                        column
-                            .search( val ? '^'+val+'$' : '', true, false )
-                            .draw();
-                    } );
-                
-                column.data().unique().sort().each( function ( d, j ) {
-                    if (d != null) {
-                    select.append( '<option value="'+d+'">'+d+'</option>' );
+        .DataTable({
+            "bprocessing": true,
+            "bserverSide": true,
+            "sServerMethod": "POST",
+            "sAjaxSource": "./data/data-makemodel.php",
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+            "columnDefs": [{
+                    "width": "5%",
+                    "targets": 4
+                },
+                {
+                    "width": "5%",
+                    "targets": 3
+                }
+            ],
+            select: false,
+            dom: 'Blfrtip',
+            // 'order': [[1, 'asc']],
+            'createdRow': function(row, data, dataIndex) {
+                // if (data[7] == 0 || data[8] == 0) {
+                //     $(row).addClass('redClass');
+                // }
+            },
+            initComplete: function() {
+                const addMotorButton = document.querySelector(".js-add-motor");
+                addMotorButton.addEventListener("click", addMotorFuel);
 
+                this.api().columns('.select-filter').every(function() {
+                    var column = this;
+
+                    if (column.header().innerText == "Make" || column.header().innerText == "Model") {
+                        createSelect();
+                    }else {
+                        var textInputs = $(`<input class='form-control' name="${column.header().innerText}" placeholder="${column.header().innerText}" type="text" />`)
+                            .appendTo('.dataTables_length');
                     }
-                } );
-           }  );
-        },   
-       
-            // select: true,
-    });
-    var oTable36 = $('#datatable-calculations')
-    .DataTable({
-        "bprocessing": true,
-        "bserverSide": true,
-        "sServerMethod": "POST",
-        "sAjaxSource": "./data/data-calculations.php",
-        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-        "columnDefs": [
-            { "width": "5%", "targets": 4 },
-            { "width": "5%", "targets": 3 }
-          ],
-        select: false,
-        dom: 'Blfrtip',
-        'createdRow': function( row, data, dataIndex){
-              if( data[18] == 0 ){
-                  $(row).addClass('redClass');
-              }
-          },
-        // 'order': [[1, 'asc']],
-    });
-
-    
-     var oTable3 = $('#datatable-inside')
-    .DataTable({
-        "bprocessing": true,
-        "bserverSide": true,
-        "sServerMethod": "POST",
-        "sAjaxSource": "./data/data-insidecar.php",
-        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-        "columnDefs": [
-            { "width": "5%", "targets": 4 },
-            { "width": "5%", "targets": 3 }
-          ],
-        select: false,
-        dom: 'Blfrtip',
-        'createdRow': function( row, data, dataIndex){
-              if( data[18] == 0 ){
-                  $(row).addClass('redClass');
-                  console.log(data);
-              }
-          },
-        // 'order': [[1, 'asc']],
-    });
-
-
-	$('#datatables-makemodel').on( 'click','tr', function () {
-		document.getElementById('mark_old_name').value = ( oTable366.row( this ).data()[1] );
-		document.getElementById('edit_mark').value = ( oTable366.row( this ).data()[6] );
-		document.getElementById('model_name_old').value = ( oTable366.row( this ).data()[2] );
-		document.getElementById('edit_model').value = ( oTable366.row( this ).data()[5] );
-		console.log(oTable366.row( this ).data());
-	} );
-
-    $('#datatable-calculations').on( 'click','tr', function () {
-        var selectedcountry = oTable36.row( this ).data()[17];
-        $('#car_id_to_connect').val(selectedcountry).change();
-        document.getElementById('connect_car').value = ( oTable36.row( this ).data()[0] );
-        console.log(oTable36.row( this ).data());
-    } );
 
 
 
-                
-$('#car_id_to_connect').select2({
-                    allowClear: false,
-                    maximumSelectionLength: 999,
-                    closeOnSelect: false,
-                    placeholder: "Изберете",
-                    allowClear: true,
-                    width: '100%',
-                    templateResult: function (data, container) {
-                        if (data.element) {
-                            $(container).addClass($(data.element).attr("select2class"));
-                        }
-                        return data.text;
+                    function createSelect() {
+                        var select = $('<select class="selecter js-brand-model-generate" id="' + column.header().innerText + '"><option value="">' + column.header().innerText + '</option></select>')
+                            .appendTo('.dataTables_length')
+                            .on('change', function() {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function(d, j) {
+                            if (d != null) {
+                                select.append('<option value="' + d + '">' + d + '</option>');
+
+                            }
+                        });
                     }
+
                 });
 
+                const dataGenerators = document.querySelectorAll(".js-brand-model-generate");
+                for (let select of dataGenerators) {
+                    select.addEventListener("change", changeData);
+                }
+
+                function changeData(e) {
+                    const trigger = e.currentTarget;
+                    const triggerIndex = [...trigger.parentElement.children].indexOf(trigger);
+                    let getQueryName = "";
+                    let getQueryVal = "";
 
 
-setTimeout(() => {
-    if ($(".dataTables_empty").length) {
-        $("#datatable-inside_wrapper").addClass("hidden");
-    }
-            }, 600);
+                    const brandSelect = document.querySelector("#Make");
+                    const modelSelect = document.querySelector("#Model");
 
-    
-        </script>
+                    switch (triggerIndex) {
+                        case 1:
+                            getQueryName = "get_models";
+                            getQueryVal = trigger.value;
+                            fetchSelectsData(getQueryName, getQueryVal, triggerIndex);
+                            break;
+
+                        case 2:
+                            getQueryName = "model_name";
+                            getQueryVal = trigger.value;
+                            fetchSelectsData(getQueryName, getQueryVal, triggerIndex);
+                            break;
+
+                        default:
+                            // something if anything not match
+                    }
+
+                    function fetchSelectsData(getQueryName, getQueryVal, triggerIndex) {
+
+                        if (getQueryVal == "") {
+                            return;
+                        }
+
+                        const url = `${location.origin}/create_make?${getQueryName}=${getQueryVal}`;
+                        fetch(url)
+                            .then(function(response) {
+                                // When the page is loaded convert it to text
+                                return response.json();
+                            })
+                            .then(function(response) {
+                                fillSelect(response, triggerIndex);
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                                return;
+                            });
+                    }
+
+                    function fillSelect(jsonData, triggerIndex) {
+
+                        const allSelects = document.querySelectorAll(".js-brand-model-generate");
+
+                        if (!allSelects[triggerIndex]) {
+                            return;
+                        }
+
+                        allSelects[triggerIndex].innerHTML = "";
+
+                        for (let key in jsonData) {
+                            if (!jsonData.hasOwnProperty(key)) {
+                                continue;
+                            }
+
+                            let option = Object.assign(
+                                document.createElement("option"), {
+                                    "text": jsonData[key].name,
+                                    "value": jsonData[key].name,
+                                });
+                                option.setAttribute("data-car-brand-id",jsonData[key].id_car_make);
+                                option.setAttribute("data-car-model-id",jsonData[key].id_car_model);
+
+                            allSelects[triggerIndex].appendChild(option);
+                            allSelects[triggerIndex].dispatchEvent(new Event('change'));
+                        }
+
+                        let emptyOption = Object.assign(
+                            document.createElement("option"), {
+                                "text": "Model",
+                                "value": ""
+                            });
+
+                        allSelects[triggerIndex].insertBefore(emptyOption, allSelects[triggerIndex].firstChild);
+
+                    }
+
+                }
+
+                function addMotorFuel(e) {
+                    const motorInput = document.querySelector("[name='Motor']");
+                    const fuelInput = document.querySelector("[name='Fuel']");
+                    const versie = document.querySelector("[name='Versie']");
+                    const modelSelect = document.querySelector("#Model");
+                    const selectedOption = modelSelect.options[modelSelect.selectedIndex];
+                    const brandId = selectedOption.getAttribute("data-car-brand-id");
+                    const modelId = selectedOption.getAttribute("data-car-model-id");
+                    const brandNameSelect = document.querySelector("#Make");
+                    const selectedBrandOption = brandNameSelect.options[brandNameSelect.selectedIndex];
+
+                   if(motorInput.value == "" || fuelInput.value == "" || selectedBrandOption.innerText == "" || versie.value == "") {
+                       alert("All inputs are required");
+                       return;
+                   }
+                   
+                    const dataPost = {
+                            'addMotor': motorInput.value,
+                            'addFuel': fuelInput.value,
+                            'brandId': brandId,
+                            'modelId':modelId,
+                            'brandName': selectedBrandOption.innerText,
+                            'versie': versie.value
+                    }
+
+                    $.ajax({
+                            type: "POST",
+                            url: `${location.origin}/create_make`,
+                            data: dataPost,
+                            success: function (data) {
+                            location.reload();
+
+                        },
+                        error: function (request, status, error) {
+                            console.log(error);
+                        }
+                    });
+                }
+            },
+
+            // select: true,
+        });
+    var oTable36 = $('#datatable-calculations')
+        .DataTable({
+            "bprocessing": true,
+            "bserverSide": true,
+            "sServerMethod": "POST",
+            "sAjaxSource": "./data/data-calculations.php",
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+            "columnDefs": [{
+                    "width": "5%",
+                    "targets": 4
+                },
+                {
+                    "width": "5%",
+                    "targets": 3
+                }
+            ],
+            select: false,
+            dom: 'Blfrtip',
+            'createdRow': function(row, data, dataIndex) {
+                if (data[18] == 0) {
+                    $(row).addClass('redClass');
+                }
+            },
+            // 'order': [[1, 'asc']],
+        });
+
+
+    var oTable3 = $('#datatable-inside')
+        .DataTable({
+            "bprocessing": true,
+            "bserverSide": true,
+            "sServerMethod": "POST",
+            "sAjaxSource": "./data/data-insidecar.php",
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+            "columnDefs": [{
+                    "width": "5%",
+                    "targets": 4
+                },
+                {
+                    "width": "5%",
+                    "targets": 3
+                }
+            ],
+            select: false,
+            dom: 'Blfrtip',
+            'createdRow': function(row, data, dataIndex) {
+                if (data[18] == 0) {
+                    $(row).addClass('redClass');
+                }
+            },
+            // 'order': [[1, 'asc']],
+        });
+
+
+    $('#datatables-makemodel').on('click', 'tr', function() {
+        // HERE 
+        // document.getElementById('mark_old_name').value = (oTable366.row(this).data()[1]);
+        // document.getElementById('edit_mark').value = (oTable366.row(this).data()[6]);
+        // document.getElementById('model_name_old').value = (oTable366.row(this).data()[2]);
+        // document.getElementById('edit_model').value = (oTable366.row(this).data()[5]);
+        // console.log(oTable366.row(this).data());
+    });
+
+    $('#datatable-calculations').on('click', 'tr', function() {
+        var selectedcountry = oTable36.row(this).data()[17];
+        $('#car_id_to_connect').val(selectedcountry).change();
+        document.getElementById('connect_car').value = (oTable36.row(this).data()[0]);
+        // console.log(oTable36.row(this).data());
+    });
 
 
 
+
+    $('#car_id_to_connect').select2({
+        allowClear: false,
+        maximumSelectionLength: 999,
+        closeOnSelect: false,
+        placeholder: "Изберете",
+        allowClear: true,
+        width: '100%',
+        templateResult: function(data, container) {
+            if (data.element) {
+                $(container).addClass($(data.element).attr("select2class"));
+            }
+            return data.text;
+        }
+    });
+
+
+
+    setTimeout(() => {
+        if ($(".dataTables_empty").length) {
+            $("#datatable-inside_wrapper").addClass("hidden");
+        }
+    }, 600);
+</script>

@@ -10,8 +10,10 @@ class BaseModel
     protected $date_create;
     protected $date_update;
     protected $active = 1;
+    protected $get_models;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->date_create = $this->date_update = time();
     }
 
@@ -42,6 +44,7 @@ class create_make extends view
     {
         $mark = new Mark;
         $model = new Model;
+        $obj = new BaseModel;
         $this->base = $_SESSION['base'];
 
         if (isset($_POST['carMark'])) {
@@ -78,28 +81,28 @@ class create_make extends view
         if (isset($_POST['create_brand'])) {
             $mark->name = $_POST['create_brand_name'];
             $this->createCarMark($mark);
-             header('Location: /create_make');
+            header('Location: /create_make');
         }
-        
-        if (isset($_POST['create_model']))   {
+
+        if (isset($_POST['create_model'])) {
             $model->name = $_POST['create_model_name'];
             $model->id_car_make = $_POST['carMark'];
             $this->createCarModel($model);
-             header('Location: /create_make');
+            header('Location: /create_make');
         }
-        if (isset($_POST['edit_mark']))   {
+        if (isset($_POST['edit_mark'])) {
             $mark->id_car_make = $_POST['edit_mark'];
             $mark->date_update = time();
             $mark->name = $_POST['mark_new_name'];
             $this->updateCarMark($mark);
-             header('Location: /create_make');
+            header('Location: /create_make');
         }
-        if (isset($_POST['edit_model']))   {
+        if (isset($_POST['edit_model'])) {
             $model->id_car_model = $_POST['edit_model'];
             $model->date_update = time();
             $model->name = $_POST['model_name_new'];
             $this->updateCarModel($model);
-             header('Location: /create_make');
+            header('Location: /create_make');
         }
 
 
@@ -114,29 +117,74 @@ class create_make extends view
             header("Location: /create_make");
         }
 
+        if (isset($_GET['get_models'])) {
+            $this->getCarModelByBrandName($_GET['get_models']);
+
+            echo json_encode($this->getCarModelByBrandName($_GET['get_models']));
+            exit;
+        }
+
+        if (isset($_GET['model_name'])) {
+            echo json_encode($this->getCarMotorByModelName($_GET['model_name']));
+            exit;
+        }
+        
+        if (isset($_POST['addMotor'])) {                    
+            $this->addMotorFuelToCar($_POST);
+            exit; 
+        }
+
+        
+
         if (isset($_SESSION['user'])) parent::__construct('create_mark_view.php');
         else parent::__construct('login_view.php');
     }
 
-    protected function createCarMark($mark) {
+    protected function createCarMark($mark)
+    {
         return $this->base->createCarMark($mark);
     }
 
-    protected function updateCarMark($mark) {
+    protected function updateCarMark($mark)
+    {
         $this->base->updateCarMark($mark);
     }
 
-    protected function createCarModel($model) {
+    protected function createCarModel($model)
+    {
         $this->base->createCarModel($model);
     }
 
-    protected function updateCarModel($model) {
+    protected function updateCarModel($model)
+    {
         $this->base->updateCarModel($model);
     }
-    protected function disableMark($disID) {
+    protected function disableMark($disID)
+    {
         $this->base->disableMark($disID);
     }
-    protected function disableModel($disID) {
+    protected function disableModel($disID)
+    {
         $this->base->disableModel($disID);
     }
+
+    protected function getCarModelByBrandName($brand)
+    {
+        return $this->base->getCarModelByBrandName($brand);
+    }
+
+    protected function getCarMotorByModelName($model_name)
+    {
+        return $this->base->getCarMotorByModelName($model_name);
+    }
+
+    protected function addMotorFuelToCar($_post) {
+        return $this->base->addMotorFuelToCar($_post);
+    }
+
+    // protected function getFuelByMotorName($motor_name) {
+
+    //     return $this->base->getFuelByMotorName($motor_name);
+        
+    // }
 }
