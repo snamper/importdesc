@@ -10,15 +10,15 @@ include("connection.php");
 /* Array of database columns which should be read and sent back to DataTables. Use a space where
  * you want to insert a non-database field (for example a counter or static image)
  */
-$aColumns = array( 'c.id_car_make','c.name', 'cm.name', 'ct.name', 'cf.cf_name','cv.cv_name', 'cm.id_car_model','cm.id_car_make as edit','cm.id_car_model as modelid','c.id_car_make as carid','c.active','cm.active');
+$aColumns = array( 'c.id_car_make','c.name', 'cm.name', 'ct.name', 'cm.id_car_model',  'cg.name', 'cm.id_car_make as edit','cm.id_car_model as modelid','c.id_car_make as carid','c.active','cm.active');
 /* Indexed column (used for fast and accurate table cardinality) */
 $sIndexColumn = "c.id_car_make as number";
 /* DB table to use */
 $sTable = "car_make c";
-$sJoin .= ' LEFT JOIN car_model cm ON c.id_car_make = cm.id_car_make ';
-$sJoin .= ' LEFT JOIN car_trim ct ON cm.id_car_model = ct.id_car_model';
-$sJoin .= ' LEFT JOIN car_fuel cf ON cf.cf_car_trim_id = ct.id_car_trim';
-$sJoin .= ' LEFT JOIN car_versie cv ON cv.cv_car_motor_id = ct.id_car_trim';
+$sJoin .= ' INNER JOIN car_model cm ON c.id_car_make = cm.id_car_make ';
+$sJoin .= ' INNER JOIN car_trim ct ON cm.id_car_model = ct.id_car_model';
+$sJoin .= ' INNER JOIN car_generation cg on cg.id_car_model = cm.id_car_model';
+
 
 /*
  * Local functions
@@ -53,6 +53,7 @@ if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
     $sLimit = "LIMIT ".intval( $_GET['iDisplayStart'] ).", ".
         intval( $_GET['iDisplayLength'] );
 }
+$sLimit = "LIMIT 1000";
 /*
  * Ordering
  */
@@ -145,7 +146,6 @@ $sQuery = "
         $sOrder
         $sLimit
     ";
-
 
 $rResult = mysqli_query($gaSql['link'], $sQuery, $gaSql['link'] ) or fatal_error( 'MySQL Error: ' . mysqli_errno($gaSql['link']) );
 mysqli_query($gaSql['link'], "SET character_set_results=utf8", $gaSql['link']);

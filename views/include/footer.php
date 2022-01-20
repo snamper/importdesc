@@ -119,14 +119,24 @@
                 this.api().columns('.select-filter').every(function() {
                     var column = this;
 
-                    if (column.header().innerText == "Make" || column.header().innerText == "Model") {
+                    if (column.header().innerText == "Make" || column.header().innerText == "Model" || column.header().innerText == "Motor" ) {
                         createSelect();
-                    }else {
-                        var textInputs = $(`<input class='form-control' name="${column.header().innerText}" placeholder="${column.header().innerText}" type="text" />`)
-                            .appendTo('.dataTables_length');
                     }
 
-
+                    if(column.header().innerText == "Fuel") {
+                        var select = $(`<select class="selecter js-brand-model-generate" id="${column.header().innerText}">
+                        <option value="77">Benzine</option>
+                        <option value="78">Diesel</option>
+                        <option value="394">Hybride</option>
+                        <option value="396">Electrisch</option>
+                        <option value="397">LPG</option>
+                        <option value="398">Aardgas</option>
+                        <option value="399">Alcohol</option>
+                        <option value="400">Cryogeen</option>
+                        <option value="401">Waterstof</option>
+                        </select>`)
+                            .appendTo('.dataTables_length')
+                    }
 
                     function createSelect() {
                         var select = $('<select class="selecter js-brand-model-generate" id="' + column.header().innerText + '"><option value="">' + column.header().innerText + '</option></select>')
