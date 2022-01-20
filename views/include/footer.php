@@ -119,7 +119,7 @@
                 this.api().columns('.select-filter').every(function() {
                     var column = this;
 
-                    if (column.header().innerText == "Make" || column.header().innerText == "Model" || column.header().innerText == "Motor" ) {
+                    if (column.header().innerText == "Make" || column.header().innerText == "Model" || column.header().innerText == "Motor" || column.header().innerText == "Versie" ) {
                         createSelect();
                     }
 
@@ -138,20 +138,6 @@
                             .appendTo('.dataTables_length')
                     }
 
-                    if(column.header().innerText == "Fuel") {
-                        var select = $(`<select class="selecter js-brand-model-generate" id="${column.header().innerText}">
-                        <option value="77">Benzine</option>
-                        <option value="78">Diesel</option>
-                        <option value="394">Hybride</option>
-                        <option value="396">Electrisch</option>
-                        <option value="397">LPG</option>
-                        <option value="398">Aardgas</option>
-                        <option value="399">Alcohol</option>
-                        <option value="400">Cryogeen</option>
-                        <option value="401">Waterstof</option>
-                        </select>`)
-                            .appendTo('.dataTables_length')
-                    }
 
                     function createSelect() {
                         var select = $('<select class="selecter js-brand-model-generate" id="' + column.header().innerText + '"><option value="">' + column.header().innerText + '</option></select>')
@@ -202,6 +188,7 @@
                             getQueryName = "model_name";
                             getQueryVal = trigger.value;
                             fetchSelectsData(getQueryName, getQueryVal, triggerIndex);
+
                             break;
 
                         default:
@@ -221,12 +208,32 @@
                                 return response.json();
                             })
                             .then(function(response) {
+                                console.log(response);
                                 fillSelect(response, triggerIndex);
                             })
                             .catch((error) => {
                                 console.log(error);
                                 return;
                             });
+                    }
+
+                    function fillGeneration(getQueryVal) {
+
+                    const url = `${location.origin}/create_make?fill_generation=${getQueryVal}`;
+                        fetch(url)
+                            .then(function(response) {
+                                // When the page is loaded convert it to text
+                                return response.json();
+                            })
+                            .then(function(response) {
+                                console.log(response);
+                                fillSelect(response, triggerIndex);
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                                return;
+                            });
+
                     }
 
                     function fillSelect(jsonData, triggerIndex) {
@@ -238,6 +245,14 @@
                         }
 
                         allSelects[triggerIndex].innerHTML = "";
+
+                          let emptyOption = Object.assign(
+                            document.createElement("option"), {
+                                "text": "Model",
+                                "value": ""
+                            });
+
+                           allSelects[triggerIndex].appendChild(emptyOption);
 
                         for (let key in jsonData) {
                             if (!jsonData.hasOwnProperty(key)) {
@@ -253,14 +268,11 @@
                                 option.setAttribute("data-car-model-id",jsonData[key].id_car_model);
 
                             allSelects[triggerIndex].appendChild(option);
-                            allSelects[triggerIndex].dispatchEvent(new Event('change'));
+
                         }
 
-                        let emptyOption = Object.assign(
-                            document.createElement("option"), {
-                                "text": "Model",
-                                "value": ""
-                            });
+                          allSelects[triggerIndex].dispatchEvent(new Event('change'));
+
 
                         allSelects[triggerIndex].insertBefore(emptyOption, allSelects[triggerIndex].firstChild);
 

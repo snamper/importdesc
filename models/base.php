@@ -159,6 +159,16 @@ class base
         return $result;
 
 	}
+
+    public function getGenerationByModelName($model_name) {
+        $dbDriver = new db_driver();
+        $query = "SELECT ct.name FROM car_model cm INNER JOIN car_trim ct on cm.id_car_model = ct.id_car_model 
+		WHERE cm.name = ?";
+        $stmt = $dbDriver->dbCon->prepare($query);
+        $stmt->execute([$model_name]);
+        $result = $stmt->fetchAll(PDO::FETCH_NAMED);
+        return $result;
+    }
 	function getCarEquipment($equipmentID)
 	{
 		$dbDriver = new db_driver1();

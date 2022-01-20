@@ -182,6 +182,7 @@ class create_make extends view
         return $this->base->addMotorFuelToCar($_post);
     }
 
+
     // protected function getFuelByMotorName($motor_name) {
 
     //     return $this->base->getFuelByMotorName($motor_name);
