@@ -4,7 +4,7 @@
         <form action="create_make" method="post">
             <div class="form-group">
                 <label class="control-label">Select Brand<span class="text-danger">*</span></label>
-                    <select class="form-control" name="carMark" id="carMark">
+                    <select class="form-control create_model" name="carMark" id="carMarkModel">
                         <option value="">-</option>
                     </select>
             </div>

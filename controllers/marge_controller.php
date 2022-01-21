@@ -127,6 +127,13 @@ class marge extends view{
 			die;
 			// return json_encode($employee_new);
 		}
+		if(isset($_POST['carModelSelectMot'])){
+			$modelID = $_POST['carModelSelectMot'];
+			$data = $this->getCarMotor($modelID);
+			echo $data;
+			die;
+			// return json_encode($employee_new);
+		}
 		if(isset($_POST['carEquipmentSelect'])){
 			$equipmentID = $_POST['carEquipmentSelect'];
 			$data = $this->getCarEquipment($equipmentID);
@@ -188,6 +195,15 @@ class marge extends view{
     }
     protected function getCarTrim($trimID){
 		$data = $this->base->getCarTrim($trimID);
+		$html_options = '';
+
+			foreach($data as $key => $value) {
+				$html_options = $html_options.'<option value="'. $value['id_car_trim'].'" >'.$value['name'].'</option>';
+			}
+		return $html_options; 
+    } 
+    protected function getCarMotor($trimID){
+		$data = $this->base->getCarMotor($trimID);
 		$html_options = '';
 
 			foreach($data as $key => $value) {

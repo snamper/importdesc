@@ -88,10 +88,12 @@
             <!-- END table -->
 
      
-    <td style="width:1%" class="valign-middle"><a href="#create-mark" data-toggle="modal" class="btn btn-sm btn-primary">Create Brand</a></td>
-    <td style="width:1%" class="valign-middle"><a href="#create-model" data-toggle="modal" class="btn btn-sm btn-primary">Create Model</a></td>
+    <td style="width:1%" class="valign-middle"><a   id ="create_brand" href="#create-mark" data-toggle="modal" class="btn btn-sm btn-primary JSfunc">Create Brand</a></td>
+    <td style="width:1%" class="valign-middle"><a   id ="create_model" href="#create-model" data-toggle="modal" class="btn btn-sm btn-primary JSfunc">Create Model</a></td>
+    <td style="width:1%" class="valign-middle"><a   id ="create_motor" href="#create-motor" data-toggle="modal" class="btn btn-sm btn-primary JSfunc">Create Motor</a></td>
+    <td style="width:1%" class="valign-middle"><a   id ="connect_fuel" href="#connect-fuel" data-toggle="modal" class="btn btn-sm btn-primary JSfunc">Connect Fuel</a></td>
+    <td style="width:1%" class="valign-middle"><a   id ="uitvoering_add" href="#uitvoering-add" data-toggle="modal" class="btn btn-sm btn-primary JSfunc">Add Uitvoering</a></td>
     <span class="btn btn-sm btn-primary js-add-merk">Add Information</span>  
-
 
 </div>
      
@@ -148,6 +150,45 @@
             </div>
             <div class="modal-body">
                 <?php include './views/edit_model_view.php' ?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="create-motor">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Create Motor</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></bdutton>
+            </div>
+            <div class="modal-body">
+                <?php include './views/create_motor.php' ?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="connect-fuel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Connect Fuel</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></bdutton>
+            </div>
+            <div class="modal-body">
+                <?php include './views/add_fuel.php' ?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="uitvoering-add">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Uitvoering</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></bdutton>
+            </div>
+            <div class="modal-body">
+                <?php include './views/uitvoering_add.php' ?>
             </div>
         </div>
     </div>

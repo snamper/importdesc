@@ -1109,3 +1109,89 @@ function carMarkAjaxFill() {
 
     });
 }
+
+
+$('.JSfunc').click(function () {
+
+    var carvalue = 1; // car
+    const carMark = document.querySelector(`.${this.id}`);
+
+    if (!carMark) {
+        return;
+    }
+    if (carvalue > 0) {
+        $.ajax({
+            url: 'create_car',
+            type: "POST",
+            data: 'carTypeSelect=' + carvalue,
+            success: function (data) {
+                const firstOptionHTML = "<option value='0'> - </option>";
+
+                carMark.innerHTML = firstOptionHTML + data;
+                $('.JSfunc').change();
+            }
+        })
+
+    }
+
+});
+
+
+$('#carMark, #carMarkFuel, #carMarkMotor,#carMarkUit').change(function () {
+    var carvalue = $(this).val();
+    const firstOptionHTML = "<option value='0'> - </option>";
+    if (this.id == "carMarkFuel") {
+        var carModel = document.getElementById('carModelFuel');
+    } else if(this.id == "carMarkMotor"){
+        var carModel = document.getElementById('carModelMotor');
+    } else if(this.id == "carMarkUit"){
+        var carModel = document.getElementById('carModelUit');
+    } else{
+        var carModel = document.getElementById('carModel');
+    }
+    
+
+    if (!carModel) {
+        return;
+    }
+
+    if (carvalue > 0) {
+
+        $.ajax({
+            url: 'marge',
+            type: "POST",
+            data: 'carMarkSelect=' + carvalue,
+            success: function (data) {
+                carModel.innerHTML = firstOptionHTML + data;
+            }
+        })
+    } else {
+        document.getElementById('carModel').innerHTML = firstOptionHTML;
+    }
+
+    if (carvalue == 0) $('#carMarkInput').val('');
+    else $('#carMarkInput').val($(this).find('option:selected').text());
+});
+
+$('#carModelFuel, #carModelUit').change(function () {
+    var carvalue = $(this).val();
+    if(this.id == "carModelUit"){
+        var carMotor = document.getElementById('carMotorUit');
+    } else{
+        var carMotor = document.getElementById('carMotor');
+    }
+
+    if (!carMotor) { return; }
+    if (carMotor) {
+
+            $.ajax({
+                url: 'marge',
+                type: "POST",
+                data: 'carModelSelectMot=' + carvalue,
+                success: function (data) {
+                    carMotor.innerHTML = data;
+                }
+            })
+        }
+
+});
