@@ -128,9 +128,15 @@ class create_make extends view
             echo json_encode($this->getCarMotorByModelName($_GET['model_name']));
             exit;
         }
+
+        if (isset($_GET['model_name_versie'])) {
+            
+            echo json_encode($this->getCarVersiesByModelName($_GET['model_name_versie']));
+            exit;
+        }        
         
         if (isset($_POST['addMotor'])) {                    
-            $this->addMotorFuelToCar($_POST);
+            $this->addCarMerk($_POST);
             exit; 
         }
 
@@ -178,8 +184,13 @@ class create_make extends view
         return $this->base->getCarMotorByModelName($model_name);
     }
 
-    protected function addMotorFuelToCar($_post) {
-        return $this->base->addMotorFuelToCar($_post);
+    protected function addCarMerk($_post) {
+        return $this->base->addCarMerk($_post);
+    }
+
+    protected function getCarVersiesByModelName($model_name) {
+
+        return $this->base->getCarVersiesByModelName($model_name);
     }
 
 

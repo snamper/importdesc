@@ -68,6 +68,33 @@ class base
 	
 
 	}
+
+	public function getModelByName($model_name){		
+
+		$dbDriver = new db_driver();
+		$query = "SELECT * FROM car_model WHERE `name` = ?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$model_name]);
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+		return $result;
+
+	}
+
+	public function getCarVersiesByModelName($model_name) {
+		$dbDriver = new db_driver();
+
+		$car_model = $this->getModelByName($model_name);
+
+		$query = "SELECT id_car_generation, `name` FROM car_generation WHERE id_car_model = ?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$car_model['id_car_model']]);
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		return $result;
+		
+	}
+
     function createCarMark($mark)
     {
         $dbDriver = new db_driver();
@@ -151,7 +178,7 @@ class base
 	public function getCarMotorByModelName($model_name) {
 		
 		$dbDriver = new db_driver();
-        $query = "SELECT ct.name FROM car_model cm INNER JOIN car_trim ct on cm.id_car_model = ct.id_car_model 
+        $query = "SELECT ct.name, ct.id_car_trim FROM car_model cm INNER JOIN car_trim ct on cm.id_car_model = ct.id_car_model 
 		WHERE cm.name = ?";
         $stmt = $dbDriver->dbCon->prepare($query);
         $stmt->execute([$model_name]);
@@ -326,42 +353,31 @@ class base
 		return $result;
 	}
 
-	public function addMotorFuelToCar($_post) {
-
-		$brand = $this->getCarBrandByName($_post['brandName']);
-	
-
+	public function addCarMerk($_post) {
+		
 		$dbDriver = new db_driver();
-		$query1 = "INSERT INTO car_trim (id_car_model, `name`) VALUES (
+		$query1 = "INSERT INTO car_trim (id_car_model, id_car_serie, `name`, fuel_name) VALUES (
+			?,
+			?,
 			?,
 			?
 		)";
-		// $dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
+
 		$stmt1 = $dbDriver->dbCon->prepare($query1);
-		$stmt1->execute([ $_post['modelId'], $_post['addMotor'] ]);
+		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
+		$stmt1->execute([ $_post['modelId'], 458, $_post['addMotor'], $_post['fuelName'] ]);
 		$motor_id = $dbDriver->dbCon->lastInsertId();
 
-		// SECOND QUERY 		
-		$query2 = "INSERT INTO car_fuel (cf_name, cf_car_trim_id, cf_car_model_id, cf_car_make_id) VALUES (
-			?,
-			?,
-			?,
-			?
-		)";
-		// $dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
-		$stmt2 = $dbDriver->dbCon->prepare($query2);
-		$stmt2->execute([ $_post['addFuel'], $motor_id, $_post['modelId'], $brand['id_car_make']]);
+		
 
 		// QUERY 3 
-		$query3 = "INSERT INTO car_versie (cv_name, cv_car_brand_id, cv_car_model_id, cv_car_motor_id) VALUES (
-			?,
-			?,
+		$query3 = "INSERT INTO car_generation (id_car_model, `name`) VALUES (
 			?,
 			?
 		)";
-		// $dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
+		
 		$stmt3 = $dbDriver->dbCon->prepare($query3);
-		$stmt3->execute([ $_post['versie'], $brand['id_car_make'], $_post['modelId'], $motor_id]);
+		$stmt3->execute([$_post['modelId'], $_post['generationName']]);
 	}
 
 	public function getFuelByMotorName($motor_name) {

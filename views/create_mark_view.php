@@ -90,7 +90,7 @@
      
     <td style="width:1%" class="valign-middle"><a href="#create-mark" data-toggle="modal" class="btn btn-sm btn-primary">Create Brand</a></td>
     <td style="width:1%" class="valign-middle"><a href="#create-model" data-toggle="modal" class="btn btn-sm btn-primary">Create Model</a></td>
-    <span class="btn btn-sm btn-primary js-add-motor">Add Information</span>  
+    <span class="btn btn-sm btn-primary js-add-merk">Add Information</span>  
 
 
 </div>
