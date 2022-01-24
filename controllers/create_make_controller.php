@@ -42,12 +42,13 @@ class create_make extends view
 {
     public function __construct()
     {
+
         $mark = new Mark;
         $model = new Model;
         $obj = new BaseModel;
         $this->base = $_SESSION['base'];
 
-        if (isset($_POST['carMark'])) {
+        if (isset($_POST['create_brand_name'])) {        
             if ($_POST['carMarkInput']) {
                 $mark->id_car_make = $_POST['carMark'];
                 $mark->name = $_POST['carMarkInput'];
@@ -60,37 +61,43 @@ class create_make extends view
                     $this->updateCarMark($mark);
                 }
             }
+            header('Location: /create_make');
+        }
 
-            if (($_POST['carMark'] || $insertId) && $_POST['carModelInput']) {
-                $model->id_car_make = $insertId ?? $_POST['carMark'];
-                $model->id_car_model = $_POST['carModel'];
-                $model->name = $_POST['carModelInput'];
+        if (($_POST['carMark'] || $insertId) && isset($_POST['carModelInput']) ) {
+            $model->id_car_make = $insertId ?? $_POST['carMark'];
+            $model->id_car_model = $_POST['carModel'];
+            $model->name = $_POST['carModelInput'];
 
-                if ($_POST['carModel'] == 0) {
-                    $this->createCarModel($model);
-                } else {
-                    $model->date_update = time();
-                    $model->active = $_POST['active'];
-                    $this->updateCarModel($model);
-                }
+            if ($_POST['carModel'] == 0) {
+                $this->createCarModel($model);
+            } else {
+                $model->date_update = time();
+                $model->active = $_POST['active'];
+                $this->updateCarModel($model);
             }
 
             header('Location: /create_make');
         }
 
-        if (isset($_POST['create_brand'])) {
+            
+    
+
+        if (isset($_POST['create_brand'])) {            
             $mark->name = $_POST['create_brand_name'];
             $this->createCarMark($mark);
             header('Location: /create_make');
         }
 
-        if (isset($_POST['create_model'])) {
+        if (isset($_POST['create_model'])) {;
+           
             $model->name = $_POST['create_model_name'];
             $model->id_car_make = $_POST['carMark'];
             $this->createCarModel($model);
             header('Location: /create_make');
         }
         if (isset($_POST['edit_mark'])) {
+    
             $mark->id_car_make = $_POST['edit_mark'];
             $mark->date_update = time();
             $mark->name = $_POST['mark_new_name'];
@@ -104,8 +111,13 @@ class create_make extends view
             $this->updateCarModel($model);
             header('Location: /create_make');
         }
-
-
+        if(isset($_POST['create_motor'])) {           
+            $this->createMotor($_POST);  
+        }
+        if(isset($_POST['add_uitvoering'])) {
+            $this->createUitvoering($_POST);
+            header('Location: /create_make');
+        }
         if (isset($_REQUEST['disable_mark'])) {
             $disID = addslashes($_REQUEST['disable_mark']);
             $this->disableMark($disID);
@@ -134,12 +146,6 @@ class create_make extends view
             echo json_encode($this->getCarVersiesByModelName($_GET['model_name_versie']));
             exit;
         }        
-        
-        if (isset($_POST['addMotor'])) {                    
-            $this->addCarMerk($_POST);
-            exit; 
-        }
-
         
 
         if (isset($_SESSION['user'])) parent::__construct('create_mark_view.php');
@@ -191,6 +197,17 @@ class create_make extends view
     protected function getCarVersiesByModelName($model_name) {
 
         return $this->base->getCarVersiesByModelName($model_name);
+    }
+
+    protected function createMotor($_post) {
+        
+        return $this->base->createMotor($_post);
+    }
+
+
+    protected function createUitvoering($_post) {
+
+        $this->base->createUitvoering($_post);
     }
 
 

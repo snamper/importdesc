@@ -87,44 +87,35 @@
 <script>
     var oTable366 = $('#datatables-makemodel')
         .DataTable({
-                "bprocessing": true,
-                "bserverSide": true,
-                "sServerMethod": "POST",
-                "sAjaxSource": "./data/data-makemodel.php",
-                "lengthMenu": [
-                    [10, 25, 50, -1],
-                    [10, 25, 50, "All"]
-                ],
-                "columnDefs": [{
-                        "width": "5%",
-                        "targets": 4
-                    },
-                    {
-                        "width": "5%",
-                        "targets": 3
+            "bprocessing": true,
+            "bserverSide": true,
+            "sServerMethod": "POST",
+            "sAjaxSource": "./data/data-makemodel.php",
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+            select: false,
+            dom: 'Blfrtip',
+            // 'order': [[1, 'asc']],
+            // 'createdRow': function(row, data, dataIndex) {
+            //     if (data[0] == 0 || data[1] == 0) {
+            //         $(row).addClass('redClass');
+            //     }
+            // },
+            initComplete: function() {
+                // const addMerkButton = document.querySelector(".js-add-merk");
+                // addMerkButton.addEventListener("click", addMerk);
+
+                this.api().columns('.select-filter').every(function() {
+                    var column = this;
+
+                    if (column.header().innerText == "Make" || column.header().innerText == "Model" || column.header().innerText == "Motor") {
+                        createSelect();
                     }
-                ],
-                select: false,
-                dom: 'Blfrtip',
-                // 'order': [[1, 'asc']],
-                'createdRow': function(row, data, dataIndex) {
-                    // if (data[10] == 0 || data[11] == 0) {
-                    //     $(row).addClass('redClass');
-                    // }
-                },
-                initComplete: function() {
-                    const addMerkButton = document.querySelector(".js-add-merk");
-                    addMerkButton.addEventListener("click", addMerk);
 
-                    this.api().columns('.select-filter').every(function() {
-                        var column = this;
-
-                        if (column.header().innerText == "Make" || column.header().innerText == "Model" || column.header().innerText == "Motor" || column.header().innerText == "Versie") {
-                            createSelect();
-                        }
-
-                        if (column.header().innerText == "Fuel") {
-                            var select = $(`<select name='Fuel' class="selecter js-brand-model-generate" id="${column.header().innerText}">
+                    if (column.header().innerText == "Fuel") {
+                        var select = $(`<select name='Fuel' class="selecter js-brand-model-generate" id="${column.header().innerText}">
                         <option data-car-fuel-id="77" value="Benzine">Benzine</option>
                         <option data-car-fuel-id="78" value="Diesel">Diesel</option>
                         <option data-car-fuel-id="394" value="Hybride">Hybride</option>
@@ -135,240 +126,111 @@
                         <option data-car-fuel-id="400" value="Cryogeen">Cryogeen</option>
                         <option data-car-fuel-id="401" value="Waterstof">Waterstof</option>
                         </select>`)
-                                .appendTo('.dataTables_length')
-                        }
-
-
-                        function createSelect() {
-                            var select = $('<select class="selecter js-brand-model-generate" id="' + column.header().innerText + '"><option value="">' + column.header().innerText + '</option></select>')
-                                .appendTo('.dataTables_length')
-                                .on('change', function() {
-                                    var val = $.fn.dataTable.util.escapeRegex(
-                                        $(this).val()
-                                    );
-
-                                    column
-                                        .search(val ? '^' + val + '$' : '', true, false)
-                                        .draw();
-                                });
-
-                            column.data().unique().sort().each(function(d, j) {
-                                if (d != null) {
-                                    select.append('<option value="' + d + '">' + d + '</option>');
-
-                                }
-                            });
-                        }
-
-                    });
-
-                    const dataGenerators = document.querySelectorAll(".js-brand-model-generate");
-                    for (let select of dataGenerators) {
-                        select.addEventListener("change", changeData);
+                            .appendTo('.dataTables_length')
                     }
 
-                    function changeData(e) {
-                        const trigger = e.currentTarget;
-                        const triggerIndex = [...trigger.parentElement.children].indexOf(trigger);
-                        let getQueryName = "";
-                        let getQueryVal = "";
 
+                    function createSelect() {
+                        var select = $('<select class="selecter js-brand-model-generate" id="' + column.header().innerText + '"><option value="">' + column.header().innerText + '</option></select>')
+                            .appendTo('.dataTables_length')
+                            .on('change', function() {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
 
-                        const brandSelect = document.querySelector("#Make");
-                        const modelSelect = document.querySelector("#Model");
-
-                        switch (triggerIndex) {
-                            case 1:
-                                getQueryName = "get_models";
-                                getQueryVal = trigger.value;
-                                fetchSelectsData(getQueryName, getQueryVal, triggerIndex);
-                                break;
-
-                            case 2:
-                                getQueryName = "model_name";
-                                getQueryVal = trigger.value;
-                                fetchSelectsData(getQueryName, getQueryVal, triggerIndex);
-
-                                const url = `${location.origin}/create_make?model_name_versie=${getQueryVal}`;
-
-                                fetch(url)
-                                    .then(function(response) {
-                                        // When the page is loaded convert it to text
-                                        return response.json();
-                                    })
-                                    .then(function(response) {
-                                        fillSelect(response, 4);
-                                    })
-                                    .catch((error) => {
-                                        console.log(error);
-                                        return;
-                                    });                                    
-                        
-                            break;
-
-                        default:
-                        // something if anything not match
-                    }
-
-                    function fetchSelectsData(getQueryName, getQueryVal, triggerIndex) {
-
-                        if (getQueryVal == "") {
-                            return;
-                        }
-
-                        const url = `${location.origin}/create_make?${getQueryName}=${getQueryVal}`;
-                        fetch(url)
-                            .then(function(response) {
-                                // When the page is loaded convert it to text
-                                return response.json();
-                            })
-                            .then(function(response) {
-                                fillSelect(response, triggerIndex);
-                            })
-                            .catch((error) => {
-                                console.log(error);
-                                return;
-                            });
-                    }
-
-                    function fillGeneration(getQueryVal) {
-
-                        const url = `${location.origin}/create_make?fill_generation=${getQueryVal}`;
-                        fetch(url)
-                            .then(function(response) {
-                                // When the page is loaded convert it to text
-                                return response.json();
-                            })
-                            .then(function(response) {
-                                console.log(response);
-                                fillSelect(response, triggerIndex);
-                            })
-                            .catch((error) => {
-                                console.log(error);
-                                return;
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
                             });
 
-                    }
+                        column.data().unique().sort().each(function(d, j) {
+                            if (d != null) {
+                                select.append('<option value="' + d + '">' + d + '</option>');
 
-                    function fillSelect(jsonData, triggerIndex) {
-
-                        const allSelects = document.querySelectorAll(".js-brand-model-generate");
-                        let placeHolder = "";
-                        if (!allSelects[triggerIndex]) {
-                            return;
-                        }
-
-                        allSelects[triggerIndex].innerHTML = "";
-
-                        switch(triggerIndex) {
-                            case 1:
-                                placeHolder = "Model"
-                                break;
-                            case 4:
-                                placeHolder = "Versie"
-                                break;
-                            default:
-                                placeHolder = "Select.."
-                        }
-
-                        let emptyOption = Object.assign(
-                            document.createElement("option"), {
-                                "text": placeHolder,
-                                "value": ""
-                            });
-
-                        allSelects[triggerIndex].appendChild(emptyOption);
-
-                        for (let key in jsonData) {
-                            if (!jsonData.hasOwnProperty(key)) {
-                                continue;
                             }
-
-                            let option = Object.assign(
-                                document.createElement("option"), {
-                                    "text": jsonData[key].name,
-                                    "value": jsonData[key].name,
-                                });
-                            
-                            if(typeof jsonData[key].id_car_make !== "undefined") {
-                                option.setAttribute("data-car-brand-id", jsonData[key].id_car_make);
-                            }else if(typeof jsonData[key].id_car_model !== "undefined") {
-                                option.setAttribute("data-car-model-id",jsonData[key].id_car_model);
-                            }else if(typeof jsonData[key].id_car_generation !== "undefined"){
-                                option.setAttribute("data-car-generation-id", jsonData[key].id_car_generation);
-                            }else if(typeof jsonData[key].id_car_trim !== "undefined") {
-                                option.setAttribute("data-car-trim-id", jsonData[key].id_car_trim);
-                            }
-                            if(triggerIndex == 1) { // ADD MODEL ID ON CHANGE BRAND
-                                option.setAttribute("data-car-model-id",jsonData[key].id_car_model);
-                            }
-
-                            allSelects[triggerIndex].appendChild(option);
-
-                        }
-
-                        allSelects[triggerIndex].dispatchEvent(new Event('change'));
-
-
-                        allSelects[triggerIndex].insertBefore(emptyOption, allSelects[triggerIndex].firstChild);
-
+                        });
                     }
 
-                }
-
-                function addMerk(e) {
-
-                    const allSelects = document.querySelectorAll(".js-brand-model-generate");
-                    for(let select of allSelects) {
-                        if(select.value == "") {
-                            alert("All selects are required");
-                            return;
-                        }
-                    }
-
-                    const modelSelect = document.querySelector("#Model");
-                    const motorSelect = document.querySelector("#Motor");
-                    const fuelSelect = document.querySelector("#Fuel");
-                    const versieSelect = document.querySelector("#Versie");                    
-                    const brandNameSelect = document.querySelector("#Make");
-
-
-                    const modelID = modelSelect.options[modelSelect.selectedIndex].getAttribute("data-car-brand-id");
-                    const brandID = modelSelect.options[modelSelect.selectedIndex].getAttribute("data-car-model-id");
-                    const trimID = motorSelect.options[motorSelect.selectedIndex].getAttribute("data-car-trim-id");
-                    const fuelID =  fuelSelect.options[fuelSelect.selectedIndex].getAttribute("data-car-fuel-id");
-                    const generationID = versieSelect.options[versieSelect.selectedIndex].getAttribute("data-car-generation-id");
-                    const generationName = versieSelect.options[versieSelect.selectedIndex].innerText;
-                    const fuelName = fuelSelect.options[fuelSelect.selectedIndex].innerText;
-
-                    const dataPost = {
-                        'addMotor': trimID,
-                        'addFuel': fuelID,
-                        'fuelName':fuelName,
-                        'brandId': brandID,
-                        'modelId': modelID,
-                        'versie': generationID,
-                        'generationName': generationName
-                    }
-
-                    $.ajax({
-                        type: "POST",
-                        url: `${location.origin}/create_make`,
-                        data: dataPost,
-                        success: function(data) {
-                            console.log(data);
-                            // location.reload();
-
-                        },
-                        error: function(request, status, error) {
-                            console.log(error);
-                        }
-                    });
-                }
-            },
+                });
+            },         
 
             // select: true,
         });
+
+        var oTable367 = $('#datatables-makemodel-models')
+        .DataTable({
+            "bprocessing": true,
+            "bserverSide": true,
+            "sServerMethod": "POST",
+            "sAjaxSource": "./data/data-makemodel-models.php",
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+            select: false,
+            dom: 'Blfrtip',
+            // 'order': [[1, 'asc']],
+            // 'createdRow': function(row, data, dataIndex) {
+            //     if (data[0] == 0 || data[1] == 0) {
+            //         $(row).addClass('redClass');
+            //     }
+            // },
+            initComplete: function() {
+                // const addMerkButton = document.querySelector(".js-add-merk");
+                // addMerkButton.addEventListener("click", addMerk);
+
+                this.api().columns('.select-filter').every(function() {
+                    var column = this;
+
+                    if (column.header().innerText == "Make" || column.header().innerText == "Model" || column.header().innerText == "Motor") {
+                        createSelect();
+                    }
+
+                    if (column.header().innerText == "Fuel") {
+                        var select = $(`<select name='Fuel' class="selecter js-brand-model-generate" id="${column.header().innerText}">
+                        <option data-car-fuel-id="77" value="Benzine">Benzine</option>
+                        <option data-car-fuel-id="78" value="Diesel">Diesel</option>
+                        <option data-car-fuel-id="394" value="Hybride">Hybride</option>
+                        <option data-car-fuel-id="396" value="Electrisch">Electrisch</option>
+                        <option data-car-fuel-id="397" value="LPG">LPG</option>
+                        <option data-car-fuel-id="398" value="Aardgas">Aardgas</option>
+                        <option data-car-fuel-id="399" value="Alcohol">Alcohol</option>
+                        <option data-car-fuel-id="400" value="Cryogeen">Cryogeen</option>
+                        <option data-car-fuel-id="401" value="Waterstof">Waterstof</option>
+                        </select>`)
+                            .appendTo('.dataTables_length')
+                    }
+
+
+                    function createSelect() {
+                        var select = $('<select class="selecter js-brand-model-generate" id="' + column.header().innerText + '"><option value="">' + column.header().innerText + '</option></select>')
+                            .appendTo('.dataTables_length')
+                            .on('change', function() {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function(d, j) {
+                            if (d != null) {
+                                select.append('<option value="' + d + '">' + d + '</option>');
+
+                            }
+                        });
+                    }
+
+                });
+            },         
+
+            // select: true,
+        });
+
+
+
     var oTable36 = $('#datatable-calculations')
         .DataTable({
             "bprocessing": true,
@@ -431,10 +293,10 @@
 
     $('#datatables-makemodel').on('click', 'tr', function() {
 
-        document.getElementById('mark_old_name').value = (oTable366.row(this).data()[1]);
-        document.getElementById('edit_mark').value = (oTable366.row(this).data()[9]);
-        document.getElementById('model_name_old').value = (oTable366.row(this).data()[2]);
-        document.getElementById('edit_model').value = (oTable366.row(this).data()[8]);
+        // document.getElementById('mark_old_name').value = (oTable366.row(this).data()[1]);
+        // document.getElementById('edit_mark').value = (oTable366.row(this).data()[9]);
+        // document.getElementById('model_name_old').value = (oTable366.row(this).data()[2]);
+        // document.getElementById('edit_model').value = (oTable366.row(this).data()[8]);
         // console.log(oTable366.row(this).data());
     });
 

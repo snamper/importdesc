@@ -40,17 +40,17 @@
 
 	$route['show_cars'] = 'controllers/show_cars_controller.php';
 
-
+	
     $route['create_make'] = 'controllers/create_make_controller.php';
-
 	$route['edit_car'] = 'controllers/edit_car_controller.php';
 
 	$route['calculation'] = 'controllers/calculation_controller.php';	
-
 	$route['show_calculations'] = 'controllers/show_calculations_controller.php';
 	
 	$route['click_model'] = 'controllers/click_model_controller.php';
 	$route['click_model2'] = 'controllers/click_model_controller-2.php';
+
+	$route['create_make_new'] = 'controllers/create_make_new_controller.php';
 
 	
 	

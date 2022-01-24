@@ -380,6 +380,86 @@ class base
 		$stmt3->execute([$_post['modelId'], $_post['generationName']]);
 	}
 
+	public function getMotorsByMake($make_id) {
+
+		$dbDriver = new db_driver();
+		$query = "SELECT * FROM car_motor WHERE cm_make_id = ?";		
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$make_id]);
+		$result = $stmt->fetchAll();
+
+		return $result;
+	}
+
+	public function getUitvoeringsByMake($make_id) {
+
+		$dbDriver = new db_driver();
+		$query = "SELECT * FROM car_make_uitvoering WHERE cmu_make_id = ?";		
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$make_id]);
+		$result = $stmt->fetchAll();
+
+		return $result;
+	}	
+
+	public function getFuelByMotor($motor_id) {
+
+		$dbDriver = new db_driver();
+		$query = "SELECT cm_fuel_id, ctw.conversie_naam  FROM car_motor
+		INNER JOIN conversie_tabel_gwi ctw 
+		ON ctw.conversie_tabel_ID = car_motor.cm_fuel_id WHERE cm_id = ?";		
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$motor_id]);
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		return $result;
+
+	}
+
+	public function getMotorsByFuel($fuel_id, $make_id) {
+
+		$dbDriver = new db_driver();
+		$query = "SELECT * FROM car_motor WHERE cm_fuel_id = $fuel_id AND cm_make_id = $make_id";		
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$fuel_id, $make_id]);
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		return $result;
+
+	}
+
+	public function createMotor($_post) 
+	{
+		
+		$dbDriver = new db_driver();
+		$query1 = "INSERT INTO car_motor (cm_name, cm_fuel_id, cm_make_id) VALUES (
+			?,
+			?,
+			?
+		)";		
+
+		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
+		$stmt1 = $dbDriver->dbCon->prepare($query1);
+		$stmt1->execute([ $_post['create_motor_name'], $_post['fuelType'], $_post['carMark']]);
+
+	}
+
+	public function createUitvoering($_post) 
+	{
+
+		$dbDriver = new db_driver();
+
+		$query1 = "INSERT INTO car_make_uitvoering (cmu_name, cmu_make_id) VALUES (?,?)";	
+	
+		// $dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
+		$stmt1 = $dbDriver->dbCon->prepare($query1);
+		$stmt1->execute([$_post['uitvoering_create'], $_post['carMark']]);
+	}
+
 	public function getFuelByMotorName($motor_name) {
 
 		$dbDriver = new db_driver();

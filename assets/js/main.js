@@ -1195,3 +1195,144 @@ $('#carModelFuel, #carModelUit').change(function () {
         }
 
 });
+
+; (function (window, document) {
+
+    const createCarNewPage = document.querySelector("#createCarNew");
+
+    if(!createCarNewPage) {
+        return;
+    }
+
+    const carMark = document.querySelector('#carMark');
+    const carMotor = document.querySelector('#carMotor');
+    const carFuel = document.querySelector('#carFuel');
+
+  
+    carMark.addEventListener("change", (e) => {
+
+        //FETCH MOTORS 
+        const urlFetchMotors = `${location.origin}/create_make_new?make_id_get_motors=${e.currentTarget.value}`;
+        fetch(urlFetchMotors)
+        .then(function (response) {    
+            return response.json();
+        })
+        .then(function (response) {
+            fillSelectFromJson("#carMotor", response, "cm_name", "cm_id");
+        })
+        .catch((error) => {
+            console.log(error);
+            return;
+        });
+
+
+        // FETCH Uitvoering
+        const urlFetchUitvoering = `${location.origin}/create_make_new?make_id_get_uitvoering=${e.currentTarget.value}`;
+
+
+        fetch(urlFetchUitvoering)
+        .then(function (response) {    
+            return response.json();
+        })
+        .then(function (response) {
+            fillSelectFromJson("#carUitvoering", response, "cmu_name", "cmu_make_id" );
+        })
+        .catch((error) => {
+            console.log(error);
+            return;
+        });
+
+    });
+
+
+    [carMotor, carFuel].map(element => element.addEventListener("change", (e) => {
+        const trigger = e.currentTarget;
+
+    
+        if(trigger.id == "carMotor") {
+
+            if(trigger.value == "") {
+                let fuelHTML = `<option value="">-</option>
+                <option value="77">Benzine</option>
+                <option value="78">Diesel</option>
+                <option value="394">Hybride</option>
+                <option value="396">Electrisch</option>
+                <option value="397">LPG</option>
+                <option value="398">Aardgas</option>
+                <option value="399">Alcohol</option>
+                <option value="400">Cryogeen</option>
+                <option value="401">Waterstof</option>
+                `;
+
+                carFuel.innerHTML = fuelHTML;
+            }
+
+            const urlGetFuels = `${location.origin}/create_make_new?motor_id_get_fuel=${trigger.value}`;
+
+            fetch(urlGetFuels)
+            .then(function (response) {    
+                return response.json();
+            })
+            .then(function (response) {
+                fillSelectFromJson("#carFuel", response, "conversie_naam", "cm_fuel_id" );
+            })
+            .catch((error) => {
+                console.log(error);
+                return;
+            });
+        }else { // ONCHANGE #carFuel
+            const selectedMakeId = document.querySelector("#carMark").value;
+            const urlGetMotorsByFuel = `${location.origin}/create_make_new?fuel_id_get_motors=${trigger.value}&car_make_id=${selectedMakeId}`;
+
+            const motorVal = document.querySelector("#carMotor").value;
+            if(motorVal != "") {
+                return;
+            }
+
+            fetch(urlGetMotorsByFuel)
+            .then(function (response) {    
+                return response.json();
+            })
+            .then(function (response) {
+                fillSelectFromJson("#carMotor", response, "cm_name", "cm_id");
+            })
+            .catch((error) => {
+                console.log(error);
+                return;
+            });
+        }
+    }));  
+
+
+
+})(window, document);
+
+function fillSelectFromJson(selector, jsonData, selectTextProp, selectValProp, changeInnerHTML = false){
+    
+    let emptyOption = Object.assign(
+        document.createElement("option"), {
+            "text": "-",
+            "value": ""
+        });
+ 
+    const selectEl = document.querySelector(`${selector}`);
+
+    selectEl.innerHTML = "";
+    selectEl.appendChild(emptyOption);
+
+    for (let key in jsonData) {
+        if (!jsonData.hasOwnProperty(key)) {
+            continue;
+        }
+        let option = Object.assign(
+            document.createElement("option"), {
+                "text": jsonData[key][selectTextProp],
+                "value": jsonData[key][selectValProp],
+            });
+
+        selectEl.appendChild(option)
+    }
+}
+
+
+// createCarNew
