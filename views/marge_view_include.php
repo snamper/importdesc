@@ -2,7 +2,7 @@
         <div class="col-xs-12 table-list">
             <form action="calculation" method="POST" class="listing__form">
                 <div class="dashboardPageTitle text-center">
-                    <h2 style="opacity: 0;">Placeholder</h2>
+                    <!-- <h2 style="opacity: 0;">Placeholder</h2> -->
                 </div>
                 <div class="dashboardBoxBg mb30">
                     <div class="row">
@@ -21,7 +21,7 @@
 
                             <div class="row str">
                                 <div class="col-sm-12">
-                                    <h4>Auto en BPM</h4>
+                                    <h4>Price Calculation</h4>
                                 </div>
                             </div>
 

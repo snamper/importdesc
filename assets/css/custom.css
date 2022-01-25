@@ -71,11 +71,11 @@
     text-align-last: center;
 }
 
-#datatables-makemodel_filter{
+.dataTables_filter{
     text-align: right;
 }
 
-#datatables-makemodel_filter label{
+.dataTables_filter label{
     width: 20%;
     align-items: center;
     display: inline-flex;
@@ -90,6 +90,6 @@
     color: red;
 }
 
-#createBrandPage .dataTable {
+#createMake .dataTable {
     width: 100%!important;
 }
