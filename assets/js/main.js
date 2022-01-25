@@ -1307,6 +1307,31 @@ $('#carModelFuel, #carModelUit').change(function () {
 
 })(window, document);
 
+; (function (window, doc) {
+
+    const bootstrapTabs = doc.querySelectorAll("#createMake .nav-tabs .nav-item");
+
+    if(!bootstrapTabs) {
+        return;
+    }
+
+    for(let tab of bootstrapTabs) {
+        tab.addEventListener("click", (e) => {
+            if (typeof URLSearchParams !== 'undefined') {
+                const url = new URL(window.location);
+                const params = url.searchParams;
+                        
+               params.delete("active_tab");
+               params.set('active_tab', 'tab');
+               console.log(params.toString())
+                
+              } else {
+                console.log(`Your browser ${navigator.appVersion} does not support URLSearchParams`)
+              }
+        });
+    }
+})(window, document);
+
 function fillSelectFromJson(selector, jsonData, selectTextProp, selectValProp, changeInnerHTML = false){
     
     let emptyOption = Object.assign(

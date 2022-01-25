@@ -95,6 +95,7 @@
                 [10, 25, 50, -1],
                 [10, 25, 50, "All"]
             ],
+            stateSave: true,
             select: false,
             dom: 'Blfrtip',
             "columnDefs": [
@@ -169,20 +170,12 @@
                 [10, 25, 50, "All"]
             ],
             select: false,
+            stateSave: true,
             dom: 'Blfrtip',
             "columnDefs": [
                  { "width": "8px", "targets": 0 }
             ],
-            // 'order': [[1, 'asc']],
-            // 'createdRow': function(row, data, dataIndex) {
-            //     if (data[0] == 0 || data[1] == 0) {
-            //         $(row).addClass('redClass');
-            //     }
-            // },
-            initComplete: function() {
-                // const addMerkButton = document.querySelector(".js-add-merk");
-                // addMerkButton.addEventListener("click", addMerk);
-
+            initComplete: function() {      
                 this.api().columns('.select-filter').every(function() {
                     var column = this;
 
@@ -246,6 +239,7 @@
             ],
             select: false,
             dom: 'Blfrtip',
+            stateSave: true,
             "columnDefs": [
                  { "width": "8px", "targets": 0 }
             ],
@@ -322,6 +316,7 @@
             ],
             select: false,
             dom: 'Blfrtip',
+            stateSave: true,
             "columnDefs": [
                  { "width": "8px", "targets": 0 }
             ],

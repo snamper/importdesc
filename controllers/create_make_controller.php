@@ -94,7 +94,7 @@ class create_make extends view
             $model->name = $_POST['create_model_name'];
             $model->id_car_make = $_POST['carMark'];
             $this->createCarModel($model);
-            header('Location: /create_make');
+            header('Location: /create_make?active_tab=tab2');
         }
         if (isset($_POST['edit_mark'])) {
     
@@ -113,10 +113,11 @@ class create_make extends view
         }
         if(isset($_POST['create_motor'])) {           
             $this->createMotor($_POST);  
+            header('Location: /create_make?active_tab=tab3');
         }
         if(isset($_POST['add_uitvoering'])) {
             $this->createUitvoering($_POST);
-            header('Location: /create_make');
+            header('Location: /create_make?active_tab=tab4');
         }
         if (isset($_REQUEST['disable_mark'])) {
             $disID = addslashes($_REQUEST['disable_mark']);
