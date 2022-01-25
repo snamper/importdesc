@@ -6,6 +6,41 @@
                     <h2 style="opacity: 0;">Placeholder</h2>
                 </div>
                 <div class="dashboardBoxBg mb30">
+                    <div class="custom-row">
+                        <div class="custom-col">
+                            <button type="submit" class="btn btn-danger">Delete all Data </button>
+                        </div>
+
+                        <div class="custom-col">
+                            <button type="submit" class="btn btn-info">Save as Incomplete</button>
+                        </div>
+
+                        <div class="custom-col">
+                            <button type="submit" class="btn btn-primary">Create and Close</button>
+                        </div>
+
+                        <div class="custom-col">
+                            <button type="submit" class="btn btn-primary">Create and Duplicate</button>
+                        </div>
+
+                        <div class="custom-col">
+                            <button type="submit" class="btn btn-warning">Create and start Purchace Call</button>
+                        </div>
+
+                        <div class="custom-col">
+                            <button type="submit" class="btn btn-warning">Create and start Offer</button>
+                        </div>
+
+                        <div class="custom-col">
+                            <button type="submit" class="btn btn-success">Create and Buy (start PO)</button>
+                        </div>
+
+                        <div class="custom-col">
+                            <button type="submit" class="btn btn-success">Create and Sell (start SO)</button>
+                        </div>
+
+                    </div>
+
                     <div class="row">
                         <div class="col-12">
                             <span class="font-weight-bold">Basic Information</span>
@@ -21,8 +56,8 @@
                                     <span>Current car status* </span>
                                 </div>
                                 <div class="col-4">
-                                    <span>Preorder <input type="checkbox" name="preor" id=""> </span>
-                                    <span>Existing car <input type="checkbox" name="preor" id=""> </span>
+                                    <span>Preorder <input required type="checkbox" name="preor" id=""> </span>
+                                    <span>Existing car <input required type="checkbox" name="preor" id=""> </span>
                                 </div>
                                 <div class="col-4 p-1">
                                     <select class="form-control" name="na" id="">
@@ -145,7 +180,7 @@
                             </div>
                             <div class="col-4 spacer"></div>
                             <div class="col-4 p-1">
-                                <select class="form-control" name="na" id="">
+                                <select class="form-control" required name="na" id="">
                                     <option> Without first registration </option>
                                     <option> With first registration </option>
                                 </select>
@@ -158,7 +193,7 @@
                             </div>
                             <div class="col-4 spacer"></div>
                             <div class="col-4 p-1">
-                                <select class="form-control" name="na" id="">
+                                <select class="form-control" required name="na" id="">
                                     <option> Without first registration </option>
                                     <option> With first registration </option>
                                 </select>
@@ -170,7 +205,7 @@
                             </div>
                             <div class="col-4 spacer"></div>
                             <div class="col-2 p-1">
-                                <select class="form-control" name="na" id="">
+                                <select class="form-control" required name="na" id="">
                                     <option> Without first registration </option>
                                     <option> With first registration </option>
                                 </select>
@@ -216,7 +251,7 @@
                             </div>
                             <div class="col-4 spacer"></div>
                             <div class="col-4 p-1">
-                                <select class="form-control" name="na" id="">
+                                <select class="form-control" required name="na" id="">
                                     <option> Without first registration </option>
                                     <option> With first registration </option>
                                 </select>
@@ -229,7 +264,7 @@
                             </div>
                             <div class="col-4 spacer"></div>
                             <div class="col-2 p-1">
-                                <select class="form-control" name="na" id="">
+                                <select class="form-control" required name="na" id="">
                                     <option> Without first registration </option>
                                     <option> With first registration </option>
                                 </select>
@@ -244,7 +279,7 @@
                             </div>
                             <div class="col-4 spacer"></div>
                             <div class="col-2 p-1">
-                                <select class="form-control" name="na" id="">
+                                <select class="form-control" required name="na" id="">
                                     <option> Without first registration </option>
                                     <option> With first registration </option>
                                 </select>
@@ -357,7 +392,7 @@
 
                     <!-- Rigth col  -->
                     <div class="col-6">
-                        <div class="container border border-light rounded">
+                        <div class="container border border-light rounded py-1">
                             <?php include realpath("views/marge_view_include.php"); ?>
                         </div>
                     </div> <!-- Rigth col -->
