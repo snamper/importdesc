@@ -97,6 +97,9 @@
             ],
             select: false,
             dom: 'Blfrtip',
+            "columnDefs": [
+                 { "width": "8px", "targets": 0 }
+            ],
             // 'order': [[1, 'asc']],
             // 'createdRow': function(row, data, dataIndex) {
             //     if (data[0] == 0 || data[1] == 0) {
@@ -104,9 +107,7 @@
             //     }
             // },
             initComplete: function() {
-                // const addMerkButton = document.querySelector(".js-add-merk");
-                // addMerkButton.addEventListener("click", addMerk);
-
+               
                 this.api().columns('.select-filter').every(function() {
                     var column = this;
 
@@ -169,6 +170,9 @@
             ],
             select: false,
             dom: 'Blfrtip',
+            "columnDefs": [
+                 { "width": "8px", "targets": 0 }
+            ],
             // 'order': [[1, 'asc']],
             // 'createdRow': function(row, data, dataIndex) {
             //     if (data[0] == 0 || data[1] == 0) {
@@ -184,6 +188,158 @@
 
                     if (column.header().innerText == "Make" || column.header().innerText == "Model" || column.header().innerText == "Motor") {
                         createSelect();
+                    }
+
+                    if (column.header().innerText == "Fuel") {
+                        var select = $(`<select name='Fuel' class="selecter js-brand-model-generate" id="${column.header().innerText}">
+                        <option data-car-fuel-id="77" value="Benzine">Benzine</option>
+                        <option data-car-fuel-id="78" value="Diesel">Diesel</option>
+                        <option data-car-fuel-id="394" value="Hybride">Hybride</option>
+                        <option data-car-fuel-id="396" value="Electrisch">Electrisch</option>
+                        <option data-car-fuel-id="397" value="LPG">LPG</option>
+                        <option data-car-fuel-id="398" value="Aardgas">Aardgas</option>
+                        <option data-car-fuel-id="399" value="Alcohol">Alcohol</option>
+                        <option data-car-fuel-id="400" value="Cryogeen">Cryogeen</option>
+                        <option data-car-fuel-id="401" value="Waterstof">Waterstof</option>
+                        </select>`)
+                            .appendTo('.dataTables_length')
+                    }
+
+
+                    function createSelect() {
+                        var select = $('<select class="selecter js-brand-model-generate" id="' + column.header().innerText + '"><option value="">' + column.header().innerText + '</option></select>')
+                            .appendTo('.dataTables_length')
+                            .on('change', function() {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function(d, j) {
+                            if (d != null) {
+                                select.append('<option value="' + d + '">' + d + '</option>');
+
+                            }
+                        });
+                    }
+
+                });
+            },         
+
+            // select: true,
+        });
+
+
+        var oTable368 = $('#datatables-makemodel-motors')
+        .DataTable({
+            "bprocessing": true,
+            "bserverSide": true,
+            "sServerMethod": "POST",
+            "sAjaxSource": "./data/data-makemodel-motors.php",
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+            select: false,
+            dom: 'Blfrtip',
+            "columnDefs": [
+                 { "width": "8px", "targets": 0 }
+            ],
+            // 'order': [[1, 'asc']],
+            // 'createdRow': function(row, data, dataIndex) {
+            //     if (data[0] == 0 || data[1] == 0) {
+            //         $(row).addClass('redClass');
+            //     }
+            // },
+            initComplete: function() {
+                // const addMerkButton = document.querySelector(".js-add-merk");
+                // addMerkButton.addEventListener("click", addMerk);
+
+                this.api().columns('.select-filter').every(function() {
+                    var column = this;
+
+                    if (column.header().innerText == "Make" || column.header().innerText == "Model" || column.header().innerText == "Motor") {
+                        // createSelect();
+                    }
+
+                    if (column.header().innerText == "Fuel") {
+                        var select = $(`<select name='Fuel' class="selecter js-brand-model-generate" id="${column.header().innerText}">
+                        <option data-car-fuel-id="77" value="Benzine">Benzine</option>
+                        <option data-car-fuel-id="78" value="Diesel">Diesel</option>
+                        <option data-car-fuel-id="394" value="Hybride">Hybride</option>
+                        <option data-car-fuel-id="396" value="Electrisch">Electrisch</option>
+                        <option data-car-fuel-id="397" value="LPG">LPG</option>
+                        <option data-car-fuel-id="398" value="Aardgas">Aardgas</option>
+                        <option data-car-fuel-id="399" value="Alcohol">Alcohol</option>
+                        <option data-car-fuel-id="400" value="Cryogeen">Cryogeen</option>
+                        <option data-car-fuel-id="401" value="Waterstof">Waterstof</option>
+                        </select>`)
+                            .appendTo('.dataTables_length')
+                    }
+
+
+                    function createSelect() {
+                        var select = $('<select class="selecter js-brand-model-generate" id="' + column.header().innerText + '"><option value="">' + column.header().innerText + '</option></select>')
+                            .appendTo('.dataTables_length')
+                            .on('change', function() {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function(d, j) {
+                            if (d != null) {
+                                select.append('<option value="' + d + '">' + d + '</option>');
+
+                            }
+                        });
+                    }
+
+                });
+            },         
+
+            // select: true,
+        });
+
+
+        var oTable369 = $('#datatables-makemodel-uitvoering')
+        .DataTable({
+            "bprocessing": true,
+            "bserverSide": true,
+            "sServerMethod": "POST",
+            "sAjaxSource": "./data/data-makemodel-uitvoering.php",
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+            select: false,
+            dom: 'Blfrtip',
+            "columnDefs": [
+                 { "width": "8px", "targets": 0 }
+            ],
+            // 'order': [[1, 'asc']],
+            // 'createdRow': function(row, data, dataIndex) {
+            //     if (data[0] == 0 || data[1] == 0) {
+            //         $(row).addClass('redClass');
+            //     }
+            // },
+            initComplete: function() {
+                // const addMerkButton = document.querySelector(".js-add-merk");
+                // addMerkButton.addEventListener("click", addMerk);
+
+                this.api().columns('.select-filter').every(function() {
+                    var column = this;
+
+                    if (column.header().innerText == "Make" || column.header().innerText == "Model" || column.header().innerText == "Motor") {
+                        // createSelect();
                     }
 
                     if (column.header().innerText == "Fuel") {

@@ -89,3 +89,7 @@
 .redClass{
     color: red;
 }
+
+#createBrandPage .dataTable {
+    width: 100%!important;
+}

@@ -68,7 +68,7 @@
                 <li class="nav-item"><a href="#tab1" class="nav-link active" data-toggle="tab">Make</a></li>
                 <li class="nav-item"><a href="#tab2" class="nav-link " data-toggle="tab">Models</a></li>
                 <li class="nav-item"><a href="#tab3" class="nav-link " data-toggle="tab">Motors</a></li>
-                <li class="nav-item"><a href="#tab4" class="nav-link " data-toggle="tab">AU</a></li>
+                <li class="nav-item"><a href="#tab4" class="nav-link " data-toggle="tab">Uitvoering</a></li>
             </ul>
 
             <!-- END nav-tabs -->
@@ -82,7 +82,7 @@
                                 <tr>
                                     <!-- <th class="no-sort" style="white-space: nowrap"></th> -->
                                     <th class="no-sort" style="width:1%">#</th>
-                                    <th class="select-filter" style="white-space: nowrap">Make</th>
+                                    <th class="select-filter-makes" style="white-space: nowrap">Make</th>
                                     <th style="white-space: nowrap">Mark Actions</th>
                                     <!-- <th style="white-space: nowrap">C1</th> -->
                                 </tr>
@@ -91,8 +91,8 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th class="select-filter" style="white-space: nowrap"></th>
-                                    <th class="select-filter" style="white-space: nowrap"></th>
+                                    <th class="select-filter-makes" style="white-space: nowrap"></th>
+                                    <th class="select-filter-makes" style="white-space: nowrap"></th>
 
                                 </tr>
                             </tfoot>
@@ -111,13 +111,9 @@
                                 <tr>
                                     <!-- <th class="no-sort" style="white-space: nowrap"></th> -->
                                     <th class="no-sort" style="width:1%">#</th>
-                                    <th class="select-filter" style="white-space: nowrap">Make</th>
-                                    <th class="select-filter" style="white-space: nowrap">Model</th>
-                                    <th class="select-filter" style="white-space: nowrap">Motor</th>
-                                    <th class="select-filter" style="white-space: nowrap">Fuel</th>
-                                    <th class="select-filter" style="white-space: nowrap">Uitvoering</th>
+                                    <th class="select-filter-models" style="white-space: nowrap">Make</th>
+                                    <th class="select-filter-models" style="white-space: nowrap">Model</th>                                  
                                     <th style="white-space: nowrap">Model Actions</th>
-                                    <th style="white-space: nowrap">Mark Actions</th>
                                     <!-- <th style="white-space: nowrap">C1</th> -->
                                 </tr>
                             </thead>
@@ -125,8 +121,8 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th class="select-filter" style="white-space: nowrap"></th>
-                                    <th class="select-filter" style="white-space: nowrap"></th>
+                                    <th class="select-filter-models" style="white-space: nowrap"></th>
+                                    <th class="select-filter-models" style="white-space: nowrap"></th>
 
                                 </tr>
                             </tfoot>
@@ -139,18 +135,13 @@
                 <div class="tab-pane fade" id="tab3">
 
                     <div class="table-responsive">
-                        <table class="table table-striped table-condensed table-bordered bg-white vacations">
+                        <table id="datatables-makemodel-motors" class="table table-striped table-condensed table-bordered bg-white vacations">
                             <thead>
                                 <tr>
                                     <!-- <th class="no-sort" style="white-space: nowrap"></th> -->
                                     <th class="no-sort" style="width:1%">#</th>
-                                    <th class="select-filter" style="white-space: nowrap">Make</th>
-                                    <th class="select-filter" style="white-space: nowrap">Model</th>
-                                    <th class="select-filter" style="white-space: nowrap">Motor</th>
-                                    <th class="select-filter" style="white-space: nowrap">Fuel</th>
-                                    <th class="select-filter" style="white-space: nowrap">Uitvoering</th>
-                                    <th style="white-space: nowrap">Model Actions</th>
-                                    <th style="white-space: nowrap">Mark Actions</th>
+                                    <th class="select-filter-motors" style="white-space: nowrap">Make</th>
+                                    <th class="select-filter-motors" style="white-space: nowrap">Motor</th>
                                     <!-- <th style="white-space: nowrap">C1</th> -->
                                 </tr>
                             </thead>
@@ -158,8 +149,8 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th class="select-filter" style="white-space: nowrap"></th>
-                                    <th class="select-filter" style="white-space: nowrap"></th>
+                                    <th class="select-filter-motors" style="white-space: nowrap"></th>
+                                    <th class="select-filter-motors" style="white-space: nowrap"></th>
 
                                 </tr>
                             </tfoot>
@@ -172,18 +163,13 @@
                 <div class="tab-pane fade" id="tab4">
 
                     <div class="table-responsive">
-                        <table class="table table-striped table-condensed table-bordered bg-white vacations">
+                        <table id="datatables-makemodel-uitvoering" class="table table-striped table-condensed table-bordered bg-white vacations">
                             <thead>
                                 <tr>
                                     <!-- <th class="no-sort" style="white-space: nowrap"></th> -->
                                     <th class="no-sort" style="width:1%">#</th>
                                     <th class="select-filter" style="white-space: nowrap">Make</th>
-                                    <th class="select-filter" style="white-space: nowrap">Model</th>
-                                    <th class="select-filter" style="white-space: nowrap">Motor</th>
-                                    <th class="select-filter" style="white-space: nowrap">Fuel</th>
                                     <th class="select-filter" style="white-space: nowrap">Uitvoering</th>
-                                    <th style="white-space: nowrap">Model Actions</th>
-                                    <th style="white-space: nowrap">Mark Actions</th>
                                     <!-- <th style="white-space: nowrap">C1</th> -->
                                 </tr>
                             </thead>
