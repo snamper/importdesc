@@ -19,12 +19,7 @@
 
                                 <div class="custom-col">
                                     <button type="submit" class="btn btn-primary">Create and Close</button>
-                                </div>
-
-                                <div class="custom-col">
-                                    <button type="submit" class="btn btn-primary">Create and Duplicate</button>
-                                </div>
-
+                                </div>   
                                 <div class="custom-col">
                                     <button type="submit" class="btn btn-warning">Create and start Purchace Call</button>
                                 </div>
@@ -47,16 +42,18 @@
                                 <h2 class="text-center w-100">Vol Golf 8 Stuttgart Dikke Golf Maas Pre-order 16-02-22</h2>
                                 <div class="description text-danger"><small></small></div>
                             </div>
-
-                            <div class="row my-4 upload-row">
-                                <div class="col-3">
-                                    <span class="upload-photo">Upload photo</span>
+                            <div class="container">
+                                <div class="row my-4 upload-row">
+                                    <div class="col-3">
+                                        <span class="upload-photo">Upload photo</span>
+                                    </div>
+                                    <div class="col-3">
+                                        <span class="upload-photo">Upload document</span>
+                                    </div>
+                                    <div class="col-2 ml-auto">
+                                        <button type="submit" class="btn btn-primary">Create and Duplicate</button>
+                                    </div>                                    
                                 </div>
-                                <div class="col-4 col-spacing"></div>
-                                <div class="col-4">
-                                    <span class="upload-photo">Upload document</span>
-                                </div>
-                                <div class="col-1"></div>
                             </div>
 
                             <!-- Top row  1-->
@@ -572,6 +569,10 @@
 
 
                             <br />
+                            <hr />
+                             <!-- ERI  -->
+
+
                             <div class="row">
 
                                 <div class="col-sm-1">
