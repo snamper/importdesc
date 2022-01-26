@@ -38,7 +38,7 @@
                                 </div>
                                 <div class="col-4 spacer"></div>
                                 <div class="col-4 p-1">
-                                    <input class="form-control" type="text" name="" value="" />
+                                    <input class="form-control" type="text" name="" value="" placeholder="Dikke Golf Joop"/>
                                 </div>
                             </div>
 
@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="col-4 spacer"></div>
                                 <div class="col-4 p-1">
-                                    <input class="form-control" type="text" name="" value="" />
+                                    <input class="form-control" type="text" name="" value="" placeholder="WAUZZZ1932"/>
                                 </div>
                             </div>
 
@@ -84,7 +84,7 @@
                                 </div>
                                 <div class="col-4 spacer"></div>
                                 <div class="col-4 p-1">
-                                    <input class="form-control" type="text" name="" value="" />
+                                    <input class="form-control" type="text" name="" value="" placeholder="Feser Graf, Schwabach"/>
                                 </div>
                             </div>
 
@@ -106,8 +106,16 @@
                                 <div class="col-4 spacer"></div>
                                 <div class="col-4 p-1">
                                     <select class="form-control" name="na" id="">
-                                        <option> Without first registration </option>
-                                        <option> With first registration </option>
+                                        <option>German</option>
+                                        <option>Dutch</option>
+                                        <option>Polish</option>
+                                        <option>Czech</option>
+                                        <option>Spanish</option>
+                                        <option>Slovakian</option>
+                                        <option>Slovenian</option>
+                                        <option>Belgian</option>
+                                        <option>French</option>
+                                        <option>Italian</option>
                                     </select>
                                 </div>
                             </div>
@@ -119,8 +127,10 @@
                                 </div>
                                 <div class="col-4 p-1">
                                     <select class="form-control" name="na" id="">
-                                        <option> Without first registration </option>
-                                        <option> With first registration </option>
+                                        <option>Unknown</option>
+                                        <option>Yes</option>
+                                        <option>No</option>
+                                        <option>Requested</option>
                                     </select>
                                 </div>
                             </div>
@@ -146,8 +156,9 @@
                             <div class="col-4 spacer"></div>
                             <div class="col-4 p-1">
                                 <select class="form-control" name="na" id="">
-                                    <option> Without first registration </option>
-                                    <option> With first registration </option>
+                                    <option>Passenger car</option>
+                                    <option>Company car max. 3500kg</option>
+                                    <option>Camper</option>
                                 </select>
                             </div>
                         </div>
@@ -159,8 +170,8 @@
                             <div class="col-4 spacer"></div>
                             <div class="col-4 p-1">
                                 <select class="form-control" name="na" id="">
-                                    <option> Without first registration </option>
-                                    <option> With first registration </option>
+                                    <option>Volkswagen</option>
+                                    <option>BMW</option>
                                 </select>
                             </div>
                         </div>
@@ -171,12 +182,12 @@
                             <div class="col-4 spacer"></div>
                             <div class="col-2 p-1">
                                 <select class="form-control" name="na" id="">
-                                    <option> Without first registration </option>
-                                    <option> With first registration </option>
+                                    <option>Golf 8</option>
+                                    <option>With first registration</option>
                                 </select>
                             </div>
                             <div class="col-2 p-1">
-                                <input class="form-control" type="text">
+                                <input class="form-control" type="text" placeholder="(text)">
                             </div>
                         </div>
 
@@ -187,12 +198,12 @@
                             <div class="col-4 spacer"></div>
                             <div class="col-2 p-1">
                                 <select class="form-control" name="na" id="">
-                                    <option> Without first registration </option>
-                                    <option> With first registration </option>
+                                    <option>Business R</option>
+                                    <option>With first registration</option>
                                 </select>
                             </div>
                             <div class="col-2 p-1">
-                                <input class="form-control" type="text">
+                                <input class="form-control" type="text" placeholder="(text)">
                             </div>
                         </div>
 
@@ -203,8 +214,13 @@
                             <div class="col-4 spacer"></div>
                             <div class="col-4 p-1">
                                 <select class="form-control" name="na" id="">
-                                    <option> Without first registration </option>
-                                    <option> With first registration </option>
+                                    <option>Hatchback</option>
+                                    <option>Station</option>
+                                    <option>Sedan</option>
+                                    <option>SUV</option>
+                                    <option>Van</option>
+                                    <option>Cabrio</option>
+                                    <option>Coupé</option>
                                 </select>
                             </div>
                         </div>
@@ -217,8 +233,13 @@
                             <div class="col-4 spacer"></div>
                             <div class="col-4 p-1">
                                 <select class="form-control" name="na" id="">
-                                    <option> Without first registration </option>
-                                    <option> With first registration </option>
+                                    <option>Gasoline</option>
+                                    <option>Diesel</option>
+                                    <option>Electric</option>
+                                    <option>Hybrid Gasoline</option>
+                                    <option>Hybrid Diesel</option>
+                                    <option>Hydrogen</option>
+                                    <option>LPG</option>
                                 </select>
                             </div>
                         </div>
@@ -230,12 +251,12 @@
                             <div class="col-4 spacer"></div>
                             <div class="col-2 p-1">
                                 <select class="form-control" name="na" id="">
-                                    <option> Without first registration </option>
-                                    <option> With first registration </option>
+                                    <option>1.5 TSI</option>
+                                    <option>With first registration</option>
                                 </select>
                             </div>
                             <div class="col-2 p1">
-                                <input class="form-control" type="text" name="" id="">
+                                <input class="form-control" type="text" name="" id="" placeholder="(text)">
                             </div>
                         </div>
                         <div class="row">
@@ -245,12 +266,12 @@
                             <div class="col-4 spacer"></div>
                             <div class="col-2 p-1">
                                 <select class="form-control" name="na" id="">
-                                    <option> Without first registration </option>
-                                    <option> With first registration </option>
+                                    <option>Automatic</option>
+                                    <option>Manual</option>
                                 </select>
                             </div>
                             <div class="col-2 p-1">
-                                <input class="form-control" type="text">
+                                <input class="form-control" type="text" placeholder="(text)">
                             </div>
                         </div>
 
@@ -260,10 +281,10 @@
                             </div>
                             <div class="col-4 spacer">Cubic Capacity</div>
                             <div class="col-2 p-1">
-                                <input class="form-control" type="text">
+                                <input class="form-control" type="text" placeholder="110 / 150">
                             </div>
                             <div class="col-2 p-1">
-                                <input class="form-control" type="text">
+                                <input class="form-control" type="text" placeholder="1496">
                             </div>
                         </div>
 
@@ -274,8 +295,8 @@
                             <div class="col-4 spacer"></div>
                             <div class="col-4 p-1">
                                 <select class="form-control" name="na" id="">
-                                    <option> Without first registration </option>
-                                    <option> With first registration </option>
+                                    <option>4 wd</option>
+                                    <option>2 wd</option>
                                 </select>
                             </div>
                         </div>
@@ -286,10 +307,10 @@
                             </div>
                             <div class="col-4 spacer">NEDC</div>
                             <div class="col-2 p-1">
-                                <input class="form-control" type="text" name="" id="">
+                                <input class="form-control" type="text" name="" id="" placeholder="130">
                             </div>
                             <div class="col-2 p-1">
-                                <input class="form-control" type="text" name="" id="">
+                                <input class="form-control" type="text" name="" id="" placeholder="110">
                             </div>
                         </div>
 
@@ -299,7 +320,7 @@
                             </div>
                             <div class="col-4 spacer"></div>
                             <div class="col-4 p-1">
-                                <input class="form-control" type="text" name="" id="">
+                                <input class="form-control" type="text" name="" id="" placeholder="3000">
                             </div>
                         </div>
 
@@ -312,12 +333,18 @@
                             <div class="col-4 spacer">Metallic/ Pearl <input type="checkbox" name="" id=""></div>
                             <div class="col-2 p-1">
                                 <select class="form-control" name="na" id="">
-                                    <option> Without first registration </option>
-                                    <option> With first registration </option>
+                                    <option>Black</option>
+                                    <option>Silver</option>
+                                    <option>Grey</option>
+                                    <option>Yellow</option>
+                                    <option>Orange</option>
+                                    <option>Purple</option>
+                                    <option>Pink</option>
+                                    <option>Green</option>
                                 </select>
                             </div>
                             <div class="col-2 p-1">
-                                <input class="form-control" type="text" name="" id="">
+                                <input class="form-control" type="text" name="" id="" placeholder="(text)">
                             </div>
                         </div>
 
@@ -328,12 +355,13 @@
                             <div class="col-4 spacer"></div>
                             <div class="col-2 p-1">
                                 <select class="form-control" name="na" id="">
-                                    <option> Without first registration </option>
-                                    <option> With first registration </option>
+                                    <option>Beige</option>
+                                    <option>Black</option>
+                                    <option>Grey</option>
                                 </select>
                             </div>
                             <div class="col-2 p-1">
-                                <input class="form-control" type="text" name="" id="">
+                                <input class="form-control" type="text" name="" id="" placeholder="Samtbeige">
                             </div>
                         </div>
 
@@ -344,8 +372,14 @@
                             <div class="col-4 spacer"></div>
                             <div class="col-4 p-1">
                                 <select class="form-control" name="na" id="">
-                                    <option> Without first registration </option>
-                                    <option> With first registration </option>
+                                    <option>Full Leather</option>
+                                    <option>Leather / Fabric</option>
+                                    <option>Leather</option>
+                                    <option>Leather extended</option>
+                                    <option>Full Leather extended Leatherpackage</option>
+                                    <option>Fabric / Alcantara</option>
+                                    <option>Alcantara</option>
+                                    <option>Leather / Alcantara</option>
                                 </select>
                             </div>
                         </div>
