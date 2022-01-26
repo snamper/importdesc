@@ -6,6 +6,43 @@
                     <h2 style="opacity: 0;">Placeholder</h2>
                 </div>
                 <div class="dashboardBoxBg mb30">
+                    <div class="custom-row">
+                        <div class="custom-col">
+                            <button type="submit" class="btn btn-danger">Delete all Data </button>
+                        </div>
+
+                        <div class="custom-col">
+                            <button type="submit" class="btn btn-info">Save</button>
+                        </div>
+
+                        <div class="custom-col">
+                            <button type="submit" class="btn btn-primary">Save and Close</button>
+                        </div>
+
+                        <div class="custom-col">
+                            <button type="submit" class="btn btn-primary">Duplicate</button>
+                        </div>
+
+                        <div class="custom-col">
+                            <button type="submit" class="btn btn-primary">Create and go to PO</button>
+                        </div>                      
+
+                    </div>
+
+                    <div class="row my-4">
+                                <div class="col-3">
+                                    <span class="upload-photo">Upload photo</span>
+                                </div>
+                                <div class="col-3">
+                                    <span class="upload-photo">Upload document</span>
+                                </div>
+
+                                <div class="col-3 ml-auto text-right">
+                                    <button type="submit" class="btn btn-primary">Create and open Offer</button>
+                                </div> 
+
+                            </div>
+                    <hr />
                     <div class="row">
                         <div class="col-12">
                             <span class="font-weight-bold">Basic Information</span>
@@ -38,7 +75,7 @@
                                 </div>
                                 <div class="col-4 spacer"></div>
                                 <div class="col-4 p-1">
-                                    <input class="form-control" type="text" name="" value="" placeholder="Dikke Golf Joop"/>
+                                    <input class="form-control" type="text" name="" value="" placeholder="Dikke Golf Joop" />
                                 </div>
                             </div>
 
@@ -48,7 +85,7 @@
                                 </div>
                                 <div class="col-4 spacer"></div>
                                 <div class="col-4 p-1">
-                                    <input class="form-control" type="text" name="" value="" placeholder="WAUZZZ1932"/>
+                                    <input class="form-control" type="text" name="" value="" placeholder="WAUZZZ1932" />
                                 </div>
                             </div>
 
@@ -84,7 +121,7 @@
                                 </div>
                                 <div class="col-4 spacer"></div>
                                 <div class="col-4 p-1">
-                                    <input class="form-control" type="text" name="" value="" placeholder="Feser Graf, Schwabach"/>
+                                    <input class="form-control" type="text" name="" value="" placeholder="Feser Graf, Schwabach" />
                                 </div>
                             </div>
 

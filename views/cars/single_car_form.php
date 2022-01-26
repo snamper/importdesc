@@ -42,7 +42,7 @@
             <div class=" row str " style="align-items: center; margin-bottom:1px;">
                 <div class="col-sm-2">Make</div>
                 <div class="col-sm-4">
-                    <select class="form-control js-resume-fill" data-name="car_merk" name="carMark" id="carMark">
+                    <select class="form-control js-resume-fill" data-name="car_merk" name="car_make" id="carMake">
                        
                     </select>
                 </div>
@@ -57,12 +57,12 @@
             <div class=" row str " style="align-items: center; margin-bottom:1px;">
                 <div class="col-sm-2">Uitvoering</div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control js-resume-fill" data-name="uitvoering" name="caUitvoering" id="carUitvoering">
+                    <input type="text" class="form-control js-resume-fill" data-name="uitvoering" name="car_uitvoering" id="carUitvoering">
                 </div>
 
                 <div class="col-sm-2">Motor</div>
                 <div class="col-sm-4">
-                    <input class="form-control" type="text" data-name="motor" name="carModification">
+                    <input class="form-control" type="text" data-name="motor" name="car_motor">
                 </div>
 
             </div>

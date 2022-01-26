@@ -17,7 +17,7 @@
         </p>
         <!-- BEGIN nav-tabs -->
         <ul class="nav nav-tabs" id="nav-tabs">
-            <li class="nav-item"><a href="#tab1" class="nav-link <?php echo (!isset($_GET['active_tab']) ? "active in" : "" )?>" data-toggle="tab">Make</a></li>
+            <li class="nav-item"><a href="#tab1" class="nav-link <?php echo (!isset($_COOKIE['active_tab']) ? "active in" : "" )?>" data-toggle="tab">Make</a></li>
             <li class="nav-item"><a href="#tab2" class="nav-link <?php echo (isset($_GET['active_tab']) && $_GET['active_tab'] == "tab2" ? "active in" : "" )?>" data-toggle="tab">Models</a></li>
             <li class="nav-item"><a href="#tab3" class="nav-link <?php echo (isset($_GET['active_tab']) && $_GET['active_tab'] == "tab3" ? "active in" : "" )?>" data-toggle="tab">Motors</a></li>
             <li class="nav-item"><a href="#tab4" class="nav-link  <?php echo (isset($_GET['active_tab']) && $_GET['active_tab'] == "tab4" ? "active in" : "" )?>" data-toggle="tab">Uitvoering</a></li>
@@ -29,7 +29,7 @@
             <!-- BEGIN tab-pane -->
             <div class="tab-pane fade <?php echo (!isset($_GET['active_tab']) ? "active in" : "" )?>" id="tab1">
                 <div class="table-responsive">
-                    <table id="datatables-makemodel" class="table table-striped table-condensed table-bordered bg-white vacations">
+                    <table id="datatables-makemodel" class="table table-striped table-condensed table-bordered bg-white vacations datatables-makemodel">
                         <thead>
                             <tr>
                                 <!-- <th class="no-sort" style="white-space: nowrap"></th> -->
@@ -58,7 +58,7 @@
             <div class="tab-pane fade <?php echo (isset($_GET['active_tab']) && $_GET['active_tab'] == "tab2" ? "active in" : "" )?>" id="tab2">
 
                 <div class="table-responsive">
-                    <table id="datatables-makemodel-models" class="table table-striped table-condensed table-bordered bg-white vacations">
+                    <table id="datatables-makemodel-models" class="table table-striped table-condensed table-bordered bg-white vacations datatables-makemodel">
                         <thead>
                             <tr>
                                 <!-- <th class="no-sort" style="white-space: nowrap"></th> -->
@@ -87,7 +87,7 @@
             <div class="tab-pane fade <?php echo (isset($_GET['active_tab']) && $_GET['active_tab'] == "tab3" ? "active in" : "" )?>" id="tab3">
 
                 <div class="table-responsive">
-                    <table id="datatables-makemodel-motors" class="table table-striped table-condensed table-bordered bg-white vacations">
+                    <table id="datatables-makemodel-motors" class="table table-striped table-condensed table-bordered bg-white vacations datatables-makemodel">
                         <thead>
                             <tr>
                                 <!-- <th class="no-sort" style="white-space: nowrap"></th> -->
@@ -115,7 +115,7 @@
             <div class="tab-pane fade <?php echo (isset($_GET['active_tab']) && $_GET['active_tab'] == "tab4" ? "active in" : "" )?>" id="tab4">
 
                 <div class="table-responsive">
-                    <table id="datatables-makemodel-uitvoering" class="table table-striped table-condensed table-bordered bg-white vacations">
+                    <table id="datatables-makemodel-uitvoering" class="table table-striped table-condensed table-bordered bg-white vacations datatables-makemodel">
                         <thead>
                             <tr>
                                 <!-- <th class="no-sort" style="white-space: nowrap"></th> -->

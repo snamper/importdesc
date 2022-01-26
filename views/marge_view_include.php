@@ -85,7 +85,7 @@
             <div class="col-sm-1"> </div>
             <div class="col-sm-2">Uitvoering</div>
             <div class="col-sm-3">
-                <input type="text" class="form-control" name="caUitvoering" id="carUitvoering">
+                <input type="text" class="form-control" name="car_uitvoering" id="carUitvoering">
             </div>
         </div>
 

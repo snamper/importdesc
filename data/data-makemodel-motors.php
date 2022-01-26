@@ -10,12 +10,12 @@ include("connection.php");
 /* Array of database columns which should be read and sent back to DataTables. Use a space where
  * you want to insert a non-database field (for example a counter or static image)
  */
-$aColumns = array( 'cmr.cm_id', 'c.name', 'cmr.cm_name');
+$aColumns = array( 'cmr.cmotor_id', 'c.cmake_name', 'cmr.cmotor_name');
 /* Indexed column (used for fast and accurate table cardinality) */
-$sIndexColumn = "cmr.id as number";
+$sIndexColumn = "cmr.cmotor_id as number";
 /* DB table to use */
-$sTable = "car_motor cmr";
-$sJoin .= ' INNER JOIN car_make c ON c.id_car_make = cmr.cm_id ';
+$sTable = "car_motors cmr";
+$sJoin .= ' INNER JOIN car_makes c ON c.cmake_id = cmr.cmotor_id ';
 // $sJoin .= ' INNER JOIN car_model cm ON c.id_car_make = cm.id_car_make ';
 // $sJoin .= ' INNER JOIN car_trim ct ON cm.id_car_model = ct.id_car_model';
 // $sJoin .= ' INNER JOIN car_make_uitvoering on cmu_make_id = cm.id_car_make';
@@ -148,6 +148,7 @@ $sQuery = "
         $sOrder
         $sLimit
     ";
+
 
 $rResult = mysqli_query($gaSql['link'], $sQuery, $gaSql['link'] ) or fatal_error( 'MySQL Error: ' . mysqli_errno($gaSql['link']) );
 mysqli_query($gaSql['link'], "SET character_set_results=utf8", $gaSql['link']);

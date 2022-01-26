@@ -442,13 +442,13 @@
         });
 
 
-    $('#datatables-makemodel').on('click', 'tr', function() {
+    $('.datatables-makemodel').on('click', 'tr', function() {
 
-        // document.getElementById('mark_old_name').value = (oTable366.row(this).data()[1]);
-        // document.getElementById('edit_mark').value = (oTable366.row(this).data()[9]);
+        document.getElementById('mark_old_name').value = (oTable366.row(this).data()[1]);
+        document.getElementById('editMake').value = (oTable366.row(this).data()[3]);
         // document.getElementById('model_name_old').value = (oTable366.row(this).data()[2]);
         // document.getElementById('edit_model').value = (oTable366.row(this).data()[8]);
-        // console.log(oTable366.row(this).data());
+        console.log(oTable366.row(this).data());
     });
 
     $('#datatable-calculations').on('click', 'tr', function() {

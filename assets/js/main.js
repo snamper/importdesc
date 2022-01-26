@@ -255,11 +255,12 @@ $('#addTransport_Buitenland,#addTaxatie_Kostene,#addFee,#addLeges,#addAfleverkos
 
 $(document).ready(function () {
     var carvalue = 1; // car
-    const carMark = document.getElementById('carMark');
+    const carMake = document.getElementById('carMake');
 
-    if (!carMark) {
+    if (!carMake) {
         return;
     }
+
     if (carvalue > 0) {
         $.ajax({
             url: 'create_car',
@@ -267,10 +268,12 @@ $(document).ready(function () {
             data: 'carTypeSelect=' + carvalue,
             success: function (data) {
                 const firstOptionHTML = "<option value='0'> - </option>";
-
-                document.getElementById('carMark').innerHTML = firstOptionHTML + data;
-                $('#carMark').change();
-            }
+                document.getElementById('carMake').innerHTML = firstOptionHTML + data;
+                $('#carMake').change();
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+               console.log(errorThrown);
+             }
         })
 
     }
@@ -278,7 +281,7 @@ $(document).ready(function () {
 });
 
 
-$('#carMark').change(function () {
+$('#carMake').change(function () {
     var carvalue = $(this).val();
     const firstOptionHTML = "<option value='0'> - </option>";
     const carModel = document.getElementById('carModel');
@@ -292,7 +295,7 @@ $('#carMark').change(function () {
         $.ajax({
             url: 'marge',
             type: "POST",
-            data: 'carMarkSelect=' + carvalue,
+            data: 'carMakeSelect=' + carvalue,
             success: function (data) {
                 carModel.innerHTML = firstOptionHTML + data;
                 $('#carModel').change();
@@ -302,10 +305,10 @@ $('#carMark').change(function () {
         document.getElementById('carModel').innerHTML = firstOptionHTML;
     }
 
-    if (carvalue == 0) $('#carMarkInput').val('');
-    else $('#carMarkInput').val($(this).find('option:selected').text());
+    if (carvalue == 0) $('#carMakeInput').val('');
+    else $('#carMakeInput').val($(this).find('option:selected').text());
 });
-// $('#carMark_dip').change(function(){
+// $('#carMake_dip').change(function(){
 //      var carvalue = $(this).val();
 
 //      if (carvalue > 0) {
@@ -313,7 +316,7 @@ $('#carMark').change(function () {
 //         $.ajax({
 //             url:'dossier',
 //             type: "POST",
-//            data:  'carMarkSelect=' + carvalue,
+//            data:  'carMakeSelect=' + carvalue,
 //             success:function(data){
 //                 document.getElementById('carModel_dip').innerHTML = data;
 //                 $('#carModel_dip').change();
@@ -352,10 +355,10 @@ $('#carModel').change(function () {
             type: "POST",
             data: 'carTrimSelect=' + carvalue,
             success: function (data) {
-                const carModification = document.getElementById('carModification');
-                if (carModification) {
-                    carModification.innerHTML = data;
-                    $('#carModification').change();
+                const carMotor = document.getElementById('carMotor');
+                if (carMotor) {
+                    carMotor.innerHTML = data;
+                    $('#carMotor').change();
                 }
 
             },
@@ -395,15 +398,15 @@ $('#carModel').change(function () {
 //             type: "POST",
 //            data:  'carTrimSelect=' + carvalue,
 //             success:function(data){
-//                 document.getElementById('carModification').innerHTML = data;
-//                 // $('#carModification').change();
+//                 document.getElementById('carMotor').innerHTML = data;
+//                 // $('#carMotor').change();
 //             }
 //         })
 
 //      }
 
 // });
-// $('#carModification').change(function(){
+// $('#carMotor').change(function(){
 //      var carvalue = $(this).val();
 
 //      if (carvalue > 0) {
@@ -644,7 +647,7 @@ $("#updaters_dossier").click(function (event) {
     var carID = $('#car_id').val();
     var dossierReferentie = $('#dossier_referentie').val();
     var vinnummer = $('#vinnummer').val();
-    var carMarkDip = $('#carMark_dip').val();
+    var carMakeDip = $('#carMake_dip').val();
     var carModelDip = $('#carModel_dip').val();
     var uitvoering = $('#uitvoering').val();
     var motor = $('#motor').val();
@@ -679,7 +682,7 @@ $("#updaters_dossier").click(function (event) {
             carID: carID,
             dossierReferentie: dossierReferentie,
             vinnummer: vinnummer,
-            carMarkDip: carMarkDip,
+            carMakeDip: carMakeDip,
             carModelDip: carModelDip,
             uitvoering: uitvoering,
             motor: motor,
@@ -900,13 +903,9 @@ $('#carEquipment').change(function () {
     getData();
 });
 
-// $('#carModification').change(function(){
-//     getData();
-// });
-
 function getData() {
     var equipment = $('#carEquipment').val();
-    var modification = $('#carModification').val();
+    var modification = $('#carMotor').val();
     $('#carCharValue').html('-');
     $('#carOptionValue').html('-');
 
@@ -998,7 +997,7 @@ function getCarInfo(e) {
         }).then(function (data) {
             setTimeout(() => {
                 setEditInputFormData(data)
-                $('#carMark').change();
+                $('#carMake').change();
             }, 700);
             setTimeout(() => {
                 setEditFormSelectsData(data);
@@ -1095,7 +1094,7 @@ $('.js-example-basic-multiple').select2();
 
 
 
-function carMarkAjaxFill() {
+function carMakeAjaxFill() {
 
     window.addEventListener('DOMContentLoaded', (event) => {
 
@@ -1114,9 +1113,9 @@ function carMarkAjaxFill() {
 $('.JSfunc').click(function () {
 
     var carvalue = 1; // car
-    const carMark = document.querySelector(`.${this.id}`);
+    const carMake = document.querySelector(`.${this.id}`);
 
-    if (!carMark) {
+    if (!carMake) {
         return;
     }
     if (carvalue > 0) {
@@ -1127,7 +1126,7 @@ $('.JSfunc').click(function () {
             success: function (data) {
                 const firstOptionHTML = "<option value='0'> - </option>";
 
-                carMark.innerHTML = firstOptionHTML + data;
+                carMake.innerHTML = firstOptionHTML + data;
                 $('.JSfunc').change();
             }
         })
@@ -1137,14 +1136,14 @@ $('.JSfunc').click(function () {
 });
 
 
-$('#carMark, #carMarkFuel, #carMarkMotor,#carMarkUit').change(function () {
+$('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
     var carvalue = $(this).val();
     const firstOptionHTML = "<option value='0'> - </option>";
-    if (this.id == "carMarkFuel") {
+    if (this.id == "carMakeFuel") {
         var carModel = document.getElementById('carModelFuel');
-    } else if(this.id == "carMarkMotor"){
+    } else if(this.id == "carMakeMotor"){
         var carModel = document.getElementById('carModelMotor');
-    } else if(this.id == "carMarkUit"){
+    } else if(this.id == "carMakeUit"){
         var carModel = document.getElementById('carModelUit');
     } else{
         var carModel = document.getElementById('carModel');
@@ -1160,7 +1159,7 @@ $('#carMark, #carMarkFuel, #carMarkMotor,#carMarkUit').change(function () {
         $.ajax({
             url: 'marge',
             type: "POST",
-            data: 'carMarkSelect=' + carvalue,
+            data: 'carMakeSelect=' + carvalue,
             success: function (data) {
                 carModel.innerHTML = firstOptionHTML + data;
             }
@@ -1169,8 +1168,8 @@ $('#carMark, #carMarkFuel, #carMarkMotor,#carMarkUit').change(function () {
         document.getElementById('carModel').innerHTML = firstOptionHTML;
     }
 
-    if (carvalue == 0) $('#carMarkInput').val('');
-    else $('#carMarkInput').val($(this).find('option:selected').text());
+    if (carvalue == 0) $('#carMakeInput').val('');
+    else $('#carMakeInput').val($(this).find('option:selected').text());
 });
 
 $('#carModelFuel, #carModelUit').change(function () {
@@ -1204,12 +1203,12 @@ $('#carModelFuel, #carModelUit').change(function () {
         return;
     }
 
-    const carMark = document.querySelector('#carMark');
+    const carMake = document.querySelector('#carMake');
     const carMotor = document.querySelector('#carMotor');
     const carFuel = document.querySelector('#carFuel');
 
   
-    carMark.addEventListener("change", (e) => {
+    carMake.addEventListener("change", (e) => {
 
         //FETCH MOTORS 
         const urlFetchMotors = `${location.origin}/create_make_new?make_id_get_motors=${e.currentTarget.value}`;
@@ -1281,7 +1280,7 @@ $('#carModelFuel, #carModelUit').change(function () {
                 return;
             });
         }else { // ONCHANGE #carFuel
-            const selectedMakeId = document.querySelector("#carMark").value;
+            const selectedMakeId = document.querySelector("#carMake").value;
             const urlGetMotorsByFuel = `${location.origin}/create_make_new?fuel_id_get_motors=${trigger.value}&car_make_id=${selectedMakeId}`;
 
             const motorVal = document.querySelector("#carMotor").value;

@@ -1858,14 +1858,14 @@ z-index: 14900;>
             $dbDriver = new db_driver();
             $query = "SELECT *
                 FROM dossier
-                LEFT JOIN car ON car.dossierID = dossier.dossierID
+                LEFT JOIN cars ON cars.car_dossier_id = dossier.dossierID
                 ";
             $dbDriver->querySelects($query);
             $result =  $dbDriver->fetchAssoc();
 
             foreach ($result as $row) {
 
-            $automerk = GetAutoMerken($row['car_merk']);
+            $automerk = GetAutoMerken($row['car_make']);
             $automodel = GetAutoMerkenA($row['car_model']);
     ?>
 
@@ -1878,26 +1878,7 @@ z-index: 14900;>
             </td>
 
             <td style='vertical-align: middle;'>
-                <?php echo $row['uitvoering']; ?>
-            </td>
-            <td style='vertical-align: middle;'>
-                <?php echo $row['productiedatum']; ?>
-            </td>
-
-            <td style='vertical-align: middle;'>
-                <?php echo $row['tenaamstellingNL']; ?>
-            </td>
-            <td style='vertical-align: middle;'>
-                <?php echo $row['km_stand']; ?>
-            </td>
-
-
-            <td style='vertical-align: middle;'>
-                <?php echo $row['kenteken']; ?>
-            </td>
-
-            <td style='vertical-align: middle;'>
-                <?php echo $row['tag']; ?>
+                <?php echo $row['car_uitvoering']; ?>
             </td>
 
             <td style='vertical-align: middle;'>

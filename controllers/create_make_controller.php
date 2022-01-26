@@ -48,12 +48,12 @@ class create_make extends view
         $obj = new BaseModel;
         $this->base = $_SESSION['base'];
 
-        if (isset($_POST['create_brand_name'])) {        
-            if ($_POST['carMarkInput']) {
-                $mark->id_car_make = $_POST['carMark'];
+        if (isset($_POST['create_make'])) {   
+     
+            if ($_POST['create_make_name']) {
+                $mark->cmake_name = $_POST['create_make_name'];
                 $mark->name = $_POST['carMarkInput'];
-
-                if ($_POST['carMark'] == 0) {
+                if ($_POST['car_make'] == 0) {
                     $insertId = $this->createCarMark($mark);
                 } else {
                     $mark->date_update = time();
@@ -64,8 +64,8 @@ class create_make extends view
             header('Location: /create_make');
         }
 
-        if (($_POST['carMark'] || $insertId) && isset($_POST['carModelInput']) ) {
-            $model->id_car_make = $insertId ?? $_POST['carMark'];
+        if (($_POST['car_make'] || $insertId) && isset($_POST['carModelInput']) ) {
+            $model->id_car_make = $insertId ?? $_POST['car_make'];
             $model->id_car_model = $_POST['carModel'];
             $model->name = $_POST['carModelInput'];
 
@@ -86,21 +86,28 @@ class create_make extends view
         if (isset($_POST['create_brand'])) {            
             $mark->name = $_POST['create_brand_name'];
             $this->createCarMark($mark);
+            setcookie("active_tab", "tab1", 0, "/");
             header('Location: /create_make');
         }
 
-        if (isset($_POST['create_model'])) {;
-           
+        if (isset($_POST['create_model'])) {
+
             $model->name = $_POST['create_model_name'];
-            $model->id_car_make = $_POST['carMark'];
+            $model->id_car_make = $_POST['car_make'];
             $this->createCarModel($model);
-            header('Location: /create_make?active_tab=tab2');
+            setcookie("active_tab", "tab2", 0, "/");
+            header('Location: /create_make');
         }
-        if (isset($_POST['edit_mark'])) {
+        if (isset($_POST['edit_make'])) {
+
+            echo '<pre>';
+            var_dump($_POST);
+            echo '</pre>';
+            exit;
     
-            $mark->id_car_make = $_POST['edit_mark'];
+            $mark->id_car_make = $_POST['edit_make'];
             $mark->date_update = time();
-            $mark->name = $_POST['mark_new_name'];
+            $mark->name = $_POST['make_new_name'];
             $this->updateCarMark($mark);
             header('Location: /create_make');
         }
@@ -113,11 +120,13 @@ class create_make extends view
         }
         if(isset($_POST['create_motor'])) {           
             $this->createMotor($_POST);  
-            header('Location: /create_make?active_tab=tab3');
+            setcookie("active_tab", "tab3", 0, "/");
+            header('Location: /create_make');
         }
-        if(isset($_POST['add_uitvoering'])) {
+        if(isset($_POST['add_uitvoering'])) {           
             $this->createUitvoering($_POST);
-            header('Location: /create_make?active_tab=tab4');
+            setcookie("active_tab", "tab4", 0, "/");
+            header('Location: /create_make');
         }
         if (isset($_REQUEST['disable_mark'])) {
             $disID = addslashes($_REQUEST['disable_mark']);

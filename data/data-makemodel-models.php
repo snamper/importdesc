@@ -10,12 +10,13 @@ include("connection.php");
 /* Array of database columns which should be read and sent back to DataTables. Use a space where
  * you want to insert a non-database field (for example a counter or static image)
  */
-$aColumns = array( 'cm.id_car_model', 'c.name', 'cm.name', 'cm.id_car_model as id');
+$aColumns = array( 'cm.cmodel_id', 'c.cmake_name', 'cm.cmodel_name', 'cm.cmodel_id as model_id', 'cm.cmodel_id as edit');
 /* Indexed column (used for fast and accurate table cardinality) */
-$sIndexColumn = "cm.id_car_model as number";
+$sIndexColumn = "cm.cmodel_id as number";
 /* DB table to use */
-$sTable = "car_model cm";
-$sJoin .= ' INNER JOIN car_make c ON c.id_car_make = cm.id_car_make ';
+$sTable = "car_models cm";
+$sJoin = ' INNER JOIN car_makes c ON c.cmake_id = cm.cmodel_make_id';
+
 // $sJoin .= ' INNER JOIN car_trim ct ON cm.id_car_model = ct.id_car_model';
 // $sJoin .= ' INNER JOIN car_make_uitvoering on cmu_make_id = cm.id_car_make';
 // $sJoin .= ' INNER JOIN conversie_tabel_gwi ctg on ctg.conversie_tabel_ID = ct.fuel_id';
@@ -211,9 +212,9 @@ while ( $aRow = mysqli_fetch_array( $rResult ) ) {
         if ( $aColumns[ $i ] == "version" ) {
             /* Special output formatting for 'version' column */
             $row[] = ( $aRow[ $aColumns[ $i ] ] == "0" ) ? '-' : $aRow[ $aColumns[ $i ] ];
-        }   elseif ( $aColumns[ $i ] == 'c.id_car_make' ) {
+        }   elseif ( $aColumns[ $i ] == 'c.cmake_id' ) {
              $row[] = '<center>'.$j.'</center>';
-        }elseif ( $aColumns[ $i ] == 'cm.id_car_model as id' ) {
+        }elseif ( $aColumns[ $i ] == 'cm.cmodel_id as model_id' ) {
             $row[] = '<center style="display:flex;"><a href="#edit-model" data-toggle="modal" class="btn btn-default btn-xs"><i class="ti-pencil" ></i></a><a href="?disable_model='.$aRow[$i].'" class="btn btn-default btn-xs"><i class="ti-close" ></i></a></center>';
         } elseif ( $aColumns[ $i ] != ' ' ) {
             /* General output */

@@ -110,7 +110,7 @@ class dossier extends view
 			$_SESSION['car_data'] = $this->getCarData($carID);
 			$_SESSION['highlights_data1'] = $this->getConditionData($carID);
 			$_SESSION['highlights_data2'] = $this->getExplanatoionData($carID);
-			$_SESSION['carMark'] = $this->getCarMark($carTypeID);
+			$_SESSION['car_make'] = $this->getCarMake($carTypeID);
 
 			parent::__construct('dip_view.php');
 			die;
@@ -149,9 +149,9 @@ class dossier extends view
 		return $this->base->getExplanatoionData($carID);
 	}
 
-	protected function getCarMark($carTypeID)
+	protected function getCarMake($carTypeID)
 	{
-		$data = $this->base->getCarMark($carTypeID);
+		$data = $this->base->getCarMake($carTypeID);
 		$html_options = '';
 
 		foreach ($data as $key => $value) {

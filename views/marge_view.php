@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="col-sm-2">Make</div>
                                 <div class="col-sm-4">
-                                    <select class="form-control" name="carMark" id="carMark">
+                                    <select class="form-control" name="car_make" id="carMake">
                                         <option value="">-</option>
                                     </select>
                                 </div>
@@ -80,7 +80,7 @@
                                 </div>
                                 <div class="col-sm-2">Trim</div>
                                 <div class="col-sm-4">
-                                    <select class=" form-control" name="carModification" id="carModification">
+                                    <select class=" form-control" name="car_motor" id="carMotor">
                                         <option value="">-</option>
                                     </select>
                                 </div>
@@ -148,7 +148,7 @@
                                 </div>
                                 <div class="col-sm-2">Uitvoering</div>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="caUitvoering" id="carUitvoering">
+                                    <input type="text" class="form-control" name="car_uitvoering" id="carUitvoering">
                                 </div>
                             </div>
 

@@ -57,7 +57,7 @@
                                     <td> Merk </td>
                                     <td><select id="carMark_dip" name="carMark_dip" size="1" style="width: 100%; border: 0px;" value="">
 
-                                            <?php echo $_SESSION['carMark'] ?>
+                                            <?php echo $_SESSION['car_make'] ?>
 
                                         </select></td>
                                 </tr>
