@@ -1323,7 +1323,10 @@ $('#carModelFuel, #carModelUit').change(function () {
                         
                params.delete("active_tab");
                params.set('active_tab', 'tab');
-               console.log(params.toString())
+               console.log(params.toString());
+
+            //    var refresh = window.location.protocol + "//" + window.location.host + window.location.pathname + '?arg=1';    
+            //    window.history.pushState({ path: refresh }, '', refresh);
                 
               } else {
                 console.log(`Your browser ${navigator.appVersion} does not support URLSearchParams`)
