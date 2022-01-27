@@ -106,7 +106,8 @@ class base
     function updateCarMark($mark)
     {
         $dbDriver = new db_driver();
-        $sql = "UPDATE `car_make` SET `name` = '".$mark->name."', `date_update` = '".$mark->date_update."', `active` = '".$mark->active."' WHERE `car_make`.`id_car_make` = " . $mark->id_car_make;
+		
+        $sql = "UPDATE `car_makes` SET `cmake_name` = '".$mark->name."' WHERE cmake_id = " . $mark->id_car_make;
         $dbDriver->query($sql);
     }
 
@@ -142,10 +143,10 @@ class base
     }
 
 
-    function updatecar_model($model)
+    function updateCarModel($model)
     {
         $dbDriver = new db_driver();
-        $sql = "UPDATE `car_model` SET `name` = '".$model->name."', `date_update` = '".$model->date_update."', `active` = '".$model->active."' WHERE `car_model`.`id_car_model` = " . $model->id_car_model;
+        $sql = "UPDATE `car_models` SET `cmodel_name` = '".$model->name."' WHERE `cmodel_id` = " . $model->id_car_model;
         $dbDriver->query($sql);
     }
 	function getCarGeneration($generationID)

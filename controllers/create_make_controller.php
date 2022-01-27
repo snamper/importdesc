@@ -98,7 +98,7 @@ class create_make extends view
             setcookie("active_tab", "tab2", 0, "/");
             header('Location: /create_make');
         }
-        if (isset($_POST['edit_make'])) {    
+        if (isset($_POST['edit_make'])) {  
             $mark->id_car_make = $_POST['edit_make'];
             $mark->date_update = time();
             $mark->name = $_POST['make_new_name'];
@@ -107,7 +107,6 @@ class create_make extends view
         }
         if (isset($_POST['edit_model'])) {
             $model->id_car_model = $_POST['edit_model'];
-            $model->date_update = time();
             $model->name = $_POST['model_name_new'];
             $this->updateCarModel($model);
             header('Location: /create_make');

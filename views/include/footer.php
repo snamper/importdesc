@@ -98,9 +98,10 @@
             stateSave: true,
             select: false,
             dom: 'Blfrtip',
-            "columnDefs": [
-                 { "width": "8px", "targets": 0 }
-            ],
+            "columnDefs": [{
+                "width": "8px",
+                "targets": 0
+            }],
             // 'order': [[1, 'asc']],
             // 'createdRow': function(row, data, dataIndex) {
             //     if (data[0] == 0 || data[1] == 0) {
@@ -108,7 +109,7 @@
             //     }
             // },
             initComplete: function() {
-               
+
                 this.api().columns('.select-filter').every(function() {
                     var column = this;
 
@@ -154,12 +155,12 @@
                     }
 
                 });
-            },         
+            },
 
             // select: true,
         });
 
-        var oTable367 = $('#datatables-makemodel-models')
+    var oTable367 = $('#datatables-makemodel-models')
         .DataTable({
             "bprocessing": true,
             "bserverSide": true,
@@ -172,10 +173,11 @@
             select: false,
             stateSave: true,
             dom: 'Blfrtip',
-            "columnDefs": [
-                 { "width": "8px", "targets": 0 }
-            ],
-            initComplete: function() {      
+            "columnDefs": [{
+                "width": "8px",
+                "targets": 0
+            }],
+            initComplete: function() {
                 this.api().columns('.select-filter').every(function() {
                     var column = this;
 
@@ -221,13 +223,13 @@
                     }
 
                 });
-            },         
+            },
 
             // select: true,
         });
 
 
-        var oTable368 = $('#datatables-makemodel-motors')
+    var oTable368 = $('#datatables-makemodel-motors')
         .DataTable({
             "bprocessing": true,
             "bserverSide": true,
@@ -240,9 +242,10 @@
             select: false,
             dom: 'Blfrtip',
             stateSave: true,
-            "columnDefs": [
-                 { "width": "8px", "targets": 0 }
-            ],
+            "columnDefs": [{
+                "width": "8px",
+                "targets": 0
+            }],
             // 'order': [[1, 'asc']],
             // 'createdRow': function(row, data, dataIndex) {
             //     if (data[0] == 0 || data[1] == 0) {
@@ -298,13 +301,13 @@
                     }
 
                 });
-            },         
+            },
 
             // select: true,
         });
 
 
-        var oTable369 = $('#datatables-makemodel-uitvoering')
+    var oTable369 = $('#datatables-makemodel-uitvoering')
         .DataTable({
             "bprocessing": true,
             "bserverSide": true,
@@ -317,9 +320,10 @@
             select: false,
             dom: 'Blfrtip',
             stateSave: true,
-            "columnDefs": [
-                 { "width": "8px", "targets": 0 }
-            ],
+            "columnDefs": [{
+                "width": "8px",
+                "targets": 0
+            }],
             // 'order': [[1, 'asc']],
             // 'createdRow': function(row, data, dataIndex) {
             //     if (data[0] == 0 || data[1] == 0) {
@@ -375,7 +379,7 @@
                     }
 
                 });
-            },         
+            },
 
             // select: true,
         });
@@ -442,13 +446,18 @@
         });
 
 
-    $('.datatables-makemodel').on('click', 'tr', function() {
+    $('#datatables-makemodel').on('click', 'tr', function() {
 
         document.getElementById('mark_old_name').value = (oTable366.row(this).data()[1]);
         document.getElementById('editMake').value = (oTable366.row(this).data()[3]);
-        // document.getElementById('model_name_old').value = (oTable366.row(this).data()[2]);
-        // document.getElementById('edit_model').value = (oTable366.row(this).data()[8]);
         console.log(oTable366.row(this).data());
+    });
+
+    $('#datatables-makemodel-models').on('click', 'tr', function() {
+
+        document.getElementById('model_name_old').value = (oTable367.row(this).data()[2]);
+        document.getElementById('edit_model').value = (oTable367.row(this).data()[4]);
+        console.log(oTable367.row(this).data());
     });
 
     $('#datatable-calculations').on('click', 'tr', function() {
