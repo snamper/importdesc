@@ -25,13 +25,7 @@
         <thead>
             <th class="text-center">Dossier ID</th>
             <th style="white-space: nowrap">Merk model</th>
-            <th style="white-space: nowrap">Uitvoering</th>
-            <th style="white-space: nowrap">TNS wereld</th>
-            <th style="white-space: nowrap">TNS Nederland</th>
-            <th style="white-space: nowrap">KM stand</th>
-            <th style="white-space: nowrap">Kenteken</th>
-            <th style="white-space: nowrap">Tag</th>
-
+            <th style="white-space: nowrap">Uitvoering</th>         
             <th style="white-space: nowrap" class="text-center">Edit</th>
 
         </thead>

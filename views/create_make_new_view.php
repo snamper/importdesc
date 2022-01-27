@@ -9,9 +9,9 @@
                     <div class="row">
                         <div class="col-sm-12 table-list">
                             <div class="row str">
-                                <div class="col-sm-2"><label for="carMark">Select Make</label></div>
+                                <div class="col-sm-2"><label for="carMake">Select Make</label></div>
                                 <div class="col-sm-4">
-                                    <select class="form-control" name="carMark" id="carMark">
+                                    <select class="form-control" name="car_make" id="carMake">
                                         <option value="">-</option>
                                     </select>
                                 </div>
@@ -50,7 +50,7 @@
                             <div class="row str">
                                 <div class="col-sm-2"><label for="carUitvoering">Uitvoering</label></div>
                                 <div class="col-sm-4">
-                                    <select class="form-control" name="carMark" id="carUitvoering">
+                                    <select class="form-control" name="car_make" id="carUitvoering">
                                         <option value="">-</option>
                                     </select>
                                 </div>

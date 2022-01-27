@@ -12,12 +12,12 @@
 
                             <input type="hidden" name="add_calculation" value ="">
                             <input type="hidden" name="fromCarView" value ="<?php echo $_GET['car_id'] ?>">
-                            <div class="row str justify-content-end" style="padding-bottom: 23px; margin-top: -18px;">
+                            <!-- <div class="row str justify-content-end" style="padding-bottom: 23px; margin-top: -18px;">
                                 <div class="col-sm-3" style="position: fixed; top: 0; z-index: 99999999; left: 0; right: 200; width: 200px; margin: auto; top: 5px;">
                                     <button type="submit" class="btn btn-primary" style="width: 100%">Insert</button>
                                 </div>
                                
-                            </div>
+                            </div> -->
 
                             <div class="row str">
                                 <div class="col-sm-12">
@@ -132,7 +132,7 @@
                                     <input type="text" class="form-control" id="percentage" name="percentage" placeholder="Restwaarde Percentage">
                                 </div>
 
-                                <div class="col-sm-1"></div>
+                                <!-- <div class="col-sm-1"></div>
                                 <div class="col-sm-2">
                                     Rest BPM Indicatief
                                 </div>
@@ -141,7 +141,7 @@
                                 </div>
                                 <div class="col-sm-1">
                                     <input type="checkbox" name="display_rest_bpm_indicatief" value="1" id="checkRest_BPM" class="foo">
-                                </div>        
+                                </div> -->        
                                 
                             </div>
 

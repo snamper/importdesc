@@ -52,6 +52,8 @@
 
 	$route['create_make_new'] = 'controllers/create_make_new_controller.php';
 
+	$route['car_start'] = 'controllers/car_start_controller.php';
+
 	
 	
 //============================================================================//

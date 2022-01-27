@@ -28,19 +28,24 @@
                       <li class="nav-divider"></li>
                         <li class="nav-header">Start</li>
                             <!-- <li><a href="carform"><i class="ti-plus"></i><span>Auto aanmaken</span></a></li> -->
-                            <li><a href="create_car"><i class="ti-plus"></i><span>Create car</span></a></li>
-                            <li><a href="show_cars"><i class="ti-plus"></i><span>Show cars</span></a></li>
+                            <!-- <li><a href="create_car"><i class="ti-plus"></i><span>Create car</span></a></li> -->
+                            <li><a href="car_start"><i class="ti-plus"></i><span>Car start</span></a></li>
+<!--                             
+                            <li><a href="show_cars"><i class="ti-plus"></i><span>Show cars</span></a></li> -->
                             <li><a href="calculation"><i class="ti-plus"></i><span>Calculation</span></a></li>
                             <li><a href="show_calculations"><i class="ti-plus"></i><span>Show Calculations</span></a></li>
                             <!--<li><a href="marge"><i class="ti-plus"></i><span>Prijs berekening Marge</span></a></li>
                             <li><a href="btw"><i class="ti-plus"></i><span>Prijs berekening BTW</span></a></li>
                             <li><a href="nedc"><i class="ti-plus"></i><span>BPM calculator NEDC</span></a></li>
                             <li><a href="wltp"><i class="ti-plus"></i><span>BPM calculator WLTP</span></a></li>-->
-                            <li><a href="create_make_new"><i class="ti-plus"></i><span>Create Car NEW</span></a></li>
-                            <li><a href="create_make"><i class="ti-plus"></i><span>Create Make</span></a></li>
-                            <li><a href="click_model"><i class="ti-plus"></i><span>Click Model</span></a></li>
-
-                            <li><a href="click_model2"><i class="ti-plus"></i><span>Click Model No buttons</span></a></li>
+                             <!-- <li><a href="create_make_new"><i class="ti-plus"></i><span>Create Car NEW</span></a></li> -->
+                          <li><a href="create_make"><i class="ti-plus"></i><span>Create Make</span></a></li>
+                          
+                            <!-- <li><a href="click_model"><i class="ti-plus"></i><span>Click Model</span></a></li>  -->
+                            
+                            
+<!-- 
+                            <li><a href="click_model2"><i class="ti-plus"></i><span>Click Model No buttons</span></a></li> -->
                         <li class="nav-divider"></li>
                         <li class="nav-copyright">&copy; 2020 powered by Software Inc.</li>
                     </ul>

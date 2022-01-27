@@ -57,13 +57,13 @@ class marge extends view{
 		if (isset($_POST['merge_insert'])) {
 			$obj->priceType = 0;
 			$obj->vehicleType = $_POST['carType'];
-			$obj->make = $_POST['carMark'];
+			$obj->make = $_POST['car_make'];
 			$obj->model = $_POST['carModel'];
 			$obj->generation = $_POST['carGeneration'];
 			$obj->serie = $_POST['carSerie'];
-			$obj->trim = $_POST['carModification'];
+			$obj->trim = $_POST['car_motor'];
 			$obj->equipment = $_POST['carEquipment'];
-			$obj->uitvoering = $_POST['caUitvoering'];
+			$obj->uitvoering = $_POST['car_uitvoering'];
 			$obj->brandstofSoort = $_POST['BPMbrandstof'];
 			$obj->eersteToelating = $_POST['BPMproductiedatum'];
 			$obj->huidigeDatumBPM = $_POST['huidigedatumbpm'];

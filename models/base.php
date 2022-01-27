@@ -49,10 +49,9 @@ class base
 	}
 	function getCarMark($carTypeID = 1, $active = 1)
 	{
+		
 		$dbDriver = new db_driver();
-		$sql = "SELECT * FROM `car_make` WHERE `id_car_type` = '$carTypeID'";
-        if ($active == 0 || $active == 1)
-            $sql .= " AND `active` = ".$active;
+		$sql = "SELECT * FROM `car_makes` WHERE cmake_active = 1";
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
 	}
@@ -98,7 +97,8 @@ class base
     function createCarMark($mark)
     {
         $dbDriver = new db_driver();
-        $sql = "INSERT INTO `car_make` (`name`, `date_create`, `date_update`, `id_car_type`, `active`) VALUES ('".$mark->name."', '".$mark->date_create."', '".$mark->date_update."', '".$mark->id_car_type."', '".$mark->id_car_type."')";
+        $sql = "INSERT INTO `car_makes` (cmake_name) VALUES ('".$mark->cmake_name."')";
+	
         $dbDriver->query($sql);
         return $dbDriver->insert_id();
         //return $dbDriver->query("SELECT MAX(id_car_make) FROM `car_make`")->fetchColumn();
@@ -106,7 +106,8 @@ class base
     function updateCarMark($mark)
     {
         $dbDriver = new db_driver();
-        $sql = "UPDATE `car_make` SET `name` = '".$mark->name."', `date_update` = '".$mark->date_update."', `active` = '".$mark->active."' WHERE `car_make`.`id_car_make` = " . $mark->id_car_make;
+		
+        $sql = "UPDATE `car_makes` SET `cmake_name` = '".$mark->name."' WHERE cmake_id = " . $mark->id_car_make;
         $dbDriver->query($sql);
     }
 
@@ -114,7 +115,7 @@ class base
 	{
 		$dbDriver = new db_driver();
 
-		$query = "SELECT * FROM car_make cm INNER JOIN car_model cmod on cm.id_car_make = cmod.id_car_make
+		$query = "SELECT * FROM car_makes cm INNER JOIN car_models cmod on cm.cmake_id = cmod.cmod_id
 		WHERE cm.name = ? ";
 
 		$stmt = $dbDriver->dbCon->prepare($query);
@@ -124,7 +125,7 @@ class base
 		 return $result;
 	
 	}
-	function getCarModel($markID, $active = 1)
+	function getcar_model($markID, $active = 1)
 	{
 		$dbDriver = new db_driver();
 		$sql = "SELECT * FROM `car_model` WHERE `id_car_make` = '$markID'";
@@ -133,16 +134,19 @@ class base
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
 	}
+
     function createCarModel($model)
     {
         $dbDriver = new db_driver();
-        $sql = "INSERT INTO `car_model` (`id_car_make`, `name`, `date_create`, `date_update`, `id_car_type`) VALUES ('".$model->id_car_make."', '".$model->name."', '".$model->date_create."', '".$model->date_update."', '".$model->id_car_type."')";
+        $sql = "INSERT INTO `car_models` (`cmodel_make_id`, `cmodel_name`) VALUES ('".$model->id_car_make."', '".$model->name."')";
         $dbDriver->query($sql);
     }
+
+
     function updateCarModel($model)
     {
         $dbDriver = new db_driver();
-        $sql = "UPDATE `car_model` SET `name` = '".$model->name."', `date_update` = '".$model->date_update."', `active` = '".$model->active."' WHERE `car_model`.`id_car_model` = " . $model->id_car_model;
+        $sql = "UPDATE `car_models` SET `cmodel_name` = '".$model->name."' WHERE `cmodel_id` = " . $model->id_car_model;
         $dbDriver->query($sql);
     }
 	function getCarGeneration($generationID)
@@ -214,7 +218,7 @@ class base
 	{
 		$dbDriver = new db_driver();
 		//$sql = "SELECT * FROM `car` WHERE `dossierID` = '$carID'";
-		$sql = "SELECT * FROM `dossier` LEFT JOIN `car` ON car.carID = dossier.carID WHERE dossier.dossierID='$carID'";
+		$sql = "SELECT * FROM `dossier` LEFT JOIN `cars` ON cars.car_id = dossier.carID WHERE dossier.dossierID='$carID'";
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
 	}
@@ -248,7 +252,7 @@ class base
 		$dbDriver = new db_driver();
 
 
-		$sql = "INSERT INTO `car`(`car_merk`,`car_model`, `uitvoering`, `motor`, `brandstof`,`productiedatum`,`tenaamstellingNL`,`co2`)
+		$sql = "INSERT INTO `cars`(`car_mаке`,`car_model`, `car_uitvoering`, `car_motor`, `car_fuel`)
     VALUES ('$obj->make','$obj->model','$obj->uitvoering','$obj->trim','$obj->brandstofSoort','$obj->huidigeDatumBPM','$obj->tenaamstellingNL','$obj->co2WLTP')";
 		$dbDriver->query($sql, 'calculatorinsert');
 		$id = $dbDriver->insert_id();
@@ -271,30 +275,12 @@ class base
 	function updateDossier($obj)
 	{
 		$dbDriver = new db_driver();
-		$sql = "UPDATE `car` SET
-    `car_merk`='$obj->carMarkDip'
+		$sql = "UPDATE `cars` SET
+    `car_mаке`='$obj->carMarkDip'
     ,`car_model`='$obj->dossierReferentie'
-    ,`uitvoering`='$obj->uitvoering'
-    ,`motor`='$obj->motor'
-    ,`brandstof`='$obj->brandstof'
-    ,`transmissie`='$obj->transmissie'
-    ,`transmissieSoort`='$obj->transmissieSoort'
-    ,`kleur`='$obj->kleur'
-    ,`productiedatum`='$obj->datumEersteToelating'
-    ,`tenaamstellingNL`='$obj->eersteTenaamstellingNL'
-    ,`co2`='$obj->co2'
-    ,`km_stand`='$obj->kmStand'
-    ,`levering_soort`='$obj->leveringSoort'
-    ,`vinnummer`='$obj->vinnummer'
-    ,`kenteken`='$obj->kenteken'
-    ,`km_verwacht`='$obj->kmVerwacht'
-    ,`plaat_afgifte_code`='$obj->plaatAfgifteCode'
-    ,`interieur_kleur`='$obj->interieurKleur'
-    ,`bevestigd`='$obj->bevestigd'
-    ,`tijdelijk_nummer`='$obj->documentnr'
-    ,`laatste_tenaamstelling`='$obj->laatsteTenaamstelling'
-    ,`tenaam_stellings_code`='$obj->tenaamStellingsCode'
-    ,`tag`='$obj->tag'
+    ,`car_uitvoering`='$obj->uitvoering'
+    ,`car_motor`='$obj->motor'
+    ,`car_fuel`='$obj->brandstof'
     WHERE `carID` = '$obj->carID'";
 		$dbDriver->query($sql, 'updatedossier');
 	}
@@ -436,15 +422,15 @@ class base
 	{
 		
 		$dbDriver = new db_driver();
-		$query1 = "INSERT INTO car_motor (cm_name, cm_fuel_id, cm_make_id) VALUES (
+		$query1 = "INSERT INTO car_motors (cmotor_name, cmotor_fuel_id, cmotor_make_id) VALUES (
 			?,
 			?,
 			?
-		)";		
+		)";	
 
 		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
 		$stmt1 = $dbDriver->dbCon->prepare($query1);
-		$stmt1->execute([ $_post['create_motor_name'], $_post['fuelType'], $_post['carMark']]);
+		$stmt1->execute([ $_post['create_motor_name'], $_post['fuelType'], $_post['car_make']]);
 
 	}
 
@@ -453,11 +439,11 @@ class base
 
 		$dbDriver = new db_driver();
 
-		$query1 = "INSERT INTO car_make_uitvoering (cmu_name, cmu_make_id) VALUES (?,?)";	
+		$query1 = "INSERT INTO car_make_uitvoerings (cmu_name, cmu_make_id) VALUES (?,?)";	
 	
 		// $dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
 		$stmt1 = $dbDriver->dbCon->prepare($query1);
-		$stmt1->execute([$_post['uitvoering_create'], $_post['carMark']]);
+		$stmt1->execute([$_post['uitvoering_create'], $_post['car_make']]);
 	}
 
 	public function getFuelByMotorName($motor_name) {
@@ -506,7 +492,7 @@ class base
         try {
             $query = "INSERT INTO car
         (
-            car_merk,
+            car_mаке,
             car_model,
             uitvoering,
             aantal_deuren,
@@ -556,11 +542,11 @@ class base
             $stmt = $dbDriver->dbCon->prepare($query);
             $stmt->execute(
                 [
-                    $post['carMark'],
-                    $post['carModel'],
-                    $post['caUitvoering'],
+                    $post['car_make'],
+                    $post['car_model'],
+                    $post['car_uitvoering'],
                     $post['doors_number'],
-                    $post['carModification'],
+                    $post['car_motor'],
                     $post['BPMbrandstof'],
                     $transmissieSoort,
                     $post['productiedatum'],
@@ -611,9 +597,9 @@ class base
             $productiedatum = explode("-", $post['productiedatum'])[0];
             $stmt4->execute([
                 1,
-                $post['carMark'],
-                $post['carModel'],
-                $post['carModification'],
+                $post['car_make'],
+                $post['car_model'],
+                $post['car_motor'],
                 $post['BPMbrandstof'],
                 $productiedatum,
                 $post['BPMCO2'],
@@ -631,7 +617,7 @@ class base
 
 		$sql = "SELECT * FROM dossier
 		LEFT JOIN car ON car.carID = dossier.carID
-		INNER JOIN car_make cm on car.car_merk = cm.id_car_make 
+		INNER JOIN car_make cm on car.car_mаке = cm.id_car_make 
 		INNER JOIN car_model cmod on car.car_model = cmod.id_car_model
 		INNER JOIN car_type ct on cmod.id_car_type = ct.id_car_type
 		INNER JOIN conversie_tabel_gwi ctw on car.brandstof = ctw.conversie_tabel_ID
@@ -651,12 +637,11 @@ class base
 		$dbDriver = new db_driver();
 
 		$sql = "SELECT * FROM dossier
-		LEFT JOIN car ON car.carID = dossier.carID
-		INNER JOIN car_make cm on car.car_merk = cm.id_car_make 
-		INNER JOIN car_model cmod on car.car_model = cmod.id_car_model
-		INNER JOIN car_type ct on cmod.id_car_type = ct.id_car_type
-		INNER JOIN conversie_tabel_gwi ctw on car.brandstof = ctw.conversie_tabel_ID
-		WHERE car.carID = ?";
+		LEFT JOIN cars ON car.car_id = dossier.carID
+		INNER JOIN car_makes cm on cars.car_make = cm.cmake_id 
+		INNER JOIN car_models cmod on cars.car_model = cmod.cmodel_id
+		INNER JOIN conversions c on cars.car_fuel = conversions.conversion_id
+		WHERE car.car_id = ?";
 
 		$stmt = $dbDriver->dbCon->prepare($sql);
 		$stmt->execute([$car_id]);
@@ -669,57 +654,27 @@ class base
 
 		$dbDriver = new db_driver();
         // $dbDriver->dbCon->beginTransaction();
-        $transmissies = explode("|", $post['transmissieSoort']);
-        $transmissie = $transmissies[1];
-        $transmissieSoort = $transmissies[0];
+  
         // try {
-            $query1 = "UPDATE car SET
-            car_merk = ?,
+            $query1 = "UPDATE cars SET
+            car_make = ?,
             car_model = ?,
-            uitvoering = ?,
-            aantal_deuren = ?,
-            motor = ?,
-            brandstof = ?,
-            transmissieSoort = ?,
-            productiedatum = ?,
-            co2 = ?,
-            co2_wltp = ?,
-            kleur = ?,
-            dossierID = ?,
-            km_stand = ?,
-            vinnummer = ?,
-            kenteken = ?,
-            levering = ?,
-            transmissie = ?,
-            huidigland = ?,
-            optie = ?,
-            opmerkingen = ?,
-            auto_referentie = ?,
-            custom_ref = ?
-            WHERE carID = ?";
+            car_uitvoering = ?,
+            car_motor = ?,
+            car_fuel = ?,
+            car_dossier_id = ?,
+            car_auto_ref = ?,
+            car_custom_ref = ?
+            WHERE car_id = ?";
             $stmt1 = $dbDriver->dbCon->prepare($query1);
             $stmt1->execute(
                 [
-                    $post['carMark'],
-                    $post['carModel'],
-                    $post['caUitvoering'],
-                    $post['doors_number'],
-                    $post['carModification'],
+                    $post['carMake'],
+                    $post['car_model'],
+                    $post['car_uitvoering'],
+                    $post['car_motor'],
                     $post['BPMbrandstof'],
-                    $transmissieSoort,
-                    $post['productiedatum'],
-                    $post['BPMCO2'],
-                    $post['BPMCO2WLTP'],
-                    $post['kleur'],
                     $car_id,
-                    $post['km_stand'],
-                    $post['vinnummer'],
-                    $post['kenteken'],
-                    $post['levering'],
-                    $transmissie,
-                    $post['huidigland'],
-                    $post['opties'],
-                    $post['opmerkingen'],
                     $post['auto_referentie'],
                     $post['custom_ref'],
                     $car_id
@@ -744,9 +699,9 @@ class base
 			// $productiedatum = explode("-", $post['productiedatum'])[0];
 			// $stmt2->execute([
 			// 	1,
-			// 	$post['carMark'],
-			// 	$post['carModel'],
-			// 	$post['carModification'],
+			// 	$post['car_make'],
+			// 	$post['car_model'],
+			// 	$post['car_motor'],
 			// 	$post['BPMbrandstof'],
 			// 	$productiedatum,
 			// 	$post['BPMCO2'],
@@ -789,7 +744,7 @@ class base
 		$referentie=$_request['referentie'];
 		$BPMproductiedatum=$_request['BPMproductiedatum'];
 		$BPMtenaamstellingNL=$_request['BPMtenaamstellingNL'];
-		$carUitvoering=$_request['caUitvoering'];
+		$carUitvoering=$_request['car_uitvoering'];
 		$BPMCO2=$_request['BPMCO2'];
 		$BPMCO2WLTP=$_request['BPMCO2WLTP'];
 		$percentage=$_request['percentage'];
@@ -884,7 +839,7 @@ class base
 	public function disableModel($disID) {
 		$dbDriver = new db_driver();
 
-		$query = "UPDATE `car_model` SET `active`= `active` ^ 1 WHERE `id_car_model`= ?";
+		$query = "UPDATE `car_models` SET cmodel_active = 0 WHERE `cmodel_id`= ?";
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$disID]);
 	}
@@ -899,7 +854,7 @@ class base
 	public function disableMark($disID) {
 		$dbDriver = new db_driver();
 
-		$query = "UPDATE `car_make` SET `active`= `active` ^ 1  WHERE `id_car_make`=?";
+		$query = "UPDATE `car_makes` SET cmake_active = 0 WHERE cmake_id =?";
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$disID]);
 	}
