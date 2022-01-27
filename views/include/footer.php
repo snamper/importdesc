@@ -35,6 +35,7 @@
 <script src="assets/plugins/table/DataTables/Select-1.2.2/js/dataTables.select.min.js"></script>
 <script src="assets/js/page/table-data.demo.min.js"></script>
 <script src="assets/js/apps.min.js"></script>
+<script src="assets/js/apps.js"></script>
 
 
 

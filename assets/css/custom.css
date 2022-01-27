@@ -14,9 +14,17 @@
     justify-content: center;
     position: fixed;
     top: 0;
+    left: 0;
     z-index: 99999;
-    width: calc(100% - 22rem);
+    width: 100%;
+    text-align: center;
 }
+
+@media only screen and (max-width: 768px) {
+    .custom-row .custom-col{
+        display: none;
+    }
+  }
 
 .custom-col {
     margin: 4px;
@@ -92,4 +100,10 @@
 
 #createMake .dataTable {
     width: 100%!important;
+}
+
+
+/* Menu  */ 
+.sidebar.sidebar-inverse .nav > li > a.active{
+    background: black;
 }

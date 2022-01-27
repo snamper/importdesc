@@ -95,6 +95,7 @@
                                 <th class="no-sort" style="width:1%">#</th>
                                 <th class="select-filter-motors" style="white-space: nowrap">Make</th>
                                 <th class="select-filter-motors" style="white-space: nowrap">Motor</th>
+                                <th class="select-filter-motors" style="white-space: nowrap">Fuel</th>
                                 <!-- <th style="white-space: nowrap">C1</th> -->
                             </tr>
                         </thead>
