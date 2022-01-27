@@ -15,7 +15,7 @@ $aColumns = array( 'cmr.cmotor_id', 'c.cmake_name', 'cmr.cmotor_name');
 $sIndexColumn = "cmr.cmotor_id as number";
 /* DB table to use */
 $sTable = "car_motors cmr";
-$sJoin .= ' INNER JOIN car_makes c ON c.cmake_id = cmr.cmotor_id ';
+$sJoin .= ' INNER JOIN car_makes c ON c.cmake_id = cmr.cmotor_make_id ';
 // $sJoin .= ' INNER JOIN car_model cm ON c.id_car_make = cm.id_car_make ';
 // $sJoin .= ' INNER JOIN car_trim ct ON cm.id_car_model = ct.id_car_model';
 // $sJoin .= ' INNER JOIN car_make_uitvoering on cmu_make_id = cm.id_car_make';
@@ -148,7 +148,6 @@ $sQuery = "
         $sOrder
         $sLimit
     ";
-
 
 $rResult = mysqli_query($gaSql['link'], $sQuery, $gaSql['link'] ) or fatal_error( 'MySQL Error: ' . mysqli_errno($gaSql['link']) );
 mysqli_query($gaSql['link'], "SET character_set_results=utf8", $gaSql['link']);

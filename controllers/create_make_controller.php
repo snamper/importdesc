@@ -61,6 +61,7 @@ class create_make extends view
                     $this->updateCarMark($mark);
                 }
             }
+            setcookie("active_tab", "tab1", 0, "/");
             header('Location: /create_make');
         }
 
