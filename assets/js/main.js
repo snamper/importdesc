@@ -1306,6 +1306,7 @@ $('#carModelFuel, #carModelUit').change(function () {
 
 })(window, document);
 
+// TABS SAVE STATS
 ; (function (window, doc) {
 
     const bootstrapTabs = doc.querySelectorAll("#createMake .nav-tabs .nav-item");
@@ -1316,20 +1317,11 @@ $('#carModelFuel, #carModelUit').change(function () {
 
     for(let tab of bootstrapTabs) {
         tab.addEventListener("click", (e) => {
-            if (typeof URLSearchParams !== 'undefined') {
-                const url = new URL(window.location);
-                const params = url.searchParams;
-                        
-               params.delete("active_tab");
-               params.set('active_tab', 'tab');
-               console.log(params.toString());
+            const trigger = e.currentTarget; // triger is the li element
+            const navLinkHref = trigger.querySelector(".nav-link").getAttribute("href");
+            const cookieVal = navLinkHref.replace("#", "");            
+            document.cookie = `active_tab=${cookieVal}; path=/`;            
 
-            //    var refresh = window.location.protocol + "//" + window.location.host + window.location.pathname + '?arg=1';    
-            //    window.history.pushState({ path: refresh }, '', refresh);
-                
-              } else {
-                console.log(`Your browser ${navigator.appVersion} does not support URLSearchParams`)
-              }
         });
     }
 })(window, document);

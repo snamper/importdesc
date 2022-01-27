@@ -98,13 +98,7 @@ class create_make extends view
             setcookie("active_tab", "tab2", 0, "/");
             header('Location: /create_make');
         }
-        if (isset($_POST['edit_make'])) {
-
-            echo '<pre>';
-            var_dump($_POST);
-            echo '</pre>';
-            exit;
-    
+        if (isset($_POST['edit_make'])) {    
             $mark->id_car_make = $_POST['edit_make'];
             $mark->date_update = time();
             $mark->name = $_POST['make_new_name'];

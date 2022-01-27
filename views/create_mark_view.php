@@ -14,20 +14,21 @@
     <div class="panel-body">
         <p class="desc">
 
+
         </p>
         <!-- BEGIN nav-tabs -->
         <ul class="nav nav-tabs" id="nav-tabs">
-            <li class="nav-item"><a href="#tab1" class="nav-link <?php echo (!isset($_COOKIE['active_tab']) ? "active in" : "" )?>" data-toggle="tab">Make</a></li>
-            <li class="nav-item"><a href="#tab2" class="nav-link <?php echo (isset($_GET['active_tab']) && $_GET['active_tab'] == "tab2" ? "active in" : "" )?>" data-toggle="tab">Models</a></li>
-            <li class="nav-item"><a href="#tab3" class="nav-link <?php echo (isset($_GET['active_tab']) && $_GET['active_tab'] == "tab3" ? "active in" : "" )?>" data-toggle="tab">Motors</a></li>
-            <li class="nav-item"><a href="#tab4" class="nav-link  <?php echo (isset($_GET['active_tab']) && $_GET['active_tab'] == "tab4" ? "active in" : "" )?>" data-toggle="tab">Uitvoering</a></li>
+            <li class="nav-item"><a href="#tab1" class="nav-link <?php echo (!isset($_COOKIE['active_tab']) || $_COOKIE['active_tab'] == "tab1" ? "active in" : "" )?>" data-toggle="tab">Make</a></li>
+            <li class="nav-item"><a href="#tab2" class="nav-link <?php echo (isset($_COOKIE['active_tab']) && $_COOKIE['active_tab'] == "tab2" ? "active in" : "" )?>" data-toggle="tab">Models</a></li>
+            <li class="nav-item"><a href="#tab3" class="nav-link <?php echo (isset($_COOKIE['active_tab']) && $_COOKIE['active_tab'] == "tab3" ? "active in" : "" )?>" data-toggle="tab">Motors</a></li>
+            <li class="nav-item"><a href="#tab4" class="nav-link  <?php echo (isset($_COOKIE['active_tab']) && $_COOKIE['active_tab'] == "tab4" ? "active in" : "" )?>" data-toggle="tab">Uitvoering</a></li>
         </ul>
 
         <!-- END nav-tabs -->
         <!-- BEGIN tab-content -->
         <div class="tab-content tab-content-bordered">
             <!-- BEGIN tab-pane -->
-            <div class="tab-pane fade <?php echo (!isset($_GET['active_tab']) ? "active in" : "" )?>" id="tab1">
+            <div class="tab-pane fade <?php echo (!isset($_COOKIE['active_tab']) || $_COOKIE['active_tab'] == "tab1" ? "active in" : "" )?>" id="tab1">
                 <div class="table-responsive">
                     <table id="datatables-makemodel" class="table table-striped table-condensed table-bordered bg-white vacations datatables-makemodel">
                         <thead>
@@ -55,7 +56,7 @@
             <!-- END tab-pane -->
 
             <!-- BEGIN tab-pane -->
-            <div class="tab-pane fade <?php echo (isset($_GET['active_tab']) && $_GET['active_tab'] == "tab2" ? "active in" : "" )?>" id="tab2">
+            <div class="tab-pane fade <?php echo (isset($_COOKIE['active_tab']) && $_COOKIE['active_tab'] == "tab2" ? "active in" : "" )?>" id="tab2">
 
                 <div class="table-responsive">
                     <table id="datatables-makemodel-models" class="table table-striped table-condensed table-bordered bg-white vacations datatables-makemodel">
@@ -84,7 +85,7 @@
             <!-- END tab-content -->
 
             <!-- BEGIN tab-pane -->
-            <div class="tab-pane fade <?php echo (isset($_GET['active_tab']) && $_GET['active_tab'] == "tab3" ? "active in" : "" )?>" id="tab3">
+            <div class="tab-pane fade <?php echo (isset($_COOKIE['active_tab']) && $_COOKIE['active_tab'] == "tab3" ? "active in" : "" )?>" id="tab3">
 
                 <div class="table-responsive">
                     <table id="datatables-makemodel-motors" class="table table-striped table-condensed table-bordered bg-white vacations datatables-makemodel">
@@ -112,7 +113,7 @@
             <!-- END table -->
 
             <!-- BEGIN tab-pane -->
-            <div class="tab-pane fade <?php echo (isset($_GET['active_tab']) && $_GET['active_tab'] == "tab4" ? "active in" : "" )?>" id="tab4">
+            <div class="tab-pane fade <?php echo (isset($_COOKIE['active_tab']) && $_COOKIE['active_tab'] == "tab4" ? "active in" : "" )?>" id="tab4">
 
                 <div class="table-responsive">
                     <table id="datatables-makemodel-uitvoering" class="table table-striped table-condensed table-bordered bg-white vacations datatables-makemodel">
