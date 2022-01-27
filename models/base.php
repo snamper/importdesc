@@ -839,7 +839,7 @@ class base
 	public function disableModel($disID) {
 		$dbDriver = new db_driver();
 
-		$query = "UPDATE `car_model` SET `active`= `active` ^ 1 WHERE `id_car_model`= ?";
+		$query = "UPDATE `car_models` SET cmodel_active = 0 WHERE `cmodel_id`= ?";
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$disID]);
 	}
@@ -854,7 +854,7 @@ class base
 	public function disableMark($disID) {
 		$dbDriver = new db_driver();
 
-		$query = "UPDATE `car_make` SET `active`= `active` ^ 1  WHERE `id_car_make`=?";
+		$query = "UPDATE `car_makes` SET cmake_active = 0 WHERE cmake_id =?";
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$disID]);
 	}
