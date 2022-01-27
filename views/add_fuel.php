@@ -23,15 +23,15 @@
             <div class="form-group">
                 <label class="control-label">Fuel Type<span class="text-danger">*</span></label>
                     <select class="form-control" name="fuelType" id="fuelType">
-                        <option value="77" >Benzine</option>
-                        <option value="78" >Diesel</option>
-                        <option value="394" >Hybride</option>
-                        <option value="396" >Electrisch</option>
-                        <option value="397" >LPG</option>
-                        <option value="398" >Aardgas</option>
-                        <option value="399" >Alcohol</option>
-                        <option value="400" >Cryogeen</option>
-                        <option value="401" >Waterstof</option>
+                    <option value="1" >Benzine</option>
+                        <option value="2" >Diesel</option>
+                        <option value="3" >Hybride</option>
+                        <option value="4" >Electrisch</option>
+                        <option value="5" >LPG</option>
+                        <option value="6" >Aardgas</option>
+                        <option value="7" >Alcohol</option>
+                        <option value="8" >Cryogeen</option>
+                        <option value="9" >Waterstof</option>
                     </select>
             </div>
             

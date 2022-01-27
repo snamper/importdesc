@@ -297,9 +297,13 @@ $('#carMake').change(function () {
             type: "POST",
             data: 'carMakeSelect=' + carvalue,
             success: function (data) {
+                console.log(data);
                 carModel.innerHTML = firstOptionHTML + data;
                 $('#carModel').change();
-            }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("some error");
+             }
         })
     } else {
         document.getElementById('carModel').innerHTML = firstOptionHTML;
@@ -345,31 +349,31 @@ $('#carMake').change(function () {
 
 // });
 
-$('#carModel').change(function () {
-    var carvalue = $(this).val();
+// $('#carModel').change(function () {
+//     var carvalue = $(this).val();
 
-    if (carvalue > 0) {
+//     if (carvalue > 0) {
 
-        $.ajax({
-            url: 'marge',
-            type: "POST",
-            data: 'carTrimSelect=' + carvalue,
-            success: function (data) {
-                const carMotor = document.getElementById('carMotor');
-                if (carMotor) {
-                    carMotor.innerHTML = data;
-                    $('#carMotor').change();
-                }
+//         $.ajax({
+//             url: 'marge',
+//             type: "POST",
+//             data: 'carTrimSelect=' + carvalue,
+//             success: function (data) {
+//                 const carMotor = document.getElementById('carMotor');
+//                 if (carMotor) {
+//                     carMotor.innerHTML = data;
+//                     $('#carMotor').change();
+//                 }
 
-            },
-            error: function (request, status, error) {
-                console.log(request.responseText);
-            }
-        })
-    }
-    if (carvalue == 0) $('#carModelInput').val('');
-    else $('#carModelInput').val($(this).find('option:selected').text());
-});
+//             },
+//             error: function (request, status, error) {
+//                 console.log(request.responseText);
+//             }
+//         })
+//     }
+//     if (carvalue == 0) $('#carModelInput').val('');
+//     else $('#carModelInput').val($(this).find('option:selected').text());
+// });
 // $('#carGeneration').change(function(){
 //      var carvalue = $(this).val();
 
@@ -1172,28 +1176,28 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
     else $('#carMakeInput').val($(this).find('option:selected').text());
 });
 
-$('#carModelFuel, #carModelUit').change(function () {
-    var carvalue = $(this).val();
-    if(this.id == "carModelUit"){
-        var carMotor = document.getElementById('carMotorUit');
-    } else{
-        var carMotor = document.getElementById('carMotor');
-    }
+// $('#carModelFuel, #carModelUit').change(function () {
+//     var carvalue = $(this).val();
+//     if(this.id == "carModelUit"){
+//         var carMotor = document.getElementById('carMotorUit');
+//     } else{
+//         var carMotor = document.getElementById('carMotor');
+//     }
 
-    if (!carMotor) { return; }
-    if (carMotor) {
+//     if (!carMotor) { return; }
+//     if (carMotor) {
 
-            $.ajax({
-                url: 'marge',
-                type: "POST",
-                data: 'carModelSelectMot=' + carvalue,
-                success: function (data) {
-                    carMotor.innerHTML = data;
-                }
-            })
-        }
+//             $.ajax({
+//                 url: 'marge',
+//                 type: "POST",
+//                 data: 'carModelSelectMot=' + carvalue,
+//                 success: function (data) {
+//                     carMotor.innerHTML = data;
+//                 }
+//             })
+//         }
 
-});
+// });
 
 ; (function (window, document) {
 
@@ -1217,7 +1221,7 @@ $('#carModelFuel, #carModelUit').change(function () {
             return response.json();
         })
         .then(function (response) {
-            fillSelectFromJson("#carMotor", response, "cm_name", "cm_id");
+            fillSelectFromJson("#carMotor", response, "cmotor_name", "cmotor_id");
         })
         .catch((error) => {
             console.log(error);
@@ -1249,21 +1253,22 @@ $('#carModelFuel, #carModelUit').change(function () {
 
     
         if(trigger.id == "carMotor") {
-
+    
             if(trigger.value == "") {
                 let fuelHTML = `<option value="">-</option>
-                <option value="77">Benzine</option>
-                <option value="78">Diesel</option>
-                <option value="394">Hybride</option>
-                <option value="396">Electrisch</option>
-                <option value="397">LPG</option>
-                <option value="398">Aardgas</option>
-                <option value="399">Alcohol</option>
-                <option value="400">Cryogeen</option>
-                <option value="401">Waterstof</option>
+                <option value="1">Benzine</option>
+                <option value="2">Diesel</option>
+                <option value="3">Hybride</option>
+                <option value="4">Electrisch</option>
+                <option value="5">LPG</option>
+                <option value="6">Aardgas</option>
+                <option value="7">Alcohol</option>
+                <option value="8">Cryogeen</option>
+                <option value="9">Waterstof</option>
                 `;
 
                 carFuel.innerHTML = fuelHTML;
+                return;
             }
 
             const urlGetFuels = `${location.origin}/create_make_new?motor_id_get_fuel=${trigger.value}`;
@@ -1273,7 +1278,8 @@ $('#carModelFuel, #carModelUit').change(function () {
                 return response.json();
             })
             .then(function (response) {
-                fillSelectFromJson("#carFuel", response, "conversie_naam", "cm_fuel_id" );
+                console.log(response);
+                fillSelectFromJson("#carFuel", response, "conversion_name", "cmotor_fuel_id" );
             })
             .catch((error) => {
                 console.log(error);
@@ -1293,7 +1299,7 @@ $('#carModelFuel, #carModelUit').change(function () {
                 return response.json();
             })
             .then(function (response) {
-                fillSelectFromJson("#carMotor", response, "cm_name", "cm_id");
+                fillSelectFromJson("#carMotor", response, "cmotor_name", "cmotor_id");
             })
             .catch((error) => {
                 console.log(error);
@@ -1333,8 +1339,9 @@ function fillSelectFromJson(selector, jsonData, selectTextProp, selectValProp, c
             "text": "-",
             "value": ""
         });
- 
+
     const selectEl = document.querySelector(`${selector}`);
+
 
     selectEl.innerHTML = "";
     selectEl.appendChild(emptyOption);

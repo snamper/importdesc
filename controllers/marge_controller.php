@@ -99,8 +99,8 @@ class marge extends view{
 			die;
 			// return json_encode($employee_new);
 		}
-		if(isset($_POST['carMarkSelect'])){
-			$markID = $_POST['carMarkSelect'];
+		if(isset($_POST['carMakeSelect'])){
+			$markID = $_POST['carMakeSelect'];
 			$data = $this->getCarModel($markID);
 			echo $data;
 			die;
@@ -171,7 +171,7 @@ class marge extends view{
 		$html_options = '';
 
 			foreach($data as $key => $value) {
-				$html_options = $html_options.'<option value="'. $value['id_car_model'].'" >'.$value['name'].'</option>';
+				$html_options = $html_options.'<option value="'. $value['cmodel_id'].'" >'.$value['cmodel_name'].'</option>';
 			}
 		return $html_options; 
     }
