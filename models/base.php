@@ -125,12 +125,11 @@ class base
 		 return $result;
 	
 	}
-	function getcar_model($markID, $active = 1)
+	function getCarModel($markID, $active = 1)
 	{
+
 		$dbDriver = new db_driver();
-		$sql = "SELECT * FROM `car_model` WHERE `id_car_make` = '$markID'";
-        if ($active == 0 || $active == 1)
-            $sql .= " AND `active` = ".$active;
+		$sql = "SELECT * FROM `car_models` WHERE `cmodel_make_id` = '$markID'";
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
 	}
@@ -369,7 +368,7 @@ class base
 	public function getMotorsByMake($make_id) {
 
 		$dbDriver = new db_driver();
-		$query = "SELECT * FROM car_motor WHERE cm_make_id = ?";		
+		$query = "SELECT * FROM car_motors WHERE cmotor_make_id = ?";		
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$make_id]);
@@ -381,7 +380,8 @@ class base
 	public function getUitvoeringsByMake($make_id) {
 
 		$dbDriver = new db_driver();
-		$query = "SELECT * FROM car_make_uitvoering WHERE cmu_make_id = ?";		
+		$query = "SELECT * FROM car_make_uitvoerings WHERE cmu_make_id = ?";	
+	
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$make_id]);
@@ -393,9 +393,9 @@ class base
 	public function getFuelByMotor($motor_id) {
 
 		$dbDriver = new db_driver();
-		$query = "SELECT cm_fuel_id, ctw.conversie_naam  FROM car_motor
-		INNER JOIN conversie_tabel_gwi ctw 
-		ON ctw.conversie_tabel_ID = car_motor.cm_fuel_id WHERE cm_id = ?";		
+		$query = "SELECT cmotor_fuel_id, conv.conversion_name  FROM car_motors
+		INNER JOIN conversions conv on conv.conversion_id = car_motors.cmotor_fuel_id
+		 WHERE cmotor_id = ?";
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$motor_id]);
@@ -408,7 +408,7 @@ class base
 	public function getMotorsByFuel($fuel_id, $make_id) {
 
 		$dbDriver = new db_driver();
-		$query = "SELECT * FROM car_motor WHERE cm_fuel_id = $fuel_id AND cm_make_id = $make_id";		
+		$query = "SELECT * FROM car_motors WHERE cmotor_fuel_id = $fuel_id AND cmotor_make = $make_id";		
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$fuel_id, $make_id]);

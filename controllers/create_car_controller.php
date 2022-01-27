@@ -90,10 +90,6 @@ class create_car extends view
         }
 
         if(isset($_GET['cars'])) {
-            echo '<pre>';
-            var_dump('here');
-            echo '</pre>';
-            exit;
             parent::__construct('show_cars_view.php');
 			die;
         }
