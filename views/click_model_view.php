@@ -51,17 +51,25 @@
                     <!-- Main row 1 -->
                     <div class="row justify-content-center align-items-start">
                         <!-- Left col  -->
+<<<<<<< Updated upstream
                         <div class="col-6">
+=======
+                        <div class="col-12 col-md-5">
+>>>>>>> Stashed changes
                             <!-- Rows  -->
                             <div class="row">
                                 <div class="col-4">
                                     <span>Current car status* </span>
                                 </div>
+<<<<<<< Updated upstream
                                 <div class="col-4">
                                     <span>Preorder <input type="checkbox" name="preor" id=""> </span>
                                     <span>Existing car <input type="checkbox" name="preor" id=""> </span>
                                 </div>
                                 <div class="col-4 p-1">
+=======
+                                <div class="col-12 col-md-8 p-1">
+>>>>>>> Stashed changes
                                     <select class="form-control" name="na" id="">
                                         <option> Without first registration </option>
                                         <option> With first registration </option>
@@ -73,8 +81,12 @@
                                 <div class="col-4">
                                     <span>Car reference (custom)</span>
                                 </div>
+<<<<<<< Updated upstream
                                 <div class="col-4 spacer"></div>
                                 <div class="col-4 p-1">
+=======
+                                <div class="col-12 col-md-8 p-1">
+>>>>>>> Stashed changes
                                     <input class="form-control" type="text" name="" value="" placeholder="Dikke Golf Joop" />
                                 </div>
                             </div>
@@ -83,8 +95,12 @@
                                 <div class="col-4">
                                     <span>VIN</span>
                                 </div>
+<<<<<<< Updated upstream
                                 <div class="col-4 spacer"></div>
                                 <div class="col-4 p-1">
+=======
+                                <div class="col-12 col-md-8 p-1">
+>>>>>>> Stashed changes
                                     <input class="form-control" type="text" name="" value="" placeholder="WAUZZZ1932" />
                                 </div>
                             </div>
@@ -93,8 +109,12 @@
                                 <div class="col-4">
                                     <span>Komm. Number</span>
                                 </div>
+<<<<<<< Updated upstream
                                 <div class="col-4 spacer"></div>
                                 <div class="col-4 p-1">
+=======
+                                <div class="col-12 col-md-8 p-1">
+>>>>>>> Stashed changes
                                     <input class="form-control" type="text" name="" value="" />
                                 </div>
                             </div>
@@ -103,8 +123,12 @@
                                 <div class="col-4">
                                     <span>Link to Advert</span>
                                 </div>
+<<<<<<< Updated upstream
                                 <div class="col-4 spacer"></div>
                                 <div class="col-4 p-1">
+=======
+                                <div class="col-12 col-md-8 p-1">
+>>>>>>> Stashed changes
                                     <input class="form-control" type="text" name="" value="" />
                                 </div>
                             </div>
@@ -113,7 +137,11 @@
                         <!-- ./ Left col  -->
 
                         <!-- Rigth col  -->
+<<<<<<< Updated upstream
                         <div class="col-6">
+=======
+                        <div class="col-12 col-md-7">
+>>>>>>> Stashed changes
                             <!-- Rows  -->
                             <div class="row">
                                 <div class="col-4">
@@ -184,7 +212,11 @@
                 </div>
                 <div class="row justify-content-center align-items-stretch">
                     <!-- Left col  -->
+<<<<<<< Updated upstream
                     <div class="col-6">
+=======
+                    <div class="col-12 col-md-5">
+>>>>>>> Stashed changes
                         <!-- Rows  -->
                         <div class="row">
                             <div class="col-4">
@@ -427,7 +459,11 @@
                     <!-- ./ Left col  -->
 
                     <!-- Rigth col  -->
+<<<<<<< Updated upstream
                     <div class="col-6">
+=======
+                    <div class="col-12 col-md-7">
+>>>>>>> Stashed changes
                         <div class="container border border-light rounded">
                             <?php include realpath("views/marge_view_include.php"); ?>
                         </div>
@@ -470,6 +506,7 @@
         <hr />
         <!-- ERI  -->
 
+<<<<<<< Updated upstream
         <p>Registration Data</p>
         <div class="row">
             <div class="col-2"> First registration ever (date)</div>
@@ -531,6 +568,91 @@
             <div class="col-2">
             </div>
         </div>
+=======
+               <div class="row justify-content-center align-items-start">
+                        <!-- Left col  -->
+                        <div class="col-12 col-md-5">
+                            <!-- Rows  -->
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <span> First registration ever (date)</span>
+                                </div>
+                                <div class="col-12 col-md-8 p-1">
+                                    <input class="form-control" type="text" name="" value="" placeholder="25.5.2021" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <span>First registration in the Netherlands (date)</span>
+                                </div>
+                                <div class="col-12 col-md-8 p-1">
+                                    <input class="form-control" type="text" name="" value="" placeholder="31.3.2021" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <span>First registration on a name in the Netherlands (date)</span>
+                                </div>
+                                <div class="col-12 col-md-8 p-1">
+                                    <input class="form-control" type="text" name="" value="" placeholder="25.5.2021" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <span>Last registration on a name (date)</span>
+                                </div>
+                                <div class="col-12 col-md-8 p-1">
+                                    <input class="form-control" type="text" name="" value="" placeholder="25.5.2021" />
+                                </div>
+                            </div>
+                            <!-- ./ ROWS  -->
+                        </div>
+                        <!-- ./ Left col  -->
+
+                        <!-- Rigth col  -->
+                        <div class="col-12 col-md-7">
+                            <!-- Rows  -->
+                            <div class="row">
+                                <!--<div class="col-12 col-md-4">
+                                    <span>Source Supplier </span>
+                                </div>
+                                <div class="col-12 col-md-6 p-1">
+                                    <input class="form-control" type="text" name="" value="" placeholder="Feser Graf, Schwabach" />
+                                </div>-->
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <span>NL Registration number</span>
+                                </div>
+                                <div class="col-12 col-md-6 p-1">
+                                    <input class="form-control" type="text" name="" value="" placeholder="KN-494-T"/>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <span>Check code (meldcode)</span>
+                                </div>
+                                <div class="col-12 col-md-6 p-1">
+                                    <p>1932</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <span>APK / Check valid until</span>
+                                </div>
+                                <div class="col-12 col-md-6 p-1">
+                                    <input class="form-control" type="text" name="" value="" placeholder="25.5.2021"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- Rigth col -->
+>>>>>>> Stashed changes
         <!-- ./ ROW  -->
         <!-- .ROW  -->
         <br />
