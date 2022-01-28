@@ -14,20 +14,73 @@
     justify-content: center;
     position: fixed;
     top: 0;
+    left: 0;
     z-index: 99999;
-    width: calc(100% - 22rem);
+    width: 100%;
+    text-align: center;
 }
+
+.additional-options {
+    font-size: 2em;
+    background: white;
+    padding: 0.3em;
+    border-radius: 5px;
+    position: fixed;
+    right: 1em;
+    bottom: 1em;
+    z-index: 2;
+    display: none;
+}
+
+
 
 .custom-col {
     margin: 4px;
     max-width: 20%;
 }
 
+.custom-row-close {
+    display: none;
+}
+
+
+
 .custom-col button {
     font-size: 12px;
     white-space: normal;
     width: 100%;  
 }
+
+@media only screen and (max-width: 768px) {
+    .additional-options{ 
+        display: block;
+    }
+    
+    .custom-row {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 4px;
+        top: 100px;
+        width: calc(100% - 10px);
+        background-color: white;
+        box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+        margin: 0 5px;
+        border-radius: 3px;       
+    }
+
+    .custom-row-close {
+        display: block;
+    }
+
+    .custom-col {
+        margin: .5em auto;
+        max-width: unset;
+    }
+
+    .custom-col button {
+        white-space: nowrap;
+    }
+  }
 
 .right-buttons {
     white-space: normal;
@@ -92,4 +145,11 @@
 
 #createMake .dataTable {
     width: 100%!important;
+}
+
+
+/* Menu  */ 
+.sidebar.sidebar-inverse .nav > li > a.active{
+    color: #000;
+    background-color: #EAEAEA;
 }

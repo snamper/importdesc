@@ -408,8 +408,7 @@ class base
 	public function getMotorsByFuel($fuel_id, $make_id) {
 
 		$dbDriver = new db_driver();
-		$query = "SELECT * FROM car_motors WHERE cmotor_fuel_id = $fuel_id AND cmotor_make = $make_id";		
-
+		$query = "SELECT * FROM car_motors WHERE cmotor_fuel_id = $fuel_id AND cmotor_make_id = $make_id";		
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$fuel_id, $make_id]);
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);

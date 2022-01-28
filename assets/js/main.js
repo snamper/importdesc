@@ -297,7 +297,6 @@ $('#carMake').change(function () {
             type: "POST",
             data: 'carMakeSelect=' + carvalue,
             success: function (data) {
-                console.log(data);
                 carModel.innerHTML = firstOptionHTML + data;
                 $('#carModel').change();
             },
@@ -746,7 +745,6 @@ $('#BPMCO2WLTP_dip,#BPMCO2_dip,#percentage_dip').keyup(function () {
                 },
                 success: function (data) {
                     var json = JSON.parse(data);
-                    console.log(json);
                     $('#gekozen_bpm_bedrag_dip').val(json[0]['bpmprice']);
                     $('#forfaitaire').val(json[0]['a']);
                     $('#PercentageBerekening').val(json[0]['percentage']);
@@ -1251,8 +1249,14 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
     [carMotor, carFuel].map(element => element.addEventListener("change", (e) => {
         const trigger = e.currentTarget;
 
+        if(carMake.value == "" || carMake.value == 0) {
+            alert("Car Make select is required");
+        }
     
         if(trigger.id == "carMotor") {
+           
+            const fuelSelect = document.querySelector("#carFuel");
+            const fuelSelectVal = fuelSelect.value;
     
             if(trigger.value == "") {
                 let fuelHTML = `<option value="">-</option>
@@ -1278,8 +1282,9 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
                 return response.json();
             })
             .then(function (response) {
-                console.log(response);
                 fillSelectFromJson("#carFuel", response, "conversion_name", "cmotor_fuel_id" );
+                fuelSelect.value = fuelSelectVal;
+
             })
             .catch((error) => {
                 console.log(error);
@@ -1287,11 +1292,15 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
             });
         }else { // ONCHANGE #carFuel
             const selectedMakeId = document.querySelector("#carMake").value;
-            const urlGetMotorsByFuel = `${location.origin}/create_make_new?fuel_id_get_motors=${trigger.value}&car_make_id=${selectedMakeId}`;
+            let urlGetMotorsByFuel = `${location.origin}/create_make_new?fuel_id_get_motors=${trigger.value}&car_make_id=${selectedMakeId}`;
 
-            const motorVal = document.querySelector("#carMotor").value;
-            if(motorVal != "") {
-                return;
+            const motorSelect = document.querySelector("#carMotor");
+            const motorSelVal = motorSelect.value;
+
+            if(trigger.value == "") {
+                console.log("here");
+                urlGetMotorsByFuel = `${location.origin}/create_make_new?make_id_get_motors=${selectedMakeId}`
+
             }
 
             fetch(urlGetMotorsByFuel)
@@ -1300,6 +1309,7 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
             })
             .then(function (response) {
                 fillSelectFromJson("#carMotor", response, "cmotor_name", "cmotor_id");
+                motorSelect.value = motorSelVal;
             })
             .catch((error) => {
                 console.log(error);
@@ -1360,5 +1370,17 @@ function fillSelectFromJson(selector, jsonData, selectTextProp, selectValProp, c
     }
 }
 
+// MENU ACTIVE PAGES HANDLE
+; (function (window, doc) {
+    const sidebar = doc.querySelector("#sidebar");
 
-// createCarNew
+    if(!sidebar) {
+        return;
+    }
+
+    const pathName = window.location.pathname.replace("/", "");
+    const activeLiEl = document.querySelector(`.nav [href="${pathName}"]`);
+    activeLiEl.classList.add("active");
+    
+
+})(window, document);

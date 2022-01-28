@@ -24,7 +24,9 @@
 </head>
 
 <?php if(isset($_SESSION['user'])) {?>
- <div id="header" class="header navbar navbar-default navbar-fixed-top">
+    <div id="page-container" class="page-header-fixed page-sidebar-fixed">
+        <!-- BEGIN #header -->
+        <div id="header" class="header navbar navbar-default navbar-fixed-top">
                 <!-- BEGIN container-fluid -->
                 <div class="container-fluid">
                     <!-- BEGIN mobile sidebar expand / collapse button -->
