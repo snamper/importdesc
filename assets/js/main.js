@@ -1254,6 +1254,9 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
         }
     
         if(trigger.id == "carMotor") {
+           
+            const fuelSelect = document.querySelector("#carFuel");
+            const fuelSelectVal = fuelSelect.value;
     
             if(trigger.value == "") {
                 let fuelHTML = `<option value="">-</option>
@@ -1280,6 +1283,8 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
             })
             .then(function (response) {
                 fillSelectFromJson("#carFuel", response, "conversion_name", "cmotor_fuel_id" );
+                fuelSelect.value = fuelSelectVal;
+
             })
             .catch((error) => {
                 console.log(error);
@@ -1289,8 +1294,8 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
             const selectedMakeId = document.querySelector("#carMake").value;
             let urlGetMotorsByFuel = `${location.origin}/create_make_new?fuel_id_get_motors=${trigger.value}&car_make_id=${selectedMakeId}`;
 
-            const motorVal = document.querySelector("#carMotor").value;
-          
+            const motorSelect = document.querySelector("#carMotor");
+            const motorSelVal = motorSelect.value;
 
             if(trigger.value == "") {
                 console.log("here");
@@ -1304,6 +1309,7 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
             })
             .then(function (response) {
                 fillSelectFromJson("#carMotor", response, "cmotor_name", "cmotor_id");
+                motorSelect.value = motorSelVal;
             })
             .catch((error) => {
                 console.log(error);
