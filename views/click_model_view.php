@@ -6,16 +6,10 @@
                     <h2 style="opacity: 0;">Placeholder</h2>
                 </div>
                 <div class="dashboardBoxBg mb30">
-                    <div class="custom-row">
-                        <div class="mobile-col-buttons d-flex">
-                            <div>
-                                <button type="button" class="navbar-toggle" data-click="sidebar-toggled">
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                </button>
-                            </div>
-                            <input type="checkbox" name="" id="">
-                        </div>
+                    <span class="ti-plus additional-options"></span>
+
+                    <div class="custom-row"> 
+                        <div class="custom-row-close">X</div>
                         <div class="custom-col">
                             <button type="submit" class="btn btn-danger">Delete all Data </button>
                         </div>

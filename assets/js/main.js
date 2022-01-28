@@ -1290,11 +1290,10 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
             let urlGetMotorsByFuel = `${location.origin}/create_make_new?fuel_id_get_motors=${trigger.value}&car_make_id=${selectedMakeId}`;
 
             const motorVal = document.querySelector("#carMotor").value;
-            if(motorVal != "") {
-                return;
-            }
+          
 
             if(trigger.value == "") {
+                console.log("here");
                 urlGetMotorsByFuel = `${location.origin}/create_make_new?make_id_get_motors=${selectedMakeId}`
 
             }
