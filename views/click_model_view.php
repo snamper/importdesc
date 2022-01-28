@@ -8,7 +8,7 @@
                 <div class="dashboardBoxBg mb30">
                     <span class="ti-plus additional-options"></span>
 
-                    <div class="custom-row"> 
+                    <div class="custom-row">
                         <div class="custom-row-close">X</div>
                         <div class="custom-col">
                             <button type="submit" class="btn btn-danger">Delete all Data </button>
@@ -54,13 +54,13 @@
                     <!-- Main row 1 -->
                     <div class="row justify-content-center align-items-start">
                         <!-- Left col  -->
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-5">
                             <!-- Rows  -->
                             <div class="row">
                                 <div class="col-12 col-md-4">
                                     <span>Current car status* </span>
                                 </div>
-                                <div class="col-12 col-md-6 p-1">
+                                <div class="col-12 col-md-8 p-1">
                                     <select class="form-control" name="na" id="">
                                         <option> Without first registration </option>
                                         <option> With first registration </option>
@@ -72,7 +72,7 @@
                                 <div class="col-12 col-md-4">
                                     <span>Car reference (custom)</span>
                                 </div>
-                                <div class="col-12 col-md-6 p-1">
+                                <div class="col-12 col-md-8 p-1">
                                     <input class="form-control" type="text" name="" value="" placeholder="Dikke Golf Joop" />
                                 </div>
                             </div>
@@ -81,7 +81,7 @@
                                 <div class="col-12 col-md-4">
                                     <span>VIN</span>
                                 </div>
-                                <div class="col-12 col-md-6 p-1">
+                                <div class="col-12 col-md-8 p-1">
                                     <input class="form-control" type="text" name="" value="" placeholder="WAUZZZ1932" />
                                 </div>
                             </div>
@@ -90,7 +90,7 @@
                                 <div class="col-12 col-md-4">
                                     <span>Komm. Number</span>
                                 </div>
-                                <div class="col-12 col-md-6 p-1">
+                                <div class="col-12 col-md-8 p-1">
                                     <input class="form-control" type="text" name="" value="" />
                                 </div>
                             </div>
@@ -99,7 +99,7 @@
                                 <div class="col-12 col-md-4">
                                     <span>Link to Advert</span>
                                 </div>
-                                <div class="col-12 col-md-6 p-1">
+                                <div class="col-12 col-md-8 p-1">
                                     <input class="form-control" type="text" name="" value="" />
                                 </div>
                             </div>
@@ -108,7 +108,7 @@
                         <!-- ./ Left col  -->
 
                         <!-- Rigth col  -->
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-7">
                             <!-- Rows  -->
                             <div class="row">
                                 <div class="col-12 col-md-4">
@@ -174,7 +174,7 @@
                 </div>
                 <div class="row justify-content-center align-items-stretch">
                     <!-- Left col  -->
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-5">
                         <!-- Rows  -->
                         <div class="row">
                             <div class="col-12 col-md-4">
@@ -450,7 +450,7 @@
                     <!-- ./ Left col  -->
 
                     <!-- Rigth col  -->
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-7">
                         <div class="container border border-light rounded">
                             <?php include realpath("views/marge_view_include.php"); ?>
                         </div>
@@ -493,54 +493,89 @@
         <hr />
         <!-- ERI  -->
 
-        <p>Registration Data</p>
-        <div class="row">
-            <div class="col-12 col-md-2"> First registration ever (date)</div>
-            <div class="col-12 col-md-4">
-                <input class="form-control" type="text" name="" id="" placeholder="25.5.2021">
-            </div>
-        </div>
-        <!-- ./ ROW  -->
-        <!-- .ROW  -->
-        <div class="row">
-            <div class="col-12 col-md-2"> First registration in the Netherlands (date)</div>
-            <div class="col-12 col-md-4">
-                <input class="form-control" type="text" name="" id="" placeholder="31.3.2021">
-            </div>
-            <div class="col-12 col-md-2">
-                NL Registration number
-            </div>
-            <div class="col-12 col-md-3"><input class="form-control" type="text" name="" id="" placeholder="KN-494-T"></div>
-            <div class="col-12 col-md-2">
-            </div>
-        </div>
-        <!-- ./ ROW  -->
-        <!-- .ROW  -->
-        <br />
-        <div class="row">
-            <div class="col-12 col-md-2"> First registration on a name in the Netherlands (date)</div>
-            <div class="col-12 col-md-4">
-                <input class="form-control" type="text" name="" id="" placeholder="25.5.2021">
-            </div>
-            <div class="col-12 col-md-2">
-                Check code (meldcode)
-            </div>
-            <div class="col-12 col-md-4">1932</div>
-        </div>
-        <!-- ./ ROW  -->
-        <!-- .ROW  -->
-        <br />
-        <div class="row">
-            <div class="col-12 col-md-2">Last registration on a name (date)</div>
-            <div class="col-12 col-md-4">
-                <input class="form-control" type="text" name="" id="" placeholder="25.5.2021">
-            </div>
-            <div class="col-12 col-md-2">
-                APK / Check valid until
-            </div>
-            <div class="col-12 col-md-3"><input class="form-control" type="text" name="" id="" placeholder="25.5.2025"></div>
-            <div class="col-12 col-md-2 spacer"></div>
-        </div>
+               <div class="row justify-content-center align-items-start">
+                        <!-- Left col  -->
+                        <div class="col-12 col-md-5">
+                            <!-- Rows  -->
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <span> First registration ever (date)</span>
+                                </div>
+                                <div class="col-12 col-md-8 p-1">
+                                    <input class="form-control" type="text" name="" value="" placeholder="25.5.2021" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <span>First registration in the Netherlands (date)</span>
+                                </div>
+                                <div class="col-12 col-md-8 p-1">
+                                    <input class="form-control" type="text" name="" value="" placeholder="31.3.2021" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <span>First registration on a name in the Netherlands (date)</span>
+                                </div>
+                                <div class="col-12 col-md-8 p-1">
+                                    <input class="form-control" type="text" name="" value="" placeholder="25.5.2021" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <span>Last registration on a name (date)</span>
+                                </div>
+                                <div class="col-12 col-md-8 p-1">
+                                    <input class="form-control" type="text" name="" value="" placeholder="25.5.2021" />
+                                </div>
+                            </div>
+                            <!-- ./ ROWS  -->
+                        </div>
+                        <!-- ./ Left col  -->
+
+                        <!-- Rigth col  -->
+                        <div class="col-12 col-md-7">
+                            <!-- Rows  -->
+                            <div class="row">
+                                <!--<div class="col-12 col-md-4">
+                                    <span>Source Supplier </span>
+                                </div>
+                                <div class="col-12 col-md-6 p-1">
+                                    <input class="form-control" type="text" name="" value="" placeholder="Feser Graf, Schwabach" />
+                                </div>-->
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <span>NL Registration number</span>
+                                </div>
+                                <div class="col-12 col-md-6 p-1">
+                                    <input class="form-control" type="text" name="" value="" placeholder="KN-494-T"/>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <span>Check code (meldcode)</span>
+                                </div>
+                                <div class="col-12 col-md-6 p-1">
+                                    <p>1932</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <span>APK / Check valid until</span>
+                                </div>
+                                <div class="col-12 col-md-6 p-1">
+                                    <input class="form-control" type="text" name="" value="" placeholder="25.5.2021"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- Rigth col -->
         <!-- ./ ROW  -->
         <!-- .ROW  -->
         <br />
