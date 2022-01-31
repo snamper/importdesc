@@ -26,13 +26,13 @@
                             <div class="row str">
                                 <div class="col-sm-2"><label for="carMotor">Motor</label></div>
                                 <div class="col-sm-4">
-                                    <select class="form-control" name="car_motor" id="carMotor">
+                                    <select class="form-control js-car-motor" name="car_motor" id="carMotor">
                                         <option value="">-</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-2"><label for="carFuel">Fuel</label></div>
                                 <div class="col-sm-4">
-                                    <select class="form-control" name="carFuel" id="carFuel">
+                                    <select class="form-control js-car-fuel" name="carFuel"  id="carFuel">
                                         <option value="">-</option>
                                         <option value="1">Benzine</option>
                                         <option value="2">Diesel</option>

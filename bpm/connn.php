@@ -1,7 +1,7 @@
 <?php
-$gaSql['user']       = "deb64406n9_import1";
-$gaSql['password']   = "RbB38eSQ";
-$gaSql['db']         = "deb64406n9_import1";
+$gaSql['user']       = "db_user";
+$gaSql['password']   = "vE^fBKG^*X7oMTHfhpP!";
+$gaSql['db']         = "importdesc";
 $gaSql['server']     = "localhost";
 
 //

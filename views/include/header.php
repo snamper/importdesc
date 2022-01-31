@@ -24,7 +24,7 @@
 </head>
 
 <?php if(isset($_SESSION['user'])) {?>
-    <div id="page-container" class="page-header-fixed page-sidebar-fixed">
+    <div id="page-container" class="page-header-fixed">
         <!-- BEGIN #header -->
         <div id="header" class="header navbar navbar-default navbar-fixed-top">
                 <!-- BEGIN container-fluid -->
