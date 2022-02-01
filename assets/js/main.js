@@ -1396,11 +1396,11 @@ $(document).ready(function () {
     kpwInput.on('change', (e) => {
         const val = kpwInput.val();
         if(!isNaN(val))
-            cubicInput.val(val * 1.362)
+            cubicInput.val(Math.round(val * 1.362));
     });
     cubicInput.on('change', (e) => {
         const val = cubicInput.val();
         if(!isNaN(val))
-            kpwInput.val(val / 1.362);
+            kpwInput.val(Math.round(val / 1.362));
     });
 });
