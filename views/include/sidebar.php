@@ -41,6 +41,21 @@
                 <li><a href="create_make_new"><i class="ti-plus"></i><span>Create Car NEW</span></a></li>
                 <li><a href="create_make"><i class="ti-plus"></i><span>Create Make</span></a></li>
 
+                 <div class="m90x">
+                    <select  class="form-control input-sm m-b-20" style="width:90%; margin:auto;" id="languageselect">
+
+                        <?php
+                            $langs = $_SESSION['langs'];
+                        ?>
+                        <?php foreach ($langs as $k => $v): ?>
+                            <a href="#<?php echo $v['lang'] ?>">
+                                <option <?php echo ($_SESSION['lang']==$v['langID']? 'selected':'') ?>  data-content="<span class='flag-icon flag-icon-<?php echo $v['lang']?>'> <?php echo $v['langfull'] ?> </span>"value="<?php echo $v['langID'] ?>"><?php echo $v['langfull'] ?></option>
+                            </a>
+                        <?php endforeach ?>
+                    </select>
+                    </div>
+
+
                 <!-- <li><a href="click_model"><i class="ti-plus"></i><span>Click Model</span></a></li>  -->
 
 

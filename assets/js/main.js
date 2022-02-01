@@ -1342,6 +1342,20 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
     }
 })(window, document);
 
+$('.js-example-basic-multiple').select2();
+$('.selectpicker').selectpicker();
+
+$("#languageselect").change(function () {
+    var language = $(this).val();
+    $.ajax({
+        type: "POST",
+        url: 'home' ,
+        data: 'changes='+language,
+        success: function(){
+            location.reload();
+        }
+    });
+});
 function fillSelectFromJson(selector, jsonData, selectTextProp, selectValProp, changeInnerHTML = false){
     
     let emptyOption = Object.assign(

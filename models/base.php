@@ -212,6 +212,34 @@ class base
 		$dbDriver->query($sql, 'updateuser');
 	}
 
+	 function getLangs(){
+        $dbDriver = new db_driver();
+        $sql="SELECT `langID`, `lang`, `langfull` FROM `lang`";
+        $dbDriver->query($sql);
+        return $dbDriver->fetchAssoc();    
+    }
+
+    function setLang($userID,$langID){
+        $dbDriver = new db_driver();
+        $sql="UPDATE `expo_users` SET `langID`='$langID' WHERE expo_users_ID = $userID";
+        $dbDriver->query($sql);
+
+    } 
+
+    function getTranslate($langID){
+        $dbDriver = new db_driver();
+        $sql="SELECT `label`, `description` FROM `translate` WHERE `langID`= $langID";
+        $dbDriver->query($sql);
+        return $dbDriver->fetchAssoc();    
+    }
+
+    function getTranslations(){
+        $dbDriver = new db_driver();
+        $sql="SELECT e.transID, e.label, e.description, u.langID, u.langfull FROM `translate` e LEFT JOIN `lang` u ON u.langID = e.langID";
+        $dbDriver->query($sql);
+        return $dbDriver->fetchAssoc();    
+    }
+
 	function getCarData($carID)
 	{
 		$dbDriver = new db_driver();
