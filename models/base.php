@@ -496,10 +496,10 @@ class base
 		$_post['last_name_registration'] = date("Y-m-d", strtotime($_post['last_name_registration']));
 		$_post['apk_valid'] = date("Y-m-d", strtotime($_post['apk_valid']));
 
-		if(isset($_post['color_metalic'])) {
-			$_post['color_metalic'] = 1;
+		if(isset($_post['preorder'])) {
+			$_post['preorder'] = 1;
 		}else {
-			$_post['color_metalic'] = 0;
+			$_post['preorder'] = 0;
 		}
 		
 		// try {
@@ -544,6 +544,7 @@ class base
 		// INSERT INTO car_details 
 		$query = "INSERT INTO car_details
 			( ci_car_id,
+				ci_preorder,
 				ci_car_ref_custom,
 				ci_vin,
 				ci_komm_number,
@@ -566,7 +567,7 @@ class base
 				ci_co_wltp,
 				ci_co_nedc,
 				ci_kilometers,
-				ci_color_metalic,
+				ci_paint_type,
 				ci_color,
 				ci_color_additional,
 				ci_interior_color,
@@ -660,6 +661,7 @@ class base
 					?,
 					?,
 					?,
+					?,
 					?
 				)";
 
@@ -669,6 +671,7 @@ class base
 		$stmt->execute(
 			[
 				$inserted_car_id,
+				$_post['preorder'],
 				$_post['car_ref_custom'],
 				$_post['vin'],
 				$_post['komm_number'],
@@ -691,7 +694,7 @@ class base
 				$_post['co_wltp'],
 				$_post['co_nedc'],
 				$_post['kilometers'],
-				$_post['color_metalic'],
+				$_post['paint_type'],
 				$_post['color'],
 				$_post['color_additional'],
 				$_post['interior_color'],
