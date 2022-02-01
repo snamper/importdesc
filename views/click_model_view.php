@@ -311,16 +311,14 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Power</span>
+                            <span>Power kW / Pk</span>
                         </div>
                         <div class="col-12 col-md-8">
                             <div class="row">
                                 <div class="col-6 pr-0">
-                                    <div class="text-center">kW / Pk</div>
                                     <input class="form-control" type="text" name="power_kpw" id="" placeholder="">
                                 </div>
                                 <div class="col-6 pl-0">
-                                    <div class="text-center">Cubic Capacity</div>
                                     <input class="form-control" type="text" name="cubic_capacity" id="" placeholder="">
                                 </div>
                             </div>
@@ -343,21 +341,20 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>CO²</span>
+                            <span>CO² WLTP</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <div class="row">
-                                <div class="col-6 pr-0">
-                                    <div class="text-center">WLTP</div>
-                                    <input type="text" class="form-control" id="BPMCO2WLTP" name="co_wltp" placeholder="">
-                                </div>
-                                <div class="col-6 pl-0">
-                                    <div class="text-center">NEDC</div>
-                                    <input type="text" class="form-control" id="BPMCO2" name="co_nedc" placeholder="">
-                                </div>
-                            </div>
+                            <input type="text" class="form-control" id="BPMCO2WLTP" name="co_wltp" placeholder="">
                         </div>
+                    </div>
 
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <span>CO² NEDC</span>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <input type="text" class="form-control" id="BPMCO2" name="co_nedc" placeholder="">
+                        </div>
                     </div>
 
                     <div class="row">
@@ -373,17 +370,24 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
+                            Paint Type
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <select name="paint_type" class="form-control" id="paintType">
+                                <option value="">-</option>
+                                <?php foreach ($data['paint_type'] as $opt_value) {
+                                    echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-md-4">
                             <span>Colour | Colour name OEM </span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <div class="row">
-                                <div class="col-3">
-                                    Metallic/ Pearl
-                                </div>
-                                <div class="col-6">
-                                    <input type="checkbox" name="color_metalic" id="">
-                                </div>
-                            </div>
                             <div class="row">
                                 <div class="col-6 pr-0">
                                     <select class="form-control" name="color" id="">

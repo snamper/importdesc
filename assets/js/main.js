@@ -1342,6 +1342,20 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
     }
 })(window, document);
 
+$('.js-example-basic-multiple').select2();
+$('.selectpicker').selectpicker();
+
+$("#languageselect").change(function () {
+    var language = $(this).val();
+    $.ajax({
+        type: "POST",
+        url: 'home' ,
+        data: 'changes='+language,
+        success: function(){
+            location.reload();
+        }
+    });
+});
 function fillSelectFromJson(selector, jsonData, selectTextProp, selectValProp, changeInnerHTML = false){
     
     let emptyOption = Object.assign(
@@ -1384,3 +1398,23 @@ function fillSelectFromJson(selector, jsonData, selectTextProp, selectValProp, c
     
 
 })(window, document);
+
+$(document).ready(function () {
+    const kpwInput = $('input[name=power_kpw]');
+    const cubicInput = $('input[name=cubic_capacity]');
+
+    if (!kpwInput) {
+        return;
+    }
+    
+    kpwInput.on('change', (e) => {
+        const val = kpwInput.val();
+        if(!isNaN(val))
+            cubicInput.val(val * 1.362)
+    });
+    cubicInput.on('change', (e) => {
+        const val = cubicInput.val();
+        if(!isNaN(val))
+            kpwInput.val(val / 1.362);
+    });
+});

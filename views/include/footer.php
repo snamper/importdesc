@@ -467,7 +467,7 @@
         document.getElementById('connect_car').value = (oTable36.row(this).data()[0]);
         // console.log(oTable36.row(this).data());
     });
-
+$('.selectpicker').selectpicker();
 
 
 
