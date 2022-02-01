@@ -23,7 +23,6 @@ class click_model extends view{
 		// displayed page index
 		$obj = new element();
 		$this->base = $_SESSION['base'];
-		// $cars = $this->base->getAllCars();
 
 
 		if(isset($_SESSION['user']))parent::__construct('click_model_view.php');

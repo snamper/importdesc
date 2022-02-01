@@ -159,3 +159,8 @@
 .form-click-model {
     font-size: 80%;
 }
+
+#createEditCarPage input.form-control,
+#createEditCarPage select.form-control {
+    height: 1.8rem;
+}

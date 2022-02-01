@@ -21,7 +21,8 @@ class view {
 
     public function setData($key, $value) {
 
-        $this->data[$key] = $value;
+        $this->data[$key][] = $value;
+       
     }
 }
 ?>

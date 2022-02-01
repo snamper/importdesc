@@ -432,7 +432,7 @@ $('#carMake').change(function () {
 
 
 $(function () {
-    $("#datepicker1").datepicker();
+    // $("#datepicker1").datepicker();
     $("#datepicker2").datepicker();
     $("#datepicker3").datepicker();
     $("#datepicker4").datepicker();
@@ -599,7 +599,6 @@ $('#datepicker1, #datepicker2,#datepicker3,#datepicker4').change(function () {
         d1 = $('#datepicker3').datepicker('getDate');
         d2 = $('#datepicker4').datepicker('getDate');
     }
-
 
     const monthsBtwnDates = (startDate, endDate) => {
         startDate = new Date(startDate);
