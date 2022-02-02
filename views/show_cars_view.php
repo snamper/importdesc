@@ -27,20 +27,19 @@
 <div class="table-responsive">
     <table id="table_show_car" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
         <thead>
-            <th class="text-center">Datum aangemaakt</th>
-            <th style="white-space: nowrap">Auto referentie</th>
-            <th style="white-space: nowrap">Auto referentie (custom)</th>
-            <th style="white-space: nowrap">Type</th>
-            <th style="white-space: nowrap">Merk</th>
+                <th class="text-center">Date created</th>
+            <th style="white-space: nowrap">Car reference</th>
+            <th style="white-space: nowrap">Car reference (custom)</th>
+            <th style="white-space: nowrap">Make</th>
             <th style="white-space: nowrap">Model</th>
-            <th style="white-space: nowrap">Uitvoering</th>
-            <th style="white-space: nowrap">Motor</th>
-            <th style="white-space: nowrap">Brandstof</th>
-            <th style="white-space: nowrap">Transmissie</th>
-            <th style="white-space: nowrap">Datum eerste toelating</th>
-            <th style="white-space: nowrap">Km-stand</th>
-            <th style="white-space: nowrap">Huidig land geregistreerd</th>
-            <th style="white-space: nowrap">Vin</th>
+            <th style="white-space: nowrap">Variant</th>
+            <th style="white-space: nowrap">Engine</th>
+            <th style="white-space: nowrap">Fuel</th>
+            <th style="white-space: nowrap">Transmission</th>
+            <th style="white-space: nowrap">First reg. ever</th>
+            <th style="white-space: nowrap">Kilometers</th>
+            <th style="white-space: nowrap">First reg. in NL</th>
+            <th style="white-space: nowrap">VIN</th>
             <th style="white-space: nowrap">Edit</th>
             <th style="white-space: nowrap">Duplicate</th>
 

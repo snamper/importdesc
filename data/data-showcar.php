@@ -12,20 +12,26 @@ include("connection.php");
 /* Array of database columns which should be read and sent back to DataTables. Use a space where
  * you want to insert a non-database field (for example a counter or static image)
  */
-$aColumns = array( 'c.DateIn','CONCAT_WS( "-", cm.name, cmod.name, c.productiedatum)', 'c.custom_ref','ct.name','cm.name','cmod.name','c.uitvoering','c.motor','ctw.conversie_naam','c.transmissie','c.productiedatum','c.km_stand','c.huidigland','c.vinnummer','c.carID as edit','c.carID as duplicate');
+$aColumns = array( 'c.created_at','CONCAT_WS( "-", cm.cmake_name, cmod.cmodel_name)', 'cd.ci_car_ref_custom','cm.cmake_name','cmod.cmodel_name','cmu.cmu_name','cmotor.cmotor_name','cv.conversion_name','conv2.conversion_name','cd.ci_first_registration_date','cd.ci_kilometers','cd.ci_first_nl_registration','cd.ci_vin','c.car_id as edit','c.car_id as duplicate');
 
 /* Indexed column (used for fast and accurate table cardinality) */
-$sIndexColumn = "c.carID as number";
+$sIndexColumn = "c.car_id as number";
 
 /* DB table to use */
-$sTable = "dossier d";
 
-$sJoin = ' LEFT JOIN car c ON c.carID = d.carID ';
-$sJoin .= ' INNER JOIN car_make cm on c.car_merk = cm.id_car_make  ';
-$sJoin .= ' INNER JOIN car_model cmod on c.car_model = cmod.id_car_model ';
-$sJoin .= ' INNER JOIN car_type ct on cmod.id_car_type = ct.id_car_type ';
-$sJoin .= ' INNER JOIN conversie_tabel_gwi ctw on c.brandstof = ctw.conversie_tabel_ID ';
-// $sJoin .= ' WHERE `translate.langID`= $langID';
+
+$sJoin = ' cars c ';
+$sJoin .= ' INNER JOIN car_makes cm on c.car_make = cm.cmake_id  ';
+$sJoin .= ' INNER JOIN car_models cmod on c.car_model = cmod.cmodel_id ';
+$sJoin .= ' INNER JOIN car_details cd on c.car_id = cd.ci_car_id ';
+$sJoin .= ' INNER JOIN car_make_uitvoerings cmu on cm.cmake_id = cmu.cmu_make_id';
+$sJoin .= ' INNER JOIN car_motors cmotor on cm.cmake_id = cmotor.cmotor_make_id';
+$sJoin .= ' INNER JOIN conversions cv on c.car_fuel = cv.conversion_id';
+$sJoin .= ' INNER JOIN conversions conv2 on cd.ci_transmission = conv2.conversion_id';
+
+
+
+
 /*
  * Local functions
  */
@@ -164,6 +170,8 @@ $sQuery = "
         $sLimit
     ";
 
+
+
 $rResult = mysqli_query($gaSql['link'], $sQuery, $gaSql['link'] ) or fatal_error( 'MySQL Error: ' . mysqli_errno($gaSql['link']) );
 mysqli_query($gaSql['link'], "SET character_set_results=utf8", $gaSql['link']);
 
@@ -232,11 +240,11 @@ while ( $aRow = mysqli_fetch_array( $rResult ) ) {
         if ( $aColumns[ $i ] == "version" ) {
             /* Special output formatting for 'version' column */
             $row[] = ( $aRow[ $aColumns[ $i ] ] == "0" ) ? '-' : $aRow[ $aColumns[ $i ] ];
-        }   elseif ( $aColumns[ $i ] == 'c.id_car_make' ) {
+        }   elseif ( $aColumns[ $i ] == 'c.car_make' ) {
              $row[] = '<center>'.$j.'</center>';
-        } elseif ( $aColumns[ $i ] == 'c.carID as edit' ) {
+        } elseif ( $aColumns[ $i ] == 'c.car_id as edit' ) {
             $row[] = '<center style="display:flex;"><a class="btn btn-default btn-xs js-fill-car-info" data-id="'.$aRow[$i].'" data-toggle="modal" data-target="#editCarForm"><i class="ti-pencil"></i></a><a href="edit_car_calculation?car_id='.$aRow[$i].'" class="btn btn-default btn-xs"><i class="ti-brush"></i></a></center>';
-        }elseif ( $aColumns[ $i ] == 'c.carID as duplicate' ) {
+        }elseif ( $aColumns[ $i ] == 'c.car_id as duplicate' ) {
             $row[] = '<center style="display:flex;"><a href="edit_car?duplicate='.$aRow[$i].'" class="btn btn-default btn-xs"><i class="ti-files"></i></a></center>';
         }  elseif ( $aColumns[ $i ] != ' ' ) {
             /* General output */
