@@ -470,20 +470,10 @@
                                             <label for="switchBTW"></label>
                                         </div>
                                     </div>
-
                                 </div>
 
                                 <!-- Current date  -->
                                 <input type="hidden" autocomplete="off" class="form-control" name="huidigedatumbpm" id="datepicker2">
-
-                                <div class="row str">
-                                    <div class="col-12">
-                                        Residual Value Percentage
-                                    </div>
-                                    <div class="col-12">
-                                        <input type="text" class="form-control" id="percentage" name="percentage" placeholder="">
-                                    </div>
-                                </div>
 
                                 <div class="row str">
                                     <div class="col-12">
@@ -504,11 +494,11 @@
                                 </div>
 
                                 <div class="row str">
-                                    <div class="col-12">
+                                    <div class="col-12 font-weight-bold">
                                         Total Purchase Price netto
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="addOpknapkosten" name="total_purchase_price_netto" placeholder="">
+                                        <input type="text" readonly class="form-control" id="addOpknapkosten" name="total_purchase_price_netto" placeholder="">
                                     </div>
                                 </div>
 
@@ -520,6 +510,7 @@
                                         <input type="text" class="form-control" id="addTransport_Binnenland" name="costs_damage_and_repair" placeholder="">
                                     </div>
                                 </div>
+
                                 <div class="row str">
                                     <div class="col-12">
                                         Transport International
@@ -527,7 +518,7 @@
                                     <div class="col-12">
                                         <input type="text" class="form-control" id="addTransport_Buitenland" name="transport_international" placeholder="">
                                     </div>
-                                </div>
+                                </div>     
 
                                 <div class="row str">
                                     <div class="col-12">
@@ -556,15 +547,15 @@
                                     </div>
                                 </div>
                                 <div class="row str">
-                                    <div class="col-12">
+                                    <div class="col-12 font-weight-bold">
                                         Totaal Costs and Fee
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="addFee" name="total_costs_and_fee" placeholder="">
+                                        <input type="text" readonly class="form-control" id="addFee" name="total_costs_and_fee" placeholder="">
                                     </div>
                                 </div>
                                 <div class="row str">
-                                    <div class="col-12">
+                                    <div class="col-12 font-weight-bold">
                                         Sales Price netto (ex/ex)
                                     </div>
                                     <div class="col-12">
@@ -605,13 +596,22 @@
                                     </div>
                                 </div>
                                 <div class="row str">
-                                    <div class="col-12">
+                                    <div class="col-12 font-weight-bold">
                                         Sales Price Total (in/in)
                                     </div>
                                     <div class="col-12">
                                         <input type="text" class="form-control" id="addVerkoopprijs_Marge_incl" name="sales_price_total" placeholder="">
                                     </div>
                                 </div>
+
+                                <div class="row str">
+                                    <div class="col-12">
+                                        Residual Value Percentage
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="percentage" name="percentage" placeholder="">
+                                    </div>
+                                </div>    
                             </div>   <!-- Calculation  -->
                             
                             <div class="col-12 col-md-6 recent-images-col">
