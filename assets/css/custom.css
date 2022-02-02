@@ -111,8 +111,10 @@
     margin: 3px;
 }
 .car-image-col img {
-    max-width: 125px;
-    height: auto;
+    width: 350px;
+    max-width: 100%;
+    padding-top: 5px;
+    margin: 3px;
 }
 .dt-buttons.btn-group{
         display: flex;

@@ -451,7 +451,7 @@
                 <!-- Rigth col  -->
                 <div class="col-12 col-md-7">
                     <div class="container">
-                        <div class="row a">
+                        <div class="row align-items-start">
                             <div class="col-12 col-md-6 calculation-col">
                                 <div class="row align-items-start str">
                                     <!-- <div class="col-12 col-sm-2">
@@ -601,7 +601,7 @@
                                         Leges (VAT / BTW free)
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="addVerkoopprijs_Marge_incl" name="leges" placeholder="">
+                                        <input type="text" class="form-control" id="addVerkoopprijs_Marge_incl" name="fees" placeholder="">
                                     </div>
                                 </div>
                                 <div class="row str">
@@ -1009,7 +1009,7 @@
     <hr />
 
         <!-- Main row 3 -->
-        <div class="row aa">
+        <div class="row">
             <?php 
                 $imagesNumber = count($data['car_images'][0]);
                  

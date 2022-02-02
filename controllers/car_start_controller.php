@@ -46,7 +46,6 @@ class car_start extends view
 			$this->setData($conv['conversion_type'], $conv);
 		}
 
-
 		if (isset($_POST['create_car'])) {
 			$inserted_car_id = $this->base->createCar($_POST);
 
@@ -59,7 +58,7 @@ class car_start extends view
 				$this->createCarUploads($_FILES['upload_document'], $inserted_car_id, "uploads/documents");
 			}
 
-			exit;
+			
 		}
 
 
