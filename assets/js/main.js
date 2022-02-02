@@ -1409,22 +1409,54 @@ $(document).ready(function () {
     
     kpwInput.on('change', (e) => {
         const val = kpwInput.val();
-        if(!isNaN(val))
+        if(!isNaN(val)) {
             cubicInput.val(Math.round(val * 1.362));
+        }
+            
     });
     cubicInput.on('change', (e) => {
         const val = cubicInput.val();
-        if(!isNaN(val))
+        if(!isNaN(val)) {
             kpwInput.val(Math.round(val / 1.362));
+        }
+            
     });
 
     const vinInput = $('input[name=vin]');
 
     vinInput.keyup(delay(function(e) {
         const val = vinInput.val();
-        if(val.length >= 4)
+        if(val.length >= 4) {
             $('input[name=meldcode]').val(val.slice(-4));
+        }else {
+            $('input[name=meldcode]').val("");
+        }
+            
     }, 500));
+
+    
+});
+
+const imageUpload = $('.upload-photo input[type="file"]');
+imageUpload.change((e) => {
+    var files = $(imageUpload)[0].files;
+
+    if(files.length > 0 ){
+        const allowed = ['image/jpeg', 'image/png'];
+        $(files).each((index, value) => {
+            if(value.size > 5000000) {
+                alert(`File '${value.name}' above 5MB`);
+                files[index] = null;
+            }
+            else if(!allowed.includes(value.type)) {
+                alert(`File '${value.name}' not a jpeg/png image`);
+                files[index] = 0;
+            }
+            else {
+                // $('#uploadedFiles').html($('#uploadedFiles').html() + value.name + '&#13;&#10;');
+            }
+        });
+    }
 });
 
 function delay(callback, ms) {

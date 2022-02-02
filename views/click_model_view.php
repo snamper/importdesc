@@ -1,6 +1,6 @@
 <div class="content" id="createEditCarPage">
     <div class="col-xs-12 table-list">
-        <form action="car_start" method="POST" class="listing__form">
+        <form action="car_start" enctype="multipart/form-data" method="POST" class="listing__form">
             <div class="dashboardPageTitle text-center">
                 <h2 style="opacity: 0;">Placeholder</h2>
             </div>
@@ -32,10 +32,14 @@
 
             <div class="row my-4">
                 <div class="col-12 col-md-3">
-                    <span class="upload-photo">Upload photo</span>
+                    <div class="upload-photo">Upload photo
+                        <input type="file" name="upload_photo[]" multiple id="uploadCarImage">
+                    </div>
                 </div>
                 <div class="col-12 col-md-3">
-                    <span class="upload-photo">Upload document</span>
+                    <div class="upload-document">Upload document
+                        <input type="file" name="upload_document[]" multiple id="uploadCarDocument">
+                    </div>
                 </div>
 
                 <div class="col-12 col-md-3 ml-auto text-right">
@@ -68,7 +72,7 @@
                                 </div>
                             </div>
                             <select required class="form-control" name="status">
-                                <option value="">-</option>
+                                <option value="0">-</option>
                                 <?php foreach ($data['car_status'] as $opt_value) {
                                     echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                                 }
@@ -374,7 +378,7 @@
                         </div>
                         <div class="col-12 col-md-8">
                             <select name="paint_type" class="form-control" id="paintType">
-                                <option value="">-</option>
+                                <option value="0">-</option>
                                 <?php foreach ($data['paint_type'] as $opt_value) {
                                     echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                                 }
@@ -445,161 +449,188 @@
                 <!-- ./ Left col  -->
 
                 <!-- Rigth col  -->
-                <div class="col-12 col-md-7 calculation-column">
-                    <div class="container border border-light rounded">
-                        <div class="form-auto">
-                            <div class="col-xs-12 table-list">
-                                <div class="dashboardPageTitle text-center">
-                                </div>
-                                <div class="dashboardBoxBg mb30">
-                                    <div class="row">
-                                        <div class="table-list body1" style="width: 100%;">
-                                            <div class="row str">
-                                                <div class="col-sm-12 p-4">
-                                                    <h4>Car and BPM</h4>
-                                                </div>
-                                            </div>
-
-                                            <div class="row str">
-                                                <div class="col-12 col-sm-2">
+                <div class="col-12 col-md-7">
+                    <div class="container">
+                        <div class="row align-items-start">
+                            <div class="col-12 col-md-6 calculation-col">
+                                <div class="row align-items-start str">
+                                    <!-- <div class="col-12 col-sm-2">
                                                     Purchase / Sale Price
                                                 </div>
                                                 <div class="col-sm-3 switcher" style="padding-bottom: 5px;">
                                                     <input type="checkbox" name="switchPrice" id="switchPrice" checked />
                                                     <label for="switchPrice"></label>
-                                                </div>
-                                                <div class="col-sm-1 ml-auto">
-                                                    BTW/MARGE
-                                                </div>
-                                                <div class="col-sm-2 switcher" style="padding-bottom: 5px;">
-                                                    <input type="checkbox" name="switchBTW" id="switchBTW" checked />
-                                                    <label for="switchBTW"></label>
-                                                </div>
-                                            </div>
-
-                                            <!-- Current date  -->
-                                            <input type="hidden" autocomplete="off" class="form-control" name="huidigedatumbpm" id="datepicker2">
-
-                                            <div class="row str">
-                                                <div class="col-12 col-md-3">
-                                                    Reference
-                                                </div>
-                                                <div class="col-12 col-md-3">
-                                                    <input type="text" class="form-control" id="referentie" name="referentie" placeholder="">
-                                                </div>
-                                                <div class="col-12 col-md-3">Performance</div>
-                                                <div class="col-12 col-md-3">
-                                                    <input type="text" class="form-control" name="caUitvoering" id="carUitvoering">
-                                                </div>
-                                            </div>
-
-                                            <div class="row str">
-                                                <div class="col-12 col-md-3">
-                                                    Residual Value Percentage
-                                                </div>
-                                                <div class="col-12 col-md-3">
-                                                    <input type="text" class="form-control" id="percentage" name="percentage" placeholder="">
-                                                </div>
-                                                <div class="col-12 col-md-3">
-                                                    Purchase price Net VAT
-                                                </div>
-                                                <div class="col-12 col-md-3">
-                                                    <input type="text" class="form-control" id="inkoopprijs_ex_ex" name="inkoopprijs_ex_ex" placeholder="">
-                                                </div>
-                                            </div>
-
-                                            <div class="row str">
-                                                <div class="col-12 col-md-3">
-                                                    Delivery costs
-                                                </div>
-                                                <div class="col-12 col-md-3">
-                                                    <input type="text" class="form-control" id="addAfleverkosten" name="delivery_costs" placeholder="">
-                                                </div>
-
-                                                <div class="col-12 col-md-3">
-                                                    Refurbishment costs ex
-                                                </div>
-                                                <div class="col-12 col-md-3">
-                                                    <input type="text" class="form-control" id="addOpknapkosten" name="opknapkosten_ex" placeholder="">
-                                                </div>
-
-                                            </div>
-
-                                            <div class="row str">
-                                                <div class="col-12 col-md-3">
-                                                    Domestic transport
-                                                </div>
-                                                <div class="col-12 col-md-3">
-                                                    <input type="text" class="form-control" id="addTransport_Binnenland" name="transport_binnenland" placeholder="">
-                                                </div>
-                                                <div class="col-12 col-md-3">
-                                                    Transport abroad
-                                                </div>
-                                                <div class="col-12 col-md-3">
-                                                    <input type="text" class="form-control" id="addTransport_Buitenland" name="transport_buitenland" placeholder="">
-                                                </div>
-                                            </div>
-
-                                            <div class="row str">
-                                                <div class="col-12 col-md-3">
-                                                    Cost Total
-                                                </div>
-                                                <div class="col-12 col-md-3">
-                                                    <input type="text" class="form-control" id="addKosten_Totaal" name="taxatie_kosten1" placeholder="">
-                                                </div>
-                                                <div class="col-12 col-md-3">
-                                                    Valuation Costs
-                                                </div>
-                                                <div class="col-12 col-md-3">
-                                                    <input type="text" class="form-control" id="addTaxatie_Kostene" name="taxatie_kosten" placeholder="">
-                                                </div>
-                                            </div>
-
-                                            <div class="row str">
-                                                <div class="col-12 col-md-3">
-                                                    Sales price Net
-                                                </div>
-                                                <div class="col-12 col-md-3">
-                                                    <input type="text" class="form-control" id="addVerkoopprijs_Marge_Excl" name="verkoopprijs_netto" placeholder="">
-                                                </div>
-
-                                                <div class="col-12 col-md-3">
-                                                    Fee
-                                                </div>
-                                                <div class="col-12 col-md-3">
-                                                    <input type="text" class="form-control" id="addFee" name="fee" placeholder="">
-                                                </div>
-
-                                                <div class="col-12 col-md-3">
-                                                    Rest BPM Indicative
-                                                </div>
-                                                <div class="col-12 col-md-3">
-                                                    <input type="text" class="form-control" id="addRest_BPM" name="gekozen_bpm_bedrag" placeholder="">
-                                                </div>
-
-                                            </div>
-
-                                            <div class="row str">
-                                                <div class="col-12 col-md-3">
-                                                    VAT 21%
-                                                </div>
-                                                <div class="col-12 col-md-3">
-                                                    <input type="text" class="form-control" id="addBTW_21no" name="btw" placeholder="">
-                                                </div>
-
-                                                <div class="col-12 col-md-3">
-                                                    Sales price Margin
-                                                    incl.
-                                                    BPM
-                                                </div>
-                                                <div class="col-12 col-md-3">
-                                                    <input type="text" class="form-control" id="addVerkoopprijs_Marge_incl" name="addVerkoopprijs_Marge_incl" placeholder="">
-                                                </div>
-                                            </div>
+                                                </div> -->
+                                    <div class="col-9">
+                                        BTW/MARGE
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="switcher" style="padding-bottom: 5px;">
+                                            <input type="checkbox" name="switchBTW" id="switchBTW" checked />
+                                            <label for="switchBTW"></label>
                                         </div>
                                     </div>
+
                                 </div>
+
+                                <!-- Current date  -->
+                                <input type="hidden" autocomplete="off" class="form-control" name="huidigedatumbpm" id="datepicker2">
+
+                                <div class="row str">
+                                    <div class="col-12">
+                                        Residual Value Percentage
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="percentage" name="percentage" placeholder="">
+                                    </div>
+                                </div>
+
+                                <div class="row str">
+                                    <div class="col-12">
+                                        Purchase Price netto (ex/ex)
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="inkoopprijs_ex_ex" name="purchase_price_netto" placeholder="">
+                                    </div>
+                                </div>
+
+                                <div class="row str">
+                                    <div class="col-12">
+                                        Fee Intermediate Supplier
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="addAfleverkosten" name="fee_intermediate_supplier" placeholder="">
+                                    </div>
+                                </div>
+
+                                <div class="row str">
+                                    <div class="col-12">
+                                        Total Purchase Price netto
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="addOpknapkosten" name="total_purchase_price_netto" placeholder="">
+                                    </div>
+                                </div>
+
+                                <div class="row str">
+                                    <div class="col-12">
+                                        Costs of Damages and Repair
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="addTransport_Binnenland" name="costs_damage_and_repair" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="row str">
+                                    <div class="col-12">
+                                        Transport International
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="addTransport_Buitenland" name="transport_international" placeholder="">
+                                    </div>
+                                </div>
+
+                                <div class="row str">
+                                    <div class="col-12">
+                                        Transport National
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="addKosten_Totaal" name="transport_national" placeholder="">
+                                    </div>
+                                </div>
+
+                                <div class="row str">
+                                    <div class="col-12">
+                                        Costs of Taxation for BPM
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="addTaxatie_Kostene" name="costs_taxation_bpm" placeholder="">
+                                    </div>
+                                </div>
+
+                                <div class="row str">
+                                    <div class="col-12">
+                                        Fee GWI
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="addVerkoopprijs_Marge_Excl" name="fee_gwi" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="row str">
+                                    <div class="col-12">
+                                        Totaal Costs and Fee
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="addFee" name="total_costs_and_fee" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="row str">
+                                    <div class="col-12">
+                                        Sales Price netto (ex/ex)
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="addRest_BPM" name="sales_price_netto" placeholder="">
+                                    </div>
+                                </div>
+
+                                <div class="row str">
+                                    <div class="col-12">
+                                        VAT / BTW (21%)
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="addBTW_21no" name="vat_btw" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="row str">
+                                    <div class="col-12">
+                                        Sales Price incl. VAT / BTW
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="addVerkoopprijs_Marge_incl" name="sales_price_incl_vat_btw" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="row str">
+                                    <div class="col-12">
+                                        Rest BPM (indication)
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="addVerkoopprijs_Marge_incl" name="rest_bpm" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="row str">
+                                    <div class="col-12">
+                                        Leges (VAT / BTW free)
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="addVerkoopprijs_Marge_incl" name="fees" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="row str">
+                                    <div class="col-12">
+                                        Sales Price Total (in/in)
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="addVerkoopprijs_Marge_incl" name="sales_price_total" placeholder="">
+                                    </div>
+                                </div>
+                            </div>   <!-- Calculation  -->
+                            
+                            <div class="col-12 col-md-6 recent-images-col">
+                                
+                                <?php 
+                                    foreach($data['car_images'][0] as $key => $img) {
+
+                                        if($key > 4) {
+                                            break; 
+                                        }
+                                        echo "<div class='row'>
+                                            <div class='col-12 car-image-col'>
+                                                <img src='/{$img['cp_path']}' />
+                                            </div>
+                                        </div>";                                         
+                                    }
+                                ?>
                             </div>
+
                         </div>
                     </div>
                 </div> <!-- Rigth col -->
@@ -607,36 +638,6 @@
     </div>
     <!-- ./ Main row 2 -->
     <hr />
-
-    <!-- Main row 3 -->
-    <div class="row">
-        <div class="col-6 col-sm-2 text-left">
-            <img src="https://cdn4.focus.bg/fakti/photos/big/360/volkswagen-golf-8-testvahme-go-parvi-1.jpg" width="125" height="110">
-        </div>
-
-        <div class="col-6 col-sm-2 text-left">
-            <img src="https://cdn4.focus.bg/fakti/photos/original/360/volkswagen-golf-8-testvahme-go-parvi-3.jpg" width="125" height="110">
-        </div>
-
-        <div class="col-6 col-sm-2 text-left">
-            <img src="https://api.hvg.hu/Img/4B5CE600-76FE-4FA2-AC62-7B04F6640281/41641772-157a-4eed-9207-45c83439aa32.jpg" width="125" height="110">
-        </div>
-
-        <div class="col-6 col-sm-2 text-left">
-            <img src="https://bi.im-g.pl/im/7c/2b/18/z25344636AMP,Volkswagen-Golf-8.jpg" width="125" height="110">
-        </div>
-
-        <div class="col-6 col-sm-2 text-left">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvHVq0KjRdi2svM0h2qwSF8krZuafToiR-xA&usqp=CAU" width="125" height="110">
-        </div>
-
-        <div class="col-6 col-sm-2 text-left">
-            <img src="https://www.autocar.co.uk/sites/autocar.co.uk/files/images/car-reviews/first-drives/legacy/96-vw-golf-mk8-rear-end.jpg    " width="125" height="110">
-        </div>
-
-    </div><!-- ./ ROW  -->
-
-    <!-- ./ Main row 3 -->
 
     <hr />
     <!-- ERI  -->
@@ -726,7 +727,7 @@
                 <div class="col-12 col-md-6">
                     <label for="navigation">Navigation</label>
                     <select name="navigation" id="navigation" class="form-control">
-                        <option value="">-</option>
+                        <option value="0">-</option>
                         <?php
                         foreach ($data['navigation'] as $opt_value) {
                             echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
@@ -737,7 +738,7 @@
                 <div class="col-12 col-md-6">
                     <label for="keylessEntry">Keyless entry</label>
                     <select name="keyless_entry" id="keylessEntry" class="form-control">
-                        <option value="">-</option>
+                        <option value="0">-</option>
                         <?php
                         foreach ($data['keyless_entry'] as $opt_value) {
                             echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
@@ -751,7 +752,7 @@
                 <div class="col-12 col-md-6">
                     <label for="appConnect">App Connect</label>
                     <select name="app_connect" id="appConnect" class="form-control">
-                        <option value="">-</option>
+                        <option value="0">-</option>
                         <?php
                         foreach ($data['app_connect'] as $opt_value) {
                             echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
@@ -762,7 +763,7 @@
                 <div class="col-12 col-md-6">
                     <label for="airco">Airco</label>
                     <select name="airco" id="airco" class="form-control">
-                        <option value="">-</option>
+                        <option value="0">-</option>
                         <?php
                         foreach ($data['airco'] as $opt_value) {
                             echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
@@ -776,7 +777,7 @@
                 <div class="col-12 col-md-6">
                     <label for="roof">Panorama</label>
                     <select name="roof" id="roof" class="form-control">
-                        <option value="">-</option>
+                        <option value="0">-</option>
                         <?php
                         foreach ($data['roof'] as $opt_value) {
                             echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
@@ -787,7 +788,7 @@
                 <div class="col-12 col-md-6">
                     <label for="wheels">Alloy Wheels</label>
                     <select name="wheels" id="wheels" class="form-control">
-                        <option value="">-</option>
+                        <option value="0">-</option>
                         <?php
                         foreach ($data['wheels'] as $opt_value) {
                             echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
@@ -801,7 +802,7 @@
                 <div class="col-12 col-md-6">
                     <label for="headlights">Headlights</label>
                     <select name="headlights" id="headlights" class="form-control">
-                        <option value="">-</option>
+                        <option value="0">-</option>
                         <?php
                         foreach ($data['headlights'] as $opt_value) {
                             echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
@@ -812,7 +813,7 @@
                 <div class="col-12 col-md-6">
                     <label for="pdc">PDC</label>
                     <select name="pdc" id="pdc" class="form-control">
-                        <option value="">-</option>
+                        <option value="0">-</option>
                         <?php
                         foreach ($data['pdc'] as $opt_value) {
                             echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
@@ -826,7 +827,7 @@
                 <div class="col-12 col-md-6">
                     <label for="cockpit">Digital Cockpit</label>
                     <select name="cockpit" id="cockpit" class="form-control">
-                        <option value="">-</option>
+                        <option value="0">-</option>
                         <?php
                         foreach ($data['cockpit'] as $opt_value) {
                             echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
@@ -837,7 +838,7 @@
                 <div class="col-12 col-md-6">
                     <label for="camera">Camera</label>
                     <select name="camera" id="camera" class="form-control">
-                        <option value="">-</option>
+                        <option value="0">-</option>
                         <?php
                         foreach ($data['camera'] as $opt_value) {
                             echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
@@ -851,7 +852,7 @@
                 <div class="col-12 col-md-6">
                     <label for="cruise">Cruise Control</label>
                     <select name="cruise_control" id="cruise" class="form-control">
-                        <option value="">-</option>
+                        <option value="0">-</option>
                         <?php
                         foreach ($data['cruise_control'] as $opt_value) {
                             echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
@@ -891,7 +892,7 @@
                 <div class="col-12 col-md-6">
                     <label for="sportPackage">Sportpackage</label>
                     <select name="sport_package" id="sportPackage" class="form-control">
-                        <option value="">-</option>
+                        <option value="0">-</option>
                         <?php
                         foreach ($data['sport_package'] as $opt_value) {
                             echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
@@ -905,7 +906,7 @@
                 <div class="col-12 col-md-6">
                     <label for="seatsElectric">Seats electric</label>
                     <select name="seats_electric" id="seatsElectric" class="form-control">
-                        <option value="">-</option>
+                        <option value="0">-</option>
                         <?php
                         foreach ($data['seats_electric'] as $opt_value) {
                             echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
@@ -920,7 +921,7 @@
                 <div class="col-12 col-md-6">
                     <label for="heating">Seat heating</label>
                     <select name="seat_heating" id="heating" class="form-control">
-                        <option value="">-</option>
+                        <option value="0">-</option>
                         <?php
                         foreach ($data['seat_heating'] as $opt_value) {
                             echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
@@ -935,7 +936,7 @@
                 <div class="col-12 col-md-6">
                     <label for="seatMassage">Seat massage</label>
                     <select name="seat_massage" id="seatMassage" class="form-control">
-                        <option value="">-</option>
+                        <option value="0">-</option>
                         <?php
                         foreach ($data['seat_massage'] as $opt_value) {
                             echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
@@ -950,7 +951,7 @@
                 <div class="col-12 col-md-6">
                     <label for="optics">Optics</label>
                     <select name="optics" id="optics" class="form-control">
-                        <option value="">-</option>
+                        <option value="0">-</option>
                         <?php
                         foreach ($data['optics'] as $opt_value) {
                             echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
@@ -965,7 +966,7 @@
                 <div class="col-12 col-md-6">
                     <label for="tindedWindows">Tinted windows</label>
                     <select name="tinted_windows" id="tindedWindows" class="form-control">
-                        <option value="">-</option>
+                        <option value="0">-</option>
                         <?php
                         foreach ($data['tinted_windows'] as $opt_value) {
                             echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
@@ -1006,6 +1007,24 @@
     </div>
     <!-- ./ ROW  -->
     <hr />
+
+        <!-- Main row 3 -->
+        <div class="row">
+            <?php 
+                $imagesNumber = count($data['car_images'][0]);
+                 
+                for($i = 4; $i < $imagesNumber; $i++){
+                    
+                    echo "<div class='col-12 col-md-3 car-image-col'>
+                        <img src='{$data['car_images'][0][$i]['cp_path']}' />
+                    </div>";
+                }
+            ?>
+        </div>
+
+    </div><!-- ./ ROW  -->
+
+    <!-- ./ Main row 3 -->
 
 
     </form>

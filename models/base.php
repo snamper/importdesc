@@ -529,6 +529,7 @@ class base
 		}else {
 			$_post['preorder'] = 0;
 		}
+
 		
 		// try {
 		$query = "INSERT INTO cars
@@ -695,7 +696,6 @@ class base
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 
-
 		$stmt->execute(
 			[
 				$inserted_car_id,
@@ -770,6 +770,82 @@ class base
 		//     echo 'Error: ' .  $e->getMessage() . "\n";
 		// }
 		// $dbDriver->dbCon->commit();
+
+		$this->createCalculation($_post, $inserted_car_id);
+
+		return $inserted_car_id;
+	}
+
+
+	public function createCalculation($_post, $car_id = NULL) {
+		$dbDriver = new db_driver();
+			$query = "INSERT INTO calculations (
+			calculation_for_car_id,
+			purchase_price_netto,
+			fee_intermediate_supplier,
+			total_purchase_price_netto,
+			costs_damage_and_repair,
+			transport_international,
+			transport_national,
+			costs_taxation_bpm,
+			fee_gwi,
+			total_costs_and_fee,
+			sales_price_netto,
+			vat_btw,
+			sales_price_incl_vat_btw,
+			rest_bpm,
+			fees,
+			sales_price_total,
+			`user_id`
+
+		) VALUES (
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?
+		)";
+		
+		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([
+			$car_id,
+			$_post['purchase_price_netto'],
+			$_post['fee_intermediate_supplier'],
+			$_post['total_purchase_price_netto'],
+			$_post['costs_damage_and_repair'],
+			$_post['transport_international'],
+			$_post['transport_national'],
+			$_post['costs_taxation_bpm'],
+			$_post['fee_gwi'],
+			$_post['total_costs_and_fee'],
+			$_post['sales_price_netto'],
+			$_post['vat_btw'],
+			$_post['sales_price_incl_vat_btw'],
+			$_post['rest_bpm'],
+			$_post['fees'],
+			$_post['sales_price_total'],
+			$_SESSION['user'][0]['expo_users_ID']
+
+		]);
+		
+		echo '<pre>';
+		var_dump('here');
+		echo '</pre>';
+		exit;
+
 	}
 
 	public function getAllCars($carID = 0)
@@ -794,6 +870,43 @@ class base
 		return $result;
 	}
 
+	public function insertCarPhoto($path, $inserted_car_id) {
+
+		$dbDriver = new db_driver();
+
+		$sql = "INSERT INTO car_photos (cp_car_id, cp_path, cp_user_id)
+			VALUES (
+				?,
+				?,
+				?
+
+			)";
+		
+		$stmt = $dbDriver->dbCon->prepare($sql);
+		$stmt->execute([$inserted_car_id, $path, $_SESSION['user'][0]['expo_users_ID']]);
+
+	}
+
+	public function insertCarDocument($path, $inserted_car_id) {
+
+		$dbDriver = new db_driver();
+
+		$sql = "INSERT INTO car_documents (cd_car_id, cd_path, cd_user_id)
+			VALUES (
+				?,
+				?,
+				?
+
+			)";
+		
+		$stmt = $dbDriver->dbCon->prepare($sql);
+		$stmt->execute([$inserted_car_id, $path, $_SESSION['user'][0]['expo_users_ID']]);
+
+
+	}
+
+	
+
 	public function getCarInfo($car_id)
 	{
 		$dbDriver = new db_driver();
@@ -810,6 +923,23 @@ class base
 		$result = $stmt->fetchAll();
 
 		return $result;
+	}
+
+	public function getCarImages($car_id) {
+
+		$dbDriver = new db_driver();
+		// $dbDriver->dbCon->beginTransaction();
+
+		// try {
+					
+		$query= "SELECT * FROM car_photos WHERE cp_car_id = ?";
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$car_id]);
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		return $result;
+
 	}
 
 	public function updateCarInfo($post, $car_id)
@@ -1064,7 +1194,6 @@ class base
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([]);
-		// $this->createCar($result);
 
 	}
 
