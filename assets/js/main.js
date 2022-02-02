@@ -1410,11 +1410,31 @@ $(document).ready(function () {
     kpwInput.on('change', (e) => {
         const val = kpwInput.val();
         if(!isNaN(val))
-            cubicInput.val(val * 1.362)
+            cubicInput.val(Math.round(val * 1.362));
     });
     cubicInput.on('change', (e) => {
         const val = cubicInput.val();
         if(!isNaN(val))
-            kpwInput.val(val / 1.362);
+            kpwInput.val(Math.round(val / 1.362));
     });
+
+    const vinInput = $('input[name=vin]');
+
+    vinInput.keyup(delay(function(e) {
+        const val = vinInput.val();
+        if(val.length >= 4)
+            $('input[name=meldcode]').val(val.slice(-4));
+    }, 500));
 });
+
+function delay(callback, ms) {
+    var timer = 0;
+    return function() {
+        var context = this,
+            args = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(function() {
+            callback.apply(context, args);
+        }, ms || 0);
+    };
+}

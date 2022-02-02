@@ -699,10 +699,10 @@
 
             <div class="row my-1">
                 <div class="col-12 col-md-4">
-                    <span>Check code (meldcode)</span>
+                    <span>Identification code (meldcode)</span>
                 </div>
                 <div class="col-12 col-md-6">
-                    <input type="number" class="form-control" name="meldcode" id="melcode">
+                    <input type="text" class="form-control" name="meldcode" id="melcode">
                 </div>
             </div>
             <div class="row">
