@@ -572,65 +572,65 @@ class base
 
 		// INSERT INTO car_details 
 		$query = "INSERT INTO car_details
-			( ci_car_id,
-				ci_preorder,
-				ci_car_ref_custom,
-				ci_vin,
-				ci_komm_number,
-				ci_advert_link,
-				ci_source_supplier,
-				ci_supplier_ref,
-				ci_current_registration,
-				ci_coc,
-				ci_status,
-				ci_model_additional,
-				ci_variant_additional,
-				ci_fuel_type,
-				ci_motor,
-				ci_motor_additional,
-				ci_transmission,
-				ci_transmission_additional,
-				ci_power_kpw,
-				ci_cubic_capacity,
-				ci_wheel_drive,
-				ci_co_wltp,
-				ci_co_nedc,
-				ci_kilometers,
-				ci_paint_type,
-				ci_color,
-				ci_color_additional,
-				ci_interior_color,
-				ci_interior_color_additional,
-				ci_interior_material,
-				ci_first_registration_date,
-				ci_first_nl_registration,
-				ci_first_name_nl_registration,
-				ci_last_name_registration,
-				ci_nl_registration_number,
-				ci_meldcode,
-				ci_apk_valid, 
-				ci_navigation,
-				ci_keyless_entry,
-				ci_app_connect,
-				ci_airco,
-				ci_roof,
-				ci_wheels,
-				ci_headlights,
-				ci_pdc,
-				ci_cockpit,
-				ci_camera,
-				ci_cruise_control,
-				ci_tow_bar,
-				ci_sport_seats,
-				ci_sport_package,
-				ci_seats_electric,
-				ci_seat_heating,
-				ci_seat_massage,
-				ci_optics,
-				ci_tinted_windows,
-				ci_options,
-				ci_notes,
-				ci_uploaded_files
+			( cd_car_id,
+				cd_preorder,
+				cd_car_ref_custom,
+				cd_vin,
+				cd_komm_number,
+				cd_advert_link,
+				cd_source_supplier,
+				cd_supplier_ref,
+				cd_current_registration,
+				cd_coc,
+				cd_status,
+				cd_model_additional,
+				cd_variant_additional,
+				cd_fuel_type,
+				cd_motor,
+				cd_motor_additional,
+				cd_transmission,
+				cd_transmission_additional,
+				cd_power_kpw,
+				cd_cubic_capacity,
+				cd_wheel_drive,
+				cd_co_wltp,
+				cd_co_nedc,
+				cd_kilometers,
+				cd_paint_type,
+				cd_color,
+				cd_color_additional,
+				cd_interior_color,
+				cd_interior_color_additional,
+				cd_interior_material,
+				cd_first_registration_date,
+				cd_first_nl_registration,
+				cd_first_name_nl_registration,
+				cd_last_name_registration,
+				cd_nl_registration_number,
+				cd_meldcode,
+				cd_apk_valid, 
+				cd_navigation,
+				cd_keyless_entry,
+				cd_app_connect,
+				cd_airco,
+				cd_roof,
+				cd_wheels,
+				cd_headlights,
+				cd_pdc,
+				cd_cockpit,
+				cd_camera,
+				cd_cruise_control,
+				cd_tow_bar,
+				cd_sport_seats,
+				cd_sport_package,
+				cd_seats_electric,
+				cd_seat_heating,
+				cd_seat_massage,
+				cd_optics,
+				cd_tinted_windows,
+				cd_options,
+				cd_notes,
+				cd_uploaded_files
 			)
 				VALUES (
 					?,
@@ -776,6 +776,35 @@ class base
 		return $inserted_car_id;
 	}
 
+	public function getSingleCar($car_id) {
+		$dbDriver = new db_driver();
+			$query = "SELECT c.created_at,
+			c.car_id, cd.cd_car_ref_custom, cm.cmake_name, cmod.cmodel_name,
+			cmu.cmu_name, cmotor.cmotor_name, cv.conversion_name,
+			conv2.conversion_name, cd.cd_first_registration_date,
+			cd.cd_kilometers, cd.cd_first_nl_registration,
+			cd.cd_vin
+			FROM
+			  cars c
+			INNER JOIN car_details cd on c.car_id = cd.cd_car_id 
+			 INNER JOIN car_makes cm on c.car_make = cm.cmake_id
+			 INNER JOIN car_models cmod on c.car_model = cmod.cmodel_id
+			 INNER JOIN car_motors cmotor on cd.cd_motor = cmotor.cmotor_id
+			INNER JOIN conversions cv on c.car_fuel = cv.conversion_id
+			INNER JOIN conversions conv2 on cd.cd_transmission = conv2.conversion_id
+			INNER JOIN car_make_uitvoerings cmu on c.car_variant  = cmu.cmu_id
+			WHERE c.car_id = ?
+			";
+
+			$stmt = $dbDriver->dbCon->prepare($query);
+			$stmt->execute([$car_id]);
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+			return $result;
+			
+
+	}
+
 
 	public function createCalculation($_post, $car_id = NULL) {
 		$dbDriver = new db_driver();
@@ -841,10 +870,6 @@ class base
 
 		]);
 		
-		echo '<pre>';
-		var_dump('here');
-		echo '</pre>';
-		exit;
 
 	}
 

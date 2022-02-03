@@ -617,6 +617,15 @@
                             <div class="col-12 col-md-6 recent-images-col">
                                 
                                 <?php 
+                                    if(empty($data['car_images'][0])) {
+                                        for( $i = 0; $i < 5; $i++) {
+                                            echo "<div class='row'>
+                                            <div class='col-12 car-image-col'>
+                                                <img src='/assets/images/no-image.gif' />
+                                            </div>
+                                        </div>";   
+                                        }
+                                    }
                                     foreach($data['car_images'][0] as $key => $img) {
 
                                         if($key > 4) {
@@ -1012,13 +1021,15 @@
         <div class="row">
             <?php 
                 $imagesNumber = count($data['car_images'][0]);
-                 
-                for($i = 4; $i < $imagesNumber; $i++){
+                if($imagesNumber > 4) {
+                    for($i = 4; $i < $imagesNumber; $i++){
                     
-                    echo "<div class='col-12 col-md-3 car-image-col'>
-                        <img src='{$data['car_images'][0][$i]['cp_path']}' />
-                    </div>";
-                }
+                        echo "<div class='col-12 col-md-3 car-image-col'>
+                            <img src='{$data['car_images'][0][$i]['cp_path']}' />
+                        </div>";
+                    }
+                }                
+               
             ?>
         </div>
 

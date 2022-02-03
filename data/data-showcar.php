@@ -12,7 +12,7 @@ include("connection.php");
 /* Array of database columns which should be read and sent back to DataTables. Use a space where
  * you want to insert a non-database field (for example a counter or static image)
  */
-$aColumns = array( 'c.created_at','CONCAT_WS( "-", cm.cmake_name, cmod.cmodel_name)', 'cd.ci_car_ref_custom','cm.cmake_name','cmod.cmodel_name','cmu.cmu_name','cmotor.cmotor_name','cv.conversion_name','conv2.conversion_name','cd.ci_first_registration_date','cd.ci_kilometers','cd.ci_first_nl_registration','cd.ci_vin','c.car_id as edit','c.car_id as duplicate');
+$aColumns = array( 'c.created_at','CONCAT_WS( "-", cm.cmake_name, cmod.cmodel_name)', 'cd.cd_car_ref_custom','cm.cmake_name','cmod.cmodel_name','cmu.cmu_name','cmotor.cmotor_name','cv.conversion_name','conv2.conversion_name','cd.cd_first_registration_date','cd.cd_kilometers','cd.cd_first_nl_registration','cd.ci_vin','c.car_id as edit','c.car_id as duplicate');
 
 /* Indexed column (used for fast and accurate table cardinality) */
 $sIndexColumn = "c.car_id as number";
@@ -21,13 +21,14 @@ $sIndexColumn = "c.car_id as number";
 
 
 $sJoin = ' cars c ';
-$sJoin .= ' INNER JOIN car_makes cm on c.car_make = cm.cmake_id  ';
-$sJoin .= ' INNER JOIN car_models cmod on c.car_model = cmod.cmodel_id ';
-$sJoin .= ' INNER JOIN car_details cd on c.car_id = cd.ci_car_id ';
-$sJoin .= ' INNER JOIN car_make_uitvoerings cmu on cm.cmake_id = cmu.cmu_make_id';
-$sJoin .= ' INNER JOIN car_motors cmotor on cm.cmake_id = cmotor.cmotor_make_id';
+$sJoin .= ' INNER JOIN car_makes cm on c.car_make = cm.cmake_id ';
+$sJoin .= ' INNER JOIN car_models cmod on c.car_model = cmod.cmodel_id';
+$sJoin .= ' INNER JOIN car_details cd on c.car_id = cd.cd_car_id ';
+$sJoin .= ' INNER JOIN car_make_uitvoerings cmu on c.car_make = cmu.cmu_make_id';
+$sJoin .= ' INNER JOIN car_motors cmotor on cd.cd_motor  = cmotor.cmotor_make_id';
 $sJoin .= ' INNER JOIN conversions cv on c.car_fuel = cv.conversion_id';
-$sJoin .= ' INNER JOIN conversions conv2 on cd.ci_transmission = conv2.conversion_id';
+$sJoin .= ' INNER JOIN conversions conv2 on cd.cd_transmission = conv2.conversion_id';
+$sJoin .= ' GROUP BY c.car_id';
 
 
 
@@ -243,7 +244,7 @@ while ( $aRow = mysqli_fetch_array( $rResult ) ) {
         }   elseif ( $aColumns[ $i ] == 'c.car_make' ) {
              $row[] = '<center>'.$j.'</center>';
         } elseif ( $aColumns[ $i ] == 'c.car_id as edit' ) {
-            $row[] = '<center style="display:flex;"><a class="btn btn-default btn-xs js-fill-car-info" data-id="'.$aRow[$i].'" data-toggle="modal" data-target="#editCarForm"><i class="ti-pencil"></i></a><a href="edit_car_calculation?car_id='.$aRow[$i].'" class="btn btn-default btn-xs"><i class="ti-brush"></i></a></center>';
+            $row[] = '<center style="display:flex;"><a class="btn btn-default btn-xs js-fill-car-info" data-id="'.$aRow[$i].'" data-toggle="modal" data-target="#editCarForm"><i class="ti-pencil"></i></a><a href="car_start?car_id='.$aRow[$i].'" class="btn btn-default btn-xs"><i class="ti-brush"></i></a></center>';
         }elseif ( $aColumns[ $i ] == 'c.car_id as duplicate' ) {
             $row[] = '<center style="display:flex;"><a href="edit_car?duplicate='.$aRow[$i].'" class="btn btn-default btn-xs"><i class="ti-files"></i></a></center>';
         }  elseif ( $aColumns[ $i ] != ' ' ) {
