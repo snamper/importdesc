@@ -3,256 +3,259 @@ var timeout = 1000;
 
 
 
-$('#BPMCO2WLTP,#BPMCO2,#percentage').keyup(function () {
-    clearTimeout(timer);
-    if ($('#SoortVoertuig').val() > 0 && $('#BPMbrandstof').val() > 0 && $('#datepicker1').val() != null && $('#datepicker2').val() != null && $('#BPMCO2WLTP').val() != null) {
-        console.log($('#datepicker1').val() != null);
-        console.log($('#datepicker2').val() != null);
-        timer = setTimeout(function () {
-            var carSelector = $('#SoortVoertuig').val();
-            var bpmbrandstof = $('#BPMbrandstof').val();
-            var datepicker1 = $('#datepicker1').val();
-            var datepicker2 = $('#datepicker2').val();
-            var datepicker3 = $('#datepicker3').val();
-            var co2wltp = $('#BPMCO2WLTP').val();
-            var percentage3 = $('#percentage').val();
-            if (percentage3 == '') {
-                percentage3 = 0;
-            }
-            $.ajax({
-                type: "POST",
-                url: '../bpm/BPMUpdateTest.php',
-                data: {
-                    SoortVoertuig: carSelector,
-                    BPMbrandstof: bpmbrandstof,
-                    BPMproductiedatum: datepicker1,
-                    BPMtenaamstellingNL: datepicker3,
-                    variabeledatumbpm: datepicker2,
-                    BPMCO2WLTP: co2wltp,
-                    percentage: percentage3,
-                },
-                success: function (data) {
-                    // console.log(json[0]['BPMCO2WLTP']);
-                    var json = JSON.parse(data);
-                  
-                    $('#brutobpm').val(json[0]['bpmprice']);
-                    $('#forfaitaire').val(json[0]['a']);
-                    $('#PercentageBerekening').val(json[0]['percentage']);
-                    if ($('#addRest_BPM').length) {
-                        $('#addRest_BPM').val(json[0]['bpmprice']);
-                    }
-                }
-            });
+// $('#BPMCO2WLTP,#BPMCO2,#percentage').keyup(function () {
+//     clearTimeout(timer);
+//     if ($('#SoortVoertuig').val() > 0 && $('#BPMbrandstof').val() > 0 && $('#datepicker1').val() != null && $('#datepicker2').val() != null && $('#BPMCO2WLTP').val() != null) {
+//         console.log($('#datepicker1').val() != null);
+//         console.log($('#datepicker2').val() != null);
+//         timer = setTimeout(function () {
+//             var carSelector = $('#SoortVoertuig').val();
+//             var bpmbrandstof = $('#BPMbrandstof').val();
+//             var datepicker1 = $('#datepicker1').val();
+//             var datepicker2 = $('#datepicker2').val();
+//             var datepicker3 = $('#datepicker3').val();
+//             var co2wltp = $('#BPMCO2WLTP').val();
+//             var percentage3 = $('#percentage').val();
+//             if (percentage3 == '') {
+//                 percentage3 = 0;
+//             }
+//             $.ajax({
+//                 type: "POST",
+//                 url: '../bpm/BPMUpdateTest.php',
+//                 data: {
+//                     SoortVoertuig: carSelector,
+//                     BPMbrandstof: bpmbrandstof,
+//                     BPMproductiedatum: datepicker1,
+//                     BPMtenaamstellingNL: datepicker3,
+//                     variabeledatumbpm: datepicker2,
+//                     BPMCO2WLTP: co2wltp,
+//                     percentage: percentage3,
+//                 },
+//                 success: function (data) {
+//                     // console.log(json[0]['BPMCO2WLTP']);
+//                     var json = JSON.parse(data);
 
-        }, timeout);
-    }
-});
-$('#BPMbrandstof').change(function () {
-    if ($('#BPMCO2').length && $('#BPMCO2WLTP').length) {
-        $('#BPMCO2WLTP').keyup();
-    }
-    else if ($('#BPMCO2').length) {
-        $('#BPMCO2').keyup();
+//                     $('#brutobpm').val(json[0]['bpmprice']);
+//                     $('#forfaitaire').val(json[0]['a']);
+//                     $('#PercentageBerekening').val(json[0]['percentage']);
+//                     if ($('#addRest_BPM').length) {
+//                         $('#addRest_BPM').val(json[0]['bpmprice']);
+//                     }
+//                 }
+//             });
 
-    } else if ($('#BPMCO2WLTP').length) {
-        $('#BPMCO2WLTP').keyup();
-    }
-});
+//         }, timeout);
+//     }
+// });
+// $('#BPMbrandstof').change(function () {
+//     if ($('#BPMCO2').length && $('#BPMCO2WLTP').length) {
+//         $('#BPMCO2WLTP').keyup();
+//     }
+//     else if ($('#BPMCO2').length) {
+//         $('#BPMCO2').keyup();
 
-$('#BPMCO2').keyup(function () {
-    clearTimeout(timer);
-    if ($('#SoortVoertuig').val() > 0 && $('#BPMbrandstof').val() > 0 && $('#datepicker3').val() != null && $('#datepicker4').val() != null) {
-        console.log($('#datepicker3').val() != null);
-        console.log($('#datepicker4').val() != null);
-        timer = setTimeout(function () {
-            var carSelector = $('#SoortVoertuig').val();
-            var bpmbrandstof = $('#BPMbrandstof').val();
-            var datepicker1 = $('#datepicker3').val();
-            var datepicker2 = $('#datepicker4').val();
-            var co2wltp = $('#BPMCO2').val();
-            var percentage3 = $('#percentage').val();
-            if (percentage3 == '') {
-                percentage3 = 0;
-            }
-            $.ajax({
-                type: "POST",
-                url: '../bpm/BPMUpdate.php',
-                data: {
-                    SoortVoertuig: carSelector,
-                    BPMbrandstof: bpmbrandstof,
-                    BPMproductiedatum: datepicker1,
-                    BPMtenaamstellingNL: datepicker2,
-                    variabeledatumbpm: datepicker2,
-                    BPMCO2: co2wltp,
-                    percentage: percentage3,
-                },
-                success: function (data) {
-                    var json = JSON.parse(data)
-                    // console.log(json[0]['BPMCO2WLTP']);
-                    var floornumbruto = Math.floor(json[0]['bpmprice']);
-                    var forfaitairenum = Math.floor(json[0]['a']);
-                    var PercentageBerekening = Math.floor(json[0]['percentage']);
-                    $('#brutobpm').val(floornumbruto);
-                    $('#forfaitaire').val(forfaitairenum);
-                    $('#PercentageBerekening').val(PercentageBerekening);
-                }
-            });
+//     } else if ($('#BPMCO2WLTP').length) {
+//         $('#BPMCO2WLTP').keyup();
+//     }
+// });
 
-        }, timeout);
-    }
-});
+// $('#BPMCO2').keyup(function () {
+//     clearTimeout(timer);
+//     console.log($('#datepicker4').val() != null);
+//     if ($('#SoortVoertuig').val() > 0 && $('#BPMbrandstof').val() > 0 && $('#datepicker3').val() != null && $('#datepicker4').val() != null) {
+//         console.log($('#datepicker3').val() != null);
+//         console.log($('#datepicker4').val() != null);
+//         timer = setTimeout(function () {
+//             var carSelector = $('#SoortVoertuig').val();
+//             var bpmbrandstof = $('#BPMbrandstof').val();
+//             var datepicker1 = $('#datepicker3').val();
+//             var datepicker2 = $('#datepicker4').val();
+//             var co2wltp = $('#BPMCO2').val();
+//             var percentage3 = $('#percentage').val();
+//             if (percentage3 == '') {
+//                 percentage3 = 0;
+//             }
+//             $.ajax({
+//                 type: "POST",
+//                 url: '../bpm/BPMUpdate.php',
+//                 data: {
+//                     SoortVoertuig: carSelector,
+//                     BPMbrandstof: bpmbrandstof,
+//                     BPMproductiedatum: datepicker1,
+//                     BPMtenaamstellingNL: datepicker2,
+//                     variabeledatumbpm: datepicker2,
+//                     BPMCO2: co2wltp,
+//                     percentage: percentage3,
+//                 },
+//                 success: function (data) {
+//                     var json = JSON.parse(data)
+//                     // console.log(json[0]['BPMCO2WLTP']);
+//                     var floornumbruto = Math.floor(json[0]['bpmprice']);
+//                     var forfaitairenum = Math.floor(json[0]['a']);
+//                     var PercentageBerekening = Math.floor(json[0]['percentage']);
+//                     $('#brutobpm').val(floornumbruto);
+//                     $('#forfaitaire').val(forfaitairenum);
+//                     $('#PercentageBerekening').val(PercentageBerekening);
+//                 }
+//             });
 
-$('#switchBTW').click(function () {
-    $('#inkoopprijs_ex_ex').keyup();
-});
-$('#inkoopprijs_ex_ex').keyup(function () {
-    var value = $(this).val();
-    var restbpm = $('#addRest_BPM').val();
-    var addOpknapkosten = $('#addOpknapkosten').val();
-    var addTransport_Buitenland = $('#addTransport_Buitenland').val();
-    var addTaxatie_Kostene = $('#addTaxatie_Kostene').val();
-    var addAfleverkosten = $('#addAfleverkosten').val();
-    var btw = $('#addBTW_21').val();
-    var addFee = $('#addFee').val();
-    var addLeges = $('#addLeges').val();
-    var transport_binnenland = $('#addTransport_Binnenland').val();
-    if (restbpm) { } else { restbpm = 0; };
-    if ($('#addBTW_21').length) { btw = value * 0.21 } else { btw = 0 };
-    if (addOpknapkosten) { } else { addOpknapkosten = 0; };
-    if (addTransport_Buitenland) { } else { addTransport_Buitenland = 0; };
-    if (addTaxatie_Kostene) { } else { addTaxatie_Kostene = 0; };
-    if (addFee) { } else { addFee = 0; };
-    if (addLeges) { } else { addLeges = 0; };
-    if (transport_binnenland) { } else { transport_binnenland = 0; };
-    if (addAfleverkosten) { } else { addAfleverkosten = 0; };
-    var feetotal = parseInt(addOpknapkosten) + parseInt(addTransport_Buitenland) + parseInt(addTaxatie_Kostene) + parseInt(addFee) + parseInt(transport_binnenland) + parseInt(addLeges) + parseInt(addAfleverkosten);
-    // var prc = value * 0.21;
-    var total = parseInt(value) + parseInt(btw) + parseInt(restbpm) + parseInt(feetotal);
-    var Verkoopprijs = parseInt(value) + parseInt(feetotal);
-    clearTimeout(timer);
+//         }, timeout);
+//     }
+// });
 
-    timer = setTimeout(function () {
-
-        var price = $('#inkoopprijs_ex_ex').val();
-        if ($('#switchBTW').is(':checked')) {
-            var priceVAT = price * 0.21;
-        } else {
-            priceVAT = 0;
-        }
-        var totalWithVAT = parseFloat(price) + parseFloat(priceVAT);
-        var restBPM = $("#addRest_BPM").val();
-        if (!isNaN(parseFloat(restBPM))) {
-            var total = parseFloat(totalWithVAT) + parseFloat(restBPM);
-        } else {
-            var total = parseFloat(totalWithVAT);
-        }
-        $('#addVerkoopprijs_Marge_incl').val(total);
-        $('#addKosten_Totaal').val(feetotal);
-        $('#addTransport_Buitenland').val(addTransport_Buitenland);
-        $('#addOpknapkosten').val(addOpknapkosten);
-        $('#addTaxatie_Kostene').val(addTaxatie_Kostene);
-        $('#addAfleverkosten').val(addAfleverkosten);
-        $('#addBTW_21').val(btw);
-        $('#addFee').val(addFee);
-        $('#addLeges').val(addLeges);
-        $('#addTransport_Binnenland').val(transport_binnenland);
-        $('#addVerkoopprijs_Marge_Excl').val(parseFloat(total) + parseFloat(feetotal));
-
-        if ($('#switchBTW').is(':checked')) {
-            $('#addBTW_21no').val(parseFloat($("#inkoopprijs_ex_ex").val()) * 0.21);
-        } else {
-            $('#addBTW_21no').val(0);
-        }
-
-    }, timeout);
-});
-$('#addVerkoopprijs_Marge_incl').keyup(function () {
-    var value = $(this).val();
-
-    var restbpm = $('#addRest_BPM').val();
-    var inkoopprijs_ex_ex = $('#inkoopprijs_ex_ex').val();
-    var addOpknapkosten = $('#addOpknapkosten').val();
-    var addTransport_Buitenland = $('#addTransport_Buitenland').val();
-    var addTaxatie_Kostene = $('#addTaxatie_Kostene').val();
-    var addAfleverkosten = $('#addAfleverkosten').val();
-    var btw = $('#addBTW_21').val();
-    var addFee = $('#addFee').val();
-    var addLeges = $('#addLeges').val();
-    var transport_binnenland = $('#addTransport_Binnenland').val();
-    if (restbpm) { } else { restbpm = 0; };
-    if ($('#addBTW_21').length) { btw = value * 0.21 } else { btw = 0 };
-    if (addOpknapkosten) { } else { addOpknapkosten = 0; };
-    if (addTransport_Buitenland) { } else { addTransport_Buitenland = 0; };
-    if (addTaxatie_Kostene) { } else { addTaxatie_Kostene = 0; };
-    if (addFee) { } else { addFee = 0; };
-    if (addLeges) { } else { addLeges = 0; };
-    if (transport_binnenland) { } else { transport_binnenland = 0; };
-    if (addAfleverkosten) { } else { addAfleverkosten = 0; };
-    var feetotal = parseInt(addOpknapkosten) + parseInt(addTransport_Buitenland) + parseInt(addTaxatie_Kostene) + parseInt(addFee) + parseInt(transport_binnenland) + parseInt(addLeges) + parseInt(addAfleverkosten);
-    // var prc = value * 0.21;
-    var total = parseInt(value) - (parseInt(btw) + parseInt(restbpm) + parseInt(feetotal));
-    var Verkoopprijs = parseInt(inkoopprijs_ex_ex) + parseInt(feetotal);
-    // var inkooprijs  = parseInt(value) - parseInt(feetotal) - parseInt(restbpm) - parseInt(restbpm) - parseInt(btw) ;
-    clearTimeout(timer);
-
-    timer = setTimeout(function () {
-        // $('#addBTW_21').val(btw);
-        // if ($('#addBTW_21no').length) {
-
-        //     $('#addBTW_21no').val(parseFloat(btw));
-        // }
-
-        if ($('#switchBTW').is(':checked')) {
-            $('#addBTW_21no').val(parseFloat($("#inkoopprijs_ex_ex").val()) * 0.21);
-        }
+// $('#switchBTW').click(function () {
+//     $('#inkoopprijs_ex_ex').change();
+// });
 
 
-        $('#addKosten_Totaal').val(feetotal);
-        $('#addTransport_Buitenland').val(addTransport_Buitenland);
-        $('#addOpknapkosten').val(addOpknapkosten);
-        $('#addTaxatie_Kostene').val(addTaxatie_Kostene);
-        $('#addAfleverkosten').val(addAfleverkosten);
-        $('#addBTW_21').val(btw);
-        $('#addFee').val(addFee);
-        $('#addLeges').val(addLeges);
-        $('#addTransport_Binnenland').val(transport_binnenland);
-        $('#inkoopprijs_ex_ex').val(total);
-        // $('#addVerkoopprijs_Marge_Excl').val(Verkoopprijs);
+// $('#inkoopprijs_ex_ex').change(function () {
+//     var value = $(this).val();
+//     var restbpm = $('#addRest_BPM').val();
+//     var addOpknapkosten = $('#addOpknapkosten').val();
+//     var addTransport_Buitenland = $('#addTransport_Buitenland').val();
+//     var addTaxatie_Kostene = $('#addTaxatie_Kostene').val();
+//     var addAfleverkosten = $('#addAfleverkosten').val();
+//     var btw = $('#addBTW_21').val();
+//     var addFee = $('#addFee').val();
+//     var addLeges = $('#addLeges').val();
+//     var transport_binnenland = $('#addTransport_Binnenland').val();
+//     if (restbpm) { } else { restbpm = 0; };
+//     if ($('#addBTW_21').length) { btw = value * 0.21 } else { btw = 0 };
+//     if (addOpknapkosten) { } else { addOpknapkosten = 0; };
+//     if (addTransport_Buitenland) { } else { addTransport_Buitenland = 0; };
+//     if (addTaxatie_Kostene) { } else { addTaxatie_Kostene = 0; };
+//     if (addFee) { } else { addFee = 0; };
+//     if (addLeges) { } else { addLeges = 0; };
+//     if (transport_binnenland) { } else { transport_binnenland = 0; };
+//     if (addAfleverkosten) { } else { addAfleverkosten = 0; };
+//     var feetotal = parseInt(addOpknapkosten) + parseInt(addTransport_Buitenland) + parseInt(addTaxatie_Kostene) + parseInt(addFee) + parseInt(transport_binnenland) + parseInt(addLeges) + parseInt(addAfleverkosten);
+//     // var prc = value * 0.21;
+//     var total = parseInt(value) + parseInt(btw) + parseInt(restbpm) + parseInt(feetotal);
+//     var Verkoopprijs = parseInt(value) + parseInt(feetotal);
+//     clearTimeout(timer);
+
+//     timer = setTimeout(function () {
+
+//         var price = $('#inkoopprijs_ex_ex').val();
+//         if ($('#switchBTW').is(':checked')) {
+//             var priceVAT = price * 0.21;
+//         } else {
+//             priceVAT = 0;
+//         }
+//         var totalWithVAT = parseFloat(price) + parseFloat(priceVAT);
+//         var restBPM = $("#addRest_BPM").val();
+//         if (!isNaN(parseFloat(restBPM))) {
+//             var total = parseFloat(totalWithVAT) + parseFloat(restBPM);
+//         } else {
+//             var total = parseFloat(totalWithVAT);
+//         }
+
+//         $('#addVerkoopprijs_Marge_incl').val(total);
+//         $('#addKosten_Totaal').val(feetotal);
+//         $('#addTransport_Buitenland').val(addTransport_Buitenland);
+//         $('#addOpknapkosten').val(addOpknapkosten);
+//         $('#addTaxatie_Kostene').val(addTaxatie_Kostene);
+//         $('#addAfleverkosten').val(addAfleverkosten);
+//         $('#addBTW_21').val(btw);
+//         $('#addFee').val(addFee);
+//         $('#addLeges').val(addLeges);
+//         $('#addTransport_Binnenland').val(transport_binnenland);
+//         $('#addVerkoopprijs_Marge_Excl').val(parseFloat(total) + parseFloat(feetotal));
+
+//         if ($('#switchBTW').is(':checked')) {
+//             $('#addBTW_21no').val(parseFloat($("#inkoopprijs_ex_ex").val()) * 0.21);
+//         } else {
+//             $('#addBTW_21no').val(0);
+//         }
+
+//     }, timeout);
+// });
+// $('#addVerkoopprijs_Marge_incl').keyup(function () {
+//     var value = $(this).val();
+//     var restbpm = $('#addRest_BPM').val();
+//     var inkoopprijs_ex_ex = $('#inkoopprijs_ex_ex').val();
+//     var addOpknapkosten = $('#addOpknapkosten').val();
+//     var addTransport_Buitenland = $('#addTransport_Buitenland').val();
+//     var addTaxatie_Kostene = $('#addTaxatie_Kostene').val();
+//     var addAfleverkosten = $('#addAfleverkosten').val();
+//     var btw = $('#addBTW_21').val();
+//     var addFee = $('#addFee').val();
+//     var addLeges = $('#addLeges').val();
+//     var transport_binnenland = $('#addTransport_Binnenland').val();
+//     if (restbpm) { } else { restbpm = 0; };
+//     if ($('#addBTW_21').length) { btw = value * 0.21 } else { btw = 0 };
+//     if (addOpknapkosten) { } else { addOpknapkosten = 0; };
+//     if (addTransport_Buitenland) { } else { addTransport_Buitenland = 0; };
+//     if (addTaxatie_Kostene) { } else { addTaxatie_Kostene = 0; };
+//     if (addFee) { } else { addFee = 0; };
+//     if (addLeges) { } else { addLeges = 0; };
+//     if (transport_binnenland) { } else { transport_binnenland = 0; };
+//     if (addAfleverkosten) { } else { addAfleverkosten = 0; };
+//     var feetotal = parseInt(addOpknapkosten) + parseInt(addTransport_Buitenland) + parseInt(addTaxatie_Kostene) + parseInt(addFee) + parseInt(transport_binnenland) + parseInt(addLeges) + parseInt(addAfleverkosten);
+//     // var prc = value * 0.21;
+//     var total = parseInt(value) - (parseInt(btw) + parseInt(restbpm) + parseInt(feetotal));
+//     var Verkoopprijs = parseInt(inkoopprijs_ex_ex) + parseInt(feetotal);
+//     // var inkooprijs  = parseInt(value) - parseInt(feetotal) - parseInt(restbpm) - parseInt(restbpm) - parseInt(btw) ;
+//     clearTimeout(timer);
+
+//     timer = setTimeout(function () {
+//         // $('#addBTW_21').val(btw);
+//         // if ($('#addBTW_21no').length) {
+
+//         //     $('#addBTW_21no').val(parseFloat(btw));
+//         // }
+
+//         if ($('#switchBTW').is(':checked')) {
+//             $('#addBTW_21no').val(parseFloat($("#inkoopprijs_ex_ex").val()) * 0.21);
+//         }
 
 
-    }, timeout);
-});
+//         $('#addKosten_Totaal').val(feetotal);
+//         $('#addTransport_Buitenland').val(addTransport_Buitenland);
+//         $('#addOpknapkosten').val(addOpknapkosten);
+//         $('#addTaxatie_Kostene').val(addTaxatie_Kostene);
+//         $('#addAfleverkosten').val(addAfleverkosten);
+//         $('#addBTW_21').val(btw);
+//         $('#addFee').val(addFee);
+//         $('#addLeges').val(addLeges);
+//         $('#addTransport_Binnenland').val(transport_binnenland);
+//         $('#inkoopprijs_ex_ex').val(total);
+//         // $('#addVerkoopprijs_Marge_Excl').val(Verkoopprijs);
+
+
+//     }, timeout);
+// });
 
 
 
-$('#addTransport_Buitenland,#addTaxatie_Kostene,#addFee,#addLeges,#addAfleverkosten,#addTransport_Binnenland,#addOpknapkosten').keyup(function () {
+// $('#addTransport_Buitenland,#addTaxatie_Kostene,#addFee,#addLeges,#addAfleverkosten,#addTransport_Binnenland,#addOpknapkosten').keyup(function () {
 
-    var addOpknapkosten = $('#addOpknapkosten').val();
-    var addTransport_Buitenland = $('#addTransport_Buitenland').val();
-    var addTaxatie_Kostene = $('#addTaxatie_Kostene').val();
-    var addAfleverkosten = $('#addAfleverkosten').val();
-    var addFee = $('#addFee').val();
-    var addLeges = $('#addLeges').val();
-    var transport_binnenland = $('#addTransport_Binnenland').val();
-    if (addOpknapkosten) { } else { addOpknapkosten = 0; };
-    if (addTransport_Buitenland) { } else { addTransport_Buitenland = 0; };
-    if (addTaxatie_Kostene) { } else { addTaxatie_Kostene = 0; };
-    if (addFee) { } else { addFee = 0; };
-    if (addLeges) { } else { addLeges = 0; };
-    if (transport_binnenland) { } else { transport_binnenland = 0; };
-    if (addAfleverkosten) { } else { addAfleverkosten = 0; };
+//     var addOpknapkosten = $('#addOpknapkosten').val();
+//     var addTransport_Buitenland = $('#addTransport_Buitenland').val();
+//     var addTaxatie_Kostene = $('#addTaxatie_Kostene').val();
+//     var addAfleverkosten = $('#addAfleverkosten').val();
+//     var addFee = $('#addFee').val();
+//     var addLeges = $('#addLeges').val();
+//     var transport_binnenland = $('#addTransport_Binnenland').val();
+//     if (addOpknapkosten) { } else { addOpknapkosten = 0; };
+//     if (addTransport_Buitenland) { } else { addTransport_Buitenland = 0; };
+//     if (addTaxatie_Kostene) { } else { addTaxatie_Kostene = 0; };
+//     if (addFee) { } else { addFee = 0; };
+//     if (addLeges) { } else { addLeges = 0; };
+//     if (transport_binnenland) { } else { transport_binnenland = 0; };
+//     if (addAfleverkosten) { } else { addAfleverkosten = 0; };
 
-    var feetotal = parseInt(addOpknapkosten) + parseInt(addTransport_Buitenland) + parseInt(addTaxatie_Kostene) + parseInt(addFee) + parseInt(transport_binnenland) + parseInt(addLeges) + parseInt(addAfleverkosten);
-    $('#addKosten_Totaal').val(feetotal);
-    if ($('#switchPrice').is(':checked')) {
+//     var feetotal = parseInt(addOpknapkosten) + parseInt(addTransport_Buitenland) + parseInt(addTaxatie_Kostene) + parseInt(addFee) + parseInt(transport_binnenland) + parseInt(addLeges) + parseInt(addAfleverkosten);
+//     $('#addKosten_Totaal').val(feetotal);
+//     if ($('#switchPrice').is(':checked')) {
 
-        $('#addVerkoopprijs_Marge_incl').keyup();
-    } else {
-        $('#inkoopprijs_ex_ex').keyup();
-    }
+//         $('#addVerkoopprijs_Marge_incl').keyup();
+//     } else {
+//         $('#inkoopprijs_ex_ex').keyup();
+//     }
 
 
-});
+// });
 
 $(document).ready(function () {
     var carvalue = 1; // car
@@ -272,9 +275,9 @@ $(document).ready(function () {
                 document.getElementById('carMake').innerHTML = firstOptionHTML + data;
                 $('#carMake').change();
             },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-               console.log(errorThrown);
-             }
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
         })
 
     }
@@ -301,9 +304,9 @@ $('#carMake').change(function () {
                 carModel.innerHTML = firstOptionHTML + data;
                 $('#carModel').change();
             },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("some error");
-             }
+            }
         })
     } else {
         document.getElementById('carModel').innerHTML = firstOptionHTML;
@@ -983,8 +986,7 @@ function getCarInfo(e) {
 
 
 
-    const url = `${location.origin}/edit_car?car_id=${thisId}`;
-
+    const url = `${location.origin}/car_start?quick_edit=${thisId}`;
 
     fetch(url)
         .then(function (response) {
@@ -992,11 +994,10 @@ function getCarInfo(e) {
             return response.json();
         })
         .then(function (response) {
-            setEditInputFormData(response[0]);
+            setEditInputFormData(response);
             const hiddenInput = document.querySelector("#editCarHiddenInput");
             hiddenInput.value = thisId;
-            return response[0];
-        }).then(function (data) {
+        })/* .then(function (data) {
             setTimeout(() => {
                 setEditInputFormData(data)
                 $('#carMake').change();
@@ -1005,7 +1006,7 @@ function getCarInfo(e) {
                 setEditFormSelectsData(data);
                 addResumeEditCarHeader();
             }, 1200);
-        })
+        }) */
         .catch((error) => {
             console.log(error);
             return;
@@ -1013,17 +1014,25 @@ function getCarInfo(e) {
 }
 
 function setEditInputFormData(data) {
-    // console.log(data);
     const editCarForm = document.querySelector("#editCarForm");
 
-    const inputFields = editCarForm.querySelectorAll("[data-name]");
+    const inputFields = editCarForm.querySelectorAll("input[data-name]");
+    const selectFields = editCarForm.querySelectorAll("select[data-name]");
     for (const field of inputFields) {
         const fieldName = field.getAttribute("data-name");
         field.value = data[fieldName];
     }
-
-
+    let opt;
+    for (const field of selectFields) {
+        const fieldName = field.getAttribute("data-name");
+        opt = document.createElement("option");
+        opt.value = data[fieldName];
+        opt.selected = true;
+        opt.innerHTML = data[fieldName];
+        field.append(opt);
+    }
 }
+
 
 function setEditFormSelectsData(data) {
 
@@ -1106,7 +1115,7 @@ function carMakeAjaxFill() {
             return;
         }
 
-        
+
 
     });
 }
@@ -1143,14 +1152,14 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
     const firstOptionHTML = "<option value='0'> - </option>";
     if (this.id == "carMakeFuel") {
         var carModel = document.getElementById('carModelFuel');
-    } else if(this.id == "carMakeMotor"){
+    } else if (this.id == "carMakeMotor") {
         var carModel = document.getElementById('carModelMotor');
-    } else if(this.id == "carMakeUit"){
+    } else if (this.id == "carMakeUit") {
         var carModel = document.getElementById('carModelUit');
-    } else{
+    } else {
         var carModel = document.getElementById('carModel');
     }
-    
+
 
     if (!carModel) {
         return;
@@ -1201,29 +1210,29 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
 
     const carMake = document.querySelector('#carMake');
 
-    if(!carMake) {
+    if (!carMake) {
         return;
     }
 
     const carMotor = document.querySelector('.js-car-motor');
     const carFuel = document.querySelector('.js-car-fuel');
 
-  
+
     carMake.addEventListener("change", (e) => {
 
         //FETCH MOTORS 
         const urlFetchMotors = `${location.origin}/create_make_new?make_id_get_motors=${e.currentTarget.value}`;
         fetch(urlFetchMotors)
-        .then(function (response) {    
-            return response.json();
-        })
-        .then(function (response) {
-            fillSelectFromJson(".js-car-motor", response, "cmotor_name", "cmotor_id");
-        })
-        .catch((error) => {
-            console.log(error);
-            return;
-        });
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (response) {
+                fillSelectFromJson(".js-car-motor", response, "cmotor_name", "cmotor_id");
+            })
+            .catch((error) => {
+                console.log(error);
+                return;
+            });
 
 
         // FETCH Uitvoering
@@ -1231,16 +1240,16 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
 
 
         fetch(urlFetchUitvoering)
-        .then(function (response) {    
-            return response.json();
-        })
-        .then(function (response) {
-            fillSelectFromJson("#carUitvoering", response, "cmu_name", "cmu_make_id" );
-        })
-        .catch((error) => {
-            console.log(error);
-            return;
-        });
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (response) {
+                fillSelectFromJson("#carUitvoering", response, "cmu_name", "cmu_make_id");
+            })
+            .catch((error) => {
+                console.log(error);
+                return;
+            });
 
     });
 
@@ -1248,16 +1257,16 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
     [carMotor, carFuel].map(element => element.addEventListener("change", (e) => {
         const trigger = e.currentTarget;
 
-        if(carMake.value == "" || carMake.value == 0) {
+        if (carMake.value == "" || carMake.value == 0) {
             alert("Car Make select is required");
         }
-    
-        if(trigger.id == "carMotor") {
-           
+
+        if (trigger.id == "carMotor") {
+
             const fuelSelect = document.querySelector(".js-car-fuel");
             const fuelSelectVal = fuelSelect.value;
-    
-            if(trigger.value == "") {
+
+            if (trigger.value == "") {
                 let fuelHTML = `<option value="">-</option>
                 <option value="1">Benzine</option>
                 <option value="2">Diesel</option>
@@ -1269,9 +1278,9 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
                 <option value="8">Cryogeen</option>
                 <option value="9">Waterstof</option>
                 `;
-                
+
                 carMake.dispatchEvent(new Event('change'));
-                
+
                 carFuel.innerHTML = fuelHTML;
                 return;
             }
@@ -1279,44 +1288,44 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
             const urlGetFuels = `${location.origin}/create_make_new?motor_id_get_fuel=${trigger.value}`;
 
             fetch(urlGetFuels)
-            .then(function (response) {    
-                return response.json();
-            })
-            .then(function (response) {
-                fillSelectFromJson(".js-car-fuel", response, "conversion_name", "cmotor_fuel_id" );
-                fuelSelect.value = fuelSelectVal;
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (response) {
+                    fillSelectFromJson(".js-car-fuel", response, "conversion_name", "cmotor_fuel_id");
+                    fuelSelect.value = fuelSelectVal;
 
-            })
-            .catch((error) => {
-                console.log(error);
-                return;
-            });
-        }else { // ONCHANGE #carFuel
+                })
+                .catch((error) => {
+                    console.log(error);
+                    return;
+                });
+        } else { // ONCHANGE #carFuel
             const selectedMakeId = document.querySelector("#carMake").value;
             let urlGetMotorsByFuel = `${location.origin}/create_make_new?fuel_id_get_motors=${trigger.value}&car_make_id=${selectedMakeId}`;
 
             const motorSelect = document.querySelector("#carMotor");
             const motorSelVal = motorSelect.value;
 
-            if(trigger.value == "") {
+            if (trigger.value == "") {
                 urlGetMotorsByFuel = `${location.origin}/create_make_new?make_id_get_motors=${selectedMakeId}`
 
             }
 
             fetch(urlGetMotorsByFuel)
-            .then(function (response) {    
-                return response.json();
-            })
-            .then(function (response) {
-                fillSelectFromJson(".js-car-motor", response, "cmotor_name", "cmotor_id");
-                motorSelect.value = motorSelVal;
-            })
-            .catch((error) => {
-                console.log(error);
-                return;
-            });
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (response) {
+                    fillSelectFromJson(".js-car-motor", response, "cmotor_name", "cmotor_id");
+                    motorSelect.value = motorSelVal;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    return;
+                });
         }
-    }));  
+    }));
 
 
 
@@ -1327,16 +1336,16 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
 
     const bootstrapTabs = doc.querySelectorAll("#createMake .nav-tabs .nav-item");
 
-    if(!bootstrapTabs) {
+    if (!bootstrapTabs) {
         return;
     }
 
-    for(let tab of bootstrapTabs) {
+    for (let tab of bootstrapTabs) {
         tab.addEventListener("click", (e) => {
             const trigger = e.currentTarget; // triger is the li element
             const navLinkHref = trigger.querySelector(".nav-link").getAttribute("href");
-            const cookieVal = navLinkHref.replace("#", "");            
-            document.cookie = `active_tab=${cookieVal}; path=/`;            
+            const cookieVal = navLinkHref.replace("#", "");
+            document.cookie = `active_tab=${cookieVal}; path=/`;
 
         });
     }
@@ -1349,20 +1358,20 @@ $("#languageselect").change(function () {
     var language = $(this).val();
     $.ajax({
         type: "POST",
-        url: 'home' ,
-        data: 'changes='+language,
-        success: function(){
+        url: 'home',
+        data: 'changes=' + language,
+        success: function () {
             location.reload();
         }
     });
 });
-function fillSelectFromJson(selector, jsonData, selectTextProp, selectValProp, changeInnerHTML = false){
-    
+function fillSelectFromJson(selector, jsonData, selectTextProp, selectValProp, changeInnerHTML = false) {
+
     let emptyOption = Object.assign(
         document.createElement("option"), {
-            "text": "-",
-            "value": ""
-        });
+        "text": "-",
+        "value": ""
+    });
 
     const selectEl = document.querySelector(`${selector}`);
 
@@ -1376,9 +1385,9 @@ function fillSelectFromJson(selector, jsonData, selectTextProp, selectValProp, c
         }
         let option = Object.assign(
             document.createElement("option"), {
-                "text": jsonData[key][selectTextProp],
-                "value": jsonData[key][selectValProp],
-            });
+            "text": jsonData[key][selectTextProp],
+            "value": jsonData[key][selectValProp],
+        });
 
         selectEl.appendChild(option)
     }
@@ -1388,14 +1397,14 @@ function fillSelectFromJson(selector, jsonData, selectTextProp, selectValProp, c
 ; (function (window, doc) {
     const sidebar = doc.querySelector("#sidebar");
 
-    if(!sidebar) {
+    if (!sidebar) {
         return;
     }
 
     const pathName = window.location.pathname.replace("/", "");
     const activeLiEl = document.querySelector(`.nav [href="${pathName}"]`);
     activeLiEl.classList.add("active");
-    
+
 
 })(window, document);
 
@@ -1406,49 +1415,47 @@ $(document).ready(function () {
     if (!kpwInput) {
         return;
     }
-    
+
     kpwInput.on('change', (e) => {
         const val = kpwInput.val();
-        if(!isNaN(val)) {
+        if (!isNaN(val)) {
             cubicInput.val(Math.round(val * 1.362));
         }
-            
+
     });
     cubicInput.on('change', (e) => {
         const val = cubicInput.val();
-        if(!isNaN(val)) {
+        if (!isNaN(val)) {
             kpwInput.val(Math.round(val / 1.362));
         }
-            
+
     });
 
     const vinInput = $('input[name=vin]');
 
-    vinInput.keyup(delay(function(e) {
+    vinInput.keyup(delay(function (e) {
         const val = vinInput.val();
-        if(val.length >= 4) {
+        if (val.length >= 4) {
             $('input[name=meldcode]').val(val.slice(-4));
-        }else {
+        } else {
             $('input[name=meldcode]').val("");
         }
-            
-    }, 500));
 
-    
+    }, 500));
 });
 
 const imageUpload = $('.upload-photo input[type="file"]');
 imageUpload.change((e) => {
     var files = $(imageUpload)[0].files;
 
-    if(files.length > 0 ){
+    if (files.length > 0) {
         const allowed = ['image/jpeg', 'image/png'];
         $(files).each((index, value) => {
-            if(value.size > 5000000) {
+            if (value.size > 5000000) {
                 alert(`File '${value.name}' above 5MB`);
                 files[index] = null;
             }
-            else if(!allowed.includes(value.type)) {
+            else if (!allowed.includes(value.type)) {
                 alert(`File '${value.name}' not a jpeg/png image`);
                 files[index] = 0;
             }
@@ -1459,13 +1466,52 @@ imageUpload.change((e) => {
     }
 });
 
+; (function (window, doc) {
+    const calculationChangers = doc.querySelectorAll(".js-calc-changer");
+
+    if (!calculationChangers) {
+        return;
+    }
+
+    for (let changer of calculationChangers) {
+        changer.addEventListener("change", calcValues);
+    }
+
+    function calcValues() {
+        doc.querySelector("#totalPriceNettoSuppluier").value = sumValues("#inkoopprijs_ex_ex, #addAfleverkosten");
+        doc.querySelector("#totalPriceNettoSuppluier").value = sumValues("#inkoopprijs_ex_ex, #addAfleverkosten");
+        doc.querySelector("#totalCostsFee").value = sumValues("#addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee");
+        doc.querySelector("#totalPriceFee").value = sumValues("#totalPriceNettoSuppluier, #totalCostsFee");
+        doc.querySelector("#addBTW_21").value = sumValues("#totalPriceFee") * 0.21;
+        doc.querySelector("#addVerkoopprijs_Marge_incl").value = sumValues("#totalPriceFee, #addBTW_21");
+        doc.querySelector("#totalAll").value = sumValues("#addVerkoopprijs_Marge_incl, #addRest_BPM, #addLeges");
+    }
+
+    function sumValues(selectors) {
+        const elementSelectors = selectors.split(",");
+        let sum = 0;
+
+        for (let el of elementSelectors) {
+            let element = doc.querySelector(`${el}`);
+            console.log(element.value);
+            if (!isNaN(element.value) && element.value != "") {
+                sum += parseFloat(element.value);
+            }
+        }
+
+        return sum.toFixed(2);
+    }
+
+})(window, document);
+
+
 function delay(callback, ms) {
     var timer = 0;
-    return function() {
+    return function () {
         var context = this,
             args = arguments;
         clearTimeout(timer);
-        timer = setTimeout(function() {
+        timer = setTimeout(function () {
             callback.apply(context, args);
         }, ms || 0);
     };

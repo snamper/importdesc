@@ -212,33 +212,36 @@ class base
 		$dbDriver->query($sql, 'updateuser');
 	}
 
-	 function getLangs(){
-        $dbDriver = new db_driver();
-        $sql="SELECT `langID`, `lang`, `langfull` FROM `lang`";
-        $dbDriver->query($sql);
-        return $dbDriver->fetchAssoc();    
-    }
+	function getLangs()
+	{
+		$dbDriver = new db_driver();
+		$sql = "SELECT `langID`, `lang`, `langfull` FROM `lang`";
+		$dbDriver->query($sql);
+		return $dbDriver->fetchAssoc();
+	}
 
-    function setLang($userID,$langID){
-        $dbDriver = new db_driver();
-        $sql="UPDATE `expo_users` SET `langID`='$langID' WHERE expo_users_ID = $userID";
-        $dbDriver->query($sql);
+	function setLang($userID, $langID)
+	{
+		$dbDriver = new db_driver();
+		$sql = "UPDATE `expo_users` SET `langID`='$langID' WHERE expo_users_ID = $userID";
+		$dbDriver->query($sql);
+	}
 
-    } 
+	function getTranslate($langID)
+	{
+		$dbDriver = new db_driver();
+		$sql = "SELECT `label`, `description` FROM `translate` WHERE `langID`= $langID";
+		$dbDriver->query($sql);
+		return $dbDriver->fetchAssoc();
+	}
 
-    function getTranslate($langID){
-        $dbDriver = new db_driver();
-        $sql="SELECT `label`, `description` FROM `translate` WHERE `langID`= $langID";
-        $dbDriver->query($sql);
-        return $dbDriver->fetchAssoc();    
-    }
-
-    function getTranslations(){
-        $dbDriver = new db_driver();
-        $sql="SELECT e.transID, e.label, e.description, u.langID, u.langfull FROM `translate` e LEFT JOIN `lang` u ON u.langID = e.langID";
-        $dbDriver->query($sql);
-        return $dbDriver->fetchAssoc();    
-    }
+	function getTranslations()
+	{
+		$dbDriver = new db_driver();
+		$sql = "SELECT e.transID, e.label, e.description, u.langID, u.langfull FROM `translate` e LEFT JOIN `lang` u ON u.langID = e.langID";
+		$dbDriver->query($sql);
+		return $dbDriver->fetchAssoc();
+	}
 
 	function getCarData($carID)
 	{
@@ -524,13 +527,13 @@ class base
 		$_post['last_name_registration'] = date("Y-m-d", strtotime($_post['last_name_registration']));
 		$_post['apk_valid'] = date("Y-m-d", strtotime($_post['apk_valid']));
 
-		if(isset($_post['preorder'])) {
+		if (isset($_post['preorder'])) {
 			$_post['preorder'] = 1;
-		}else {
+		} else {
 			$_post['preorder'] = 0;
 		}
 
-		
+
 		// try {
 		$query = "INSERT INTO cars
         (
@@ -568,7 +571,7 @@ class base
 			]
 		);
 
-		$inserted_car_id = $dbDriver->dbCon->lastInsertId();		
+		$inserted_car_id = $dbDriver->dbCon->lastInsertId();
 
 		// INSERT INTO car_details 
 		$query = "INSERT INTO car_details
@@ -776,39 +779,52 @@ class base
 		return $inserted_car_id;
 	}
 
-	public function getSingleCar($car_id) {
+	public function getSingleCar($car_id)
+	{
 		$dbDriver = new db_driver();
-			$query = "SELECT c.created_at,
-			c.car_id, cd.cd_car_ref_custom, cm.cmake_name, cmod.cmodel_name,
-			cmu.cmu_name, cmotor.cmotor_name, cv.conversion_name,
-			conv2.conversion_name, cd.cd_first_registration_date,
-			cd.cd_kilometers, cd.cd_first_nl_registration,
-			cd.cd_vin,cd.cd_status
-			FROM
-			  cars c
-			INNER JOIN car_details cd on c.car_id = cd.cd_car_id 
-			 INNER JOIN car_makes cm on c.car_make = cm.cmake_id
-			 INNER JOIN car_models cmod on c.car_model = cmod.cmodel_id
-			 INNER JOIN car_motors cmotor on cd.cd_motor = cmotor.cmotor_id
-			INNER JOIN conversions cv on c.car_fuel = cv.conversion_id
-			INNER JOIN conversions conv2 on cd.cd_transmission = conv2.conversion_id
-			INNER JOIN car_make_uitvoerings cmu on c.car_variant  = cmu.cmu_id
-			WHERE c.car_id = ?
-			";
+		$query = "SELECT c.created_at,
+		   c.car_id, cd.cd_car_ref_custom, cm.cmake_name, cmod.cmodel_name,
+		   cmu.cmu_name, cmotor.cmotor_name, cv.conversion_name,
+		   conv2.conversion_id as transmission_name, cd.cd_first_registration_date,
+		   cd.cd_kilometers, cd.cd_first_nl_registration,
+		   cd.cd_vin,cd.cd_status, cd.cd_komm_number, cd.cd_advert_link,
+				cd.cd_source_supplier,cd.cd_supplier_ref, cd.cd_current_registration,
+				cd.cd_coc,c.car_vehicle_type, cd.cd_transmission_additional,
+				cd.cd_power_kpw,cd.cd_cubic_capacity,conv4.conversion_id as wheel_drive,cd.cd_co_wltp,cd.cd_co_nedc,
+				cd.cd_kilometers,cd.cd_paint_type,conv3.conversion_id as color_name,cd.cd_color_additional,cd.cd_interior_color,
+				cd.cd_interior_color_additional,cd.cd_interior_material,cd.cd_first_registration_date,
+				cd.cd_nl_registration_number,cd.cd_meldcode,cd.cd_apk_valid,cd.cd_last_name_registration,
+				cd.cd_first_name_nl_registration,cd.cd_navigation,cd.cd_keyless_entry,cd.cd_app_connect,
+				cd.cd_airco,cd.cd_roof,cd.cd_wheels,cd.cd_headlights,cd.cd_pdc,cd.cd_cockpit,cd.cd_camera,
+				cd.cd_cruise_control,cd.cd_tow_bar,cd.cd_sport_seats,cd.cd_sport_package,cd.cd_seats_electric,
+				cd.cd_seat_heating,cd.cd_seat_massage,cd.cd_optics,cd.cd_tinted_windows,cd.cd_options,cd.cd_notes,c.car_body_style				
+		   FROM
+			 cars c
+		   INNER JOIN car_details cd on c.car_id = cd.cd_car_id 
+			INNER JOIN car_makes cm on c.car_make = cm.cmake_id
+			INNER JOIN car_models cmod on c.car_model = cmod.cmodel_id
+			INNER JOIN car_motors cmotor on cd.cd_motor = cmotor.cmotor_id
+		   INNER JOIN conversions cv on c.car_fuel = cv.conversion_id
+		   INNER JOIN conversions conv2 on cd.cd_transmission = conv2.conversion_id
+		   INNER JOIN conversions conv3 on cd.cd_color = conv3.conversion_id
+		   INNER JOIN car_make_uitvoerings cmu on c.car_variant  = cmu.cmu_id
+				INNER JOIN conversions conv4 on cd.cd_wheel_drive = conv4.conversion_id
+		   WHERE c.car_id = ?
+		   ";
 
-			$stmt = $dbDriver->dbCon->prepare($query);
-			$stmt->execute([$car_id]);
-			$result = $stmt->fetch(PDO::FETCH_ASSOC);
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$car_id]);
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-			return $result;
-			
-
+		return $result;
 	}
 
 
-	public function createCalculation($_post, $car_id = NULL) {
+	public function createCalculation($_post, $car_id = NULL)
+	{
+
 		$dbDriver = new db_driver();
-			$query = "INSERT INTO calculations (
+		$query = "INSERT INTO calculations (
 			calculation_for_car_id,
 			purchase_price_netto,
 			fee_intermediate_supplier,
@@ -846,7 +862,7 @@ class base
 			?,
 			?
 		)";
-		
+
 		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([
@@ -869,8 +885,6 @@ class base
 			$_SESSION['user'][0]['expo_users_ID']
 
 		]);
-		
-
 	}
 
 	public function getAllCars($carID = 0)
@@ -895,7 +909,8 @@ class base
 		return $result;
 	}
 
-	public function insertCarPhoto($path, $inserted_car_id) {
+	public function insertCarPhoto($path, $inserted_car_id)
+	{
 
 		$dbDriver = new db_driver();
 
@@ -906,13 +921,13 @@ class base
 				?
 
 			)";
-		
+
 		$stmt = $dbDriver->dbCon->prepare($sql);
 		$stmt->execute([$inserted_car_id, $path, $_SESSION['user'][0]['expo_users_ID']]);
-
 	}
 
-	public function insertCarDocument($path, $inserted_car_id) {
+	public function insertCarDocument($path, $inserted_car_id)
+	{
 
 		$dbDriver = new db_driver();
 
@@ -923,14 +938,12 @@ class base
 				?
 
 			)";
-		
+
 		$stmt = $dbDriver->dbCon->prepare($sql);
 		$stmt->execute([$inserted_car_id, $path, $_SESSION['user'][0]['expo_users_ID']]);
-
-
 	}
 
-	
+
 
 	public function getCarInfo($car_id)
 	{
@@ -950,21 +963,21 @@ class base
 		return $result;
 	}
 
-	public function getCarImages($car_id) {
+	public function getCarImages($car_id)
+	{
 
 		$dbDriver = new db_driver();
 		// $dbDriver->dbCon->beginTransaction();
 
 		// try {
-					
-		$query= "SELECT * FROM car_photos WHERE cp_car_id = ?";
+
+		$query = "SELECT * FROM car_photos WHERE cp_car_id = ? ORDER BY cp_id DESC";
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$car_id]);
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		return $result;
-
 	}
 
 	public function updateCarInfo($post, $car_id)
@@ -1219,7 +1232,6 @@ class base
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([]);
-
 	}
 
 	public function getConversions($conversion_type = NULL, $conversion_page = NULL)
