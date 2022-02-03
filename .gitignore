@@ -5,3 +5,6 @@ config1.php
 data/connection.php
 data/connection.php
 bpm/connn.php
+uploads
+!uploads/images/.gitkeep
+!uploads/documents/.gitkeep

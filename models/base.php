@@ -776,6 +776,35 @@ class base
 		return $inserted_car_id;
 	}
 
+	public function getSingleCar($car_id) {
+		$dbDriver = new db_driver();
+			$query = "SELECT c.created_at,
+			c.car_id, cd.cd_car_ref_custom, cm.cmake_name, cmod.cmodel_name,
+			cmu.cmu_name, cmotor.cmotor_name, cv.conversion_name,
+			conv2.conversion_name, cd.cd_first_registration_date,
+			cd.cd_kilometers, cd.cd_first_nl_registration,
+			cd.cd_vin,cd.cd_status
+			FROM
+			  cars c
+			INNER JOIN car_details cd on c.car_id = cd.cd_car_id 
+			 INNER JOIN car_makes cm on c.car_make = cm.cmake_id
+			 INNER JOIN car_models cmod on c.car_model = cmod.cmodel_id
+			 INNER JOIN car_motors cmotor on cd.cd_motor = cmotor.cmotor_id
+			INNER JOIN conversions cv on c.car_fuel = cv.conversion_id
+			INNER JOIN conversions conv2 on cd.cd_transmission = conv2.conversion_id
+			INNER JOIN car_make_uitvoerings cmu on c.car_variant  = cmu.cmu_id
+			WHERE c.car_id = ?
+			";
+
+			$stmt = $dbDriver->dbCon->prepare($query);
+			$stmt->execute([$car_id]);
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+			return $result;
+			
+
+	}
+
 
 	public function createCalculation($_post, $car_id = NULL) {
 		$dbDriver = new db_driver();
@@ -841,10 +870,6 @@ class base
 
 		]);
 		
-		echo '<pre>';
-		var_dump('here');
-		echo '</pre>';
-		exit;
 
 	}
 

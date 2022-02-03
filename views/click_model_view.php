@@ -1,3 +1,4 @@
+<?php $data['single_car'] = $data['single_car'][0];?>
 <div class="content" id="createEditCarPage">
     <div class="col-xs-12 table-list">
         <form action="car_start" enctype="multipart/form-data" method="POST" class="listing__form">
@@ -71,10 +72,22 @@
                                     <input type="checkbox" name="preorder" id="preorder">
                                 </div>
                             </div>
+                            <?php
+                            // echo '<pre>';
+                            // var_dump($data['single_car']);
+                            // echo '</pre>';
+                            // exit; 
+                            ?>
+                        
                             <select required class="form-control" name="status">
                                 <option value="0">-</option>
                                 <?php foreach ($data['car_status'] as $opt_value) {
-                                    echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                    if(isset($data['single_car']['cd_status']) && $data['single_car']['cd_status'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
+                                    echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                                 }
                                 ?>
                             </select>
@@ -470,20 +483,10 @@
                                             <label for="switchBTW"></label>
                                         </div>
                                     </div>
-
                                 </div>
 
                                 <!-- Current date  -->
                                 <input type="hidden" autocomplete="off" class="form-control" name="huidigedatumbpm" id="datepicker2">
-
-                                <div class="row str">
-                                    <div class="col-12">
-                                        Residual Value Percentage
-                                    </div>
-                                    <div class="col-12">
-                                        <input type="text" class="form-control" id="percentage" name="percentage" placeholder="">
-                                    </div>
-                                </div>
 
                                 <div class="row str">
                                     <div class="col-12">
@@ -504,11 +507,11 @@
                                 </div>
 
                                 <div class="row str">
-                                    <div class="col-12">
+                                    <div class="col-12 font-weight-bold">
                                         Total Purchase Price netto
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="addOpknapkosten" name="total_purchase_price_netto" placeholder="">
+                                        <input type="text" readonly class="form-control" id="addOpknapkosten" name="total_purchase_price_netto" placeholder="">
                                     </div>
                                 </div>
 
@@ -520,6 +523,7 @@
                                         <input type="text" class="form-control" id="addTransport_Binnenland" name="costs_damage_and_repair" placeholder="">
                                     </div>
                                 </div>
+
                                 <div class="row str">
                                     <div class="col-12">
                                         Transport International
@@ -527,7 +531,7 @@
                                     <div class="col-12">
                                         <input type="text" class="form-control" id="addTransport_Buitenland" name="transport_international" placeholder="">
                                     </div>
-                                </div>
+                                </div>     
 
                                 <div class="row str">
                                     <div class="col-12">
@@ -556,15 +560,15 @@
                                     </div>
                                 </div>
                                 <div class="row str">
-                                    <div class="col-12">
+                                    <div class="col-12 font-weight-bold">
                                         Totaal Costs and Fee
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="addFee" name="total_costs_and_fee" placeholder="">
+                                        <input type="text" readonly class="form-control" id="addFee" name="total_costs_and_fee" placeholder="">
                                     </div>
                                 </div>
                                 <div class="row str">
-                                    <div class="col-12">
+                                    <div class="col-12 font-weight-bold">
                                         Sales Price netto (ex/ex)
                                     </div>
                                     <div class="col-12">
@@ -605,18 +609,36 @@
                                     </div>
                                 </div>
                                 <div class="row str">
-                                    <div class="col-12">
+                                    <div class="col-12 font-weight-bold">
                                         Sales Price Total (in/in)
                                     </div>
                                     <div class="col-12">
                                         <input type="text" class="form-control" id="addVerkoopprijs_Marge_incl" name="sales_price_total" placeholder="">
                                     </div>
                                 </div>
+
+                                <div class="row str">
+                                    <div class="col-12">
+                                        Residual Value Percentage
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="percentage" name="percentage" placeholder="">
+                                    </div>
+                                </div>    
                             </div>   <!-- Calculation  -->
                             
                             <div class="col-12 col-md-6 recent-images-col">
                                 
                                 <?php 
+                                    if(empty($data['car_images'][0])) {
+                                        for( $i = 0; $i < 5; $i++) {
+                                            echo "<div class='row'>
+                                            <div class='col-12 car-image-col'>
+                                                <img src='/assets/images/no-image.gif' />
+                                            </div>
+                                        </div>";   
+                                        }
+                                    }
                                     foreach($data['car_images'][0] as $key => $img) {
 
                                         if($key > 4) {
@@ -1012,13 +1034,14 @@
         <div class="row">
             <?php 
                 $imagesNumber = count($data['car_images'][0]);
-                 
-                for($i = 4; $i < $imagesNumber; $i++){
-                    
-                    echo "<div class='col-12 col-md-3 car-image-col'>
-                        <img src='{$data['car_images'][0][$i]['cp_path']}' />
-                    </div>";
-                }
+                if($imagesNumber > 4) {
+                    for($i = 4; $i < $imagesNumber; $i++){                    
+                        echo "<div class='col-12 col-md-3 car-image-col'>
+                            <img src='{$data['car_images'][0][$i]['cp_path']}' />
+                        </div>";
+                    }
+                }                
+               
             ?>
         </div>
 
