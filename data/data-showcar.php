@@ -1,37 +1,25 @@
 <?php
 session_start();
 //error_reporting(0);
-
 include("connection.php");
-
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Easy set variables
  */
-
 /* Array of database columns which should be read and sent back to DataTables. Use a space where
  * you want to insert a non-database field (for example a counter or static image)
  */
-$aColumns = array( 'c.created_at','CONCAT_WS( "-", cm.cmake_name, cmod.cmodel_name)', 'cd.cd_car_ref_custom','cm.cmake_name','cmod.cmodel_name','cmu.cmu_name','cmotor.cmotor_name','cv.conversion_name','conv2.conversion_name','cd.cd_first_registration_date','cd.cd_kilometers','cd.cd_first_nl_registration','cd.ci_vin','c.car_id as edit','c.car_id as duplicate');
-
+$aColumns = array( 'c.created_at','CONCAT_WS( "-", cm.cmake_name, cmod.cmodel_name)', 'cd.cd_car_ref_custom','cm.cmake_name','cmod.cmodel_name','cmu.cmu_name','cmotor.cmotor_name','cv.conversion_name','conv2.conversion_name','cd.cd_first_registration_date','cd.cd_kilometers','cd.cd_first_nl_registration','cd.cd_vin','c.car_id as edit','c.car_id as duplicate');
 /* Indexed column (used for fast and accurate table cardinality) */
 $sIndexColumn = "c.car_id as number";
-
 /* DB table to use */
-
-
 $sJoin = ' cars c ';
-$sJoin .= ' INNER JOIN car_makes cm on c.car_make = cm.cmake_id ';
-$sJoin .= ' INNER JOIN car_models cmod on c.car_model = cmod.cmodel_id';
 $sJoin .= ' INNER JOIN car_details cd on c.car_id = cd.cd_car_id ';
-$sJoin .= ' INNER JOIN car_make_uitvoerings cmu on c.car_make = cmu.cmu_make_id';
-$sJoin .= ' INNER JOIN car_motors cmotor on cd.cd_motor  = cmotor.cmotor_make_id';
-$sJoin .= ' INNER JOIN conversions cv on c.car_fuel = cv.conversion_id';
-$sJoin .= ' INNER JOIN conversions conv2 on cd.cd_transmission = conv2.conversion_id';
-$sJoin .= ' GROUP BY c.car_id';
-
-
-
+$sJoin .= '  INNER JOIN car_makes cm on c.car_make = cm.cmake_id';
+$sJoin .= '  INNER JOIN car_models cmod on c.car_model = cmod.cmodel_id ';
+$sJoin .= '  INNER JOIN car_motors cmotor on cd.cd_motor = cmotor.cmotor_id';
+$sJoin .= '   INNER JOIN conversions cv on c.car_fuel = cv.conversion_id';
+$sJoin .= '   INNER JOIN conversions conv2 on cd.cd_transmission = conv2.conversion_id';
+$sJoin .= '   INNER JOIN car_make_uitvoerings cmu on c.car_variant  = cmu.cmu_id';
 
 /*
  * Local functions
@@ -41,9 +29,7 @@ function fatal_error ( $sErrorMessage = '' )
 //    header( $_SERVER['SERVER_PROTOCOL'] .' 500 Internal Server Error' );
 //    die( $sErrorMessage );
 }
-
 $gaSql['charset']  = 'utf8';
-
 /*
  * MySQL connection
  */
@@ -52,7 +38,6 @@ if ( ! $gaSql['link'] = new mysqli($gaSql['server'], $gaSql['user'], $gaSql['pas
 {
     fatal_error( 'Could not open connection to server' );
 }
-
 if ( ! mysqli_select_db($gaSql['link'], $gaSql['db']))
 {
     fatal_error( 'Could not select database ' );
@@ -60,7 +45,6 @@ if ( ! mysqli_select_db($gaSql['link'], $gaSql['db']))
 if (!$gaSql['link']->set_charset($gaSql['charset'])) {
     die( 'Error loading character set "'.$gaSql['charset'].'": '.$db->error );
 }
-
 /*
  * Paging
  */
@@ -70,8 +54,6 @@ if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
     $sLimit = "LIMIT ".intval( $_GET['iDisplayStart'] ).", ".
         intval( $_GET['iDisplayLength'] );
 }
-
-
 /*
  * Ordering
  */
@@ -87,15 +69,12 @@ if ( isset( $_GET['iSortCol_0'] ) )
                     ".($_GET['sSortDir_'.$i]==='asc' ? 'asc' : 'desc') .", ";
         }
     }
-
     $sOrder = substr_replace( $sOrder, "", -2 );
     if ( $sOrder == "ORDER BY" )
     {
         $sOrder = "";
     }
 }
-
-
 /*
  * Filtering
  * NOTE this does not match the built-in DataTables filtering which does it
@@ -122,7 +101,6 @@ if ( $_GET['sSearch'] != "" )
 {
     $aWords = preg_split('/\s+/', $_GET['sSearch']);
     $sWhere = "WHERE (";
-
     for ( $j=0 ; $j<count($aWords) ; $j++ )
     {
         if ( $aWords[$j] != "" )
@@ -139,7 +117,6 @@ if ( $_GET['sSearch'] != "" )
     $sWhere = substr_replace( $sWhere, "", -4 );
     $sWhere .= ')';
 }
-
 /* Individual column filtering */
 for ( $i=0 ; $i<count($aColumns) ; $i++ )
 {
@@ -156,8 +133,6 @@ for ( $i=0 ; $i<count($aColumns) ; $i++ )
         $sWhere .= $aColumns[$i]." LIKE '%".mysqli_real_escape_string($gaSql['link'], $_GET['sSearch_'.$i])."%' ";
     }
 }
-
-
 /*
  * SQL queries
  * Get data to display
@@ -170,12 +145,8 @@ $sQuery = "
         $sOrder
         $sLimit
     ";
-
-
-
 $rResult = mysqli_query($gaSql['link'], $sQuery, $gaSql['link'] ) or fatal_error( 'MySQL Error: ' . mysqli_errno($gaSql['link']) );
 mysqli_query($gaSql['link'], "SET character_set_results=utf8", $gaSql['link']);
-
 $rResult = mysqli_query($gaSql['link'], $sQuery ) or die(mysql_error());
 /* Data set length after filtering */
 $sQuery = "
@@ -184,7 +155,6 @@ $sQuery = "
 $rResultFilterTotal =  mysqli_query($gaSql['link'], $sQuery, $gaSql['link'] ) or fatal_error( 'MySQL Error: ' . mysqli_errno($gaSql['link']) );
 $aResultFilterTotal = mysqli_fetch_array($rResultFilterTotal);
 $iFilteredTotal = $aResultFilterTotal[0];
-
 /* Total data set length */
 $sQuery = "
         SELECT COUNT(".$sIndexColumn.")
@@ -193,8 +163,6 @@ $sQuery = "
 $rResultTotal = mysqli_query($gaSql['link'], $sQuery, $gaSql['link'] ) or fatal_error( 'MySQL Error: ' . mysqli_errno($gaSql['link']) );
 $aResultTotal = mysqli_fetch_array($rResultTotal);
 $iTotal = $aResultTotal[0];
-
-
 /*
  * Output
  */
@@ -223,8 +191,6 @@ $iTotal = $aResultTotal[0];
 //    }
 //    $output['aaData'][] = $row;
 //}
-
-
 $output = array(
     "sEcho"                => intval( $_GET['sEcho'] ),
     "iTotalRecords"        => $iTotal,
@@ -235,7 +201,7 @@ $output = array(
 // die;
 $j=0;
 while ( $aRow = mysqli_fetch_array( $rResult ) ) {
-	$j++;
+    $j++;
     $row = array();
     for ( $i = 0; $i < count( $aColumns ); $i ++ ) {
         if ( $aColumns[ $i ] == "version" ) {
@@ -253,7 +219,6 @@ while ( $aRow = mysqli_fetch_array( $rResult ) ) {
         }
     }
     $output['aaData'][] = $row;
-
 }
 echo json_encode( $output );
 ?>
