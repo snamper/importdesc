@@ -243,7 +243,10 @@
                             <div class="row">
                                 <div class="col-6 pr-0">
                                     <select required class="form-control" name="car_model" id="carModel">
-                                        <option value="">-</option>
+                                        <?php
+                                        if(isset($_GET['car_id'])) {
+                                            echo "<option selected value='{$data['car_model']}'> {$data['cmake_name']}</option>";   
+                                        } ?>    
                                     </select>
                                 </div>
                                 <div class="col-6 pl-0">

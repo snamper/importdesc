@@ -48,6 +48,19 @@ class base
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
 	}
+
+	public function getAllCarMakes() {
+
+		// $dbDriver = new db_driver();
+		// $query = "SELECT * FROM car_make";
+		// $stmt = $dbDriver->dbCon->prepare($query);
+		// $stmt->execute([]);
+		// $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+		// return $result;
+
+	}
+
 	function getCarMark($carTypeID = 1, $active = 1)
 	{
 
@@ -984,7 +997,7 @@ class base
 	{
 		$dbDriver = new db_driver();
 		$query = "SELECT c.created_at,
-		   c.car_id, cd.cd_car_ref_custom, cm.cmake_name, cmod.cmodel_name,
+		   c.car_id, c.car_model, cd.cd_car_ref_custom, cm.cmake_name, cmod.cmodel_name,
 		   cmu.cmu_name, cmotor.cmotor_name, cv.conversion_name,
 		   conv2.conversion_id as transmission_name, cd.cd_first_registration_date,
 		   cd.cd_kilometers, cd.cd_first_nl_registration,
@@ -998,7 +1011,7 @@ class base
 				cd.cd_first_name_nl_registration,cd.cd_navigation,cd.cd_keyless_entry,cd.cd_app_connect,
 				cd.cd_airco,cd.cd_roof,cd.cd_wheels,cd.cd_headlights,cd.cd_pdc,cd.cd_cockpit,cd.cd_camera,
 				cd.cd_cruise_control,cd.cd_tow_bar,cd.cd_sport_seats,cd.cd_sport_package,cd.cd_seats_electric,
-				cd.cd_seat_heating,cd.cd_seat_massage,cd.cd_optics,cd.cd_tinted_windows,cd.cd_options,cd.cd_notes,c.car_body_style				
+				cd.cd_seat_heating,cd.cd_seat_massage,cd.cd_optics,cd.cd_tinted_windows,cd.cd_options,cd.cd_notes,c.car_body_style			
 		   FROM
 			 cars c
 		   INNER JOIN car_details cd on c.car_id = cd.cd_car_id 

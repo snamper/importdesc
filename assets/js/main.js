@@ -272,8 +272,15 @@ $(document).ready(function () {
             data: 'carTypeSelect=' + carvalue,
             success: function (data) {
                 const firstOptionHTML = "<option value='0'> - </option>";
-                document.getElementById('carMake').innerHTML = firstOptionHTML + data;
-                $('#carMake').change();
+                const queryString = window.location.search;
+                const parameters = new URLSearchParams(queryString);
+                const value = parameters.get('car_id');
+                if(!value) {
+                    // document.getElementById('carMake').innerHTML = firstOptionHTML + data;
+                    // $('#carMake').change();
+                }
+                
+              
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(errorThrown);
@@ -982,6 +989,7 @@ function getCarInfo(e) {
     } else {
         const trigger = e.currentTarget;
         thisId = trigger.getAttribute("data-id");
+
     }
 
 
@@ -1136,7 +1144,6 @@ $('.JSfunc').click(function () {
             data: 'carTypeSelect=' + carvalue,
             success: function (data) {
                 const firstOptionHTML = "<option value='0'> - </option>";
-
                 carMake.innerHTML = firstOptionHTML + data;
                 $('.JSfunc').change();
             }
