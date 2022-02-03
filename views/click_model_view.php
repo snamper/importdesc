@@ -463,7 +463,7 @@
 
                 <!-- Rigth col  -->
                 <div class="col-12 col-md-7">
-                    <div class="container">
+                    <div class="container" id="calculationContainer">
                         <div class="row align-items-start">
                             <div class="col-12 col-md-6 calculation-col">
                                 <div class="row align-items-start str">
@@ -493,7 +493,7 @@
                                         Purchase Price netto (ex/ex)
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="inkoopprijs_ex_ex" name="purchase_price_netto" placeholder="">
+                                        <input type="text" class="form-control js-calc-changer" id="inkoopprijs_ex_ex" name="purchase_price_netto" placeholder="">
                                     </div>
                                 </div>
 
@@ -502,7 +502,7 @@
                                         Fee Intermediate Supplier
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="addAfleverkosten" name="fee_intermediate_supplier" placeholder="">
+                                        <input type="text" class="form-control js-calc-changer" id="addAfleverkosten" name="fee_intermediate_supplier" placeholder="">
                                     </div>
                                 </div>
 
@@ -511,16 +511,14 @@
                                         Total Purchase Price netto
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" readonly class="form-control" id="addOpknapkosten" name="total_purchase_price_netto" placeholder="">
+                                        <input class="form-control js-calc-changer" readonly type="text" name="" id="totalPriceNettoSuppluier">
                                     </div>
                                 </div>
 
                                 <div class="row str">
                                     <div class="col-12">
                                         Costs of Damages and Repair
-                                    </div>
-                                    <div class="col-12">
-                                        <input type="text" class="form-control" id="addTransport_Binnenland" name="costs_damage_and_repair" placeholder="">
+                                         <input type="text"  class="form-control js-calc-changer" id="addOpknapkosten" name="costs_damage_and_repair" placeholder="">         
                                     </div>
                                 </div>
 
@@ -529,16 +527,16 @@
                                         Transport International
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="addTransport_Buitenland" name="transport_international" placeholder="">
+                                        <input type="text" class="form-control js-calc-changer" id="addTransport_Buitenland" name="transport_international" placeholder="">
                                     </div>
                                 </div>     
 
                                 <div class="row str">
                                     <div class="col-12">
                                         Transport National
-                                    </div>
+                                    </div> 
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="addKosten_Totaal" name="transport_national" placeholder="">
+                                        <input type="text" class="form-control js-calc-changer" id="addTransport_Binnenland" name="transport_national" placeholder="">
                                     </div>
                                 </div>
 
@@ -547,7 +545,8 @@
                                         Costs of Taxation for BPM
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="addTaxatie_Kostene" name="costs_taxation_bpm" placeholder="">
+                                    <input type="text" class="form-control js-calc-changer" id="costTaxation" name="cost_taxation" placeholder="">
+                                      
                                     </div>
                                 </div>
 
@@ -556,7 +555,8 @@
                                         Fee GWI
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="addVerkoopprijs_Marge_Excl" name="fee_gwi" placeholder="">
+                                        <input type="text" class="form-control js-calc-changer" id="addFee" name="fee_gwi" placeholder="">
+                                        
                                     </div>
                                 </div>
                                 <div class="row str">
@@ -564,15 +564,15 @@
                                         Totaal Costs and Fee
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" readonly class="form-control" id="addFee" name="total_costs_and_fee" placeholder="">
+                                       <input readonly class="form-control" type="text" name="total_costs_fee" id="totalCostsFee">
                                     </div>
                                 </div>
                                 <div class="row str">
-                                    <div class="col-12 font-weight-bold">
+                                    <div class="col-12 font-weight-bold ">
                                         Sales Price netto (ex/ex)
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="addRest_BPM" name="sales_price_netto" placeholder="">
+                                    <input readonly class="form-control" type="text" name="total_price_fee" id="totalPriceFee">
                                     </div>
                                 </div>
 
@@ -581,7 +581,7 @@
                                         VAT / BTW (21%)
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="addBTW_21no" name="vat_btw" placeholder="">
+                                        <input readonly type="text" class="form-control" id="addBTW_21" name="vat_btw" placeholder="">
                                     </div>
                                 </div>
                                 <div class="row str">
@@ -589,7 +589,7 @@
                                         Sales Price incl. VAT / BTW
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="addVerkoopprijs_Marge_incl" name="sales_price_incl_vat_btw" placeholder="">
+                                        <input readonly type="text" class="form-control" id="addVerkoopprijs_Marge_incl" name="sales_price_incl_vat_btw" placeholder="">
                                     </div>
                                 </div>
                                 <div class="row str">
@@ -597,7 +597,8 @@
                                         Rest BPM (indication)
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="addVerkoopprijs_Marge_incl" name="rest_bpm" placeholder="">
+                                    <input type="text" class="form-control js-calc-changer" id="addRest_BPM" name="" placeholder="Rest BPM Indicatief">
+                                
                                     </div>
                                 </div>
                                 <div class="row str">
@@ -605,7 +606,7 @@
                                         Leges (VAT / BTW free)
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="addVerkoopprijs_Marge_incl" name="fees" placeholder="">
+                                        <input type="text" class="form-control js-calc-changer" id="addLeges" name="add_leges" placeholder="">
                                     </div>
                                 </div>
                                 <div class="row str">
@@ -613,18 +614,18 @@
                                         Sales Price Total (in/in)
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="addVerkoopprijs_Marge_incl" name="sales_price_total" placeholder="">
+                                        <input readonly class="form-control" type="text" name="" id="totalAll">
                                     </div>
                                 </div>
 
-                                <div class="row str">
+                                <!-- <div class="row str">
                                     <div class="col-12">
                                         Residual Value Percentage
                                     </div>
                                     <div class="col-12">
                                         <input type="text" class="form-control" id="percentage" name="percentage" placeholder="">
                                     </div>
-                                </div>    
+                                </div>     -->
                             </div>   <!-- Calculation  -->
                             
                             <div class="col-12 col-md-6 recent-images-col">
