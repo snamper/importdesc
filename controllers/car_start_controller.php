@@ -37,7 +37,9 @@ class car_start extends view
 		$selects_conversions = $this->base->getConversions(NULL, "create_edit_car");
 		if(isset($_GET['car_id'])) {
 			$single_car = $this->base->getSingleCar($_GET['car_id']);
+            $single_car_documents = $this->base->getSingleCarDocuments($_GET['car_id']);
 			$this->setData("single_car", $single_car);
+            $this->setData("single_car_documents", $single_car_documents);
 			// echo '<pre>';
 			// var_dump($single_car);
 			// echo '</pre>';

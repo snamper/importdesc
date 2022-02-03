@@ -73,10 +73,10 @@
                                 </div>
                             </div>
                             <?php
-                            // echo '<pre>';
-                            // var_dump($data['single_car']);
-                            // echo '</pre>';
-                            // exit; 
+//                             echo '<pre>';
+//                             var_dump($data['single_car']);
+//                             echo '</pre>';
+//                             exit;
                             ?>
                         
                             <select required class="form-control" name="status">
@@ -99,7 +99,7 @@
                             <span>Car reference (custom)</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" name="car_ref_custom" value="" placeholder="" />
+                            <input class="form-control" type="text" name="car_ref_custom" value="<?php echo(isset($data['single_car']['cd_car_ref_custom']) ? $data['single_car']['cd_car_ref_custom']  : "") ?>" placeholder="" />
                         </div>
                     </div>
 
@@ -108,7 +108,7 @@
                             <span>VIN</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" name="vin" value="" placeholder="" />
+                            <input class="form-control" type="text" name="vin" value="<?php echo(isset($data['single_car']['cd_vin']) ? $data['single_car']['cd_vin']  : "") ?>" placeholder="" />
                         </div>
                     </div>
 
@@ -117,7 +117,7 @@
                             <span>Komm. Number</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" name="komm_number" value="" />
+                            <input class="form-control" type="text" name="komm_number" value="<?php echo(isset($data['single_car']['cd_komm_number']) ? $data['single_car']['cd_komm_number']  : "") ?>" />
                         </div>
                     </div>
 
@@ -126,7 +126,7 @@
                             <span>Link to Advert</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" name="advert_link" value="" />
+                            <input class="form-control" type="text" name="advert_link" value="<?php echo(isset($data['single_car']['cd_advert_link']) ? $data['single_car']['cd_advert_link']  : "") ?>" />
                         </div>
                     </div>
                     <!-- ./ ROWS  -->
@@ -141,7 +141,7 @@
                             <span>Source Supplier </span>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input class="form-control" type="text" name="source_supplier" value="" placeholder="" />
+                            <input class="form-control" type="text" name="source_supplier" value="<?php echo(isset($data['single_car']['cd_source_supplier']) ? $data['single_car']['cd_source_supplier']  : "") ?>" placeholder="" />
                         </div>
                     </div>
 
@@ -150,7 +150,7 @@
                             <span>Reference Number Supplier</span>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input class="form-control" type="text" name="supplier_ref" value="" />
+                            <input class="form-control" type="text" name="supplier_ref" value="<?php echo(isset($data['single_car']['cd_supplier_ref']) ? $data['single_car']['cd_supplier_ref']  : "") ?>" />
                         </div>
                     </div>
 
@@ -162,7 +162,12 @@
                         <div class="col-12 col-md-6">
                             <select class="form-control" name="current_registration" id="">
                                 <?php foreach ($data['car_registration_country'] as $opt_value) {
-                                    echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                    if(isset($data['single_car']['cd_current_registration']) && $data['single_car']['cd_current_registration'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
+                                    echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                                 }
                                 ?>
                             </select>
@@ -175,6 +180,11 @@
                         <div class="col-12 col-md-6">
                             <select class="form-control" name="coc" id="">
                                 <?php foreach ($data['coc'] as $opt_value) {
+                                    if(isset($data['single_car']['cd_coc']) && $data['single_car']['cd_coc'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
                                     echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                                 }
                                 ?>
@@ -202,9 +212,9 @@
                         <div class="col-12 col-md-8">
                             <select name="car_vehicle_type" id="SoortVoertuig" class="form-control">
                                 <option value="0">-</option>
-                                <option value="1">Passenger car</option>
-                                <option value="2">Company car max. 3500kg</option>
-                                <option value="3">Camper</option>
+                                <option <?php echo (!is_null($data['single_car']['car_vehicle_type']) && $data['single_car']['car_vehicle_type'] == 1  ? "selected" : "") ?> value="1">Passenger car</option>
+                                <option <?php echo (!is_null($data['single_car']['car_vehicle_type']) && $data['single_car']['car_vehicle_type'] == 2  ? "selected" : "") ?>  value="2">Company car max. 3500kg</option>
+                                <option <?php echo (!is_null($data['single_car']['car_vehicle_type']) && $data['single_car']['car_vehicle_type'] == 3  ? "selected" : "") ?>  value="3">Camper</option>
                             </select>
                         </div>
                     </div>
@@ -265,7 +275,12 @@
                         <div class="col-12 col-md-8">
                             <select class="form-control" name="car_body_style" id="">
                                 <?php foreach ($data['body_style'] as $opt_value) {
-                                    echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                    if(isset($data['single_car']['car_body_style']) && $data['single_car']['car_body_style'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
+                                    echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                                 }
                                 ?>
                             </select>
@@ -314,13 +329,18 @@
                                 <div class="col-6 pr-0">
                                     <select required class="form-control" name="transmission" id="">
                                         <?php foreach ($data['transmission'] as $opt_value) {
-                                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                            if(isset($data['single_car']['transmission_name']) && $data['single_car']['transmission_name'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
+                                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                                         }
                                         ?>
                                     </select>
                                 </div>
                                 <div class="col-6 pl-0">
-                                    <input class="form-control" type="text" name="transmission_additional" placeholder="">
+                                    <input class="form-control" type="text" name="transmission_additional" placeholder="" value="<?php echo(isset($data['single_car']['cd_transmission_additional']) ? $data['single_car']['cd_transmission_additional']  : "") ?>">
                                 </div>
                             </div>
                         </div>
@@ -333,10 +353,10 @@
                         <div class="col-12 col-md-8">
                             <div class="row">
                                 <div class="col-6 pr-0">
-                                    <input class="form-control" type="text" name="power_kpw" id="" placeholder="">
+                                    <input class="form-control" type="text" name="power_kpw" id="" value="<?php echo(isset($data['single_car']['cd_power_kpw']) ? $data['single_car']['cd_power_kpw']  : "") ?>" placeholder="">
                                 </div>
                                 <div class="col-6 pl-0">
-                                    <input class="form-control" type="text" name="cubic_capacity" id="" placeholder="">
+                                    <input class="form-control" type="text" name="cubic_capacity" id="" value="<?php echo(isset($data['single_car']['cd_cubic_capacity']) ? $data['single_car']['cd_cubic_capacity']  : "") ?>" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -349,7 +369,12 @@
                         <div class="col-12 col-md-8">
                             <select class="form-control" name="wheel_drive">
                                 <?php foreach ($data['wheel_drive'] as $opt_value) {
-                                    echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                    if(isset($data['single_car']['wheel_drive']) && $data['single_car']['wheel_drive'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
+                                    echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                                 }
                                 ?>
                             </select>
@@ -361,7 +386,7 @@
                             <span>CO² WLTP</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input type="text" class="form-control" id="BPMCO2WLTP" name="co_wltp" placeholder="">
+                            <input type="text" class="form-control" id="BPMCO2WLTP" name="co_wltp" placeholder="" value="<?php echo(isset($data['single_car']['cd_co_wltp']) ? $data['single_car']['cd_co_wltp']  : "") ?>">
                         </div>
                     </div>
 
@@ -370,7 +395,7 @@
                             <span>CO² NEDC</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input type="text" class="form-control" id="BPMCO2" name="co_nedc" placeholder="">
+                            <input type="text" class="form-control" id="BPMCO2" name="co_nedc" placeholder="" value="<?php echo(isset($data['single_car']['cd_co_nedc']) ? $data['single_car']['cd_co_nedc']  : "") ?>">
                         </div>
                     </div>
 
@@ -379,7 +404,7 @@
                             <span>Kilometers </span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="number" name="kilometers" value="0" placeholder="">
+                            <input class="form-control" type="number" name="kilometers"  placeholder="" value="<?php echo(isset($data['single_car']['cd_kilometers']) ? $data['single_car']['cd_kilometers']  : "") ?>">
                         </div>
                     </div>
 
@@ -393,7 +418,12 @@
                             <select name="paint_type" class="form-control" id="paintType">
                                 <option value="0">-</option>
                                 <?php foreach ($data['paint_type'] as $opt_value) {
-                                    echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                    if(isset($data['single_car']['cd_paint_type']) && $data['single_car']['cd_paint_type'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
+                                    echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                                 }
                                 ?>
                             </select>
@@ -409,13 +439,18 @@
                                 <div class="col-6 pr-0">
                                     <select class="form-control" name="color" id="">
                                         <?php foreach ($data['color'] as $opt_value) {
+                                            if(isset($data['single_car']['color_name']) && $data['single_car']['color_name'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
                                             echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                                         }
                                         ?>
                                     </select>
                                 </div>
                                 <div class="col-6 pl-0">
-                                    <input class="form-control" type="text" name="color_additional" id="" placeholder="">
+                                    <input class="form-control" type="text" name="color_additional" id="" placeholder="" value="<?php echo(isset($data['single_car']['cd_color_additional']) ? $data['single_car']['cd_color_additional']  : "") ?>">
                                 </div>
                             </div>
                         </div>
@@ -430,13 +465,18 @@
                                 <div class="col-6 pr-0">
                                     <select class="form-control" name="interior_color" id="">
                                         <?php foreach ($data['interior_color'] as $opt_value) {
-                                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                            if(isset($data['single_car']['cd_interior_color']) && $data['single_car']['cd_interior_color'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
+                                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                                         }
                                         ?>
                                     </select>
                                 </div>
                                 <div class="col-6 pl-0">
-                                    <input class="form-control" type="text" name="interior_color_additional" id="" placeholder="">
+                                    <input class="form-control" type="text" name="interior_color_additional" id="" placeholder="" value="<?php echo(isset($data['single_car']['cd_interior_color_additional']) ? $data['single_car']['cd_interior_color_additional']  : "") ?>">
                                 </div>
                             </div>
                         </div>
@@ -449,7 +489,12 @@
                         <div class="col-12 col-md-8">
                             <select class="form-control" name="interior_material" id="">
                                 <?php foreach ($data['interior_material'] as $opt_value) {
-                                    echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                    if(isset($data['single_car']['cd_interior_material']) && $data['single_car']['cd_interior_material'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
+                                    echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                                 }
                                 ?>
                             </select>
@@ -673,7 +718,7 @@
                     <span> First registration ever (date)</span>
                 </div>
                 <div class="col-12 col-md-8">
-                    <input type="text" autocomplete="off" class="form-control" name="first_registration_date" id="datepicker1">
+                    <input type="text" autocomplete="off" class="form-control" name="first_registration_date" id="datepicker1" value="<?php echo(isset($data['single_car']['cd_first_registration_date']) ? $data['single_car']['cd_first_registration_date']  : "") ?>">
                 </div>
             </div>
 
@@ -691,7 +736,7 @@
                     <span>First registration on a name in the Netherlands (date)</span>
                 </div>
                 <div class="col-12 col-md-8">
-                    <input class="form-control" type="text" name="first_name_nl_registration" value="" id="datepicker10" placeholder="" />
+                    <input class="form-control" type="text" name="first_name_nl_registration" value="<?php echo(isset($data['single_car']['cd_first_name_nl_registration']) ? $data['single_car']['cd_first_name_nl_registration']  : "") ?>" id="datepicker10" placeholder="" />
                 </div>
             </div>
 
@@ -700,7 +745,7 @@
                     <span>Last registration on a name (date)</span>
                 </div>
                 <div class="col-12 col-md-8">
-                    <input class="form-control" type="text" name="last_name_registration" id="datepicker11" />
+                    <input class="form-control" type="text" name="last_name_registration" id="datepicker11" value="<?php echo(isset($data['single_car']['cd_last_name_registration']) ? $data['single_car']['cd_last_name_registration']  : "") ?>" />
                 </div>
             </div>
             <!-- ./ ROWS  -->
@@ -715,7 +760,7 @@
                     <span>NL Registration number</span>
                 </div>
                 <div class="col-12 col-md-6">
-                    <input class="form-control" type="text" name="nl_registration_number" value="" placeholder="" />
+                    <input class="form-control" type="text" name="nl_registration_number" value="<?php echo(isset($data['single_car']['cd_nl_registration_number']) ? $data['single_car']['cd_nl_registration_number']  : "") ?>" placeholder="" />
                 </div>
             </div>
 
@@ -725,7 +770,7 @@
                     <span>Identification code (meldcode)</span>
                 </div>
                 <div class="col-12 col-md-6">
-                    <input type="text" class="form-control" name="meldcode" id="melcode">
+                    <input type="text" class="form-control" name="meldcode" id="melcode" value="<?php echo(isset($data['single_car']['cd_meldcode']) ? $data['single_car']['cd_meldcode']  : "") ?>">
                 </div>
             </div>
             <div class="row">
@@ -733,7 +778,7 @@
                     <span>APK / Check valid until</span>
                 </div>
                 <div class="col-12 col-md-6">
-                    <input class="form-control" type="text" name="apk_valid" id="datepicker13" />
+                    <input class="form-control" type="text" name="apk_valid" id="datepicker13" value="<?php echo(isset($data['single_car']['cd_apk_valid']) ? $data['single_car']['cd_apk_valid']  : "") ?>"/>
                 </div>
             </div>
         </div>
@@ -752,7 +797,12 @@
                         <option value="0">-</option>
                         <?php
                         foreach ($data['navigation'] as $opt_value) {
-                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            if(isset($data['single_car']['cd_navigation']) && $data['single_car']['cd_navigation'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                         }
                         ?>
                     </select>
@@ -763,7 +813,12 @@
                         <option value="0">-</option>
                         <?php
                         foreach ($data['keyless_entry'] as $opt_value) {
-                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                             if(isset($data['single_car']['cd_keyless_entry']) && $data['single_car']['cd_keyless_entry'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                         }
                         ?>
                     </select>
@@ -777,7 +832,12 @@
                         <option value="0">-</option>
                         <?php
                         foreach ($data['app_connect'] as $opt_value) {
-                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            if(isset($data['single_car']['cd_app_connect']) && $data['single_car']['cd_app_connect'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                         }
                         ?>
                     </select>
@@ -788,7 +848,12 @@
                         <option value="0">-</option>
                         <?php
                         foreach ($data['airco'] as $opt_value) {
-                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            if(isset($data['single_car']['cd_airco']) && $data['single_car']['cd_airco'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                         }
                         ?>
                     </select>
@@ -802,7 +867,12 @@
                         <option value="0">-</option>
                         <?php
                         foreach ($data['roof'] as $opt_value) {
-                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            if(isset($data['single_car']['cd_roof']) && $data['single_car']['cd_roof'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                         }
                         ?>
                     </select>
@@ -813,7 +883,12 @@
                         <option value="0">-</option>
                         <?php
                         foreach ($data['wheels'] as $opt_value) {
-                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            if(isset($data['single_car']['cd_wheels']) && $data['single_car']['cd_wheels'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                         }
                         ?>
                     </select>
@@ -827,7 +902,12 @@
                         <option value="0">-</option>
                         <?php
                         foreach ($data['headlights'] as $opt_value) {
-                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            if(isset($data['single_car']['cd_headlights']) && $data['single_car']['cd_headlights'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                         }
                         ?>
                     </select>
@@ -838,7 +918,12 @@
                         <option value="0">-</option>
                         <?php
                         foreach ($data['pdc'] as $opt_value) {
-                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            if(isset($data['single_car']['cd_pdc']) && $data['single_car']['cd_pdc'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                         }
                         ?>
                     </select>
@@ -852,7 +937,12 @@
                         <option value="0">-</option>
                         <?php
                         foreach ($data['cockpit'] as $opt_value) {
-                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            if(isset($data['single_car']['cd_cockpit']) && $data['single_car']['cd_cockpit'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                         }
                         ?>
                     </select>
@@ -863,7 +953,12 @@
                         <option value="0">-</option>
                         <?php
                         foreach ($data['camera'] as $opt_value) {
-                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            if(isset($data['single_car']['cd_camera']) && $data['single_car']['cd_camera'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                         }
                         ?>
                     </select>
@@ -877,7 +972,12 @@
                         <option value="0">-</option>
                         <?php
                         foreach ($data['cruise_control'] as $opt_value) {
-                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                             if(isset($data['single_car']['cd_cruise_control']) && $data['single_car']['cd_cruise_control'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected  = "";
+                                    }
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                         }
                         ?>
                     </select>
@@ -888,7 +988,12 @@
                         <option value="0">-</option>
                         <?php
                         foreach ($data['tow_bar'] as $opt_value) {
-                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            if(isset($data['single_car']['cd_tow_bar']) && $data['single_car']['cd_tow_bar'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected  = "";
+                                    }
+                            echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                         }
                         ?>
                     </select>
@@ -906,7 +1011,12 @@
                         <option value="0">-</option>
                         <?php
                         foreach ($data['sport_seats'] as $opt_value) {
-                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            if(isset($data['single_car']['cd_sport_seats']) && $data['single_car']['cd_sport_seats'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected  = "";
+                                    }
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                         }
                         ?>
                     </select>
@@ -917,7 +1027,12 @@
                         <option value="0">-</option>
                         <?php
                         foreach ($data['sport_package'] as $opt_value) {
-                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            if(isset($data['single_car']['cd_sport_package']) && $data['single_car']['cd_sport_package'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected  = "";
+                                    }
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                         }
                         ?>
                     </select>
@@ -931,7 +1046,12 @@
                         <option value="0">-</option>
                         <?php
                         foreach ($data['seats_electric'] as $opt_value) {
-                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            if(isset($data['single_car']['cd_seats_electric']) && $data['single_car']['cd_seats_electric'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected  = "";
+                                    }
+                            echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                         }
                         ?>
                     </select>
@@ -946,7 +1066,12 @@
                         <option value="0">-</option>
                         <?php
                         foreach ($data['seat_heating'] as $opt_value) {
-                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            if(isset($data['single_car']['cd_seat_heating']) && $data['single_car']['cd_seat_heating'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected  = "";
+                                    }
+                            echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                         }
                         ?>
                     </select>
@@ -961,7 +1086,12 @@
                         <option value="0">-</option>
                         <?php
                         foreach ($data['seat_massage'] as $opt_value) {
-                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            if(isset($data['single_car']['cd_seat_massage']) && $data['single_car']['cd_seat_massage'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected  = "";
+                                    }
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                         }
                         ?>
                     </select>
@@ -976,7 +1106,12 @@
                         <option value="0">-</option>
                         <?php
                         foreach ($data['optics'] as $opt_value) {
-                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            if(isset($data['single_car']['cd_optics']) && $data['single_car']['cd_optics'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected  = "";
+                                    }
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                         }
                         ?>
                     </select>
@@ -991,7 +1126,12 @@
                         <option value="0">-</option>
                         <?php
                         foreach ($data['tinted_windows'] as $opt_value) {
-                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            if(isset($data['single_car']['cd_tinted_windows']) && $data['single_car']['cd_tinted_windows'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected  = "";
+                                    }
+                            echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                         }
                         ?>
                     </select>
@@ -1007,7 +1147,7 @@
     <p>Options </p>
     <div class="row d-flex align-items-stretch">
         <div class="col col-11">
-            <textarea placeholder="" rows="7" style="resize: none;" class="w-150 form-control" name="options" id="options"></textarea>
+            <textarea placeholder="" rows="7" style="resize: none;" class="w-150 form-control" name="options" id="options"><?php echo(isset($data['single_car']['cd_options']) ? $data['single_car']['cd_options']  : "") ?></textarea>
         </div>
     </div>
     <!-- ./ ROW  -->
@@ -1019,12 +1159,18 @@
 
         <div class="col col-5">
             <p>Remarks / Notes (internal)</p>
-            <textarea placeholder="" rows="7" style="resize: none;" class="form-control" name="notes" id="notes"></textarea>
+            <textarea placeholder="" rows="7" style="resize: none;" class="form-control" name="notes" id="notes"><?php echo(isset($data['single_car']['cd_notes']) ? $data['single_car']['cd_notes']  : "") ?></textarea>
         </div>
         <div class="col-12 col-md-2"></div>
         <div class="col col-12 col-md-4">
             <p>Uploaded Documents</p>
-            <textarea placeholder="" rows="7" style="resize: none;" class="form-control" name="uploaded_files" id="uploadedFiles"></textarea>
+            <textarea placeholder="" rows="7" style="resize: none;" class="form-control" name="uploaded_files" id="uploadedFiles"><?php
+                if(!is_null($data['single_car_documents'])){
+                    foreach($data['single_car_documents'] as $key => $doc) {
+                        echo "<a href='{$doc['cd_path']}'> File $key</a>";
+                    }
+                }
+                ?></textarea>
         </div>
     </div>
     <!-- ./ ROW  -->

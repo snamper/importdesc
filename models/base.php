@@ -781,9 +781,25 @@ class base
 			$query = "SELECT c.created_at,
 			c.car_id, cd.cd_car_ref_custom, cm.cmake_name, cmod.cmodel_name,
 			cmu.cmu_name, cmotor.cmotor_name, cv.conversion_name,
-			conv2.conversion_name, cd.cd_first_registration_date,
+			conv2.conversion_id as transmission_name, cd.cd_first_registration_date,
 			cd.cd_kilometers, cd.cd_first_nl_registration,
-			cd.cd_vin,cd.cd_status
+			cd.cd_vin,cd.cd_status, cd.cd_komm_number, cd.cd_advert_link,
+            cd.cd_source_supplier,cd.cd_supplier_ref, cd.cd_current_registration,
+            cd.cd_coc,c.car_vehicle_type, cd.cd_transmission_additional,
+            cd.cd_power_kpw,cd.cd_cubic_capacity,conv4.conversion_id as wheel_drive,cd.cd_co_wltp,cd.cd_co_nedc,
+            cd.cd_kilometers,cd.cd_paint_type,conv3.conversion_id as color_name,cd.cd_color_additional,cd.cd_interior_color,
+            cd.cd_interior_color_additional,cd.cd_interior_material,cd.cd_first_registration_date,
+            cd.cd_nl_registration_number,cd.cd_meldcode,cd.cd_apk_valid,cd.cd_last_name_registration,
+            cd.cd_first_name_nl_registration,cd.cd_navigation,cd.cd_keyless_entry,cd.cd_app_connect,
+            cd.cd_airco,cd.cd_roof,cd.cd_wheels,cd.cd_headlights,cd.cd_pdc,cd.cd_cockpit,cd.cd_camera,
+            cd.cd_cruise_control,cd.cd_tow_bar,cd.cd_sport_seats,cd.cd_sport_package,cd.cd_seats_electric,
+            cd.cd_seat_heating,cd.cd_seat_massage,cd.cd_optics,cd.cd_tinted_windows,cd.cd_options,cd.cd_notes,c.car_body_style
+       
+       
+       
+            
+       
+
 			FROM
 			  cars c
 			INNER JOIN car_details cd on c.car_id = cd.cd_car_id 
@@ -792,7 +808,9 @@ class base
 			 INNER JOIN car_motors cmotor on cd.cd_motor = cmotor.cmotor_id
 			INNER JOIN conversions cv on c.car_fuel = cv.conversion_id
 			INNER JOIN conversions conv2 on cd.cd_transmission = conv2.conversion_id
+			INNER JOIN conversions conv3 on cd.cd_color = conv3.conversion_id
 			INNER JOIN car_make_uitvoerings cmu on c.car_variant  = cmu.cmu_id
+            INNER JOIN conversions conv4 on cd.cd_wheel_drive = conv4.conversion_id
 			WHERE c.car_id = ?
 			";
 
@@ -804,6 +822,19 @@ class base
 			
 
 	}
+    public function getSingleCarDocuments($car_id) {
+		$dbDriver = new db_driver();
+			$query = "SELECT * FROM car_documents WHERE cd_car_id = ?";
+
+			$stmt = $dbDriver->dbCon->prepare($query);
+			$stmt->execute([$car_id]);
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+			return $result;
+
+
+	}
+
 
 
 	public function createCalculation($_post, $car_id = NULL) {
