@@ -34,7 +34,7 @@ var timeout = 1000;
 //                 success: function (data) {
 //                     // console.log(json[0]['BPMCO2WLTP']);
 //                     var json = JSON.parse(data);
-                  
+
 //                     $('#brutobpm').val(json[0]['bpmprice']);
 //                     $('#forfaitaire').val(json[0]['a']);
 //                     $('#PercentageBerekening').val(json[0]['percentage']);
@@ -275,9 +275,9 @@ $(document).ready(function () {
                 document.getElementById('carMake').innerHTML = firstOptionHTML + data;
                 $('#carMake').change();
             },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-               console.log(errorThrown);
-             }
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
         })
 
     }
@@ -304,9 +304,9 @@ $('#carMake').change(function () {
                 carModel.innerHTML = firstOptionHTML + data;
                 $('#carModel').change();
             },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("some error");
-             }
+            }
         })
     } else {
         document.getElementById('carModel').innerHTML = firstOptionHTML;
@@ -986,8 +986,7 @@ function getCarInfo(e) {
 
 
 
-    const url = `${location.origin}/edit_car?car_id=${thisId}`;
-
+    const url = `${location.origin}/car_start?quick_edit=${thisId}`;
 
     fetch(url)
         .then(function (response) {
@@ -995,11 +994,10 @@ function getCarInfo(e) {
             return response.json();
         })
         .then(function (response) {
-            setEditInputFormData(response[0]);
+            setEditInputFormData(response);
             const hiddenInput = document.querySelector("#editCarHiddenInput");
             hiddenInput.value = thisId;
-            return response[0];
-        }).then(function (data) {
+        })/* .then(function (data) {
             setTimeout(() => {
                 setEditInputFormData(data)
                 $('#carMake').change();
@@ -1008,7 +1006,7 @@ function getCarInfo(e) {
                 setEditFormSelectsData(data);
                 addResumeEditCarHeader();
             }, 1200);
-        })
+        }) */
         .catch((error) => {
             console.log(error);
             return;
@@ -1016,17 +1014,25 @@ function getCarInfo(e) {
 }
 
 function setEditInputFormData(data) {
-    // console.log(data);
     const editCarForm = document.querySelector("#editCarForm");
 
-    const inputFields = editCarForm.querySelectorAll("[data-name]");
+    const inputFields = editCarForm.querySelectorAll("input[data-name]");
+    const selectFields = editCarForm.querySelectorAll("select[data-name]");
     for (const field of inputFields) {
         const fieldName = field.getAttribute("data-name");
         field.value = data[fieldName];
     }
-
-
+    let opt;
+    for (const field of selectFields) {
+        const fieldName = field.getAttribute("data-name");
+        opt = document.createElement("option");
+        opt.value = data[fieldName];
+        opt.selected = true;
+        opt.innerHTML = data[fieldName];
+        field.append(opt);
+    }
 }
+
 
 function setEditFormSelectsData(data) {
 
@@ -1109,7 +1115,7 @@ function carMakeAjaxFill() {
             return;
         }
 
-        
+
 
     });
 }
@@ -1146,14 +1152,14 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
     const firstOptionHTML = "<option value='0'> - </option>";
     if (this.id == "carMakeFuel") {
         var carModel = document.getElementById('carModelFuel');
-    } else if(this.id == "carMakeMotor"){
+    } else if (this.id == "carMakeMotor") {
         var carModel = document.getElementById('carModelMotor');
-    } else if(this.id == "carMakeUit"){
+    } else if (this.id == "carMakeUit") {
         var carModel = document.getElementById('carModelUit');
-    } else{
+    } else {
         var carModel = document.getElementById('carModel');
     }
-    
+
 
     if (!carModel) {
         return;
@@ -1204,29 +1210,29 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
 
     const carMake = document.querySelector('#carMake');
 
-    if(!carMake) {
+    if (!carMake) {
         return;
     }
 
     const carMotor = document.querySelector('.js-car-motor');
     const carFuel = document.querySelector('.js-car-fuel');
 
-  
+
     carMake.addEventListener("change", (e) => {
 
         //FETCH MOTORS 
         const urlFetchMotors = `${location.origin}/create_make_new?make_id_get_motors=${e.currentTarget.value}`;
         fetch(urlFetchMotors)
-        .then(function (response) {    
-            return response.json();
-        })
-        .then(function (response) {
-            fillSelectFromJson(".js-car-motor", response, "cmotor_name", "cmotor_id");
-        })
-        .catch((error) => {
-            console.log(error);
-            return;
-        });
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (response) {
+                fillSelectFromJson(".js-car-motor", response, "cmotor_name", "cmotor_id");
+            })
+            .catch((error) => {
+                console.log(error);
+                return;
+            });
 
 
         // FETCH Uitvoering
@@ -1234,16 +1240,16 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
 
 
         fetch(urlFetchUitvoering)
-        .then(function (response) {    
-            return response.json();
-        })
-        .then(function (response) {
-            fillSelectFromJson("#carUitvoering", response, "cmu_name", "cmu_make_id" );
-        })
-        .catch((error) => {
-            console.log(error);
-            return;
-        });
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (response) {
+                fillSelectFromJson("#carUitvoering", response, "cmu_name", "cmu_make_id");
+            })
+            .catch((error) => {
+                console.log(error);
+                return;
+            });
 
     });
 
@@ -1251,16 +1257,16 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
     [carMotor, carFuel].map(element => element.addEventListener("change", (e) => {
         const trigger = e.currentTarget;
 
-        if(carMake.value == "" || carMake.value == 0) {
+        if (carMake.value == "" || carMake.value == 0) {
             alert("Car Make select is required");
         }
-    
-        if(trigger.id == "carMotor") {
-           
+
+        if (trigger.id == "carMotor") {
+
             const fuelSelect = document.querySelector(".js-car-fuel");
             const fuelSelectVal = fuelSelect.value;
-    
-            if(trigger.value == "") {
+
+            if (trigger.value == "") {
                 let fuelHTML = `<option value="">-</option>
                 <option value="1">Benzine</option>
                 <option value="2">Diesel</option>
@@ -1272,9 +1278,9 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
                 <option value="8">Cryogeen</option>
                 <option value="9">Waterstof</option>
                 `;
-                
+
                 carMake.dispatchEvent(new Event('change'));
-                
+
                 carFuel.innerHTML = fuelHTML;
                 return;
             }
@@ -1282,44 +1288,44 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
             const urlGetFuels = `${location.origin}/create_make_new?motor_id_get_fuel=${trigger.value}`;
 
             fetch(urlGetFuels)
-            .then(function (response) {    
-                return response.json();
-            })
-            .then(function (response) {
-                fillSelectFromJson(".js-car-fuel", response, "conversion_name", "cmotor_fuel_id" );
-                fuelSelect.value = fuelSelectVal;
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (response) {
+                    fillSelectFromJson(".js-car-fuel", response, "conversion_name", "cmotor_fuel_id");
+                    fuelSelect.value = fuelSelectVal;
 
-            })
-            .catch((error) => {
-                console.log(error);
-                return;
-            });
-        }else { // ONCHANGE #carFuel
+                })
+                .catch((error) => {
+                    console.log(error);
+                    return;
+                });
+        } else { // ONCHANGE #carFuel
             const selectedMakeId = document.querySelector("#carMake").value;
             let urlGetMotorsByFuel = `${location.origin}/create_make_new?fuel_id_get_motors=${trigger.value}&car_make_id=${selectedMakeId}`;
 
             const motorSelect = document.querySelector("#carMotor");
             const motorSelVal = motorSelect.value;
 
-            if(trigger.value == "") {
+            if (trigger.value == "") {
                 urlGetMotorsByFuel = `${location.origin}/create_make_new?make_id_get_motors=${selectedMakeId}`
 
             }
 
             fetch(urlGetMotorsByFuel)
-            .then(function (response) {    
-                return response.json();
-            })
-            .then(function (response) {
-                fillSelectFromJson(".js-car-motor", response, "cmotor_name", "cmotor_id");
-                motorSelect.value = motorSelVal;
-            })
-            .catch((error) => {
-                console.log(error);
-                return;
-            });
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (response) {
+                    fillSelectFromJson(".js-car-motor", response, "cmotor_name", "cmotor_id");
+                    motorSelect.value = motorSelVal;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    return;
+                });
         }
-    }));  
+    }));
 
 
 
@@ -1330,16 +1336,16 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
 
     const bootstrapTabs = doc.querySelectorAll("#createMake .nav-tabs .nav-item");
 
-    if(!bootstrapTabs) {
+    if (!bootstrapTabs) {
         return;
     }
 
-    for(let tab of bootstrapTabs) {
+    for (let tab of bootstrapTabs) {
         tab.addEventListener("click", (e) => {
             const trigger = e.currentTarget; // triger is the li element
             const navLinkHref = trigger.querySelector(".nav-link").getAttribute("href");
-            const cookieVal = navLinkHref.replace("#", "");            
-            document.cookie = `active_tab=${cookieVal}; path=/`;            
+            const cookieVal = navLinkHref.replace("#", "");
+            document.cookie = `active_tab=${cookieVal}; path=/`;
 
         });
     }
@@ -1352,20 +1358,20 @@ $("#languageselect").change(function () {
     var language = $(this).val();
     $.ajax({
         type: "POST",
-        url: 'home' ,
-        data: 'changes='+language,
-        success: function(){
+        url: 'home',
+        data: 'changes=' + language,
+        success: function () {
             location.reload();
         }
     });
 });
-function fillSelectFromJson(selector, jsonData, selectTextProp, selectValProp, changeInnerHTML = false){
-    
+function fillSelectFromJson(selector, jsonData, selectTextProp, selectValProp, changeInnerHTML = false) {
+
     let emptyOption = Object.assign(
         document.createElement("option"), {
-            "text": "-",
-            "value": ""
-        });
+        "text": "-",
+        "value": ""
+    });
 
     const selectEl = document.querySelector(`${selector}`);
 
@@ -1379,9 +1385,9 @@ function fillSelectFromJson(selector, jsonData, selectTextProp, selectValProp, c
         }
         let option = Object.assign(
             document.createElement("option"), {
-                "text": jsonData[key][selectTextProp],
-                "value": jsonData[key][selectValProp],
-            });
+            "text": jsonData[key][selectTextProp],
+            "value": jsonData[key][selectValProp],
+        });
 
         selectEl.appendChild(option)
     }
@@ -1391,14 +1397,14 @@ function fillSelectFromJson(selector, jsonData, selectTextProp, selectValProp, c
 ; (function (window, doc) {
     const sidebar = doc.querySelector("#sidebar");
 
-    if(!sidebar) {
+    if (!sidebar) {
         return;
     }
 
     const pathName = window.location.pathname.replace("/", "");
     const activeLiEl = document.querySelector(`.nav [href="${pathName}"]`);
     activeLiEl.classList.add("active");
-    
+
 
 })(window, document);
 
@@ -1409,32 +1415,32 @@ $(document).ready(function () {
     if (!kpwInput) {
         return;
     }
-    
+
     kpwInput.on('change', (e) => {
         const val = kpwInput.val();
-        if(!isNaN(val)) {
+        if (!isNaN(val)) {
             cubicInput.val(Math.round(val * 1.362));
         }
-            
+
     });
     cubicInput.on('change', (e) => {
         const val = cubicInput.val();
-        if(!isNaN(val)) {
+        if (!isNaN(val)) {
             kpwInput.val(Math.round(val / 1.362));
         }
-            
+
     });
 
     const vinInput = $('input[name=vin]');
 
-    vinInput.keyup(delay(function(e) {
+    vinInput.keyup(delay(function (e) {
         const val = vinInput.val();
-        if(val.length >= 4) {
+        if (val.length >= 4) {
             $('input[name=meldcode]').val(val.slice(-4));
-        }else {
+        } else {
             $('input[name=meldcode]').val("");
         }
-            
+
     }, 500));
 });
 
@@ -1442,14 +1448,14 @@ const imageUpload = $('.upload-photo input[type="file"]');
 imageUpload.change((e) => {
     var files = $(imageUpload)[0].files;
 
-    if(files.length > 0 ){
+    if (files.length > 0) {
         const allowed = ['image/jpeg', 'image/png'];
         $(files).each((index, value) => {
-            if(value.size > 5000000) {
+            if (value.size > 5000000) {
                 alert(`File '${value.name}' above 5MB`);
                 files[index] = null;
             }
-            else if(!allowed.includes(value.type)) {
+            else if (!allowed.includes(value.type)) {
                 alert(`File '${value.name}' not a jpeg/png image`);
                 files[index] = 0;
             }
@@ -1463,18 +1469,18 @@ imageUpload.change((e) => {
 ; (function (window, doc) {
     const calculationChangers = doc.querySelectorAll(".js-calc-changer");
 
-    if(!calculationChangers) {
+    if (!calculationChangers) {
         return;
     }
 
-    for(let changer of calculationChangers) {
+    for (let changer of calculationChangers) {
         changer.addEventListener("change", calcValues);
     }
 
     function calcValues() {
-        doc.querySelector("#totalPriceNettoSuppluier").value =  sumValues("#inkoopprijs_ex_ex, #addAfleverkosten");
-        doc.querySelector("#totalPriceNettoSuppluier").value =  sumValues("#inkoopprijs_ex_ex, #addAfleverkosten");
-        doc.querySelector("#totalCostsFee").value =  sumValues("#addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee");
+        doc.querySelector("#totalPriceNettoSuppluier").value = sumValues("#inkoopprijs_ex_ex, #addAfleverkosten");
+        doc.querySelector("#totalPriceNettoSuppluier").value = sumValues("#inkoopprijs_ex_ex, #addAfleverkosten");
+        doc.querySelector("#totalCostsFee").value = sumValues("#addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee");
         doc.querySelector("#totalPriceFee").value = sumValues("#totalPriceNettoSuppluier, #totalCostsFee");
         doc.querySelector("#addBTW_21").value = sumValues("#totalPriceFee") * 0.21;
         doc.querySelector("#addVerkoopprijs_Marge_incl").value = sumValues("#totalPriceFee, #addBTW_21");
@@ -1484,13 +1490,13 @@ imageUpload.change((e) => {
     function sumValues(selectors) {
         const elementSelectors = selectors.split(",");
         let sum = 0;
-        
-        for(let el of elementSelectors) {                   
+
+        for (let el of elementSelectors) {
             let element = doc.querySelector(`${el}`);
             console.log(element.value);
-            if(!isNaN(element.value) && element.value != ""){
+            if (!isNaN(element.value) && element.value != "") {
                 sum += parseFloat(element.value);
-            }           
+            }
         }
 
         return sum.toFixed(2);
@@ -1501,11 +1507,11 @@ imageUpload.change((e) => {
 
 function delay(callback, ms) {
     var timer = 0;
-    return function() {
+    return function () {
         var context = this,
             args = arguments;
         clearTimeout(timer);
-        timer = setTimeout(function() {
+        timer = setTimeout(function () {
             callback.apply(context, args);
         }, ms || 0);
     };
