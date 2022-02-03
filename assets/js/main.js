@@ -983,8 +983,7 @@ function getCarInfo(e) {
 
 
 
-    const url = `${location.origin}/edit_car?car_id=${thisId}`;
-
+    const url = `${location.origin}/car_start?quick_edit=${thisId}`;
 
     fetch(url)
         .then(function (response) {
@@ -992,11 +991,10 @@ function getCarInfo(e) {
             return response.json();
         })
         .then(function (response) {
-            setEditInputFormData(response[0]);
+            setEditInputFormData(response);
             const hiddenInput = document.querySelector("#editCarHiddenInput");
             hiddenInput.value = thisId;
-            return response[0];
-        }).then(function (data) {
+        })/* .then(function (data) {
             setTimeout(() => {
                 setEditInputFormData(data)
                 $('#carMake').change();
@@ -1005,7 +1003,7 @@ function getCarInfo(e) {
                 setEditFormSelectsData(data);
                 addResumeEditCarHeader();
             }, 1200);
-        })
+        }) */
         .catch((error) => {
             console.log(error);
             return;
@@ -1013,16 +1011,23 @@ function getCarInfo(e) {
 }
 
 function setEditInputFormData(data) {
-    // console.log(data);
     const editCarForm = document.querySelector("#editCarForm");
 
-    const inputFields = editCarForm.querySelectorAll("[data-name]");
+    const inputFields = editCarForm.querySelectorAll("input[data-name]");
+    const selectFields = editCarForm.querySelectorAll("select[data-name]");
     for (const field of inputFields) {
         const fieldName = field.getAttribute("data-name");
         field.value = data[fieldName];
     }
-
-
+    let opt;
+    for (const field of selectFields) {
+        const fieldName = field.getAttribute("data-name");
+        opt = document.createElement("option");
+        opt.value = data[fieldName];
+        opt.selected = true;
+        opt.innerHTML = data[fieldName];
+        field.append(opt);
+    }
 }
 
 function setEditFormSelectsData(data) {
@@ -1433,8 +1438,6 @@ $(document).ready(function () {
         }
             
     }, 500));
-
-    
 });
 
 const imageUpload = $('.upload-photo input[type="file"]');

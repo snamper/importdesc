@@ -780,10 +780,12 @@ class base
 		$dbDriver = new db_driver();
 			$query = "SELECT c.created_at,
 			c.car_id, cd.cd_car_ref_custom, cm.cmake_name, cmod.cmodel_name,
-			cmu.cmu_name, cmotor.cmotor_name, cv.conversion_name,
-			conv2.conversion_name, cd.cd_first_registration_date,
+			cmu.cmu_name, cmotor.cmotor_name, cv.conversion_name as fuel_type,
+			conv2.conversion_name as transmission_name, cd.cd_first_registration_date,
 			cd.cd_kilometers, cd.cd_first_nl_registration,
-			cd.cd_vin,cd.cd_status
+			cd.cd_vin,cd.cd_status, conv3.conversion_name as color_name,
+			conv4.conversion_name as door_number, cd.cd_source_supplier as dealer_name,
+			cd.cd_nl_registration_number
 			FROM
 			  cars c
 			INNER JOIN car_details cd on c.car_id = cd.cd_car_id 
@@ -792,7 +794,9 @@ class base
 			 INNER JOIN car_motors cmotor on cd.cd_motor = cmotor.cmotor_id
 			INNER JOIN conversions cv on c.car_fuel = cv.conversion_id
 			INNER JOIN conversions conv2 on cd.cd_transmission = conv2.conversion_id
-			INNER JOIN car_make_uitvoerings cmu on c.car_variant  = cmu.cmu_id
+			INNER JOIN conversions conv3 on cd.cd_color = conv3.conversion_id
+			INNER JOIN conversions conv4 on cd.cd_wheel_drive = conv4.conversion_id
+			INNER JOIN car_make_uitvoerings cmu on c.car_variant = cmu.cmu_id
 			WHERE c.car_id = ?
 			";
 

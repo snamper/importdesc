@@ -32,9 +32,9 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-2">Custom referentie</div>
+                <div class="col-sm-2">Car reference (custom)</div>
                 <div class="col-sm-4">
-                    <input id="refCustom" type="text" class="form-control my-1" name="custom_ref" value="" data-name="custom_ref" placeholder="Custom referentie">
+                    <input id="refCustom" type="text" class="form-control my-1" name="custom_ref" value="" data-name="cd_car_ref_custom" placeholder="Custom referentie">
                 </div>
             </div>
             <hr />
@@ -42,34 +42,36 @@
             <div class=" row str " style="align-items: center; margin-bottom:1px;">
                 <div class="col-sm-2">Make</div>
                 <div class="col-sm-4">
-                    <select class="form-control js-resume-fill" data-name="car_merk" name="car_make" id="carMake">
+                    <select class="form-control js-resume-fill" data-name="cmake_name" name="car_make" id="carMake">
                        
                     </select>
                 </div>
 
                 <div class="col-sm-2">Model</div>
                 <div class="col-sm-4">
-                    <select class="form-control js-resume-fill" data-name="car_model" name="carModel" id="carModel" required>
+                    <select class="form-control js-resume-fill" data-name="cmodel_name" name="carModel" id="carModel" required>
                         <option value="">-</option>
                     </select>
                 </div>
             </div>
             <div class=" row str " style="align-items: center; margin-bottom:1px;">
-                <div class="col-sm-2">Uitvoering</div>
+                <div class="col-sm-2">Variant</div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control js-resume-fill" data-name="uitvoering" name="car_uitvoering" id="carUitvoering">
+                    <select class="form-control js-resume-fill" data-name="cmu_name" name="car_uitvoering" id="carUitvoering" required>
+                        <option value="">-</option>
+                    </select>
                 </div>
 
-                <div class="col-sm-2">Motor</div>
+                <div class="col-sm-2">Engine</div>
                 <div class="col-sm-4">
-                    <input class="form-control" type="text" data-name="motor" name="car_motor">
+                    <input class="form-control" type="text" data-name="cmotor_name" name="car_motor">
                 </div>
 
             </div>
             <div class="row str " style="align-items: center; margin-bottom:1px;">
-                <div class="col-sm-2">Aantal deuren</div>
+                <div class="col-sm-2">Doors</div>
                 <div class="col-sm-4">
-                    <select class="form-control" data-name="aantal_deuren" name="doors_number" id="doorNumber">
+                    <select class="form-control" data-name="door_number" name="doors_number" id="doorNumber">
                         <option value="">-</option>
                         <?php
                         foreach ($data['car_doors'] as $car_doors_type) {
@@ -80,13 +82,13 @@
                 </div>
 
 
-                <div class="col-sm-2">Kleur</div>
+                <div class="col-sm-2">Color</div>
                 <div class="col-sm-4">
-                    <input class="form-control" type="text" data-name="kleur" name="kleur">
+                    <input class="form-control" type="text" data-name="color_name" name="kleur">
                 </div>
             </div>
             <div class="row str " style="align-items: center; margin-bottom:1px;">
-                <div class="col-sm-2">Opties</div>
+                <div class="col-sm-2">Options</div>
                 <div class="col-sm-4">
                     <textarea style="resize: none;" class="w-100 form-control" data-name="optie" name="opties" id="opties"></textarea>
                 </div>
@@ -94,16 +96,16 @@
 
             <div class="row str " style="align-items: center; margin-bottom:1px;">
                 <div class="col-sm-12">
-                    <h6 style="font-weight: 500"> Technische gegevens</h6>
+                    <h6 style="font-weight: 500"> Technical data</h6>
                 </div>
             </div>
 
 
             <div class="row str " style="align-items: center; margin-bottom:1px;">
 
-                <div class="col-sm-2">Brandstof soort</div>
+                <div class="col-sm-2">Fuel type</div>
                 <div class="col-sm-4">
-                    <select data-name="brandstof" name="BPMbrandstof" id="BPMbrandstof2" class="form-control">
+                    <select data-name="fuel_type" name="BPMbrandstof" id="BPMbrandstof2" class="form-control">
                         <option value="0"> - </option>
                         <?php
 
@@ -123,10 +125,9 @@
             </div>
 
             <div class="row str " style="align-items: center; margin-bottom:1px;">
-                <div class="col-sm-2">Transmissie</div>
+                <div class="col-sm-2">Transmission</div>
                 <div class="col-sm-4">
-                    <select data-name="transmissieSoort" name="transmissieSoort" id="transmissieSoort" class="text-input form-control" required>
-                        <option value="">Maak een keuze </option>
+                    <select data-name="transmission_name" name="transmissieSoort" id="transmissieSoort" class="text-input form-control" required>
                         <?php
                         foreach ($data['transmitions'] as $transmition) {
                             echo "<option value='$transmition[conversie_tabel_ID]|$transmition[conversie_naam]'> $transmition[conversie_naam]</option>";
@@ -144,57 +145,57 @@
             </div>
             <div class="row str " style="align-items: center; margin-bottom:1px;">
                 <div class="col-sm-12">
-                    <h6 style="font-weight: 500">Herkomst en Registratie</h6>
+                    <h6 style="font-weight: 500">Origin and Registration</h6>
                 </div>
             </div>
 
             <div class="row str " style="align-items: center; margin-bottom:1px;">
                 <div class="col-sm-2">
-                    Datum eerste toelating
+                    Date of first reg.
                 </div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control text-input js-resume-fill" id="datepicker10" autocomplete="off" value="" data-name="productiedatum" name="productiedatum">
+                    <input type="text" class="form-control text-input js-resume-fill" id="datepicker10" autocomplete="off" value="" data-name="cd_first_registration_date" name="productiedatum">
                 </div>
 
                 <div class="col-sm-2">
-                    Huidig land geregistreerd
+                    First Reg. in NL
                 </div>
                 <div class="col-sm-4">
-                    <input class="form-control" type="text" data-name="huidigland" name="huidigland">
+                    <input class="form-control" type="text" data-name="cd_first_nl_registration" name="huidigland">
                 </div>
             </div>
 
 
             <div class="row str " style="align-items: center; margin-bottom:1px;">
                 <div class="col-sm-2">
-                    Kilometerstand
+                    Kilometers
                 </div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" value="" data-name="km_stand" name="km_stand">
+                    <input type="text" class="form-control" value="" data-name="cd_kilometers" name="km_stand">
                 </div>
 
                 <div class="col-sm-2">
                     VIN
                 </div>
                 <div class="col-sm-4">
-                    <input class="form-control" type="text" data-name="vinnummer" name="vinnummer">
+                    <input class="form-control" type="text" data-name="cd_vin" name="vinnummer">
                 </div>
             </div>
 
 
             <div class="row str " style="align-items: center; margin-bottom:1px;">
                 <div class="col-sm-2">
-                    NL kenteken
+                    NL licence plate
                 </div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control text-input" value="" data-name="kenteken" name="kenteken">
+                    <input type="text" class="form-control text-input" value="" data-name="cd_nl_registration_number" name="kenteken">
                 </div>
 
                 <div class="col-sm-2">
-                    Leverancier
+                    Supplier
                 </div>
                 <div class="col-sm-4">
-                    <select class="form-control js-resume-fill" id="levering" data-name="levering" name="levering">
+                    <select class="form-control js-resume-fill" id="levering" data-name="dealer_name" name="levering">
                         <option value="">-</option>
                         <?php
                         foreach ($data['creditors'] as $creditor) { 
@@ -207,13 +208,13 @@
 
             <div class="row str " style="align-items: center; margin-bottom:1px;">
                 <div class="col-sm-12">
-                    <h6 style="font-weight: 500"> Overig</h6>
+                    <h6 style="font-weight: 500">Other</h6>
                 </div>
             </div>
 
 
             <div class="row str " style="align-items: center; margin-bottom:1px;">
-                <div class="col-sm-2">Opmerkingen</div>
+                <div class="col-sm-2">Comments</div>
                 <div class="col-sm-4">
                     <textarea style="resize: none;" class="w-100 form-control" data-name="opmerkingen" name="opmerkingen" id="opmerkingen"></textarea>
                 </div>

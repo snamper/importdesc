@@ -47,6 +47,13 @@ class car_start extends view
 			$images = [];
 		}
 
+		if(isset($_GET['quick_edit'])) {
+			$single_car = $this->base->getSingleCar($_GET['quick_edit']);
+
+			echo json_encode($single_car);
+			exit;
+		}
+
 		$this->setData("car_images", $images);		
 		foreach ($selects_conversions as $conv) {
 			$this->setData($conv['conversion_type'], $conv);
@@ -62,9 +69,7 @@ class car_start extends view
 			if (!empty($_FILES['upload_document']['name'][0])) {
 
 				$this->createCarUploads($_FILES['upload_document'], $inserted_car_id, "uploads/documents");
-			}
-
-			
+			}			
 		}
 
 
