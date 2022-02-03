@@ -1,3 +1,4 @@
+<?php $data['single_car'] = $data['single_car'][0];?>
 <div class="content" id="createEditCarPage">
     <div class="col-xs-12 table-list">
         <form action="car_start" enctype="multipart/form-data" method="POST" class="listing__form">
@@ -71,10 +72,22 @@
                                     <input type="checkbox" name="preorder" id="preorder">
                                 </div>
                             </div>
+                            <?php
+                            // echo '<pre>';
+                            // var_dump($data['single_car']);
+                            // echo '</pre>';
+                            // exit; 
+                            ?>
+                        
                             <select required class="form-control" name="status">
                                 <option value="0">-</option>
                                 <?php foreach ($data['car_status'] as $opt_value) {
-                                    echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                    if(isset($data['single_car']['cd_status']) && $data['single_car']['cd_status'] == $opt_value["conversion_id"]) {
+                                        $selected = "selected";
+                                    }else {
+                                        $selected = "";
+                                    }
+                                    echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
                                 }
                                 ?>
                             </select>
@@ -1022,8 +1035,7 @@
             <?php 
                 $imagesNumber = count($data['car_images'][0]);
                 if($imagesNumber > 4) {
-                    for($i = 4; $i < $imagesNumber; $i++){
-                    
+                    for($i = 4; $i < $imagesNumber; $i++){                    
                         echo "<div class='col-12 col-md-3 car-image-col'>
                             <img src='{$data['car_images'][0][$i]['cp_path']}' />
                         </div>";

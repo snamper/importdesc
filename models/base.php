@@ -783,7 +783,7 @@ class base
 			cmu.cmu_name, cmotor.cmotor_name, cv.conversion_name,
 			conv2.conversion_name, cd.cd_first_registration_date,
 			cd.cd_kilometers, cd.cd_first_nl_registration,
-			cd.cd_vin
+			cd.cd_vin,cd.cd_status
 			FROM
 			  cars c
 			INNER JOIN car_details cd on c.car_id = cd.cd_car_id 
