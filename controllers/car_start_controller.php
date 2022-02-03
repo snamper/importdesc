@@ -35,19 +35,28 @@ class car_start extends view
 		 */
 
 		$selects_conversions = $this->base->getConversions(NULL, "create_edit_car");
-		if(isset($_GET['car_id'])) {
+		if (isset($_GET['car_id'])) {
 			$single_car = $this->base->getSingleCar($_GET['car_id']);
 			$this->setData("single_car", $single_car);
-			// echo '<pre>';
-			// var_dump($single_car);
-			// echo '</pre>';
-			// exit;
-		 	$images = $this->base->getCarImages($_GET['car_id']);
-		}else {
+		
+			$images = $this->base->getCarImages($_GET['car_id']);
+			$documents = $this->base->getCarDocuments($_GET['car_id']);
+		} else {
 			$images = [];
+			$documents = [];
 		}
 
-		$this->setData("car_images", $images);		
+		if (isset($_POST['update_car'])) {
+			if (isset($_POST['car_id'])) {
+				$this->base->updateCar($_POST, $_POST['car_id']);
+				$this->base->updateCalculation($_POST, $_POST['car_id']);
+				header("Location: /car_start?car_id={$_POST['car_id']}");
+			} else {
+			}
+		}
+
+		$this->setData("car_images", $images);
+		$this->setData("single_car_documents", $documents);
 		foreach ($selects_conversions as $conv) {
 			$this->setData($conv['conversion_type'], $conv);
 		}
@@ -63,8 +72,6 @@ class car_start extends view
 
 				$this->createCarUploads($_FILES['upload_document'], $inserted_car_id, "uploads/documents");
 			}
-
-			
 		}
 
 
@@ -75,8 +82,10 @@ class car_start extends view
 	public function createCarUploads($files, $inserted_car_id, $directory)
 	{
 
+
 		$total_files = count($files['name']);
 		for ($i = 0; $i < $total_files; $i++) {
+
 			$target_dir = dirname(__DIR__) . "/$directory";
 			$target_file = $target_dir . basename($files["name"][$i]);
 			$uploadOk = 1;
@@ -91,11 +100,13 @@ class car_start extends view
 			}
 
 
-			// Allow certain file formats			
-			if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" && $imageFileType != "txt") {
+
+
+			// Allow certain file formats        
+			if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" && $imageFileType != "txt"  && $imageFileType != "docx") {
 				// echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";              
 				if (move_uploaded_file($files["tmp_name"][$i], $new_file_path)) {
-					$uploadOk == 1;					
+					$uploadOk == 1;
 				}
 			} else {
 				// Check if $uploadOk is set to 0 by an error
@@ -106,10 +117,10 @@ class car_start extends view
 					move_uploaded_file($files["tmp_name"][$i], $new_file_path);
 					if ($directory == "uploads/images") {
 
-						$this->base->insertCarPhoto("$directory/$new_file_name", $inserted_car_id);
+						$this->base->insertCarPhoto("$directory/$new_file_name", $inserted_car_id, $files['name'][$i]);
 					} else {
 
-						$this->base->insertCarDocument("$directory/$new_file_name", $inserted_car_id);
+						$this->base->insertCarDocument("$directory/$new_file_name", $inserted_car_id, $files['name'][$i]);
 					}
 				}
 				sleep(1);

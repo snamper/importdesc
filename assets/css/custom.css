@@ -184,3 +184,9 @@
 #createEditCarPage select.form-control {
     height: 1.8rem;
 }
+
+.show-documents{
+    height: auto !important;
+    min-height: 140px;
+    overflow: auto;
+}

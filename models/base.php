@@ -1,6 +1,7 @@
 <?php
 include_once "engine/db_driver.php";
 include_once "engine/db_driver1.php";
+
 class base
 {
 
@@ -242,6 +243,26 @@ class base
 		$dbDriver->query($sql);
 		return $dbDriver->fetchAssoc();
 	}
+
+	public function getCarDocuments($car_id)
+	{
+
+		$dbDriver = new db_driver();
+		// $dbDriver->dbCon->beginTransaction();
+
+		// try {
+
+		$query = "SELECT * FROM car_documents WHERE cd_car_id = ? ORDER BY cd_id DESC";
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$car_id]);
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		return $result;
+	}
+
+
+
 
 	function getCarData($carID)
 	{
@@ -779,6 +800,186 @@ class base
 		return $inserted_car_id;
 	}
 
+
+	public function updateCar($_post, $car_id)
+	{
+
+		$dbDriver = new db_driver();
+
+		// Convert the dates - dosn't work in JS
+		$_post['first_registration_date'] = date("Y-m-d", strtotime($_post['first_registration_date']));
+		$_post['first_nl_registration'] = date("Y-m-d", strtotime($_post['first_nl_registration']));
+		$_post['first_name_nl_registration'] = date("Y-m-d", strtotime($_post['first_name_nl_registration']));
+		$_post['last_name_registration'] = date("Y-m-d", strtotime($_post['last_name_registration']));
+		$_post['apk_valid'] = date("Y-m-d", strtotime($_post['apk_valid']));
+
+		if (isset($_post['preorder'])) {
+			$_post['preorder'] = 1;
+		} else {
+			$_post['preorder'] = 0;
+		}
+
+		// try {
+		$query = "UPDATE cars SET
+			car_vehicle_type = ?,
+            car_make = ?,
+            car_model = ?,
+            car_variant = ?,
+			car_fuel = ?,
+			car_body_style = ?,
+			`user_id` = ?
+			WHERE car_id = ?
+           ";
+
+		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$stmt = $dbDriver->dbCon->prepare($query);
+
+		$stmt->execute(
+			[
+				$_post['car_vehicle_type'],
+				$_post['car_make'],
+				$_post['car_model'],
+				$_post['car_variant'],
+				$_post['car_fuel'],
+				$_post['car_body_style'],
+				$_SESSION['user'][0]['expo_users_ID'],
+				$car_id
+
+			]
+		);
+
+		// echo '<pre>';
+		// var_dump($_post);
+		// echo '</pre>';
+		// exit;
+
+		// UPDATE `car_details` table 
+		$query = "UPDATE car_details SET
+				cd_preorder = ?,
+				cd_car_ref_custom = ?,
+				cd_vin = ?,
+				cd_komm_number = ?,
+				cd_advert_link = ?,
+				cd_source_supplier = ?,
+				cd_supplier_ref = ?,
+				cd_current_registration = ?,
+				cd_coc = ?,
+				cd_status = ?,
+				cd_model_additional = ?,
+				cd_variant_additional = ?,
+				cd_fuel_type = ?,
+				cd_motor = ?,
+				cd_motor_additional = ?,
+				cd_transmission = ?,
+				cd_transmission_additional = ?,
+				cd_power_kpw = ?,
+				cd_cubic_capacity = ?,
+				cd_wheel_drive = ?,
+				cd_co_wltp = ?,
+				cd_co_nedc = ?,
+				cd_kilometers = ?,
+				cd_paint_type = ?,
+				cd_color = ?,
+				cd_color_additional = ?,
+				cd_interior_color = ?,
+				cd_interior_color_additional = ?,
+				cd_interior_material = ?,
+				cd_first_registration_date = ?,
+				cd_first_nl_registration = ?,
+				cd_first_name_nl_registration = ?,
+				cd_last_name_registration = ?,
+				cd_nl_registration_number = ?,
+				cd_meldcode = ?,
+				cd_apk_valid = ?, 
+				cd_navigation = ?,
+				cd_keyless_entry = ?,
+				cd_app_connect = ?,
+				cd_airco = ?,
+				cd_roof = ?,
+				cd_wheels = ?,
+				cd_headlights = ?,
+				cd_pdc = ?,
+				cd_cockpit = ?,
+				cd_camera = ?,
+				cd_cruise_control = ?,
+				cd_tow_bar = ?,
+				cd_sport_seats = ?,
+				cd_sport_package = ?,
+				cd_seats_electric = ?,
+				cd_seat_heating = ?,
+				cd_seat_massage = ?,
+				cd_optics = ?,
+				cd_tinted_windows = ?,
+				cd_options = ?,
+				cd_notes = ?
+				WHERE cd_car_id = ?";
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+
+		$stmt->execute(
+			[
+				$_post['preorder'],
+				$_post['car_ref_custom'],
+				$_post['vin'],
+				$_post['komm_number'],
+				$_post['advert_link'],
+				$_post['source_supplier'],
+				$_post['supplier_ref'],
+				$_post['current_registration'],
+				$_post['coc'],
+				$_post['status'],
+				$_post['model_additional'],
+				$_post['variant_additional'],
+				$_post['car_fuel'],
+				$_post['motor'],
+				$_post['motor_additional'],
+				$_post['transmission'],
+				$_post['transmission_additional'],
+				$_post['power_kpw'],
+				$_post['cubic_capacity'],
+				$_post['wheel_drive'],
+				$_post['co_wltp'],
+				$_post['co_nedc'],
+				$_post['kilometers'],
+				$_post['paint_type'],
+				$_post['color'],
+				$_post['color_additional'],
+				$_post['interior_color'],
+				$_post['interior_color_additional'],
+				$_post['interior_material'],
+				$_post['first_registration_date'],
+				$_post['first_nl_registration'],
+				$_post['first_name_nl_registration'],
+				$_post['last_name_registration'],
+				$_post['nl_registration_number'],
+				$_post['meldcode'],
+				$_post['apk_valid'],
+				$_post['navigation'],
+				$_post['keyless_entry'],
+				$_post['app_connect'],
+				$_post['airco'],
+				$_post['roof'],
+				$_post['wheels'],
+				$_post['headlights'],
+				$_post['pdc'],
+				$_post['cockpit'],
+				$_post['camera'],
+				$_post['cruise_control'],
+				$_post['tow_bar'],
+				$_post['sport_seats'],
+				$_post['sport_package'],
+				$_post['seats_electric'],
+				$_post['seat_heating'],
+				$_post['seat_massage'],
+				$_post['optics'],
+				$_post['tinted_windows'],
+				$_post['options'],
+				$_post['notes'],
+				$car_id
+			]
+		);
+	}
+
 	public function getSingleCar($car_id)
 	{
 		$dbDriver = new db_driver();
@@ -887,6 +1088,53 @@ class base
 		]);
 	}
 
+	public function updateCalculation($_post, $car_id) {
+
+		$dbDriver = new db_driver();
+		$query = "UPDATE calculations SET
+			purchase_price_netto =?,
+			fee_intermediate_supplier =?,
+			total_purchase_price_netto =?,
+			costs_damage_and_repair =?,
+			transport_international =?,
+			transport_national =?,
+			costs_taxation_bpm =?,
+			fee_gwi =?,
+			total_costs_and_fee =?,
+			sales_price_netto =?,
+			vat_btw =?,
+			sales_price_incl_vat_btw =?,
+			rest_bpm =?,
+			fees =?,
+			sales_price_total =?,
+			`user_id` = ?
+			WHERE calculation_for_car_id = ?";
+
+		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([
+			$_post['purchase_price_netto'],
+			$_post['fee_intermediate_supplier'],
+			$_post['total_purchase_price_netto'],
+			$_post['costs_damage_and_repair'],
+			$_post['transport_international'],
+			$_post['transport_national'],
+			$_post['costs_taxation_bpm'],
+			$_post['fee_gwi'],
+			$_post['total_costs_and_fee'],
+			$_post['sales_price_netto'],
+			$_post['vat_btw'],
+			$_post['sales_price_incl_vat_btw'],
+			$_post['rest_bpm'],
+			$_post['fees'],
+			$_post['sales_price_total'],
+			$_SESSION['user'][0]['expo_users_ID'],
+			$car_id,
+
+		]);
+		
+	}
+
 	public function getAllCars($carID = 0)
 	{
 		$dbDriver = new db_driver();
@@ -914,13 +1162,14 @@ class base
 
 		$dbDriver = new db_driver();
 
-		$sql = "INSERT INTO car_photos (cp_car_id, cp_path, cp_user_id)
-			VALUES (
-				?,
-				?,
-				?
+		$sql = "INSERT INTO car_photos (cp_car_id, cp_filename, cp_path, cp_user_id)
+      VALUES (
+         ?,
+         ?,
+          ?,
+         ?
 
-			)";
+      )";
 
 		$stmt = $dbDriver->dbCon->prepare($sql);
 		$stmt->execute([$inserted_car_id, $path, $_SESSION['user'][0]['expo_users_ID']]);
@@ -929,15 +1178,17 @@ class base
 	public function insertCarDocument($path, $inserted_car_id)
 	{
 
+
 		$dbDriver = new db_driver();
 
-		$sql = "INSERT INTO car_documents (cd_car_id, cd_path, cd_user_id)
-			VALUES (
-				?,
-				?,
-				?
+		$sql = "INSERT INTO car_documents (cd_car_id, cd_filename, cd_path, cd_user_id)
+      VALUES (
+         ?,
+         ?,
+          ?,
+         ?
 
-			)";
+      )";
 
 		$stmt = $dbDriver->dbCon->prepare($sql);
 		$stmt->execute([$inserted_car_id, $path, $_SESSION['user'][0]['expo_users_ID']]);
