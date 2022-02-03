@@ -784,7 +784,7 @@ class base
 			conv2.conversion_name as transmission_name, cd.cd_first_registration_date,
 			cd.cd_kilometers, cd.cd_first_nl_registration,
 			cd.cd_vin,cd.cd_status, conv3.conversion_name as color_name,
-			conv4.conversion_name as door_number, cd.cd_source_supplier as dealer_name,
+			conv4.conversion_name as wheel_drive, cd.cd_source_supplier as dealer_name,
 			cd.cd_nl_registration_number
 			FROM
 			  cars c

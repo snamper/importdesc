@@ -69,12 +69,12 @@
 
             </div>
             <div class="row str " style="align-items: center; margin-bottom:1px;">
-                <div class="col-sm-2">Doors</div>
+                <div class="col-sm-2">Wheel drive</div>
                 <div class="col-sm-4">
-                    <select class="form-control" data-name="door_number" name="doors_number" id="doorNumber">
+                    <select class="form-control" data-name="wheel_drive" name="doors_number" id="doorNumber">
                         <option value="">-</option>
                         <?php
-                        foreach ($data['car_doors'] as $car_doors_type) {
+                        foreach ($data['wheel_drive'] as $car_doors_type) {
                             echo "<option value='$car_doors_type[conversie_tabel_ID]'> $car_doors_type[conversie_naam]</option>";
                         }
                         ?>
