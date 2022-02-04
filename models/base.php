@@ -51,13 +51,15 @@ class base
 
 	public function getAllCarMakes() {
 
-		// $dbDriver = new db_driver();
-		// $query = "SELECT * FROM car_make";
-		// $stmt = $dbDriver->dbCon->prepare($query);
-		// $stmt->execute([]);
-		// $result = $stmt->fetch(PDO::FETCH_ASSOC);
+		$dbDriver = new db_driver();
 
-		// return $result;
+		$sql = "SELECT * FROM car_makes";
+
+		$stmt = $dbDriver->dbCon->prepare($sql);
+		$stmt->execute([]);
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		return $result;
 
 	}
 
@@ -997,8 +999,8 @@ class base
 	{
 		$dbDriver = new db_driver();
 		$query = "SELECT c.created_at,
-		   c.car_id, c.car_model, cd.cd_car_ref_custom, cm.cmake_name, cmod.cmodel_name,
-		   cmu.cmu_name, cmotor.cmotor_name, cv.conversion_name,
+		   c.car_id, c.car_model, cd.cd_car_ref_custom, cm.cmake_id, cm.cmake_name, cmod.cmodel_name,
+		   cmu.cmu_id, cmu.cmu_name, cmotor.cmotor_id, cmotor.cmotor_name, cv.conversion_name as fuel_name, cv.conversion_id as fuel_id,
 		   conv2.conversion_id as transmission_name, cd.cd_first_registration_date,
 		   cd.cd_kilometers, cd.cd_first_nl_registration,
 		   cd.cd_vin,cd.cd_status, cd.cd_komm_number, cd.cd_advert_link,
@@ -1011,7 +1013,12 @@ class base
 				cd.cd_first_name_nl_registration,cd.cd_navigation,cd.cd_keyless_entry,cd.cd_app_connect,
 				cd.cd_airco,cd.cd_roof,cd.cd_wheels,cd.cd_headlights,cd.cd_pdc,cd.cd_cockpit,cd.cd_camera,
 				cd.cd_cruise_control,cd.cd_tow_bar,cd.cd_sport_seats,cd.cd_sport_package,cd.cd_seats_electric,
-				cd.cd_seat_heating,cd.cd_seat_massage,cd.cd_optics,cd.cd_tinted_windows,cd.cd_options,cd.cd_notes,c.car_body_style			
+				cd.cd_seat_heating,cd.cd_seat_massage,cd.cd_optics,cd.cd_tinted_windows,cd.cd_options,cd.cd_notes,c.car_body_style,
+				calc.purchase_price_netto, calc.fee_intermediate_supplier,calc.total_purchase_price_netto,
+				calc.costs_damage_and_repair, calc.transport_international,	calc.transport_national,
+				calc.costs_taxation_bpm, calc.fee_gwi, calc.total_costs_and_fee, calc.sales_price_netto,
+				calc.vat_btw, calc.sales_price_incl_vat_btw, calc.rest_bpm, calc.fees, calc.sales_price_total
+
 		   FROM
 			 cars c
 		   INNER JOIN car_details cd on c.car_id = cd.cd_car_id 
@@ -1022,7 +1029,8 @@ class base
 		   INNER JOIN conversions conv2 on cd.cd_transmission = conv2.conversion_id
 		   INNER JOIN conversions conv3 on cd.cd_color = conv3.conversion_id
 		   INNER JOIN car_make_uitvoerings cmu on c.car_variant  = cmu.cmu_id
-				INNER JOIN conversions conv4 on cd.cd_wheel_drive = conv4.conversion_id
+			INNER JOIN conversions conv4 on cd.cd_wheel_drive = conv4.conversion_id
+			INNER JOIN calculations calc on c.car_id = calc.calculation_for_car_id
 		   WHERE c.car_id = ?
 		   ";
 
@@ -1206,8 +1214,6 @@ class base
 		$stmt = $dbDriver->dbCon->prepare($sql);
 		$stmt->execute([$inserted_car_id, $path, $_SESSION['user'][0]['expo_users_ID']]);
 	}
-
-
 
 	public function getCarInfo($car_id)
 	{

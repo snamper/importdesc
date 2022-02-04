@@ -224,9 +224,9 @@
                         <div class="col-12 col-md-8">
                             <select name="car_vehicle_type" id="SoortVoertuig" class="form-control">
                                 <option value="0">-</option>
-                                <option <?php echo (!is_null($data['single_car']['car_vehicle_type']) && $data['single_car']['car_vehicle_type'] == 1  ? "selected" : "") ?> value="1">Passenger car</option>
-                                <option <?php echo (!is_null($data['single_car']['car_vehicle_type']) && $data['single_car']['car_vehicle_type'] == 2  ? "selected" : "") ?> value="2">Company car max. 3500kg</option>
-                                <option <?php echo (!is_null($data['single_car']['car_vehicle_type']) && $data['single_car']['car_vehicle_type'] == 3  ? "selected" : "") ?> value="3">Camper</option>
+                                <option <?php echo (!is_null($data['single_car']['car_vehicle_type']) && $data['single_car']['car_vehicle_type'] == 1  ? "selected" : 0) ?> value="1">Passenger car</option>
+                                <option <?php echo (!is_null($data['single_car']['car_vehicle_type']) && $data['single_car']['car_vehicle_type'] == 2  ? "selected" : 0) ?> value="2">Company car max. 3500kg</option>
+                                <option <?php echo (!is_null($data['single_car']['car_vehicle_type']) && $data['single_car']['car_vehicle_type'] == 3  ? "selected" : 0) ?> value="3">Camper</option>
                             </select>
                         </div>
                     </div>
@@ -235,13 +235,14 @@
                         <div class="col-12 col-md-4">
                             <span>Make* </span>
                         </div>
+
                         <div class="col-12 col-md-8">
                             <select required class="form-control" id="carMake" name="car_make">
-                                <option value="">-</option>
+                                <option value="0">-</option>
                                 <?php
-                                    // if(isset($_GET['car_id'])) {
-                                    //     echo "<option selected value='{$data['single_car']['car_model']}'> {$data['single_car']['cmodel_name']}</option>";   
-                                    //} ?>  
+                                if (isset($_GET['car_id'])) {
+                                    echo "<option selected value='{$data['single_car']['cmake_id']}'> {$data['single_car']['cmake_name']}</option>";
+                                } ?>
                             </select>
                         </div>
                     </div>
@@ -253,10 +254,11 @@
                             <div class="row">
                                 <div class="col-6 pr-0">
                                     <select required class="form-control" name="car_model" id="carModel">
+                                        <option value="0"> - </option>
                                         <?php
-                                        if(isset($_GET['car_id'])) {
-                                            echo "<option selected value='{$data['single_car']['car_model']}'> {$data['single_car']['cmodel_name']}</option>";   
-                                        } ?>    
+                                        if (isset($_GET['car_id'])) {
+                                            echo "<option selected value='{$data['single_car']['car_model']}'> {$data['single_car']['cmodel_name']}</option>";
+                                        } ?>
                                     </select>
                                 </div>
                                 <div class="col-6 pl-0">
@@ -275,8 +277,14 @@
                         <div class="col-12 col-md-8">
                             <div class="row">
                                 <div class="col-6 pr-0">
+
                                     <select class="form-control" name="car_variant" id="carUitvoering">
                                         <option value="">-</option>
+                                        <?php
+                                        if (isset($_GET['car_id'])) {
+                                            echo "<option selected value='{$data['single_car']['cmu_id']}'> {$data['single_car']['cmu_name']}</option>";
+                                        } ?>
+
                                     </select>
                                 </div>
 
@@ -314,10 +322,10 @@
                         <div class="col-12 col-md-8">
                             <select required class="form-control js-car-fuel" name="car_fuel" id="BPMbrandstof">
                                 <option value="">-</option>
-                                <?php foreach ($data['fuel'] as $opt_value) {
-                                    echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
-                                }
-                                ?>
+                                <?php if (isset($_GET['car_id'])) {
+                                    echo "<option selected value='{$data['single_car']['fuel_id']}'> {$data['single_car']['fuel_name']}</option>";
+                                } ?>
+
                             </select>
                         </div>
                     </div>
@@ -329,8 +337,13 @@
                         <div class="col-12 col-md-8">
                             <div class="row">
                                 <div class="col-6 pr-0">
+                                    
                                     <select required class="form-control js-car-motor" name="motor" id="carMotor">
                                         <option value="">-</option>
+                                        <?php if (isset($_GET['car_id'])) {
+                                    echo "<option selected value='{$data['single_car']['cmotor_id']}'> {$data['single_car']['cmotor_name']}</option>";
+                                } ?>
+
                                     </select>
                                 </div>
                                 <div class="col-6 pl-0">
@@ -423,7 +436,7 @@
                             <span>Kilometers </span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="number" name="kilometers" placeholder="" value="<?php echo (isset($data['single_car']['cd_kilometers']) ? $data['single_car']['cd_kilometers']  : "") ?>">
+                            <input class="form-control" type="number" name="kilometers" placeholder="" value="<?php echo (isset($data['single_car']['cd_kilometers']) ? $data['single_car']['cd_kilometers']  : 0) ?>">
                         </div>
                     </div>
 
@@ -555,7 +568,7 @@
                                         Purchase Price netto (ex/ex)
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control js-calc-input" id="inkoopprijs_ex_ex" name="purchase_price_netto" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" id="inkoopprijs_ex_ex" value="<?php echo (!is_null($data['single_car']['purchase_price_netto']) ?  $data['single_car']['purchase_price_netto'] : '') ?> " name="purchase_price_netto" placeholder="">
                                     </div>
                                 </div>
 

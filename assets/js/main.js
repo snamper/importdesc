@@ -257,71 +257,53 @@ var timeout = 1000;
 
 // });
 
-$(document).ready(function () {
-    var carvalue = 1; // car
-    const carMake = document.getElementById('carMake');
 
-    if (!carMake) {
-        return;
-    }
+// $('#carMake').change(function () {
+//     var carvalue = $(this).val();
+//     const firstOptionHTML = "<option value='0'> - </option>";
+//     const carModel = document.getElementById('carModel');
 
-    if (carvalue > 0) {
-        $.ajax({
-            url: 'create_car',
-            type: "POST",
-            data: 'carTypeSelect=' + carvalue,
-            success: function (data) {
-                const firstOptionHTML = "<option value='0'> - </option>";
-                const queryString = window.location.search;
-                const parameters = new URLSearchParams(queryString);
-                const queryGetCarId = parameters.get('car_id');
-                if (!queryGetCarId) {
-                    document.getElementById('carMake').innerHTML = firstOptionHTML + data;
-                    $('#carMake').change();
-                }
+//     if (!carModel) {
+//         return;
+//     }
 
+//     const queryString = window.location.search;
+//     const parameters = new URLSearchParams(queryString);
+//     const value = parameters.get('car_id');
 
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(errorThrown);
-            }
-        })
+//     if (carvalue > 0) {
+//         $.ajax({
+//             url: 'marge',
+//             type: "POST",
+//             data: 'carMakeSelect=' + carvalue,
+//             success: function (data) {
+//                 carModel.innerHTML = firstOptionHTML + data;
+//                 $('#carModel').change();
+//             },
+//             error: function (XMLHttpRequest, textStatus, errorThrown) {
+//                 alert("some error");
+//             }
+//         })
+//     } else {
+//         $.ajax({
+//             url: 'car_start',
+//             type: "GET",
+//             data: 'all_car_makes=' + carvalue,
+//             success: function (data) {
+//                 $('#carMake').innerHTML = firstOptionHTML + data;
+//                 // $('#carModel').change();
+//             },
+//             error: function (XMLHttpRequest, textStatus, errorThrown) {
+//                 alert("some error");
+//             }
+//         })
 
-    }
+       
+//     }
 
-});
-
-
-$('#carMake').change(function () {
-    var carvalue = $(this).val();
-    const firstOptionHTML = "<option value='0'> - </option>";
-    const carModel = document.getElementById('carModel');
-
-    if (!carModel) {
-        return;
-    }
-
-    if (carvalue > 0) {
-
-        $.ajax({
-            url: 'marge',
-            type: "POST",
-            data: 'carMakeSelect=' + carvalue,
-            success: function (data) {
-                carModel.innerHTML = firstOptionHTML + data;
-                $('#carModel').change();
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("some error");
-            }
-        })
-    } else {
-        document.getElementById('carModel').innerHTML = firstOptionHTML;
-    }
-
-    if (carvalue == 0) $('#carMakeInput').val('');
-    else $('#carMakeInput').val($(this).find('option:selected').text());
-});
+//     // if (carvalue == 0) $('#carMakeInput').val('');
+//     // else $('#carMakeInput').val($(this).find('option:selected').text());
+// });
 // $('#carMake_dip').change(function(){
 //      var carvalue = $(this).val();
 
@@ -1213,6 +1195,7 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
 
 // });
 
+
 ; (function (window, document) {
 
     const carMake = document.querySelector('#carMake');
@@ -1220,12 +1203,43 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
     if (!carMake) {
         return;
     }
+    
+
+    const queryString = window.location.search;
+    const parameters = new URLSearchParams(queryString);
+    const value = parameters.get('car_id');
+
+    if(!value) {
+
+        window.addEventListener('DOMContentLoaded', (event) => {
+            carMake.value = 0;
+            carMake.dispatchEvent(new Event('change'));
+        });    
+    }
 
     const carMotor = document.querySelector('.js-car-motor');
     const carFuel = document.querySelector('.js-car-fuel');
 
 
     carMake.addEventListener("change", (e) => {
+        const trigger = e.currentTarget;
+        
+        if(trigger.value == 0) { // If not choosen car make
+            const fetchAllMakes = `${location.origin}/car_start?all_car_makes=0`;
+            fetch(fetchAllMakes)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (response) {
+                console.log(response);
+                fillSelectFromJson("#carMake", response, "cmake_name", "cmake_id");
+            })
+            .catch((error) => {
+                console.log(error);
+                return;
+            });
+
+        }
 
         //FETCH MOTORS 
         const urlFetchMotors = `${location.origin}/create_make_new?make_id_get_motors=${e.currentTarget.value}`;
@@ -1495,13 +1509,13 @@ imageUpload.change((e) => {
 
         if(!vatMargeCheckedEl.checked) {
             const salesPriceVat = minusValues(totalElVal, "#addLeges");
-            const salesPriceNetto = salesPriceVat / 1.21;
+            const salesPriceNetto = (salesPriceVat / 1.21).toFixed(2);
             const totalPurchasePriceNetto = minusValues(salesPriceNetto, "#totalCostsFee");
             doc.querySelector("#addVerkoopprijs_Marge_incl").value = salesPriceVat;
             doc.querySelector("#totalPriceFee").value = salesPriceNetto;
             doc.querySelector("#totalPriceNettoSuppluier").value = totalPurchasePriceNetto;
             doc.querySelector("#inkoopprijs_ex_ex").value = minusValues(totalPurchasePriceNetto, "#addAfleverkosten");
-            doc.querySelector("#addBTW_21").value = salesPriceVat - salesPriceNetto; 
+            doc.querySelector("#addBTW_21").value = (salesPriceVat - salesPriceNetto).toFixed(2); 
 
         }else {
             
@@ -1524,9 +1538,9 @@ imageUpload.change((e) => {
         doc.querySelector("#totalCostsFee").value = sumValues("#addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee");
         doc.querySelector("#totalPriceFee").value = sumValues("#totalPriceNettoSuppluier, #totalCostsFee");
         if(doc.querySelector("#switchBTW").checked) {
-            vatEl.value = sumValues("#addAfleverkosten, #addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee") * 0.21;
+            vatEl.value = (sumValues("#addAfleverkosten, #addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee") * 0.21).toFixed(2);
         }else {
-            vatEl.value = sumValues("#totalPriceFee") * 0.21;
+            vatEl.value = (sumValues("#totalPriceFee") * 0.21).toFixed(2);
         }
        
         doc.querySelector("#addVerkoopprijs_Marge_incl").value = sumValues("#totalPriceFee, #addBTW_21");
@@ -1537,9 +1551,9 @@ imageUpload.change((e) => {
         const vatEl = doc.querySelector("#addBTW_21");
         const trigger = e.currentTarget;
         if(trigger.checked) {
-                vatEl.value = sumValues("#addAfleverkosten, #addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee") * 0.21;
+                vatEl.value = (sumValues("#addAfleverkosten, #addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee") * 0.21).toFixed(2);
             }else {
-                vatEl.value = sumValues("#totalPriceFee") * 0.21;
+                vatEl.value = (sumValues("#totalPriceFee") * 0.21).toFixed(2);
             }
 
             calcValues();
@@ -1567,7 +1581,6 @@ imageUpload.change((e) => {
 
         for (let el of elementSelectors) {
             let element = doc.querySelector(`${el}`);
-            console.log(sum);
             if (!isNaN(element.value) && element.value != "") {
                 sum -= parseFloat(element.value);
             }

@@ -30,8 +30,7 @@
                 <!-- <li><a href="carform"><i class="ti-plus"></i><span>Auto aanmaken</span></a></li> -->
                 <!-- <li><a href="create_car"><i class="ti-plus"></i><span>Create car</span></a></li> -->
                 <li><a href="car_start"><i class="ti-plus"></i><span>Car start</span></a></li>
-                <!--                             
-                            <li><a href="show_cars"><i class="ti-plus"></i><span>Show cars</span></a></li> -->
+               <li><a href="show_cars"><i class="ti-plus"></i><span>Show cars</span></a></li>
                 <li><a href="calculation"><i class="ti-plus"></i><span>Calculation</span></a></li>
                 <li><a href="show_calculations"><i class="ti-plus"></i><span>Show Calculations</span></a></li>
                 <!--<li><a href="marge"><i class="ti-plus"></i><span>Prijs berekening Marge</span></a></li>

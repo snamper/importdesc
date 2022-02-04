@@ -34,14 +34,17 @@ class car_start extends view
 		 * @param mixed $conversion_page - DEFAULT NULL
 		 */
 
+		
 		$selects_conversions = $this->base->getConversions(NULL, "create_edit_car");
 		if (isset($_GET['car_id'])) {
-			$single_car = $this->base->getSingleCar($_GET['car_id']);
-			$this->setData("single_car", $single_car);
-		
+			$single_car = $this->base->getSingleCar($_GET['car_id']);	
 			$images = $this->base->getCarImages($_GET['car_id']);
 			$documents = $this->base->getCarDocuments($_GET['car_id']);
+			$this->setData("single_car", $single_car);
+			
 		} else {
+			$all_car_makes = $this->base->getAllCarMakes();
+			$this->setData("all_car_makes", $all_car_makes);
 			$images = [];
 			$documents = [];
 		}
@@ -72,7 +75,17 @@ class car_start extends view
 
 				$this->createCarUploads($_FILES['upload_document'], $inserted_car_id, "uploads/documents");
 			}
+
+			header("Location: /car_start?car_id=$inserted_car_id");
+			exit;
 		}
+
+		if (isset($_GET['all_car_makes'])) {
+			$car_makes = $this->base->getAllCarMakes();
+			echo json_encode($car_makes);
+			exit;
+		}
+
 
 
 		if (isset($_SESSION['user'])) parent::__construct('click_model_view.php');
