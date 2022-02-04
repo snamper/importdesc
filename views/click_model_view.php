@@ -1,4 +1,10 @@
-<?php $data['single_car'] = $data['single_car'][0]; ?>
+<?php $data['single_car'] = $data['single_car'][0];
+// echo '<pre>';
+// var_dump($data['single_car']);
+// echo '</pre>';
+// exit;
+
+?>
 <div class="content" id="createEditCarPage">
     <div class="col-xs-12 table-list">
         <form action="car_start" enctype="multipart/form-data" method="POST" class="listing__form">
@@ -232,6 +238,10 @@
                         <div class="col-12 col-md-8">
                             <select required class="form-control" id="carMake" name="car_make">
                                 <option value="">-</option>
+                                <?php
+                                    // if(isset($_GET['car_id'])) {
+                                    //     echo "<option selected value='{$data['single_car']['car_model']}'> {$data['single_car']['cmodel_name']}</option>";   
+                                    //} ?>  
                             </select>
                         </div>
                     </div>
@@ -245,7 +255,7 @@
                                     <select required class="form-control" name="car_model" id="carModel">
                                         <?php
                                         if(isset($_GET['car_id'])) {
-                                            echo "<option selected value='{$data['car_model']}'> {$data['cmake_name']}</option>";   
+                                            echo "<option selected value='{$data['single_car']['car_model']}'> {$data['single_car']['cmodel_name']}</option>";   
                                         } ?>    
                                     </select>
                                 </div>
@@ -527,7 +537,7 @@
                                                     <label for="switchPrice"></label>
                                                 </div> -->
                                     <div class="col-9">
-                                        BTW/MARGE
+                                        VAT/MARGE
                                     </div>
                                     <div class="col-3">
                                         <div class="switcher" style="padding-bottom: 5px;">
@@ -545,7 +555,7 @@
                                         Purchase Price netto (ex/ex)
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control js-calc-changer" id="inkoopprijs_ex_ex" name="purchase_price_netto" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" id="inkoopprijs_ex_ex" name="purchase_price_netto" placeholder="">
                                     </div>
                                 </div>
 
@@ -554,7 +564,7 @@
                                         Fee Intermediate Supplier
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control js-calc-changer" id="addAfleverkosten" name="fee_intermediate_supplier" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" id="addAfleverkosten" name="fee_intermediate_supplier" placeholder="">
                                     </div>
                                 </div>
 
@@ -563,14 +573,14 @@
                                         Total Purchase Price netto
                                     </div>
                                     <div class="col-12">
-                                        <input class="form-control js-calc-changer" readonly type="text" name="total_purchase_price_netto" id="totalPriceNettoSuppluier">
+                                        <input class="form-control js-calc-input" readonly type="text" name="total_purchase_price_netto" id="totalPriceNettoSuppluier">
                                     </div>
                                 </div>
 
                                 <div class="row str">
                                     <div class="col-12">
                                         Costs of Damages and Repair
-                                        <input type="text" class="form-control js-calc-changer" id="addOpknapkosten" name="costs_damage_and_repair" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" id="addOpknapkosten" name="costs_damage_and_repair" placeholder="">
                                     </div>
                                 </div>
 
@@ -579,7 +589,7 @@
                                         Transport International
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control js-calc-changer" id="addTransport_Buitenland" name="transport_international" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" id="addTransport_Buitenland" name="transport_international" placeholder="">
                                     </div>
                                 </div>
 
@@ -588,7 +598,7 @@
                                         Transport National
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control js-calc-changer" id="addTransport_Binnenland" name="transport_national" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" id="addTransport_Binnenland" name="transport_national" placeholder="">
                                     </div>
                                 </div>
 
@@ -597,7 +607,7 @@
                                         Costs of Taxation for BPM
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control js-calc-changer" id="costTaxation" name="cost_taxation" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" id="costTaxation" name="cost_taxation" placeholder="">
 
                                     </div>
                                 </div>
@@ -607,7 +617,7 @@
                                         Fee GWI
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control js-calc-changer" id="addFee" name="fee_gwi" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" id="addFee" name="fee_gwi" placeholder="">
 
                                     </div>
                                 </div>
@@ -649,7 +659,7 @@
                                         Rest BPM (indication)
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control js-calc-changer" id="addRest_BPM" name="rest_bpm" placeholder="Rest BPM Indicatief">
+                                        <input type="text" class="form-control js-calc-input" id="addRest_BPM" name="rest_bpm" placeholder="Rest BPM Indicatief">
 
                                     </div>
                                 </div>
@@ -658,7 +668,7 @@
                                         Leges (VAT / BTW free)
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control js-calc-changer" id="addLeges" name="add_leges" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" id="addLeges" name="add_leges" placeholder="">
                                     </div>
                                 </div>
                                 <div class="row str">
@@ -666,7 +676,7 @@
                                         Sales Price Total (in/in)
                                     </div>
                                     <div class="col-12">
-                                        <input readonly class="form-control" type="text" name="sales_price_total" id="totalAll">
+                                        <input class="form-control js-calc-from-total" type="text" name="sales_price_total" id="totalAll">
                                     </div>
                                 </div>
                             </div>

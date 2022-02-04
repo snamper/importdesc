@@ -274,13 +274,13 @@ $(document).ready(function () {
                 const firstOptionHTML = "<option value='0'> - </option>";
                 const queryString = window.location.search;
                 const parameters = new URLSearchParams(queryString);
-                const value = parameters.get('car_id');
-                if(!value) {
-                    // document.getElementById('carMake').innerHTML = firstOptionHTML + data;
-                    // $('#carMake').change();
+                const queryGetCarId = parameters.get('car_id');
+                if (!queryGetCarId) {
+                    document.getElementById('carMake').innerHTML = firstOptionHTML + data;
+                    $('#carMake').change();
                 }
-                
-              
+
+
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(errorThrown);
@@ -1474,24 +1474,76 @@ imageUpload.change((e) => {
 });
 
 ; (function (window, doc) {
-    const calculationChangers = doc.querySelectorAll(".js-calc-changer");
+    const calculationChangers = doc.querySelectorAll(".js-calc-input");
 
     if (!calculationChangers) {
         return;
     }
 
+    const calcFromTotal = doc.querySelector(".js-calc-from-total");
+    const vatMargeCheckedEl = doc.querySelector("#switchBTW");
+    
+    vatMargeCheckedEl.addEventListener("change", changeVatFn);
+    calcFromTotal.addEventListener("change", calcFromTotalFn);
+
     for (let changer of calculationChangers) {
         changer.addEventListener("change", calcValues);
     }
 
+    function calcFromTotalFn() {
+        const totalElVal = parseFloat(doc.querySelector("#totalAll").value);  
+
+        if(!vatMargeCheckedEl.checked) {
+            const salesPriceVat = minusValues(totalElVal, "#addLeges");
+            const salesPriceNetto = salesPriceVat / 1.21;
+            const totalPurchasePriceNetto = minusValues(salesPriceNetto, "#totalCostsFee");
+            doc.querySelector("#addVerkoopprijs_Marge_incl").value = salesPriceVat;
+            doc.querySelector("#totalPriceFee").value = salesPriceNetto;
+            doc.querySelector("#totalPriceNettoSuppluier").value = totalPurchasePriceNetto;
+            doc.querySelector("#inkoopprijs_ex_ex").value = minusValues(totalPurchasePriceNetto, "#addAfleverkosten");
+            doc.querySelector("#addBTW_21").value = salesPriceVat - salesPriceNetto; 
+
+        }else {
+            
+            const salesPriceVatBtw = minusValues(totalElVal, "#addLeges");
+            const salesPriceNeto = minusValues(salesPriceVatBtw, "#addBTW_21");
+            const totalPurchasePriceNetto = minusValues(salesPriceNeto, "#totalCostsFee");
+            doc.querySelector("#addVerkoopprijs_Marge_incl").value = salesPriceVatBtw;
+            doc.querySelector("#totalPriceFee").value = salesPriceNeto;
+            doc.querySelector("#totalPriceNettoSuppluier").value = totalPurchasePriceNetto;
+            doc.querySelector("#inkoopprijs_ex_ex").value = minusValues(totalPurchasePriceNetto, "#addAfleverkosten");
+        }
+        
+        
+    }
+
     function calcValues() {
+        const vatEl = doc.querySelector("#addBTW_21");
         doc.querySelector("#totalPriceNettoSuppluier").value = sumValues("#inkoopprijs_ex_ex, #addAfleverkosten");
         doc.querySelector("#totalPriceNettoSuppluier").value = sumValues("#inkoopprijs_ex_ex, #addAfleverkosten");
         doc.querySelector("#totalCostsFee").value = sumValues("#addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee");
         doc.querySelector("#totalPriceFee").value = sumValues("#totalPriceNettoSuppluier, #totalCostsFee");
-        doc.querySelector("#addBTW_21").value = sumValues("#totalPriceFee") * 0.21;
+        if(doc.querySelector("#switchBTW").checked) {
+            vatEl.value = sumValues("#addAfleverkosten, #addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee") * 0.21;
+        }else {
+            vatEl.value = sumValues("#totalPriceFee") * 0.21;
+        }
+       
         doc.querySelector("#addVerkoopprijs_Marge_incl").value = sumValues("#totalPriceFee, #addBTW_21");
         doc.querySelector("#totalAll").value = sumValues("#addVerkoopprijs_Marge_incl, #addRest_BPM, #addLeges");
+    }
+
+    function changeVatFn(e) {
+        const vatEl = doc.querySelector("#addBTW_21");
+        const trigger = e.currentTarget;
+        if(trigger.checked) {
+                vatEl.value = sumValues("#addAfleverkosten, #addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee") * 0.21;
+            }else {
+                vatEl.value = sumValues("#totalPriceFee") * 0.21;
+            }
+
+            calcValues();
+        
     }
 
     function sumValues(selectors) {
@@ -1500,13 +1552,29 @@ imageUpload.change((e) => {
 
         for (let el of elementSelectors) {
             let element = doc.querySelector(`${el}`);
-            console.log(element.value);
             if (!isNaN(element.value) && element.value != "") {
                 sum += parseFloat(element.value);
             }
         }
 
         return sum.toFixed(2);
+    }
+
+
+    function minusValues(sum, selectors) {
+
+        const elementSelectors = selectors.split(",");
+
+        for (let el of elementSelectors) {
+            let element = doc.querySelector(`${el}`);
+            console.log(sum);
+            if (!isNaN(element.value) && element.value != "") {
+                sum -= parseFloat(element.value);
+            }
+        }
+
+        return sum.toFixed(2);
+
     }
 
 })(window, document);
