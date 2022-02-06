@@ -86,8 +86,7 @@
     white-space: normal;
 }
 
-.upload-photo,
-.upload-document {
+.upload-file {
     display: inline-flex;
     width: 100%;
     height: 30px;
@@ -98,8 +97,13 @@
     background: white;
     position: relative;
 }
-.upload-photo input[type="file"],
-.upload-document input[type="file"] {
+
+.upload-file.highlighted {
+    transform: scale(1.2);
+    border: 1.5px dashed;
+}
+
+.upload-file input[type="file"] {
     position: absolute;
     width: 100%;
     height: 100%;

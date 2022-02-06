@@ -298,7 +298,7 @@ var timeout = 1000;
 //             }
 //         })
 
-       
+
 //     }
 
 //     // if (carvalue == 0) $('#carMakeInput').val('');
@@ -1203,18 +1203,18 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
     if (!carMake) {
         return;
     }
-    
+
 
     const queryString = window.location.search;
     const parameters = new URLSearchParams(queryString);
     const value = parameters.get('car_id');
 
-    if(!value) {
+    if (!value) {
 
         window.addEventListener('DOMContentLoaded', (event) => {
             carMake.value = 0;
             carMake.dispatchEvent(new Event('change'));
-        });    
+        });
     }
 
     const carMotor = document.querySelector('.js-car-motor');
@@ -1223,21 +1223,21 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
 
     carMake.addEventListener("change", (e) => {
         const trigger = e.currentTarget;
-        
-        if(trigger.value == 0) { // If not choosen car make
+
+        if (trigger.value == 0) { // If not choosen car make
             const fetchAllMakes = `${location.origin}/car_start?all_car_makes=0`;
             fetch(fetchAllMakes)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (response) {
-                console.log(response);
-                fillSelectFromJson("#carMake", response, "cmake_name", "cmake_id");
-            })
-            .catch((error) => {
-                console.log(error);
-                return;
-            });
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (response) {
+                    // console.log(response);
+                    fillSelectFromJson("#carMake", response, "cmake_name", "cmake_id");
+                })
+                .catch((error) => {
+                    console.log(error);
+                    return;
+                });
 
         }
 
@@ -1465,27 +1465,178 @@ $(document).ready(function () {
     }, 500));
 });
 
-const imageUpload = $('.upload-photo input[type="file"]');
-imageUpload.change((e) => {
-    var files = $(imageUpload)[0].files;
+; (function (window, doc) {
+    const uploadElements = document.querySelectorAll('.js-upload input[type="file"]');
 
-    if (files.length > 0) {
-        const allowed = ['image/jpeg', 'image/png'];
-        $(files).each((index, value) => {
-            if (value.size > 5000000) {
-                alert(`File '${value.name}' above 5MB`);
-                files[index] = null;
-            }
-            else if (!allowed.includes(value.type)) {
-                alert(`File '${value.name}' not a jpeg/png image`);
-                files[index] = 0;
-            }
-            else {
-                // $('#uploadedFiles').html($('#uploadedFiles').html() + value.name + '&#13;&#10;');
-            }
-        });
+    if (!uploadElements) {
+        return;
     }
-});
+
+    for (let el of uploadElements) {
+        el.addEventListener("change", uploadFileFn);
+        el.addEventListener("dragenter", highlightUploadFile);
+        el.addEventListener("drop", stopHighlightUploadFile);
+        el.addEventListener("dragleave", stopHighlightUploadFile);
+
+    }
+
+    async function uploadFileFn(e) {
+        const trigger = e.currentTarget;
+        let files = [];
+        let allowedFormats = [];
+        let allowedSizeMb = 0;
+        let allowedSizeBytes = 0;
+        const formData = new FormData();
+
+        if (trigger.files) {
+            files = trigger.files;
+        }
+
+        //Allowed files depends on file or image
+        if (trigger.id == "uploadCarImage") {           
+            formData.append("allowed", "image");
+            allowedFormats = ['image/jpeg', 'image/png'];
+            allowedSizeMb = 5;
+        } else { // If document 
+            formData.append("allowed", "documents");
+            allowedFormats = ["application/pdf", "application/vnd.oasis.opendocument.text"]
+            allowedSizeMb = 10;
+        }
+
+        allowedSizeBytes = allowedSizeMb * 1048576; // 1048576 = 1MB
+
+        for (let file of files) {
+            //Check allowed size 
+            if (file.size > allowedSizeBytes) {
+                alert(`There is a file that is bigger then allowed ${allowedSizeMb}MB`);
+                trigger.value = "";
+                return;
+            }
+
+            if (!allowedFormats.includes(file.type)) {
+                const stringFromFormats = allowedFormats.join();
+                alert(`There is a file type that is not allowed ${stringFromFormats}`);
+                trigger.value = "";
+                return;
+            }
+
+            const d = new Date();
+            let timeStamp = d.getTime();
+            let fileName = `${file.name}_${timeStamp}`;
+            formData.append(fileName, file);
+        }
+
+        $.ajax({
+            url: `${location.origin}/car_start`,
+            type: 'post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response){
+                let type = "";
+                if(allowedFormats.includes("application/pdf")) {
+                    type = "files";
+                }else {
+                    type = "photos";
+                }
+                displayUploadedFiles(JSON.parse(response), type);
+            },
+        });
+
+        // // Make a POST request
+        // fetch(`${location.origin}/car_start`, {
+        //     method: 'POST',
+        //     data: formData,
+        //     contentType: false,
+        //     processData: false
+        // }).then(function (response) {
+        //     if (response.ok) {
+        //         console.log(response);
+        //         return response.json();
+        //     }
+        //     return Promise.reject(response);
+        // }).then(function (data) {
+        //     console.log(data);
+        // }).catch(function (error) {
+        //     console.warn('Something went wrong.', error);
+        // });
+
+    }
+
+    function highlightUploadFile(e) {
+
+        const trigger = e.currentTarget;
+        const uploadFileContainer = trigger.closest(".upload-file");
+        uploadFileContainer.classList.add("highlighted");
+    }
+
+    function stopHighlightUploadFile(e) {
+        const trigger = e.currentTarget;
+        const uploadFileContainer = trigger.closest(".upload-file");
+        uploadFileContainer.classList.remove("highlighted");
+    }
+
+    function displayUploadedFiles(response, type) {
+        const createEditCarForm = document.querySelector("#createEditCarForm");
+        if(type == "files") {
+            const documentsContainer = document.querySelector(".show-documents");
+
+            for(let key in response) {
+                let documentElement = Object.assign(
+                    document.createElement("a"), {
+                    "href": response[key],
+                    "innerText": response[key]
+                });
+
+                let hiddenInput = Object.assign(
+                    document.createElement("input"), {
+                    "type": "hidden",
+                    "name": "car_documents[]",
+                    "value": response[key]
+                });
+                documentsContainer.appendChild(documentElement);
+                createEditCarForm.appendChild(hiddenInput);
+            }
+
+
+        }else { // IF IMAGES 
+            const recentImages = document.querySelectorAll(".recent-images-col [data-noimage]");
+            for(let key in response) {
+
+                if(recentImages[key]) {
+                    recentImages[key].setAttribute("src", response[key]);
+                    recentImages[key].removeAttribute("data-noimage");
+                }else {
+                    let column = Object.assign(
+                        document.createElement("div"), {
+                        "classList": "col col-md-3 car-image-col",
+                    });
+
+                    let img = Object.assign(
+                        document.createElement("img"), {
+                        "src": response[key],
+                    });
+                    
+                    column.appendChild(img);                
+                    document.querySelector(".car-images-row").appendChild(column);
+                    console.log(hiddenInput);
+                   
+                } 
+
+                let hiddenInput = Object.assign(
+                    document.createElement("input"), {
+                    "type": "hidden",
+                    "name": "car_images[]",
+                    "value": response[key]
+                });     
+
+                createEditCarForm.appendChild(hiddenInput);
+                
+            }
+        }
+    }
+
+})(window, document);
 
 ; (function (window, doc) {
     const calculationChangers = doc.querySelectorAll(".js-calc-input");
@@ -1496,7 +1647,7 @@ imageUpload.change((e) => {
 
     const calcFromTotal = doc.querySelector(".js-calc-from-total");
     const vatMargeCheckedEl = doc.querySelector("#switchBTW");
-    
+
     vatMargeCheckedEl.addEventListener("change", changeVatFn);
     calcFromTotal.addEventListener("change", calcFromTotalFn);
 
@@ -1505,9 +1656,9 @@ imageUpload.change((e) => {
     }
 
     function calcFromTotalFn() {
-        const totalElVal = parseFloat(doc.querySelector("#totalAll").value);  
+        const totalElVal = parseFloat(doc.querySelector("#totalAll").value);
 
-        if(!vatMargeCheckedEl.checked) {
+        if (!vatMargeCheckedEl.checked) {
             const salesPriceVat = minusValues(totalElVal, "#addLeges");
             const salesPriceNetto = (salesPriceVat / 1.21).toFixed(2);
             const totalPurchasePriceNetto = minusValues(salesPriceNetto, "#totalCostsFee");
@@ -1515,10 +1666,10 @@ imageUpload.change((e) => {
             doc.querySelector("#totalPriceFee").value = salesPriceNetto;
             doc.querySelector("#totalPriceNettoSuppluier").value = totalPurchasePriceNetto;
             doc.querySelector("#inkoopprijs_ex_ex").value = minusValues(totalPurchasePriceNetto, "#addAfleverkosten");
-            doc.querySelector("#addBTW_21").value = (salesPriceVat - salesPriceNetto).toFixed(2); 
+            doc.querySelector("#addBTW_21").value = (salesPriceVat - salesPriceNetto).toFixed(2);
 
-        }else {
-            
+        } else {
+
             const salesPriceVatBtw = minusValues(totalElVal, "#addLeges");
             const salesPriceNeto = minusValues(salesPriceVatBtw, "#addBTW_21");
             const totalPurchasePriceNetto = minusValues(salesPriceNeto, "#totalCostsFee");
@@ -1527,8 +1678,8 @@ imageUpload.change((e) => {
             doc.querySelector("#totalPriceNettoSuppluier").value = totalPurchasePriceNetto;
             doc.querySelector("#inkoopprijs_ex_ex").value = minusValues(totalPurchasePriceNetto, "#addAfleverkosten");
         }
-        
-        
+
+
     }
 
     function calcValues() {
@@ -1537,12 +1688,12 @@ imageUpload.change((e) => {
         doc.querySelector("#totalPriceNettoSuppluier").value = sumValues("#inkoopprijs_ex_ex, #addAfleverkosten");
         doc.querySelector("#totalCostsFee").value = sumValues("#addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee");
         doc.querySelector("#totalPriceFee").value = sumValues("#totalPriceNettoSuppluier, #totalCostsFee");
-        if(doc.querySelector("#switchBTW").checked) {
+        if (doc.querySelector("#switchBTW").checked) {
             vatEl.value = (sumValues("#addAfleverkosten, #addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee") * 0.21).toFixed(2);
-        }else {
+        } else {
             vatEl.value = (sumValues("#totalPriceFee") * 0.21).toFixed(2);
         }
-       
+
         doc.querySelector("#addVerkoopprijs_Marge_incl").value = sumValues("#totalPriceFee, #addBTW_21");
         doc.querySelector("#totalAll").value = sumValues("#addVerkoopprijs_Marge_incl, #addRest_BPM, #addLeges");
     }
@@ -1550,14 +1701,14 @@ imageUpload.change((e) => {
     function changeVatFn(e) {
         const vatEl = doc.querySelector("#addBTW_21");
         const trigger = e.currentTarget;
-        if(trigger.checked) {
-                vatEl.value = (sumValues("#addAfleverkosten, #addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee") * 0.21).toFixed(2);
-            }else {
-                vatEl.value = (sumValues("#totalPriceFee") * 0.21).toFixed(2);
-            }
+        if (trigger.checked) {
+            vatEl.value = (sumValues("#addAfleverkosten, #addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee") * 0.21).toFixed(2);
+        } else {
+            vatEl.value = (sumValues("#totalPriceFee") * 0.21).toFixed(2);
+        }
 
-            calcValues();
-        
+        calcValues();
+
     }
 
     function sumValues(selectors) {
@@ -1591,6 +1742,38 @@ imageUpload.change((e) => {
     }
 
 })(window, document);
+
+
+; (function (window, doc) {
+    const referenceFillers = document.querySelectorAll(".js-fill-refer");
+    if (!referenceFillers) {
+        return;
+    }
+
+    for (ref of referenceFillers) {
+
+        ref.addEventListener("change", addReference);
+    }
+
+    function addReference(e) {
+        const trigger = e.currentTarget;
+        let text = "";
+        if (trigger.value == "" || trigger.value == 0) {
+            return;
+        }
+
+        if (trigger.tagName == "SELECT") {
+            text = trigger.options[trigger.selectedIndex].innerText;
+        } else { // IF input 
+            console.log(trigger.value);
+            text = trigger.value;
+        }
+
+        doc.querySelector(`[data-ref='${trigger.id}']`).innerText = text;
+    }
+
+})(window, document);
+
 
 
 function delay(callback, ms) {
