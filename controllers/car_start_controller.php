@@ -50,8 +50,23 @@ class car_start extends view
 
 		if (isset($_POST['update_car'])) {
 			if (isset($_POST['car_id'])) {
-				$this->base->updateCar($_POST, $_POST['car_id']);
+				$inserted_car_id = $_POST['car_id'];
+                $this->base->updateCar($_POST, $_POST['car_id']);
 				$this->base->updateCalculation($_POST, $_POST['car_id']);
+
+                if(isset($_POST['car_images'])) {
+                    foreach($_POST['car_images'] as $img_path) {
+                        $this->base->insertCarPhoto($img_path, $inserted_car_id);
+                    }
+                }
+
+                if(isset($_POST['car_documents'])) {
+
+                    foreach($_POST['car_documents'] as $doc_path) {
+                        $this->base->insertCarDocument($doc_path, $inserted_car_id);
+                    }
+                }
+
 				header("Location: /car_start?car_id={$_POST['car_id']}");
 			} else {
 			}
@@ -70,7 +85,7 @@ class car_start extends view
 				$filename = $file['name'];
 				$fileType = pathinfo($filename, PATHINFO_EXTENSION);
 				$randomid = uniqid('doc-');
-
+                $location = "";
 				if ($_POST['allowed'] == "image") {
 					$location = "uploads/images/" . $randomid . "." . $fileType;
 				} else {					
@@ -141,8 +156,8 @@ class car_start extends view
 
 
 			// Allow certain file formats        
-			if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" && $imageFileType != "txt"  && $imageFileType != "docx") {
-				// echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";              
+			if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" && $imageFileType != "txt"  && $imageFileType != "docx" && $imageFileType != "pdf") {
+				// echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
 				if (move_uploaded_file($files["tmp_name"][$i], $new_file_path)) {
 					$uploadOk == 1;
 				}
