@@ -561,7 +561,7 @@
                                                     <label for="switchPrice"></label>
                                                 </div> -->
                                     <div class="col-9">
-                                        VAT/MARGE
+                                        VAT/Margin
                                     </div>
                                     <div class="col-3">
                                         <div     style="padding-bottom: 5px;">
@@ -575,7 +575,7 @@
                                 <input type="hidden" autocomplete="off"  class="form-control" name="huidigedatumbpm" id="datepicker2">
  
                                 <div class="row str">
-                                    <div class="col-12 col-md-6">
+                                    <div class="col-12 col-md-6" id="priceNetoText">
                                         Purchase Price netto (ex/ex)
                                     </div>
                                     <div class="col-12 col-md-6">
@@ -1208,6 +1208,43 @@
                     }
                 }
                 ?></div>
+        </div>
+    </div>
+    <!-- ./ ROW  -->
+    <!-- .ROW  -->
+    <hr />
+
+
+    <div class="row d-flex align-items-stretch">
+
+        <div class="col col-5">
+            <p>Connected to the Modules:</p>
+            <div class="row d-flex align-items-stretch form-control show-documents">
+                <div class="col col-3">
+                    <div class="font-weight-light">Offer</div>
+                    <div>text</div>
+                </div>
+                <div class="col col-3">
+                    <div class="font-weight-light">Purchase Order</div>
+                    <div>text</div>
+                </div>
+                <div class="col col-3">
+                    <div class="font-weight-light">Sales Order</div>
+                    <div>text</div>
+                </div>
+                <div class="col col-3">
+                    <div class="font-weight-light">File</div>
+                    <div>text</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-2"></div>
+        <div class="col col-12 col-md-2">
+            <p>Internal Information</p>
+            
+            <div class="row d-flex align-items-stretch form-control show-documents">
+                
+            </div>
         </div>
     </div>
     <!-- ./ ROW  -->

@@ -1289,18 +1289,41 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
 
             if (trigger.value == "") {
                 let fuelHTML = `<option value="">-</option>
-                <option value="1">Benzine</option>
+                <option value="1">Gasoline</option>
                 <option value="2">Diesel</option>
-                <option value="3">Hybride</option>
-                <option value="4">Electrisch</option>
+                <option value="3">Hybrid</option>
+                <option value="4">Electric</option>
                 <option value="5">LPG</option>
-                <option value="6">Aardgas</option>
+                <option value="6">Natural Gas</option>
                 <option value="7">Alcohol</option>
-                <option value="8">Cryogeen</option>
-                <option value="9">Waterstof</option>
+                <option value="8">Cryogenic</option>
+                <option value="9">Hydrogen</option>
                 `;
 
-                carMake.dispatchEvent(new Event('change'));
+                carFuel.dispatchEvent(new Event('change'));
+
+                const selectedMakeId = document.querySelector("#carMake").value;
+                let urlGetMotorsByFuel = `${location.origin}/create_make_new?fuel_id_get_motors=${trigger.value}&car_make_id=${selectedMakeId}`;
+
+                const motorSelect = document.querySelector("#carMotor");
+                const motorSelVal = motorSelect.value;
+
+                if (trigger.value == "") {
+                    urlGetMotorsByFuel = `${location.origin}/create_make_new?make_id_get_motors=${selectedMakeId}`;
+                }
+
+                fetch(urlGetMotorsByFuel)
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (response) {
+                        fillSelectFromJson(".js-car-motor", response, "cmotor_name", "cmotor_id");
+                        motorSelect.value = motorSelVal;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        return;
+                    });
 
                 carFuel.innerHTML = fuelHTML;
                 return;
@@ -1703,8 +1726,10 @@ $(document).ready(function () {
         const trigger = e.currentTarget;
         if (trigger.checked) {
             vatEl.value = (sumValues("#addAfleverkosten, #addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee") * 0.21).toFixed(2);
+            $('#priceNetoText').html('Purchase Price margin');
         } else {
             vatEl.value = (sumValues("#totalPriceFee") * 0.21).toFixed(2);
+            $('#priceNetoText').html('Purchase Price netto (ex/ex)');
         }
 
         calcValues();

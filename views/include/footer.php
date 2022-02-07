@@ -75,11 +75,13 @@
             "bserverSide": true,
             "sServerMethod": "POST",
             "sAjaxSource": "./data/data-showcar.php",
+            stateSave: true,
             "lengthMenu": [
                 [10, 25, 50, -1],
                 [10, 25, 50, "All"]
             ],
             dom: 'Blfrtip',
+            buttons: [ 'colvis' ],
         });
 </script>
 <!-- <script src="assets/js/apps.min.js"></script> -->
