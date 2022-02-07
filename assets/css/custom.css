@@ -197,7 +197,6 @@
 }
 
 .show-documents{
-    height: auto !important;
     min-height: 140px;
-    overflow: auto;
+    overflow-y: scroll;
 }

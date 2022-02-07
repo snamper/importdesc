@@ -1181,7 +1181,7 @@ class base
 		$dbDriver = new db_driver();
 		$file_name = end(explode("/", $path));
 
-		$sql = "INSERT INTO car_photos (cp_car_id, cp_name, cp_path, cp_user_id)
+		$sql = "INSERT INTO car_photos (cp_car_id, cp_filename, cp_path, cp_user_id)
       VALUES (
          ?,
          ?,
@@ -1200,7 +1200,7 @@ class base
 		
 		$dbDriver = new db_driver();
 
-		$sql = "INSERT INTO car_documents (cd_car_id, cd_name, cd_path, cd_user_id)
+		$sql = "INSERT INTO car_documents (cd_car_id, cd_filename, cd_path, cd_user_id)
       VALUES (
          ?,
          ?,

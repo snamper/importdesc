@@ -1473,6 +1473,7 @@ $(document).ready(function () {
     }
 
     for (let el of uploadElements) {
+        console.log(el);
         el.addEventListener("change", uploadFileFn);
         el.addEventListener("dragenter", highlightUploadFile);
         el.addEventListener("drop", stopHighlightUploadFile);
@@ -1499,8 +1500,9 @@ $(document).ready(function () {
             allowedSizeMb = 5;
         } else { // If document 
             formData.append("allowed", "documents");
-            allowedFormats = ["application/pdf", "application/vnd.oasis.opendocument.text"]
+            allowedFormats = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
             allowedSizeMb = 10;
+
         }
 
         allowedSizeBytes = allowedSizeMb * 1048576; // 1048576 = 1MB
@@ -1512,7 +1514,7 @@ $(document).ready(function () {
                 trigger.value = "";
                 return;
             }
-
+            console.log(file.type);
             if (!allowedFormats.includes(file.type)) {
                 const stringFromFormats = allowedFormats.join();
                 alert(`There is a file type that is not allowed ${stringFromFormats}`);
@@ -1533,12 +1535,15 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             success: function(response){
+
                 let type = "";
                 if(allowedFormats.includes("application/pdf")) {
                     type = "files";
                 }else {
                     type = "photos";
                 }
+
+
                 displayUploadedFiles(JSON.parse(response), type);
             },
         });
@@ -1579,13 +1584,17 @@ $(document).ready(function () {
     function displayUploadedFiles(response, type) {
         const createEditCarForm = document.querySelector("#createEditCarForm");
         if(type == "files") {
+
             const documentsContainer = document.querySelector(".show-documents");
 
             for(let key in response) {
+                let arrLink = response[key].split('/');
+
+
                 let documentElement = Object.assign(
                     document.createElement("a"), {
                     "href": response[key],
-                    "innerText": response[key]
+                    "innerText": arrLink[arrLink.length-1]
                 });
 
                 let hiddenInput = Object.assign(
@@ -1595,6 +1604,7 @@ $(document).ready(function () {
                     "value": response[key]
                 });
                 documentsContainer.appendChild(documentElement);
+                documentsContainer.appendChild(document.createElement("br"));
                 createEditCarForm.appendChild(hiddenInput);
             }
 
@@ -1619,7 +1629,6 @@ $(document).ready(function () {
                     
                     column.appendChild(img);                
                     document.querySelector(".car-images-row").appendChild(column);
-                    console.log(hiddenInput);
                    
                 } 
 
@@ -1628,7 +1637,7 @@ $(document).ready(function () {
                     "type": "hidden",
                     "name": "car_images[]",
                     "value": response[key]
-                });     
+                });
 
                 createEditCarForm.appendChild(hiddenInput);
                 
