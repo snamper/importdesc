@@ -3,8 +3,8 @@
     <div class="ref-container">
             <span data-ref="carMake"></span>
             <span data-ref="carModel"></span>
-            <span data-ref="datepicker1"></span>
-            <span data-ref="customReference"></span>
+            <span data-ref="vin"></span>
+            <span data-ref="sourceSupplier"></span>
     </div>
     <form action="car_start" action="car_start" method="POST" id="createEditCarForm" class="listing__form">
     <div class="col-xs-12 table-list">
@@ -113,7 +113,7 @@
                             <span>Car reference (custom)</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control js-fill-refer" id="customReference" type="text" name="car_ref_custom" value="<?php echo (isset($data['single_car']['cd_car_ref_custom']) ? $data['single_car']['cd_car_ref_custom']  : "") ?>" placeholder="" />
+                            <input class="form-control" id="customReference" type="text" name="car_ref_custom" value="<?php echo (isset($data['single_car']['cd_car_ref_custom']) ? $data['single_car']['cd_car_ref_custom']  : "") ?>" placeholder="" />
                         </div>
                     </div>
  
@@ -122,7 +122,7 @@
                             <span>VIN</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" name="vin" value="<?php echo (isset($data['single_car']['cd_vin']) ? $data['single_car']['cd_vin']  : "") ?>" placeholder="" />
+                            <input class="form-control js-fill-refer" type="text" name="vin" id="vin" value="<?php echo (isset($data['single_car']['cd_vin']) ? $data['single_car']['cd_vin']  : "") ?>" placeholder="" />
                         </div>
                     </div>
  
@@ -155,7 +155,7 @@
                             <span>Source Supplier </span>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input class="form-control" type="text" name="source_supplier" value="<?php echo (isset($data['single_car']['cd_source_supplier']) ? $data['single_car']['cd_source_supplier']  : "") ?>" placeholder="" />
+                            <input class="form-control js-fill-refer" type="text" name="source_supplier" id="sourceSupplier" value="<?php echo (isset($data['single_car']['cd_source_supplier']) ? $data['single_car']['cd_source_supplier']  : "") ?>" placeholder="" />
                         </div>
                     </div>
  
@@ -755,7 +755,7 @@
                     <span> First reg. ever</span>
                 </div>
                 <div class="col-12 col-md-8">
-                    <input type="text" autocomplete="off" class="form-control js-fill-refer" name="first_registration_date" id="datepicker1" value="<?php echo (isset($data['single_car']['cd_first_registration_date']) ? date("d-m-Y", strtotime($data['single_car']['cd_first_registration_date']))   : "") ?>">
+                    <input type="text" autocomplete="off" class="form-control" name="first_registration_date" id="datepicker1" value="<?php echo (isset($data['single_car']['cd_first_registration_date']) ? date("d-m-Y", strtotime($data['single_car']['cd_first_registration_date']))   : "") ?>">
                 </div>
             </div>
 

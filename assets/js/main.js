@@ -1765,11 +1765,17 @@ $(document).ready(function () {
         if (trigger.tagName == "SELECT") {
             text = trigger.options[trigger.selectedIndex].innerText;
         } else { // IF input 
-            console.log(trigger.value);
             text = trigger.value;
         }
 
-        doc.querySelector(`[data-ref='${trigger.id}']`).innerText = text;
+        if(trigger.getAttribute('id') == 'carMake' && text.length > 3) {
+            text = text.slice(0, 3);
+        }
+        else if(trigger.getAttribute('id') == 'vin' && text.length > 4) {
+            text = text.slice(-4);
+        }
+
+        doc.querySelector(`[data-ref=${trigger.id}]`).innerText = text;
     }
 
 })(window, document);
