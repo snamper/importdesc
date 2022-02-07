@@ -1473,7 +1473,7 @@ $(document).ready(function () {
     }
 
     for (let el of uploadElements) {
-        console.log(el);
+
         el.addEventListener("change", uploadFileFn);
         el.addEventListener("dragenter", highlightUploadFile);
         el.addEventListener("drop", stopHighlightUploadFile);
@@ -1514,7 +1514,7 @@ $(document).ready(function () {
                 trigger.value = "";
                 return;
             }
-            console.log(file.type);
+
             if (!allowedFormats.includes(file.type)) {
                 const stringFromFormats = allowedFormats.join();
                 alert(`There is a file type that is not allowed ${stringFromFormats}`);
@@ -1669,7 +1669,7 @@ $(document).ready(function () {
 
         if (!vatMargeCheckedEl.checked) {
             const salesPriceVat = minusValues(totalElVal, "#addLeges");
-            const salesPriceNetto = (salesPriceVat / 1.21).toFixed(2);
+            const salesPriceNetto = (salesPriceVat / 1.21).toFixed(0);
             const totalPurchasePriceNetto = minusValues(salesPriceNetto, "#totalCostsFee");
             doc.querySelector("#addVerkoopprijs_Marge_incl").value = salesPriceVat;
             doc.querySelector("#totalPriceFee").value = salesPriceNetto;
