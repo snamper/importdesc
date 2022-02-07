@@ -1473,7 +1473,6 @@ $(document).ready(function () {
     }
 
     for (let el of uploadElements) {
-        console.log(el);
         el.addEventListener("change", uploadFileFn);
         el.addEventListener("dragenter", highlightUploadFile);
         el.addEventListener("drop", stopHighlightUploadFile);
@@ -1514,7 +1513,6 @@ $(document).ready(function () {
                 trigger.value = "";
                 return;
             }
-            console.log(file.type);
             if (!allowedFormats.includes(file.type)) {
                 const stringFromFormats = allowedFormats.join();
                 alert(`There is a file type that is not allowed ${stringFromFormats}`);
