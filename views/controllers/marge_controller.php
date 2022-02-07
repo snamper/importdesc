@@ -57,13 +57,13 @@ class marge extends view{
 		if (isset($_POST['merge_insert'])) {
 			$obj->priceType = 0;
 			$obj->vehicleType = $_POST['carType'];
-			$obj->make = $_POST['carMark'];
+			$obj->make = $_POST['car_make'];
 			$obj->model = $_POST['carModel'];
 			$obj->generation = $_POST['carGeneration'];
 			$obj->serie = $_POST['carSerie'];
-			$obj->trim = $_POST['carModification'];
+			$obj->trim = $_POST['car_motor'];
 			$obj->equipment = $_POST['carEquipment'];
-			$obj->uitvoering = $_POST['caUitvoering'];
+			$obj->uitvoering = $_POST['car_uitvoering'];
 			$obj->brandstofSoort = $_POST['BPMbrandstof'];
 			$obj->eersteToelating = $_POST['BPMproductiedatum'];
 			$obj->huidigeDatumBPM = $_POST['huidigedatumbpm'];
@@ -99,8 +99,8 @@ class marge extends view{
 			die;
 			// return json_encode($employee_new);
 		}
-		if(isset($_POST['carMarkSelect'])){
-			$markID = $_POST['carMarkSelect'];
+		if(isset($_POST['carMakeSelect'])){
+			$markID = $_POST['carMakeSelect'];
 			$data = $this->getCarModel($markID);
 			echo $data;
 			die;
@@ -123,6 +123,13 @@ class marge extends view{
 		if(isset($_POST['carTrimSelect'])){
 			$trimID = $_POST['carTrimSelect'];
 			$data = $this->getCarTrim($trimID);
+			echo $data;
+			die;
+			// return json_encode($employee_new);
+		}
+		if(isset($_POST['carModelSelectMot'])){
+			$modelID = $_POST['carModelSelectMot'];
+			$data = $this->getCarMotor($modelID);
 			echo $data;
 			die;
 			// return json_encode($employee_new);
@@ -164,7 +171,7 @@ class marge extends view{
 		$html_options = '';
 
 			foreach($data as $key => $value) {
-				$html_options = $html_options.'<option value="'. $value['id_car_model'].'" >'.$value['name'].'</option>';
+				$html_options = $html_options.'<option value="'. $value['cmodel_id'].'" >'.$value['cmodel_name'].'</option>';
 			}
 		return $html_options; 
     }
@@ -188,6 +195,15 @@ class marge extends view{
     }
     protected function getCarTrim($trimID){
 		$data = $this->base->getCarTrim($trimID);
+		$html_options = '';
+
+			foreach($data as $key => $value) {
+				$html_options = $html_options.'<option value="'. $value['id_car_trim'].'" >'.$value['name'].'</option>';
+			}
+		return $html_options; 
+    } 
+    protected function getCarMotor($trimID){
+		$data = $this->base->getCarMotor($trimID);
 		$html_options = '';
 
 			foreach($data as $key => $value) {

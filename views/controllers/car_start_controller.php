@@ -34,16 +34,14 @@ class car_start extends view
 		 * @param mixed $conversion_page - DEFAULT NULL
 		 */
 
-
 		$selects_conversions = $this->base->getConversions(NULL, "create_edit_car");
 		if (isset($_GET['car_id'])) {
 			$single_car = $this->base->getSingleCar($_GET['car_id']);
+			$this->setData("single_car", $single_car);
+		
 			$images = $this->base->getCarImages($_GET['car_id']);
 			$documents = $this->base->getCarDocuments($_GET['car_id']);
-			$this->setData("single_car", $single_car);
 		} else {
-			$all_car_makes = $this->base->getAllCarMakes();
-			$this->setData("all_car_makes", $all_car_makes);
 			$images = [];
 			$documents = [];
 		}
@@ -63,54 +61,18 @@ class car_start extends view
 			$this->setData($conv['conversion_type'], $conv);
 		}
 
-
-		if (isset($_POST['allowed']) && isset($_FILES)) {
-			$paths = [];
-			foreach ($_FILES as $file) {
-				$filename = $file['name'];
-				$fileType = pathinfo($filename, PATHINFO_EXTENSION);
-				$randomid = uniqid('doc-');
-
-				if ($_POST['allowed'] == "image") {
-					$location = "uploads/images/" . $randomid . "." . $fileType;
-				} else {					
-					$location = "uploads/documents/" . $randomid . "." . $fileType;
-				}
-
-				move_uploaded_file($file['tmp_name'], $location);
-
-				array_push($paths, $location);
-			}
-			echo json_encode($paths);
-			exit;
-		}
-
 		if (isset($_POST['create_car'])) {
 			$inserted_car_id = $this->base->createCar($_POST);
 
-			if(isset($_POST['car_images'])) {
-				foreach($_POST['car_images'] as $img_path) {
-					$this->base->insertCarPhoto($img_path, $inserted_car_id);
-				}
+			if (!empty($_FILES['upload_photo']['name'][0])) {
+				$this->createCarUploads($_FILES['upload_photo'], $inserted_car_id, "uploads/images");
 			}
 
-			if(isset($_POST['car_documents'])) {
-			
-				foreach($_POST['car_documents'] as $doc_path) {
-					$this->base->insertCarDocument($doc_path, $inserted_car_id);
-				}
+			if (!empty($_FILES['upload_document']['name'][0])) {
+
+				$this->createCarUploads($_FILES['upload_document'], $inserted_car_id, "uploads/documents");
 			}
-
-			header("Location: /car_start?car_id=$inserted_car_id");
-			exit;
 		}
-
-		if (isset($_GET['all_car_makes'])) {
-			$car_makes = $this->base->getAllCarMakes();
-			echo json_encode($car_makes);
-			exit;
-		}
-
 
 
 		if (isset($_SESSION['user'])) parent::__construct('click_model_view.php');

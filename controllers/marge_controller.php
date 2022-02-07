@@ -175,7 +175,6 @@ class marge extends view{
 			}
 		return $html_options; 
     }
-
     protected function getCarGeneration($generationID){
 		$data = $this->base->getCarGeneration($generationID);
 		$html_options = '';

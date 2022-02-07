@@ -19,9 +19,9 @@ $aColumns = array( 'c.id_car_make','c.name', 'cm.name','cm.id_car_model','cm.id_
 $sIndexColumn = "translate.transID as number";
 
 /* DB table to use */
-$sTable = "car_makes c";
+$sTable = "car_make c";
 
-$sJoin .= ' INNER JOIN car_models cm ON c.id_car_make = cm.id_car_make ';
+$sJoin .= ' LEFT JOIN car_model cm ON c.id_car_make = cm.id_car_make ';
 // $sJoin .= ' WHERE `translate.langID`= $langID';
 /*
  * Local functions

@@ -610,8 +610,7 @@ class base
 		$inserted_car_id = $dbDriver->dbCon->lastInsertId();
 
 		// INSERT INTO car_details 
-		$query = "INSERT INTO car_details
-			( cd_car_id,
+		$query = "INSERT INTO car_details ( cd_car_id,
 				cd_preorder,
 				cd_car_ref_custom,
 				cd_vin,
@@ -668,8 +667,7 @@ class base
 				cd_optics,
 				cd_tinted_windows,
 				cd_options,
-				cd_notes,
-				cd_uploaded_files
+				cd_notes
 			)
 				VALUES (
 					?,
@@ -711,8 +709,7 @@ class base
 					?,
 					?,
 					?,
-					?,
-					?,
+					?,	
 					?,
 					?,
 					?,
@@ -794,8 +791,7 @@ class base
 				$_post['optics'],
 				$_post['tinted_windows'],
 				$_post['options'],
-				$_post['notes'],
-				$_post['uploaded_files']
+				$_post['notes']
 
 			]
 		);
@@ -809,6 +805,7 @@ class base
 		//     echo 'Error: ' .  $e->getMessage() . "\n";
 		// }
 		// $dbDriver->dbCon->commit();
+
 
 		$this->createCalculation($_post, $inserted_car_id);
 
@@ -1182,27 +1179,28 @@ class base
 	{
 
 		$dbDriver = new db_driver();
+		$file_name = end(explode("/", $path));
 
-		$sql = "INSERT INTO car_photos (cp_car_id, cp_filename, cp_path, cp_user_id)
+		$sql = "INSERT INTO car_photos (cp_car_id, cp_name, cp_path, cp_user_id)
       VALUES (
          ?,
          ?,
-          ?,
+        ?,
          ?
 
       )";
 
 		$stmt = $dbDriver->dbCon->prepare($sql);
-		$stmt->execute([$inserted_car_id, $path, $_SESSION['user'][0]['expo_users_ID']]);
+		$stmt->execute([$inserted_car_id, $file_name, $path, $_SESSION['user'][0]['expo_users_ID']]);
 	}
 
 	public function insertCarDocument($path, $inserted_car_id)
 	{
-
-
+		$file_name = end(explode("/", $path));
+		
 		$dbDriver = new db_driver();
 
-		$sql = "INSERT INTO car_documents (cd_car_id, cd_filename, cd_path, cd_user_id)
+		$sql = "INSERT INTO car_documents (cd_car_id, cd_name, cd_path, cd_user_id)
       VALUES (
          ?,
          ?,
@@ -1212,7 +1210,7 @@ class base
       )";
 
 		$stmt = $dbDriver->dbCon->prepare($sql);
-		$stmt->execute([$inserted_car_id, $path, $_SESSION['user'][0]['expo_users_ID']]);
+		$stmt->execute([$inserted_car_id, $file_name, $path, $_SESSION['user'][0]['expo_users_ID']]);
 	}
 
 	public function getCarInfo($car_id)
@@ -1319,7 +1317,6 @@ class base
 
 	public function insertCalculation($_request)
 	{
-
 		$dbDriver = new db_driver();
 
 		$calculation_for_car_id = $_request['fromCarView'];

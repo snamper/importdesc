@@ -90,10 +90,6 @@ class create_car extends view
         }
 
         if(isset($_GET['cars'])) {
-            echo '<pre>';
-            var_dump('here');
-            echo '</pre>';
-            exit;
             parent::__construct('show_cars_view.php');
 			die;
         }
@@ -120,7 +116,7 @@ class create_car extends view
         $html_options = '';
 
         foreach ($data as $key => $value) {
-            $html_options = $html_options . '<option value="' . $value['id_car_make'] . '" >' . $value['name'] . '</option>';
+            $html_options = $html_options . '<option value="' . $value['cmake_id'] . '" >' . $value['cmake_name'] . '</option>';
         }
         return $html_options;
     }

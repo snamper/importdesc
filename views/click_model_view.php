@@ -1,13 +1,35 @@
-<?php $data['single_car'] = $data['single_car'][0];
-// echo '<pre>';
-// var_dump($data['single_car']);
-// echo '</pre>';
-// exit;
-
-?>
+<?php $data['single_car'] = $data['single_car'][0];?>
 <div class="content" id="createEditCarPage">
+    <div class="ref-container">
+            <span data-ref="carMake">
+                <?php echo isset($data['single_car']['cmake_name']) ? $data['single_car']['cmake_name'] : ""; ?>
+            </span>
+            <span data-ref="carModel">
+                <?php echo isset($data['single_car']['cmodel_name']) ? $data['single_car']['cmodel_name'] : ""; ?>
+            </span>
+            <span data-ref="vin">
+                <?php echo isset($data['single_car']['cd_meldcode']) ? $data['single_car']['cd_meldcode'] : ""; ?>
+            </span>
+            <span data-ref="sourceSupplier">
+                <?php echo isset($data['single_car']['cd_source_supplier']) ? $data['single_car']['cd_source_supplier'] : ""; ?>
+            </span>
+    </div>
+    <form action="car_start" action="car_start" method="POST" id="createEditCarForm" class="listing__form">
     <div class="col-xs-12 table-list">
-        <form action="car_start" enctype="multipart/form-data" method="POST" class="listing__form">
+        <div class="row my-4 align-items-start">
+                <div class="col-12 col-md-5">
+                    <div class="upload-file js-upload">Upload photo
+                        <input type="file" name="upload_photo[]" multiple id="uploadCarImage">
+                    </div>
+                </div>
+                <div class="col-12 col-md-5">
+                    <div class="upload-file js-upload">Upload document
+                        <input type="file" name="upload_document[]" multiple id="uploadCarDocument">
+                    </div>
+                </div>
+            <button type="submit" class="btn btn-primary">Create and open Offer</button>
+        </div>
+
             <?php
             if (isset($_GET['car_id'])) {
                 echo "<input type='hidden' name='car_id' value='{$_GET['car_id']}'>";
@@ -43,23 +65,7 @@
 
             </div>
 
-            <div class="row my-4">
-                <div class="col-12 col-md-3">
-                    <div class="upload-photo">Upload photo
-                        <input type="file" name="upload_photo[]" multiple id="uploadCarImage">
-                    </div>
-                </div>
-                <div class="col-12 col-md-3">
-                    <div class="upload-document">Upload document
-                        <input type="file" name="upload_document[]" multiple id="uploadCarDocument">
-                    </div>
-                </div>
 
-                <div class="col-12 col-md-3 ml-auto text-right">
-                    <button type="submit" class="btn btn-primary">Create and open Offer</button>
-                </div>
-
-            </div>
             <hr />
             <div class="row">
                 <div class="col-12">
@@ -67,6 +73,17 @@
                 </div>
             </div>
             <!-- Main row 1 -->
+            <div class="row">
+                <div class="col-12 col-md-5">
+                    <div class="row">
+                        <div class="col-12 col-md-4 spacer"></div>
+                        <div class="col-12 col-md-8">
+                            <span>Preorder</span>
+                        <input type="checkbox" name="preorder" id="preorder">
+                    </div>
+                    </div>
+                </div>
+            </div>
             <div class="row justify-content-center align-items-start">
                 <!-- Left col  -->
                 <div class="col-12 col-md-5">
@@ -76,14 +93,7 @@
                             <span>Current car status* </span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <div class="row my-1">
-                                <div class="col-2">
-                                    <span>Preorder</span>
-                                </div>
-                                <div class="pl-2 col-10">
-                                    <input type="checkbox" name="preorder" id="preorder">
-                                </div>
-                            </div>
+
                             <?php
                             //                             echo '<pre>';
                             //                             var_dump($data['single_car']);
@@ -111,7 +121,7 @@
                             <span>Car reference (custom)</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" name="car_ref_custom" value="<?php echo (isset($data['single_car']['cd_car_ref_custom']) ? $data['single_car']['cd_car_ref_custom']  : "") ?>" placeholder="" />
+                            <input class="form-control" id="customReference" type="text" name="car_ref_custom" value="<?php echo (isset($data['single_car']['cd_car_ref_custom']) ? $data['single_car']['cd_car_ref_custom']  : "") ?>" placeholder="" />
                         </div>
                     </div>
 
@@ -120,7 +130,7 @@
                             <span>VIN</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" name="vin" value="<?php echo (isset($data['single_car']['cd_vin']) ? $data['single_car']['cd_vin']  : "") ?>" placeholder="" />
+                            <input class="form-control js-fill-refer" type="text" name="vin" id="vin" value="<?php echo (isset($data['single_car']['cd_vin']) ? $data['single_car']['cd_vin']  : "") ?>" placeholder="" />
                         </div>
                     </div>
 
@@ -153,7 +163,7 @@
                             <span>Source Supplier </span>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input class="form-control" type="text" name="source_supplier" value="<?php echo (isset($data['single_car']['cd_source_supplier']) ? $data['single_car']['cd_source_supplier']  : "") ?>" placeholder="" />
+                            <input class="form-control js-fill-refer" type="text" name="source_supplier" id="sourceSupplier" value="<?php echo (isset($data['single_car']['cd_source_supplier']) ? $data['single_car']['cd_source_supplier']  : "") ?>" placeholder="" />
                         </div>
                     </div>
 
@@ -202,6 +212,15 @@
                                 ?>
                             </select>
                         </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <span>Configuration number</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                             <input class="form-control" type="text" name="supplier_ref" value="<?php echo (isset($data['single_car']['cd_supplier_ref']) ? $data['single_car']['cd_supplier_ref']  : "") ?>" />
+                        </div>
                     </div>
                 </div>
             </div> <!-- Rigth col -->
@@ -237,7 +256,7 @@
                         </div>
 
                         <div class="col-12 col-md-8">
-                            <select required class="form-control" id="carMake" name="car_make">
+                            <select required class="form-control js-fill-refer" id="carMake" name="car_make">
                                 <option value="0">-</option>
                                 <?php
                                 if (isset($_GET['car_id'])) {
@@ -253,7 +272,7 @@
                         <div class="col-12 col-md-8">
                             <div class="row">
                                 <div class="col-6 pr-0">
-                                    <select required class="form-control" name="car_model" id="carModel">
+                                    <select required class="form-control js-fill-refer" name="car_model" id="carModel">
                                         <option value="0"> - </option>
                                         <?php
                                         if (isset($_GET['car_id'])) {
@@ -337,12 +356,12 @@
                         <div class="col-12 col-md-8">
                             <div class="row">
                                 <div class="col-6 pr-0">
-                                    
+
                                     <select required class="form-control js-car-motor" name="motor" id="carMotor">
                                         <option value="">-</option>
                                         <?php if (isset($_GET['car_id'])) {
-                                    echo "<option selected value='{$data['single_car']['cmotor_id']}'> {$data['single_car']['cmotor_name']}</option>";
-                                } ?>
+                                            echo "<option selected value='{$data['single_car']['cmotor_id']}'> {$data['single_car']['cmotor_name']}</option>";
+                                        } ?>
 
                                     </select>
                                 </div>
@@ -436,7 +455,7 @@
                             <span>Kilometers </span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="number" name="kilometers" placeholder="" value="<?php echo (isset($data['single_car']['cd_kilometers']) ? $data['single_car']['cd_kilometers']  : 0) ?>">
+                            <input class="form-control" type="number" name="kilometers" onfocus="this.value=''" value="<?php echo (isset($data['single_car']['cd_kilometers']) ? $data['single_car']['cd_kilometers']  : 0) ?>">
                         </div>
                     </div>
 
@@ -536,11 +555,11 @@
                 </div>
                 <!-- ./ Left col  -->
 
-                <!-- Rigth col  -->
-                <div class="col-12 col-md-7">
+               <!-- Rigth col  -->
+               <div class="col-12 col-md-7">
                     <div class="container" id="calculationContainer">
                         <div class="row align-items-start">
-                            <div class="col-12 col-md-6 calculation-col">
+                            <div class="col-12 col-md-8 calculation-col">
                                 <div class="row align-items-start str">
                                     <!-- <div class="col-12 col-sm-2">
                                                     Purchase / Sale Price
@@ -553,164 +572,166 @@
                                         VAT/MARGE
                                     </div>
                                     <div class="col-3">
-                                        <div class="switcher" style="padding-bottom: 5px;">
-                                            <input type="checkbox" name="switchBTW" id="switchBTW" checked />
+                                        <div     style="padding-bottom: 5px;">
+                                            <input type="checkbox" name="switchBTW" id="switchBTW"/>
                                             <label for="switchBTW"></label>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Current date  -->
-                                <input type="hidden" autocomplete="off" class="form-control" name="huidigedatumbpm" id="datepicker2">
+                                <input type="hidden" autocomplete="off"  class="form-control" name="huidigedatumbpm" id="datepicker2">
 
                                 <div class="row str">
-                                    <div class="col-12">
+                                    <div class="col-12 col-md-6">
                                         Purchase Price netto (ex/ex)
                                     </div>
-                                    <div class="col-12">
-                                        <input type="text" class="form-control js-calc-input" id="inkoopprijs_ex_ex" value="<?php echo (!is_null($data['single_car']['purchase_price_netto']) ?  $data['single_car']['purchase_price_netto'] : '') ?> " name="purchase_price_netto" placeholder="">
+                                    <div class="col-12 col-md-6">
+                                        <input type="text" class="form-control js-calc-input" id="inkoopprijs_ex_ex" value="<?php echo (isset($data['single_car']['purchase_price_netto']) ?  $data['single_car']['purchase_price_netto'] : "0") ?> " name="purchase_price_netto" placeholder="">
                                     </div>
                                 </div>
 
                                 <div class="row str">
-                                    <div class="col-12">
+                                    <div class="col-12 col-md-6">
                                         Fee Intermediate Supplier
                                     </div>
-                                    <div class="col-12">
-                                        <input type="text" class="form-control js-calc-input" id="addAfleverkosten" name="fee_intermediate_supplier" placeholder="">
+                                    <div class="col-12 col-md-6">
+                                        <input type="text" class="form-control js-calc-input" id="addAfleverkosten" value="<?php echo (isset($data['single_car']['fee_intermediate_supplier']) ?  $data['single_car']['fee_intermediate_supplier'] : '0') ?> "  name="fee_intermediate_supplier" placeholder="">
                                     </div>
                                 </div>
 
                                 <div class="row str">
-                                    <div class="col-12 font-weight-bold">
+                                    <div class="col-12 col-md-6 font-weight-bold">
                                         Total Purchase Price netto
                                     </div>
-                                    <div class="col-12">
-                                        <input class="form-control js-calc-input" readonly type="text" name="total_purchase_price_netto" id="totalPriceNettoSuppluier">
+                                    <div class="col-12 col-md-6">
+                                        <input class="form-control js-calc-input" readonly type="text" value="<?php echo (isset($data['single_car']['total_purchase_price_netto']) ?  $data['single_car']['total_purchase_price_netto'] : '0') ?> " name="total_purchase_price_netto" id="totalPriceNettoSuppluier">
                                     </div>
                                 </div>
 
                                 <div class="row str">
-                                    <div class="col-12">
+                                    <div class="col-12 col-md-6">
                                         Costs of Damages and Repair
-                                        <input type="text" class="form-control js-calc-input" id="addOpknapkosten" name="costs_damage_and_repair" placeholder="">
+                                        </div>
+                                    <div class="col-12 col-md-6">
+                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['costs_damage_and_repair']) ?  $data['single_car']['costs_damage_and_repair'] : '0') ?> " id="addOpknapkosten" name="costs_damage_and_repair" placeholder="">
                                     </div>
                                 </div>
 
                                 <div class="row str">
-                                    <div class="col-12">
+                                    <div class="col-12 col-md-6">
                                         Transport International
                                     </div>
-                                    <div class="col-12">
-                                        <input type="text" class="form-control js-calc-input" id="addTransport_Buitenland" name="transport_international" placeholder="">
+                                    <div class="col-12 col-md-6">
+                                        <input type="text" class="form-control js-calc-input" id="addTransport_Buitenland" value="<?php echo (isset($data['single_car']['transport_international']) ?  $data['single_car']['transport_international'] : '0') ?> " name="transport_international" placeholder="">
                                     </div>
                                 </div>
 
                                 <div class="row str">
-                                    <div class="col-12">
+                                    <div class="col-12 col-md-6">
                                         Transport National
                                     </div>
-                                    <div class="col-12">
-                                        <input type="text" class="form-control js-calc-input" id="addTransport_Binnenland" name="transport_national" placeholder="">
+                                    <div class="col-12 col-md-6">
+                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['transport_national']) ?  $data['single_car']['transport_national'] : '0') ?> " id="addTransport_Binnenland" name="transport_national" placeholder="">
                                     </div>
                                 </div>
 
                                 <div class="row str">
-                                    <div class="col-12">
+                                    <div class="col-12 col-md-6">
                                         Costs of Taxation for BPM
                                     </div>
-                                    <div class="col-12">
-                                        <input type="text" class="form-control js-calc-input" id="costTaxation" name="cost_taxation" placeholder="">
+                                    <div class="col-12 col-md-6">
+                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['costs_taxation_bpm']) ?  $data['single_car']['costs_taxation_bpm'] : '0') ?> " id="costTaxation" name="costs_taxation_bpm" placeholder="">
 
                                     </div>
                                 </div>
 
                                 <div class="row str">
-                                    <div class="col-12">
+                                    <div class="col-12 col-md-6">
                                         Fee GWI
                                     </div>
-                                    <div class="col-12">
-                                        <input type="text" class="form-control js-calc-input" id="addFee" name="fee_gwi" placeholder="">
+                                    <div class="col-12 col-md-6">
+                                        <input type="text" class="form-control js-calc-input" id="addFee" value="<?php echo (isset($data['single_car']['fee_gwi']) ?  $data['single_car']['fee_gwi'] : '0') ?> " name="fee_gwi" placeholder="">
 
                                     </div>
                                 </div>
                                 <div class="row str">
-                                    <div class="col-12 font-weight-bold">
+                                    <div class="col-12 col-md-6 font-weight-bold">
                                         Totaal Costs and Fee
                                     </div>
-                                    <div class="col-12">
-                                        <input readonly class="form-control" type="text" name="total_costs_fee" id="totalCostsFee">
+                                    <div class="col-12 col-md-6">
+                                        <input readonly class="form-control" type="text" value="<?php echo (isset($data['single_car']['total_costs_and_fee']) ?  $data['single_car']['total_costs_and_fee'] : '0') ?> " name="total_costs_fee" id="totalCostsFee">
                                     </div>
                                 </div>
                                 <div class="row str">
-                                    <div class="col-12 font-weight-bold ">
+                                    <div class="col-12 col-md-6 font-weight-bold ">
                                         Sales Price netto (ex/ex)
                                     </div>
-                                    <div class="col-12">
-                                        <input readonly class="form-control" type="text" name="total_price_fee" id="totalPriceFee">
+                                    <div class="col-12 col-md-6">
+                                        <input readonly class="form-control" type="text" value="<?php echo (isset($data['single_car']['sales_price_netto']) ?  $data['single_car']['sales_price_netto'] : '0') ?> "  name="sales_price_netto" id="totalPriceFee">
                                     </div>
                                 </div>
 
                                 <div class="row str">
-                                    <div class="col-12">
+                                    <div class="col-12 col-md-6">
                                         VAT / BTW (21%)
                                     </div>
-                                    <div class="col-12">
-                                        <input readonly type="text" class="form-control" id="addBTW_21" name="vat_btw" placeholder="">
+                                    <div class="col-12 col-md-6">
+                                        <input readonly type="text" class="form-control" id="addBTW_21" value="<?php echo (isset($data['single_car']['vat_btw']) ?  $data['single_car']['vat_btw'] : '0') ?> " name="vat_btw" placeholder="">
                                     </div>
                                 </div>
                                 <div class="row str">
-                                    <div class="col-12">
+                                    <div class="col-12 col-md-6">
                                         Sales Price incl. VAT / BTW
                                     </div>
-                                    <div class="col-12">
-                                        <input readonly type="text" class="form-control" id="addVerkoopprijs_Marge_incl" name="sales_price_incl_vat_btw" placeholder="">
+                                    <div class="col-12 col-md-6">
+                                        <input readonly type="text" class="form-control" id="addVerkoopprijs_Marge_incl" value="<?php echo (isset($data['single_car']['sales_price_incl_vat_btw']) ?  $data['single_car']['sales_price_incl_vat_btw'] : '0') ?> " name="sales_price_incl_vat_btw" placeholder="">
                                     </div>
                                 </div>
                                 <div class="row str">
-                                    <div class="col-12">
+                                    <div class="col-12 col-md-6">
                                         Rest BPM (indication)
                                     </div>
-                                    <div class="col-12">
-                                        <input type="text" class="form-control js-calc-input" id="addRest_BPM" name="rest_bpm" placeholder="Rest BPM Indicatief">
+                                    <div class="col-12 col-md-6">
+                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['rest_bpm']) ?  $data['single_car']['rest_bpm'] : '0') ?> " id="addRest_BPM" name="rest_bpm" placeholder="Rest BPM Indicatief">
 
                                     </div>
                                 </div>
                                 <div class="row str">
-                                    <div class="col-12">
+                                    <div class="col-12 col-md-6">
                                         Leges (VAT / BTW free)
                                     </div>
-                                    <div class="col-12">
-                                        <input type="text" class="form-control js-calc-input" id="addLeges" name="add_leges" placeholder="">
+                                    <div class="col-12 col-md-6">
+                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['fees']) ?  $data['single_car']['fees'] : '0') ?> "  id="addLeges" name="fees" placeholder="">
                                     </div>
                                 </div>
                                 <div class="row str">
-                                    <div class="col-12 font-weight-bold">
+                                    <div class="col-12 col-md-6 font-weight-bold">
                                         Sales Price Total (in/in)
                                     </div>
-                                    <div class="col-12">
-                                        <input class="form-control js-calc-from-total" type="text" name="sales_price_total" id="totalAll">
+                                    <div class="col-12 col-md-6">
+                                        <input class="form-control js-calc-from-total" value="<?php echo (isset($data['single_car']['sales_price_total']) ?  $data['single_car']['sales_price_total'] : '0') ?> " type="text" name="sales_price_total" id="totalAll">
                                     </div>
                                 </div>
                             </div>
                             <!-- Calculation  -->
 
                             <!-- Images  -->
-                            <div class="col-12 col-md-6 recent-images-col">
+                            <div class="col-12 col-md-2 recent-images-col">
 
                                 <?php
                                 if (empty($data['car_images'][0])) {
                                     for ($i = 0; $i < 5; $i++) {
                                         echo "<div class='row'>
                                             <div class='col-12 car-image-col'>
-                                                <img src='/assets/images/no-image.gif' />
+                                                <img src='/assets/images/no-image.gif' data-noimage='true' />
                                             </div>
                                         </div>";
                                     }
                                 }
                                 foreach ($data['car_images'][0] as $key => $img) {
 
-                                    if ($key > 4) {
+                                    if ($key > 3) {
                                         break;
                                     }
                                     echo "<div class='row'>
@@ -751,7 +772,7 @@
                     <span>First reg. in NL</span>
                 </div>
                 <div class="col-12 col-md-8">
-                    <input type="text" autocomplete="off" class="form-control" name="first_nl_registration" id="datepicker3">
+                    <input type="text" autocomplete="off" class="form-control" value="<?php echo (isset($data['single_car']['cd_first_nl_registration']) ? date("d-m-Y", strtotime($data['single_car']['cd_first_nl_registration']))   : "") ?>" name="first_nl_registration" id="datepicker3">
                 </div>
             </div>
 
@@ -1191,8 +1212,7 @@
             <div class="form-control show-documents" name="uploaded_files" id="uploadedFiles">
                 <?php if (!is_null($data['single_car_documents'])) {
                     foreach ($data['single_car_documents'] as $key => $doc) {
-
-                        echo "<a href='{$doc[0]['cd_path']}'>{$doc[0]['cd_filename']}</a>";
+                        echo "<a href='{$doc[0]['cd_path']}'>{$doc[0]['cd_name']}</a>";
                     }
                 }
                 ?></div>
@@ -1202,15 +1222,18 @@
     <hr />
 
     <!-- Main row 3 -->
-    <div class="row">
+    <p>Additional images</p>
+    <div class="row car-images-row">
         <?php
         $imagesNumber = count($data['car_images'][0]);
         if ($imagesNumber > 4) {
             for ($i = 4; $i < $imagesNumber; $i++) {
-                echo "<div class='col-12 col-md-3 car-image-col'>
+                echo "<div class='col-12 col-md-3 car-image-col' id='extraImages'>
                             <img src='{$data['car_images'][0][$i]['cp_path']}' />
                         </div>";
             }
+        }else {
+            echo "<div class='col-12 col-md-3 car-image-col' id='extraImages'></div>";
         }
 
         ?>

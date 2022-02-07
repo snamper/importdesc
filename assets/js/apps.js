@@ -149,6 +149,7 @@ var WHITE_TRANSPARENT_7_COLOR   = 'rgba(255, 255, 255, 0.7)';
 var WHITE_TRANSPARENT_8_COLOR   = 'rgba(255, 255, 255, 0.8)';
 var WHITE_TRANSPARENT_9_COLOR   = 'rgba(255, 255, 255, 0.9)';
 
+
 /* 02. Handle Scrollbar
 ------------------------------------------------ */
 var handleSlimScroll = function() {
