@@ -1678,9 +1678,11 @@ $(document).ready(function () {
     }
 
     const calcFromTotal = doc.querySelector(".js-calc-from-total");
-    const vatMargeCheckedEl = doc.querySelector("#switchBTW");
+    const vatCheckedEl = doc.querySelector("#switchvat");
+    const margeCheckedEl = doc.querySelector("#switchmargin");
 
-    vatMargeCheckedEl.addEventListener("change", changeVatFn);
+    vatCheckedEl.addEventListener("change", changeVatFn);
+    margeCheckedEl.addEventListener("change", changeMargeFn);
     calcFromTotal.addEventListener("change", calcFromTotalFn);
 
     for (let changer of calculationChangers) {
@@ -1690,14 +1692,14 @@ $(document).ready(function () {
     function calcFromTotalFn() {
         const totalElVal = parseFloat(doc.querySelector("#totalAll").value);
 
-        if (!vatMargeCheckedEl.checked) {
+        if (!vatCheckedEl.checked) {
             const salesPriceVat = minusValues(totalElVal, "#addLeges");
             const salesPriceNetto = (salesPriceVat / 1.21).toFixed(0);
             const totalPurchasePriceNetto = minusValues(salesPriceNetto, "#totalCostsFee");
             doc.querySelector("#addVerkoopprijs_Marge_incl").value = salesPriceVat;
             doc.querySelector("#totalPriceFee").value = salesPriceNetto;
             doc.querySelector("#totalPriceNettoSuppluier").value = totalPurchasePriceNetto;
-            doc.querySelector("#inkoopprijs_ex_ex").value = minusValues(totalPurchasePriceNetto, "#addAfleverkosten");
+            doc.querySelector("#addFee").value = minusValues(totalPurchasePriceNetto, "#addAfleverkosten");
             doc.querySelector("#addBTW_21").value = (salesPriceVat - salesPriceNetto).toFixed(0);
 
         } else {
@@ -1708,7 +1710,7 @@ $(document).ready(function () {
             doc.querySelector("#addVerkoopprijs_Marge_incl").value = salesPriceVatBtw;
             doc.querySelector("#totalPriceFee").value = salesPriceNeto;
             doc.querySelector("#totalPriceNettoSuppluier").value = totalPurchasePriceNetto;
-            doc.querySelector("#inkoopprijs_ex_ex").value = minusValues(totalPurchasePriceNetto, "#addAfleverkosten");
+            doc.querySelector("#addFee").value = minusValues(totalPurchasePriceNetto, "#addAfleverkosten");
         }
 
 
@@ -1720,7 +1722,7 @@ $(document).ready(function () {
         doc.querySelector("#totalPriceNettoSuppluier").value = sumValues("#inkoopprijs_ex_ex, #addAfleverkosten");
         doc.querySelector("#totalCostsFee").value = sumValues("#addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee");
         doc.querySelector("#totalPriceFee").value = sumValues("#totalPriceNettoSuppluier, #totalCostsFee");
-        if (doc.querySelector("#switchBTW").checked) {
+        if (vatCheckedEl.checked) {
             vatEl.value = (sumValues("#addAfleverkosten, #addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee") * 0.21).toFixed(0);
         } else {
             vatEl.value = (sumValues("#totalPriceFee") * 0.21).toFixed(0);
@@ -1733,12 +1735,31 @@ $(document).ready(function () {
     function changeVatFn(e) {
         const vatEl = doc.querySelector("#addBTW_21");
         const trigger = e.currentTarget;
-        if (trigger.checked) {
+        if (!trigger.checked) {
             vatEl.value = (sumValues("#addAfleverkosten, #addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee") * 0.21).toFixed(2);
             $('#priceNetoText').html('Purchase Price margin');
+            margeCheckedEl.checked = true;
         } else {
             vatEl.value = (sumValues("#totalPriceFee") * 0.21).toFixed(2);
             $('#priceNetoText').html('Purchase Price netto (ex/ex)');
+            margeCheckedEl.checked = false;
+        }
+
+        calcValues();
+
+    }
+    
+    function changeMargeFn(e) {
+        const vatEl = doc.querySelector("#addBTW_21");
+        const trigger = e.currentTarget;
+        if (trigger.checked) {
+            vatEl.value = (sumValues("#addAfleverkosten, #addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee") * 0.21).toFixed(2);
+            $('#priceNetoText').html('Purchase Price margin');
+            vatCheckedEl.checked = false;
+        } else {
+            vatEl.value = (sumValues("#totalPriceFee") * 0.21).toFixed(2);
+            $('#priceNetoText').html('Purchase Price netto (ex/ex)');
+            vatCheckedEl.checked = true;
         }
 
         calcValues();

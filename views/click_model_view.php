@@ -560,21 +560,17 @@
                     <div class="container" id="calculationContainer">
                         <div class="row align-items-start">
                             <div class="col-12 col-md-8 calculation-col">
-                                <div class="row align-items-start str">
-                                    <!-- <div class="col-12 col-sm-2">
-                                                    Purchase / Sale Price
-                                                </div>
-                                                <div class="col-sm-3 switcher" style="padding-bottom: 5px;">
-                                                    <input type="checkbox" name="switchPrice" id="switchPrice" checked />
-                                                    <label for="switchPrice"></label>
-                                                </div> -->
-                                    <div class="col-9">
-                                        VAT/Margin
-                                    </div>
-                                    <div class="col-3">
-                                        <div     style="padding-bottom: 5px;">
-                                            <input type="checkbox" name="switchBTW" id="switchBTW"/>
-                                            <label for="switchBTW"></label>
+                            <div class="row">
+
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-12 col-md-4 spacer flex-nowrap"></div>
+                                            <div class="col-12 col-md-8">
+                                                <span>VAT</span>
+                                                <input type="checkbox" name="switchvat" id="switchvat" checked>
+                                                <span>Margin</span>
+                                                <input type="checkbox" name="switchmargin" id="switchmargin">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
