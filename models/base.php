@@ -579,6 +579,7 @@ class base
             car_variant,
 			car_fuel,
 			car_body_style,
+			`updated_by_id`,
 			`user_id`
         )
             VALUES (
@@ -588,6 +589,7 @@ class base
                 ?,
                 ?,
                 ?,
+				?,
 				?
             )";
 		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -602,6 +604,7 @@ class base
 				$_post['car_variant'],
 				$_post['car_fuel'],
 				$_post['car_body_style'],
+				$_SESSION['user'][0]['expo_users_ID'],
 				$_SESSION['user'][0]['expo_users_ID']
 
 			]
@@ -1014,8 +1017,8 @@ class base
 				calc.purchase_price_netto, calc.fee_intermediate_supplier,calc.total_purchase_price_netto,
 				calc.costs_damage_and_repair, calc.transport_international,	calc.transport_national,
 				calc.costs_taxation_bpm, calc.fee_gwi, calc.total_costs_and_fee, calc.sales_price_netto,
-				calc.vat_btw, calc.sales_price_incl_vat_btw, calc.rest_bpm, calc.fees, calc.sales_price_total,
-				u_edit.expo_users_name as last_edited_by, u_cr.expo_users_name as created_by, c.created_at, c.updated_at
+				calc.vat_btw, calc.sales_price_incl_vat_btw, calc.rest_bpm, calc.fees, calc.sales_price_total, c.updated_at,
+				 u_cr.expo_users_name as created_by 
 
 		   FROM
 			 cars c
@@ -1030,10 +1033,10 @@ class base
 			INNER JOIN conversions conv4 on cd.cd_wheel_drive = conv4.conversion_id
 			INNER JOIN calculations calc on c.car_id = calc.calculation_for_car_id
 			INNER JOIN expo_users u_edit on c.updated_by_id = u_edit.expo_users_ID
-			INNER JOIN expo_users u_cr on c.user_id = u_cr.expo_users_ID
+			INNER JOIN expo_users u_cr on c.user_id = u_cr.expo_users_ID 
 		   WHERE c.car_id = ?
 		   ";
-
+		
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$car_id]);
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -1178,23 +1181,69 @@ class base
 		return $result;
 	}
 
-	public function insertCarPhoto($path, $inserted_car_id)
+	public function getPhotoLastPos($inserted_car_id)
+	{
+		$dbDriver = new db_driver();
+		$sql = "SELECT cp_imagepos 
+		FROM car_photos
+		WHERE cp_car_id = ?
+		ORDER BY cp_imagepos DESC
+		LIMIT 1
+		";
+
+		$stmt = $dbDriver->dbCon->prepare($sql);
+		return $stmt->execute([$inserted_car_id]);
+	}
+
+	public function switchImages($_post, $car_id) {
+		
+		$dbDriver = new db_driver();
+		$filename1 = explode("/", $_post['tosrc']);
+		$filename2 = explode("/", $_post['fromsrc']);
+
+		$sql = "UPDATE car_photos SET
+		cp_imagepos = ?
+		WHERE cp_filename = ?";
+
+		$stmt1 = $dbDriver->dbCon->prepare($sql);
+		$stmt1->execute(
+			[
+				$_post['frompos'],
+				$filename1[count($filename1)-1]
+			]
+		);
+		
+		$sql = "UPDATE car_photos SET
+		cp_imagepos = ?
+		WHERE cp_filename = ?";
+
+		$stmt1 = $dbDriver->dbCon->prepare($sql);
+		$stmt1->execute(
+			[
+				$_post['topos'],
+				$filename2[count($filename2)-1]
+			]
+		);
+	}
+
+	public function insertCarPhoto($path, $inserted_car_id, $imagepos)
 	{
 
 		$dbDriver = new db_driver();
 		$file_name = end(explode("/", $path));
 
-		$sql = "INSERT INTO car_photos (cp_car_id, cp_filename, cp_path, cp_user_id)
+		$sql = "INSERT INTO car_photos (cp_car_id, cp_filename, cp_path, cp_user_id, cp_imagepos)
       VALUES (
          ?,
          ?,
-        ?,
-         ?
+         ?,
+         ?,
+		 ?
 
       )";
 
 		$stmt = $dbDriver->dbCon->prepare($sql);
-		$stmt->execute([$inserted_car_id, $file_name, $path, $_SESSION['user'][0]['expo_users_ID']]);
+		$result = $stmt->execute([$inserted_car_id, $file_name, $path, $_SESSION['user'][0]['expo_users_ID'], $imagepos]);
 	}
 
 	public function insertCarDocument($path, $inserted_car_id)

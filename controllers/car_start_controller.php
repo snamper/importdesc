@@ -48,6 +48,11 @@ class car_start extends view
 			$documents = [];
 		}
 
+		if(isset($_POST['move_image'])) {
+			$this->base->switchImages($_POST, $_POST['car_id']);
+			exit;
+		}
+
 		if (isset($_POST['update_car'])) {
 			if (isset($_POST['car_id'])) {
 				$inserted_car_id = $_POST['car_id'];
@@ -55,8 +60,11 @@ class car_start extends view
 				$this->base->updateCalculation($_POST, $_POST['car_id']);
 
                 if(isset($_POST['car_images'])) {
-                    foreach($_POST['car_images'] as $img_path) {
-                        $this->base->insertCarPhoto($img_path, $inserted_car_id);
+                    foreach($_POST['car_images'] as $image_data) {
+						/* $last_pos = $this->base->getPhotoLastPos($inserted_car_id);
+						$last_pos++; */
+						list($img_path, $img_pos) = explode('|', $image_data);
+                        $this->base->insertCarPhoto($img_path, $inserted_car_id, $img_pos);
                     }
                 }
 
@@ -81,6 +89,7 @@ class car_start extends view
 
 		if (isset($_POST['allowed']) && isset($_FILES)) {
 			$paths = [];
+			$imagepos = intval($_POST['last_imagepos']);
 			foreach ($_FILES as $file) {
 				$filename = $file['name'];
 				$fileType = pathinfo($filename, PATHINFO_EXTENSION);
@@ -94,7 +103,8 @@ class car_start extends view
 
 				move_uploaded_file($file['tmp_name'], $location);
 
-				array_push($paths, $location);
+				array_push($paths, [ 'location' => $location, 'pos' => $imagepos ]);
+				$imagepos++;
 			}
 			echo json_encode($paths);
 			exit;
@@ -104,8 +114,9 @@ class car_start extends view
 			$inserted_car_id = $this->base->createCar($_POST);
 
 			if(isset($_POST['car_images'])) {
-				foreach($_POST['car_images'] as $img_path) {
-					$this->base->insertCarPhoto($img_path, $inserted_car_id);
+				foreach($_POST['car_images'] as $image_data) {
+					list($img_path, $img_pos) = explode('|', $image_data);
+					$this->base->insertCarPhoto($img_path, $inserted_car_id, intval($img_pos));
 				}
 			}
 

@@ -1516,9 +1516,23 @@ $(document).ready(function () {
             files = trigger.files;
         }
 
+        function getLastImagePos() {
+            const images = $(`img[data-imagepos]:not([data-imagepos='0'])`);
+            var num = $(images).map(function() {
+                return $(this).data('imagepos');
+            }).get();//get all data values in an array
+            
+            var highest = Math.max.apply(Math, num);//find the highest value from them
+            return $(images).filter(function(){
+                return $(this).data('imagepos') == highest;//return the highest div
+            }).data('imagepos') || 0;//append to that div
+        }
+        
         //Allowed files depends on file or image
-        if (trigger.id == "uploadCarImage") {           
+        if (trigger.id == "uploadCarImage") {
             formData.append("allowed", "image");
+            console.log(getLastImagePos());
+            formData.append("last_imagepos", getLastImagePos() + 1);
             allowedFormats = ['image/jpeg', 'image/png'];
             allowedSizeMb = 5;
         } else { // If document 
@@ -1558,7 +1572,7 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             success: function(response){
-
+                
                 let type = "";
                 if(allowedFormats.includes("application/pdf")) {
                     type = "files";
@@ -1633,22 +1647,89 @@ $(document).ready(function () {
 
 
         }else { // IF IMAGES 
-            const recentImages = document.querySelectorAll(".recent-images-col [data-noimage]");
+            let insertBottom = 0;
+
+            for(let key in response) {
+                if(key >= 5) {
+                    insertBottom = response.length - 5;
+                    break;
+                }
+
+                let img = Object.assign(
+                    document.createElement("img"), {
+                    "src": response[key].location,
+                    "draggable": "true"
+                });
+                img.setAttribute("data-imagepos", response[key].pos);
+                img.setAttribute("ondragstart", 'onImageDrag(event)');
+                img.setAttribute("ondragover", 'allowDrop(event)');
+                img.setAttribute("ondrop", 'onImageDrop(event)');
+                
+                document.querySelector(".car-image-col").prepend(img);
+
+                createEditCarForm.appendChild(Object.assign(
+                    document.createElement("input"), {
+                    "type": "hidden",
+                    "name": "car_images[]",
+                    "value": response[key].location + '|' + response[key].pos
+                }));
+            }
+
+            const recentImagesCol = document.querySelector(".car-image-col");
+
+            let moveImagesNum = (response.length >= 5) ? 5 : response.length;
+            let i = moveImagesNum - 1;
+            let nodeEl;
+            let noImageCount = recentImagesCol.querySelectorAll('[data-noimage]').length;
+            if(noImageCount) {
+                for(i; i >= 0; i--) {
+                    if(!noImageCount) {
+                        break;
+                    }
+
+                    nodeEl = recentImagesCol.children[recentImagesCol.childElementCount - 1];
+                    if(nodeEl.getAttribute('data-noimage')) {
+                        recentImagesCol.removeChild(nodeEl);
+                        noImageCount--;
+                    }
+                }
+            }
+            
+            if(!noImageCount && recentImagesCol.childElementCount > 5) {
+                const extraImagesRow = document.querySelector(".car-images-row");
+                let column;
+
+                for(i; i >= 0; i--) {
+                    nodeEl = recentImagesCol.children[recentImagesCol.childElementCount - 1];
+                    column = Object.assign(
+                        document.createElement("div"), {
+                        "classList": "col-12 col-md-3 car-image-col",
+                    });
+                    column.append(nodeEl);
+                    extraImagesRow.prepend(column);
+                }
+            }
+
+            
+
+            /* const recentImages = document.querySelectorAll(".recent-images-col [data-noimage]");
             for(let key in response) {
 
                 if(recentImages[key]) {
-                    recentImages[key].setAttribute("src", response[key]);
+                    recentImages[key].setAttribute("src", response[key].location);
+                    recentImages[key].setAttribute("data-imagepos", response[key].pos);
                     recentImages[key].removeAttribute("data-noimage");
                 }else {
                     let column = Object.assign(
                         document.createElement("div"), {
-                        "classList": "col col-md-3 car-image-col",
+                        "classList": "col-12 col-md-3 car-image-col",
                     });
 
                     let img = Object.assign(
                         document.createElement("img"), {
-                        "src": response[key],
+                        "src": response[key].location
                     });
+                    img.setAttribute("data-imagepos", response[key].pos);
                     
                     column.appendChild(img);                
                     document.querySelector(".car-images-row").appendChild(column);
@@ -1659,16 +1740,57 @@ $(document).ready(function () {
                     document.createElement("input"), {
                     "type": "hidden",
                     "name": "car_images[]",
-                    "value": response[key]
+                    "value": response[key].location + '|' + response[key].pos
                 });
 
                 createEditCarForm.appendChild(hiddenInput);
-                
-            }
+            } */
         }
     }
 
 })(window, document);
+
+function onImageDrag(e) {
+    e.dataTransfer.setData("Text", e.target.getAttribute('data-imagepos'));
+}
+
+function allowDrop(e) {
+    e.preventDefault();
+}
+
+function onImageDrop(e) {
+    e.preventDefault();
+
+    const toImage = e.target;
+    const toImagePos = toImage.getAttribute('data-imagepos');
+    const toImageSrc = toImage.src;
+
+    const fromImagePos = e.dataTransfer.getData("Text");
+    const fromImage = document.querySelector(`img[data-imagepos="${fromImagePos}"]`);
+    const fromImageSrc = fromImage.src;
+
+    fromImage.setAttribute('src', toImageSrc);
+    toImage.setAttribute('src', fromImageSrc);
+
+    const formData = new FormData();
+    formData.append('move_image', 'true');
+    formData.append('car_id', $('#car_id').val());
+    formData.append('topos', toImagePos);
+    formData.append('frompos', fromImagePos);
+    formData.append('tosrc', toImageSrc);
+    formData.append('fromsrc', fromImageSrc);
+
+    $.ajax({
+        url: `${location.origin}/car_start`,
+        type: 'post',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response){
+            console.log(response);
+        },
+    });
+}
 
 ; (function (window, doc) {
     const calculationChangers = doc.querySelectorAll(".js-calc-input");

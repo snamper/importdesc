@@ -1,4 +1,8 @@
-<?php $data['single_car'] = $data['single_car'][0];?>
+<?php 
+    $data['single_car'] = $data['single_car'][0];
+    if(!empty($data['car_images'][0]))
+        usort($data['car_images'][0], function($a, $b) {return (intval($a['cp_imagepos']) < intval($b['cp_imagepos'])) ? -1 : 1;});
+?>
 <div class="content" id="createEditCarPage">
     <div class="ref-container">
             <span data-ref="carMake">
@@ -243,9 +247,12 @@
                         <div class="col-12 col-md-8">
                             <select name="car_vehicle_type" id="SoortVoertuig" class="form-control">
                                 <option value="0">-</option>
-                                <option <?php echo (!is_null($data['single_car']['car_vehicle_type']) && $data['single_car']['car_vehicle_type'] == 1  ? "selected" : 0) ?> value="1">Passenger car</option>
-                                <option <?php echo (!is_null($data['single_car']['car_vehicle_type']) && $data['single_car']['car_vehicle_type'] == 2  ? "selected" : 0) ?> value="2">Company car max. 3500kg</option>
-                                <option <?php echo (!is_null($data['single_car']['car_vehicle_type']) && $data['single_car']['car_vehicle_type'] == 3  ? "selected" : 0) ?> value="3">Camper</option>
+                                <?php 
+                                    $selectedVhclType = (!is_null($data['single_car']['car_vehicle_type'])) ? intval($data['single_car']['car_vehicle_type']) : -1;
+                                ?>
+                                <option <?php echo $selectedVhclType == 1 ? "selected" : ""; ?> value="1">Passenger car</option>
+                                <option <?php echo $selectedVhclType == 2  ? "selected" : ""; ?> value="2">Company car max. 3500kg</option>
+                                <option <?php echo $selectedVhclType == 3  ? "selected" : ""; ?> value="3">Camper</option>
                             </select>
                         </div>
                     </div>
@@ -563,7 +570,7 @@
                             <div class="row">
 
                                 <div class="col-12">
-                                    <div class="row">
+                                    <div class="row" style="margin-left: 30%; padding-bottom: 5px;">
                                         <div class="col-12 col-md-4 spacer flex-nowrap"></div>
                                             <div class="col-12 col-md-8">
                                                 <span>VAT</span>
@@ -714,15 +721,13 @@
 
                             <!-- Images  -->
                             <div class="col-12 col-md-2 recent-images-col">
+                                <div class='row'>
+                                    <div class='col-12 car-image-col'>
 
                                 <?php
                                 if (empty($data['car_images'][0])) {
                                     for ($i = 0; $i < 5; $i++) {
-                                        echo "<div class='row'>
-                                            <div class='col-12 car-image-col'>
-                                                <img src='/assets/images/no-image.gif' data-noimage='true' />
-                                            </div>
-                                        </div>";
+                                        echo "<img src='/assets/images/no-image.gif' draggable='false' ondragstart='onImageDrag(event)' ondragover='allowDrop(event)' ondrop='onImageDrop(event)' data-imagepos='0' data-noimage='true' />";
                                     }
                                 }
                                  else {
@@ -732,25 +737,18 @@
                                          if ($i < $imagesCount-5) {
                                              break;
                                          }
-                                         echo "<div class='row'>
-                                            <div class='col-12 car-image-col'>
-                                                <img src='/{$data['car_images'][0][$i]['cp_path']}' />
-                                            </div>
-                                        </div>";
+                                         echo "<img src='/{$data['car_images'][0][$i]['cp_path']}' draggable='true' ondragstart='onImageDrag(event)' ondragover='allowDrop(event)' ondrop='onImageDrop(event)' data-imagepos='{$data['car_images'][0][$i]['cp_imagepos']}' />";
                                      }
                                      $left = 5 - $imagesCount;
                                      if ($left > 0) {
                                          for ($i = 0; $i < $left; $i++) {
-                                             echo "<div class='row'>
-                                            <div class='col-12 car-image-col'>
-                                                <img src='/assets/images/no-image.gif' data-noimage='true' />
-                                            </div>
-                                        </div>";
-                                         }
-                                     }
+                                             echo "<img src='/assets/images/no-image.gif' draggable='false' ondragstart='onImageDrag(event)' ondragover='allowDrop(event)' ondrop='onImageDrop(event)' data-imagepos='0' data-noimage='true' />";
+                                        }
+                                    }
                                  }
                                 ?>
-
+                                    </div>  
+                                </div>
                             </div>
 
                         </div>
@@ -1231,6 +1229,8 @@
     </div>
     <!-- ./ ROW  -->
 
+    <?php if(isset($_GET['car_id'])): ?>
+
     <!-- .ROW  -->
     <hr />
 
@@ -1252,10 +1252,10 @@
             </div>
         </div>
         <div class="col-12 col-md-1"></div>
-        <div class="col col-12 col-md-4">
+        <div class="col col-12 col-md-5">
             <p>Internal Information</p>
             <div class="row d-flex flex-nowrap">
-                <div class="col-6 show-documents text-muted" style="white-space: nowrap;">
+                <div class="col-6 show-documents text-muted" style="white-space: nowrap; overflow: hidden;">
                     <div class="row ml-1 mt-2">Source by client</div>
                     <div class="row ml-1 mt-2">Source by</div>
                     <div class="row ml-1 mt-2">Created by</div>
@@ -1264,20 +1264,20 @@
                     <div class="row ml-1 mt-2">Last Edited on</div>
                     <div class="row ml-1 mt-2">Dealer call by</div>
                 </div>
-                <div class="col-6 show-documents" style="white-space: nowrap; background-color: white;">
+                <div class="col-6 p-1 show-documents" style="white-space: nowrap; background-color: white; overflow: hidden;">
                     <div class="row ml-1 mt-2"><input type="checkbox" name="source-by-ch" id="sourceByCh"></div>
                     <div class="row ml-1 mt-2"><span>Source by name</span></div>
                     <div class="row ml-1 mt-2"><span><?php
-                        echo (isset($data['single_car']['created_by']) ? $data['single_car']['created_by']  : "")
+                        echo (isset($data['single_car']['created_by']) ? $data['single_car']['created_by']  : "__")
                     ?></span></div>
                     <div class="row ml-1 mt-2"><span><?php
-                        echo (isset($data['single_car']['created_at']) ? $data['single_car']['created_at']  : "")
+                        echo (isset($data['single_car']['created_at']) ? $data['single_car']['created_at']  : "__")
                     ?></span></div>
                     <div class="row ml-1 mt-2"><span><?php
-                        echo (isset($data['single_car']['last_edited_by']) ? $data['single_car']['last_edited_by']  : "")
+                        echo (isset($data['single_car']['last_edited_by']) ? $data['single_car']['last_edited_by']  : "__")
                     ?></span></div>
                     <div class="row ml-1 mt-2"><span><?php
-                        echo (isset($data['single_car']['updated_at']) ? $data['single_car']['updated_at']  : "")
+                        echo (isset($data['single_car']['updated_at']) ? $data['single_car']['updated_at']  : "__")
                     ?></span></div>
                     <div class="row ml-1 mt-2"><span>Dealer call name</span></div>
                 </div>
@@ -1285,21 +1285,21 @@
         </div>
     </div>
     <!-- ./ ROW  -->
+
+    <?php endif ?>
     <hr />
 
     <!-- Main row 3 -->
     <p>Additional images</p>
-    <div class="row car-images-row">
+    <div class="row car-images-row" id='extraImages'>
         <?php
         $imagesNumber = count($data['car_images'][0]);
         if ($imagesNumber > 5) {
             for ($i = $imagesNumber -6; $i >= 0; $i--) {
-                echo "<div class='col-12 col-md-3 car-image-col' id='extraImages'>
-                            <img src='{$data['car_images'][0][$i]['cp_path']}' />
-                        </div>";
+                echo "<div class='col-12 col-md-3 car-image-col'>
+                        <img src='{$data['car_images'][0][$i]['cp_path']}' data-imagepos='{$data['car_images'][0][$i]['cp_imagepos']}' />
+                    </div>";
             }
-        }else {
-            echo "<div class='col-12 col-md-3 car-image-col' id='extraImages'></div>";
         }
 
         ?>
