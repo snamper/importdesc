@@ -1220,30 +1220,31 @@
         <div class="col col-5">
             <p>Connected to the Modules:</p>
             <div class="row d-flex align-items-stretch form-control show-documents">
-                <div class="col col-3">
-                    <div class="font-weight-light">Offer</div>
-                    <div>text</div>
-                </div>
-                <div class="col col-3">
-                    <div class="font-weight-light">Purchase Order</div>
-                    <div>text</div>
-                </div>
-                <div class="col col-3">
-                    <div class="font-weight-light">Sales Order</div>
-                    <div>text</div>
-                </div>
-                <div class="col col-3">
-                    <div class="font-weight-light">File</div>
-                    <div>text</div>
+                <div class="row d-flex align-items-stretch font-weight-light">
+                    <div class="col">
+                        Offer
+                    </div>
+                    <div class="col">Purchase Order
+                    </div>
+                    <div class="col">Sales Order
+                    </div>
+                    <div class="col">File
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-12 col-md-2"></div>
-        <div class="col col-12 col-md-2">
+        <div class="col col-12 col-md-4">
             <p>Internal Information</p>
             
-            <div class="row d-flex align-items-stretch form-control show-documents">
+            <div class="col-12 d-flex align-items-stretch show-documents">
+                <div class="col-6 show-documents">
+
+                </div>
                 
+                <div class="col-6 form-control show-documents">
+
+                </div>
             </div>
         </div>
     </div>
