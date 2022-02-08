@@ -1229,8 +1229,6 @@
     </div>
     <!-- ./ ROW  -->
 
-    <?php if(isset($_GET['car_id'])): ?>
-
     <!-- .ROW  -->
     <hr />
 
@@ -1264,7 +1262,7 @@
                     <div class="row ml-1 mt-2">Last Edited on</div>
                     <div class="row ml-1 mt-2">Dealer call by</div>
                 </div>
-                <div class="col-6 p-1 show-documents" style="white-space: nowrap; background-color: white; overflow: hidden;">
+                <div class="col-4 p-1 show-documents" style="white-space: nowrap; background-color: white; overflow: hidden;">
                     <div class="row ml-1 mt-2"><input type="checkbox" name="source-by-ch" id="sourceByCh"></div>
                     <div class="row ml-1 mt-2"><span>Source by name</span></div>
                     <div class="row ml-1 mt-2"><span><?php
@@ -1286,7 +1284,6 @@
     </div>
     <!-- ./ ROW  -->
 
-    <?php endif ?>
     <hr />
 
     <!-- Main row 3 -->
