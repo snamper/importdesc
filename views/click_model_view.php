@@ -1194,11 +1194,11 @@
 
     <div class="row d-flex align-items-stretch">
 
-        <div class="col col-5">
+        <div class="col col-6">
             <p>Remarks / Notes (internal)</p>
             <textarea placeholder="" rows="7" style="resize: none;" class="form-control" name="notes" id="notes"><?php echo (isset($data['single_car']['cd_notes']) ? $data['single_car']['cd_notes']  : "") ?></textarea>
         </div>
-        <div class="col-12 col-md-2"></div>
+        <div class="col-12 col-md-1"></div>
         <div class="col col-12 col-md-4">
             <p>Uploaded Documents</p>
             <div class="form-control show-documents" name="uploaded_files" id="uploadedFiles">
@@ -1211,39 +1211,56 @@
         </div>
     </div>
     <!-- ./ ROW  -->
+
     <!-- .ROW  -->
     <hr />
 
 
     <div class="row d-flex align-items-stretch">
 
-        <div class="col col-5">
-            <p>Connected to the Modules:</p>
-            <div class="row d-flex align-items-stretch form-control show-documents">
-                <div class="row d-flex align-items-stretch font-weight-light">
-                    <div class="col">
-                        Offer
-                    </div>
-                    <div class="col">Purchase Order
-                    </div>
-                    <div class="col">Sales Order
-                    </div>
-                    <div class="col">File
-                    </div>
+        <div class="col col-12 col-md-6">
+            <p>Connected to the Modules</p>
+            <div class="row d-flex flex-nowrap align-items-stretch form-control show-documents text-muted">
+                <div class="col-3">
+                    Offer
+                </div>
+                <div class="col-3">Purchase Order
+                </div>
+                <div class="col-3">Sales Order
+                </div>
+                <div class="col-3">File
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-2"></div>
+        <div class="col-12 col-md-1"></div>
         <div class="col col-12 col-md-4">
             <p>Internal Information</p>
-            
-            <div class="col-12 d-flex align-items-stretch show-documents">
-                <div class="col-6 show-documents">
-
+            <div class="row d-flex flex-nowrap">
+                <div class="col-6 show-documents text-muted" style="white-space: nowrap;">
+                    <div class="row ml-1 mt-2">Source by client</div>
+                    <div class="row ml-1 mt-2">Source by</div>
+                    <div class="row ml-1 mt-2">Created by</div>
+                    <div class="row ml-1 mt-2">Created on</div>
+                    <div class="row ml-1 mt-2">Last Edited by</div>
+                    <div class="row ml-1 mt-2">Last Edited on</div>
+                    <div class="row ml-1 mt-2">Dealer call by</div>
                 </div>
-                
-                <div class="col-6 form-control show-documents">
-
+                <div class="col-6 show-documents" style="white-space: nowrap; background-color: white;">
+                    <div class="row ml-1 mt-2"><input type="checkbox" name="source-by-ch" id="sourceByCh"></div>
+                    <div class="row ml-1 mt-2"><span>Source by name</span></div>
+                    <div class="row ml-1 mt-2"><span><?php
+                        echo (isset($data['single_car']['created_by']) ? $data['single_car']['created_by']  : "")
+                    ?></span></div>
+                    <div class="row ml-1 mt-2"><span><?php
+                        echo (isset($data['single_car']['created_at']) ? $data['single_car']['created_at']  : "")
+                    ?></span></div>
+                    <div class="row ml-1 mt-2"><span><?php
+                        echo (isset($data['single_car']['last_edited_by']) ? $data['single_car']['last_edited_by']  : "")
+                    ?></span></div>
+                    <div class="row ml-1 mt-2"><span><?php
+                        echo (isset($data['single_car']['updated_at']) ? $data['single_car']['updated_at']  : "")
+                    ?></span></div>
+                    <div class="row ml-1 mt-2"><span>Dealer call name</span></div>
                 </div>
             </div>
         </div>
