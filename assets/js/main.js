@@ -1300,7 +1300,30 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
                 <option value="9">Hydrogen</option>
                 `;
 
-                carMake.dispatchEvent(new Event('change'));
+                carFuel.dispatchEvent(new Event('change'));
+
+                const selectedMakeId = document.querySelector("#carMake").value;
+                let urlGetMotorsByFuel = `${location.origin}/create_make_new?fuel_id_get_motors=${trigger.value}&car_make_id=${selectedMakeId}`;
+
+                const motorSelect = document.querySelector("#carMotor");
+                const motorSelVal = motorSelect.value;
+
+                if (trigger.value == "") {
+                    urlGetMotorsByFuel = `${location.origin}/create_make_new?make_id_get_motors=${selectedMakeId}`;
+                }
+
+                fetch(urlGetMotorsByFuel)
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (response) {
+                        fillSelectFromJson(".js-car-motor", response, "cmotor_name", "cmotor_id");
+                        motorSelect.value = motorSelVal;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        return;
+                    });
 
                 carFuel.innerHTML = fuelHTML;
                 return;
@@ -1711,9 +1734,11 @@ $(document).ready(function () {
         const vatEl = doc.querySelector("#addBTW_21");
         const trigger = e.currentTarget;
         if (trigger.checked) {
-            vatEl.value = (sumValues("#addAfleverkosten, #addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee") * 0.21).toFixed(0);
+            vatEl.value = (sumValues("#addAfleverkosten, #addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee") * 0.21).toFixed(2);
+            $('#priceNetoText').html('Purchase Price margin');
         } else {
-            vatEl.value = (sumValues("#totalPriceFee") * 0.21).toFixed(0);
+            vatEl.value = (sumValues("#totalPriceFee") * 0.21).toFixed(2);
+            $('#priceNetoText').html('Purchase Price netto (ex/ex)');
         }
 
         calcValues();

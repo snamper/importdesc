@@ -1014,7 +1014,8 @@ class base
 				calc.purchase_price_netto, calc.fee_intermediate_supplier,calc.total_purchase_price_netto,
 				calc.costs_damage_and_repair, calc.transport_international,	calc.transport_national,
 				calc.costs_taxation_bpm, calc.fee_gwi, calc.total_costs_and_fee, calc.sales_price_netto,
-				calc.vat_btw, calc.sales_price_incl_vat_btw, calc.rest_bpm, calc.fees, calc.sales_price_total
+				calc.vat_btw, calc.sales_price_incl_vat_btw, calc.rest_bpm, calc.fees, calc.sales_price_total,
+				u_edit.expo_users_name as last_edited_by, u_cr.expo_users_name as created_by, c.created_at, c.updated_at
 
 		   FROM
 			 cars c
@@ -1028,6 +1029,8 @@ class base
 		   INNER JOIN car_make_uitvoerings cmu on c.car_variant  = cmu.cmu_id
 			INNER JOIN conversions conv4 on cd.cd_wheel_drive = conv4.conversion_id
 			INNER JOIN calculations calc on c.car_id = calc.calculation_for_car_id
+			INNER JOIN expo_users u_edit on c.updated_by_id = u_edit.expo_users_ID
+			INNER JOIN expo_users u_cr on c.user_id = u_cr.expo_users_ID
 		   WHERE c.car_id = ?
 		   ";
 
