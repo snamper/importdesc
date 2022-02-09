@@ -28,7 +28,12 @@ class show_cars extends view
         $creditors = $this->getCreditors();
         $fuel_types = $this->getFuelAllFuelTypes();
         $transmitions = $this->getAllTransmitions();
-        $car_doors = $this->getAllCarDoors();       
+        $car_doors = $this->getAllCarDoors();      
+        
+        if(isset($_GET['delete'])) {
+            
+            exit;
+        }
               
         $this->setData("cars", $cars);  
         $this->setData("creditors", $creditors);
@@ -39,7 +44,6 @@ class show_cars extends view
         
         if (isset($_SESSION['user'])) parent::__construct('show_cars_view.php');
         else parent::__construct('login_view.php');
-
     }
 
     private function getAllCars() {

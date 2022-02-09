@@ -550,6 +550,13 @@ class base
 		return $result;
 	}
 
+	public function deleteCar($car_id)
+	{
+		$dbDriver = new db_driver();
+
+		$query = "DELETE FROM cars WHERE ";
+	}
+
 	public function createCar($_post)
 	{
 		$dbDriver = new db_driver();
@@ -579,6 +586,7 @@ class base
             car_variant,
 			car_fuel,
 			car_body_style,
+			car_preorder,
 			`updated_by_id`,
 			`user_id`
         )
@@ -589,6 +597,7 @@ class base
                 ?,
                 ?,
                 ?,
+				?,
 				?,
 				?
             )";
@@ -604,6 +613,7 @@ class base
 				$_post['car_variant'],
 				$_post['car_fuel'],
 				$_post['car_body_style'],
+				$_post['preorder'] ? '1' : '0',
 				$_SESSION['user'][0]['expo_users_ID'],
 				$_SESSION['user'][0]['expo_users_ID']
 
@@ -617,6 +627,7 @@ class base
 				cd_preorder,
 				cd_car_ref_custom,
 				cd_vin,
+				cd_conf_number,
 				cd_komm_number,
 				cd_advert_link,
 				cd_source_supplier,
@@ -730,6 +741,7 @@ class base
 					?,
 					?,
 					?,
+					?,
 					?
 				)";
 
@@ -741,6 +753,7 @@ class base
 				$_post['preorder'],
 				$_post['car_ref_custom'],
 				$_post['vin'],
+				is_null($_post['conf_number']) ? 0 : intval($_post['conf_number']),
 				$_post['komm_number'],
 				$_post['advert_link'],
 				$_post['source_supplier'],
@@ -818,7 +831,6 @@ class base
 
 	public function updateCar($_post, $car_id)
 	{
-
 		$dbDriver = new db_driver();
 
 		// Convert the dates - dosn't work in JS
@@ -842,6 +854,7 @@ class base
             car_variant = ?,
 			car_fuel = ?,
 			car_body_style = ?,
+			car_preorder = ?,
 			`user_id` = ?
 			WHERE car_id = ?
            ";
@@ -857,6 +870,7 @@ class base
 				$_post['car_variant'],
 				$_post['car_fuel'],
 				$_post['car_body_style'],
+				$_post['preorder'] ? '1' : '0',
 				$_SESSION['user'][0]['expo_users_ID'],
 				$car_id
 
@@ -873,6 +887,7 @@ class base
 				cd_preorder = ?,
 				cd_car_ref_custom = ?,
 				cd_vin = ?,
+				cd_conf_number = ?,
 				cd_komm_number = ?,
 				cd_advert_link = ?,
 				cd_source_supplier = ?,
@@ -936,6 +951,7 @@ class base
 				$_post['preorder'],
 				$_post['car_ref_custom'],
 				$_post['vin'],
+				is_null($_post['conf_number']) ? 0 : intval($_post['conf_number']),
 				$_post['komm_number'],
 				$_post['advert_link'],
 				$_post['source_supplier'],
@@ -999,7 +1015,7 @@ class base
 	{
 		$dbDriver = new db_driver();
 		$query = "SELECT c.created_at,
-		   c.car_id, c.car_model, cd.cd_car_ref_custom, cm.cmake_id, cm.cmake_name, cmod.cmodel_name,
+		   c.car_id, c.car_preorder, c.car_model, cd.cd_car_ref_custom, cd.cd_conf_number, cm.cmake_id, cm.cmake_name, cmod.cmodel_name,
 		   cmu.cmu_id, cmu.cmu_name, cmotor.cmotor_id, cmotor.cmotor_name, cv.conversion_name as fuel_name, cv.conversion_id as fuel_id,
 		   conv2.conversion_id as transmission_name, cd.cd_first_registration_date,
 		   cd.cd_kilometers, cd.cd_first_nl_registration,

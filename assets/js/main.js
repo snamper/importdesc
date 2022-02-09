@@ -1648,7 +1648,7 @@ $(document).ready(function () {
 
         }else { // IF IMAGES 
             let insertBottom = 0;
-            let img, div;
+            let img, span, div;
 
             for(let key in response) {
                 // Dont push more than 5 images on the top. Rest go to the bottom
@@ -1676,6 +1676,19 @@ $(document).ready(function () {
 
                 // Push image into div
                 div.prepend(img);
+                // Push icons into div
+                div.prepend(Object.assign(
+                    document.createElement("span"), {
+                    "className": "ti-arrow-down"
+                }));
+                div.prepend(Object.assign(
+                    document.createElement("span"), {
+                    "className": "ti-arrow-up"
+                }));
+                div.prepend(Object.assign(
+                    document.createElement("span"), {
+                    "className": "ti-trash"
+                }));
                 
                 // Push div into column
                 document.querySelector(".car-image-col").prepend(div);
@@ -1702,7 +1715,8 @@ $(document).ready(function () {
                     }
 
                     nodeEl = recentImagesCol.children[recentImagesCol.childElementCount - 1];
-                    if(nodeEl.firstChild.getAttribute('data-noimage')) {
+                    console.log(nodeEl.children[nodeEl.childElementCount - 1]);
+                    if(nodeEl.children[nodeEl.childElementCount - 1].getAttribute('data-noimage')) {
                         recentImagesCol.removeChild(nodeEl);
                         noImageCount--;
                     }
@@ -1758,24 +1772,75 @@ function onImageDrop(e) {
     formData.append('tosrc', toImageSrc);
     formData.append('fromsrc', fromImageSrc);
 
+    console.log(toImagePos);
+    console.log(fromImagePos);
+    console.log(toImageSrc);
+    console.log(fromImageSrc);
+
     $.ajax({
         url: `${location.origin}/car_start`,
         type: 'post',
         data: formData,
         contentType: false,
         processData: false,
-        success: function(response){
-            console.log(response);
-        },
     });
 }
+
+;(function (window, doc) {
+    const trashBtns = doc.querySelectorAll('.car-image > .ti-trash');
+
+    if(!trashBtns)
+        return;
+
+    onTrashBtnClick = (e) => {
+        const carImageDiv = e.target.offsetParent;
+        const carImagePos = carImageDiv.children[carImageDiv.childElementCount - 1].getAttribute('data-imagepos');
+        const recentImages = document.querySelector('.recent-images-col .car-image-col');
+        const bottomImages = document.querySelector('.car-images-row .car-image-col');
+
+        if(bottomImages && bottomImages.childElementCount > 0) {
+            const isBottomImage = carImageDiv.offsetParent.getAttribute('data-extra-images');
+            carImageDiv.offsetParent.removeChild(carImageDiv);
+            if(!isBottomImage) {
+                recentImages.append(bottomImages.children[0]);
+            }
+        }
+        else {
+            carImageDiv.offsetParent.removeChild(carImageDiv);
+
+            // Create div for image
+            let div = Object.assign(
+                document.createElement("div"), {
+                "className": "car-image"
+            });
+
+            let img = Object.assign(
+                document.createElement("img"), {
+                "src": '/assets/images/no-image.gif'
+            });
+            img.setAttribute("data-noimage", '');
+
+            // Push image into div
+            div.prepend(img);
+            
+            // Push div into column
+            document.querySelector(".car-image-col").append(div);
+        }
+    }
+
+    trashBtns.forEach((btn) => {
+        btn.addEventListener('click', onTrashBtnClick); 
+    });
+
+})(window, document);
 
 ; (function (window, doc) {
     const calculationChangers = doc.querySelectorAll(".js-calc-input");
 
-    if (!calculationChangers) {
+    if (!calculationChangers || !calculationChangers.length) {
         return;
     }
+
 
     const calcFromTotal = doc.querySelector(".js-calc-from-total");
     const vatCheckedEl = doc.querySelector("#switchvat");
