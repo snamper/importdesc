@@ -1650,11 +1650,13 @@ $(document).ready(function () {
             let insertBottom = 0;
 
             for(let key in response) {
+                // Dont push more than 5 images on the top. Rest go to the bottom
                 if(key >= 5) {
                     insertBottom = response.length - 5;
                     break;
                 }
 
+                // Create the image object
                 let img = Object.assign(
                     document.createElement("img"), {
                     "src": response[key].location,
@@ -1665,8 +1667,10 @@ $(document).ready(function () {
                 img.setAttribute("ondragover", 'allowDrop(event)');
                 img.setAttribute("ondrop", 'onImageDrop(event)');
                 
+                // Push image into column
                 document.querySelector(".car-image-col").prepend(img);
 
+                // Push hidden input of image to be uploaded
                 createEditCarForm.appendChild(Object.assign(
                     document.createElement("input"), {
                     "type": "hidden",
