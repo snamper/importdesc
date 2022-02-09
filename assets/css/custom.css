@@ -200,3 +200,18 @@
     min-height: 140px;
     overflow-y: scroll;
 }
+
+.car-image {
+    position: relative;
+}
+
+.car-image > .ti-trash {
+    position: absolute;
+    background: white;
+    right: 5px;
+    top: 10px;
+    opacity: 0;
+}
+.car-image:hover > .ti-trash {
+    opacity: 1;
+}

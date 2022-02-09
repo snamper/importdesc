@@ -1230,7 +1230,7 @@ class base
 	{
 
 		$dbDriver = new db_driver();
-		$file_name = end(explode("/", $path));
+		$arrFile = explode("/", $path);
 
 		$sql = "INSERT INTO car_photos (cp_car_id, cp_filename, cp_path, cp_user_id, cp_imagepos)
       VALUES (
@@ -1243,7 +1243,7 @@ class base
       )";
 
 		$stmt = $dbDriver->dbCon->prepare($sql);
-		$result = $stmt->execute([$inserted_car_id, $file_name, $path, $_SESSION['user'][0]['expo_users_ID'], $imagepos]);
+		$result = $stmt->execute([$inserted_car_id, $arrFile[count($arrFile) - 1], $path, $_SESSION['user'][0]['expo_users_ID'], $imagepos]);
 	}
 
 	public function insertCarDocument($path, $inserted_car_id)

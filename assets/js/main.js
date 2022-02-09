@@ -1648,6 +1648,7 @@ $(document).ready(function () {
 
         }else { // IF IMAGES 
             let insertBottom = 0;
+            let img, div;
 
             for(let key in response) {
                 // Dont push more than 5 images on the top. Rest go to the bottom
@@ -1656,8 +1657,14 @@ $(document).ready(function () {
                     break;
                 }
 
+                // Create div for image
+                div = Object.assign(
+                    document.createElement("div"), {
+                    "className": "car-image"
+                });
+
                 // Create the image object
-                let img = Object.assign(
+                img = Object.assign(
                     document.createElement("img"), {
                     "src": response[key].location,
                     "draggable": "true"
@@ -1666,9 +1673,12 @@ $(document).ready(function () {
                 img.setAttribute("ondragstart", 'onImageDrag(event)');
                 img.setAttribute("ondragover", 'allowDrop(event)');
                 img.setAttribute("ondrop", 'onImageDrop(event)');
+
+                // Push image into div
+                div.prepend(img);
                 
-                // Push image into column
-                document.querySelector(".car-image-col").prepend(img);
+                // Push div into column
+                document.querySelector(".car-image-col").prepend(div);
 
                 // Push hidden input of image to be uploaded
                 createEditCarForm.appendChild(Object.assign(
@@ -1692,7 +1702,7 @@ $(document).ready(function () {
                     }
 
                     nodeEl = recentImagesCol.children[recentImagesCol.childElementCount - 1];
-                    if(nodeEl.getAttribute('data-noimage')) {
+                    if(nodeEl.firstChild.getAttribute('data-noimage')) {
                         recentImagesCol.removeChild(nodeEl);
                         noImageCount--;
                     }
@@ -1707,7 +1717,7 @@ $(document).ready(function () {
                     nodeEl = recentImagesCol.children[recentImagesCol.childElementCount - 1];
                     column = Object.assign(
                         document.createElement("div"), {
-                        "classList": "col-12 col-md-3 car-image-col",
+                        "classList": "col-12 col-md-3 car-image-col car-image",
                     });
                     column.append(nodeEl);
                     extraImagesRow.prepend(column);

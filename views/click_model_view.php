@@ -31,7 +31,11 @@
                         <input type="file" name="upload_document[]" multiple id="uploadCarDocument">
                     </div>
                 </div>
-            <button type="submit" class="btn btn-primary">Create and open Offer</button>
+            <?php if(isset($_GET['duplicate'])): ?>
+                <button type="submit" name="duplicate_car" class="btn btn-primary">Duplicate offer</button>
+            <?php else: ?>
+                <button type="submit" class="btn btn-primary">Create and open Offer</button>
+            <?php endif ?>
         </div>
 
             <?php
@@ -40,9 +44,6 @@
             }
             ?>
 
-            <div class="dashboardPageTitle text-center">
-                <h2 style="opacity: 0;">Placeholder</h2>
-            </div>
             <span class="ti-plus additional-options"></span>
 
             <div class="custom-row">
@@ -69,6 +70,47 @@
 
             </div>
 
+            <?php if(isset($_GET['duplicate'])): ?>
+
+            <hr />
+
+            <div class="row">
+                <div class="col-12">
+                    <span class="font-weight-bold">Duplication</span>
+                </div>
+            </div>
+
+            <div class="row align-items-start">
+                <!-- Left col  -->
+                <div class="col-12 col-md-5">
+
+                    <div class="row" style="height: 30px;">
+                        <div class="col-12 col-md-4">
+                            <span>Original vehicle ID</span>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <?php
+                                if(isset($_GET['car_id'])) {
+                                    echo sprintf("A%'.07d\n", $_GET['car_id']);
+                                }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-7">
+
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <span>Number of duplicates*</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <input class="form-control" id="duplicateNumber" type="number" name="duplicate_number" value="1" placeholder="" required />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <?php endif ?>
 
             <hr />
             <div class="row">
@@ -85,6 +127,16 @@
                             <span>Preorder</span>
                         <input type="checkbox" name="preorder" id="preorder">
                     </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-5">
+                    <div class="row" style="height: 30px;">
+                        <div class="col-12 col-md-6">
+                            <span>Vehicle ID</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <?php echo isset($_GET['car_id']) ? sprintf("A%'.07d\n", $_GET['car_id']) : ''; ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -727,7 +779,10 @@
                                 <?php
                                 if (empty($data['car_images'][0])) {
                                     for ($i = 0; $i < 5; $i++) {
-                                        echo "<img src='/assets/images/no-image.gif' draggable='false' ondragstart='onImageDrag(event)' ondragover='allowDrop(event)' ondrop='onImageDrop(event)' data-imagepos='0' data-noimage='true' />";
+                                        echo "<div class='car-image'>
+                                            <span class='ti-trash'></span>
+                                            <img src='/assets/images/no-image.gif' draggable='false' ondragstart='onImageDrag(event)' ondragover='allowDrop(event)' ondrop='onImageDrop(event)' data-imagepos='0' data-noimage='true' />
+                                        </div>";
                                     }
                                 }
                                  else {
@@ -737,12 +792,18 @@
                                          if ($i < $imagesCount-5) {
                                              break;
                                          }
-                                         echo "<img src='/{$data['car_images'][0][$i]['cp_path']}' draggable='true' ondragstart='onImageDrag(event)' ondragover='allowDrop(event)' ondrop='onImageDrop(event)' data-imagepos='{$data['car_images'][0][$i]['cp_imagepos']}' />";
+                                         echo "<div class='car-image'>
+                                            <span class='ti-trash'></span>
+                                            <img src='/{$data['car_images'][0][$i]['cp_path']}' draggable='true' ondragstart='onImageDrag(event)' ondragover='allowDrop(event)' ondrop='onImageDrop(event)' data-imagepos='{$data['car_images'][0][$i]['cp_imagepos']}' />
+                                        </div>";
                                      }
                                      $left = 5 - $imagesCount;
                                      if ($left > 0) {
                                          for ($i = 0; $i < $left; $i++) {
-                                             echo "<img src='/assets/images/no-image.gif' draggable='false' ondragstart='onImageDrag(event)' ondragover='allowDrop(event)' ondrop='onImageDrop(event)' data-imagepos='0' data-noimage='true' />";
+                                             echo "<div class='car-image'>
+                                                <span class='ti-trash'></span>
+                                                <img src='/assets/images/no-image.gif' draggable='false' ondragstart='onImageDrag(event)' ondragover='allowDrop(event)' ondrop='onImageDrop(event)' data-imagepos='0' data-noimage='true' />
+                                            </div>";
                                         }
                                     }
                                  }
@@ -1293,7 +1354,7 @@
         $imagesNumber = count($data['car_images'][0]);
         if ($imagesNumber > 5) {
             for ($i = $imagesNumber -6; $i >= 0; $i--) {
-                echo "<div class='col-12 col-md-3 car-image-col'>
+                echo "<div class='col-12 col-md-3 car-image-col car-image'>
                         <img src='{$data['car_images'][0][$i]['cp_path']}' draggable='true' ondragstart='onImageDrag(event)' ondragover='allowDrop(event)' ondrop='onImageDrop(event)' data-imagepos='{$data['car_images'][0][$i]['cp_imagepos']}' />
                     </div>";
             }
