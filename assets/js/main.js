@@ -1709,42 +1709,6 @@ $(document).ready(function () {
                     extraImagesRow.prepend(column);
                 }
             }
-
-            
-
-            /* const recentImages = document.querySelectorAll(".recent-images-col [data-noimage]");
-            for(let key in response) {
-
-                if(recentImages[key]) {
-                    recentImages[key].setAttribute("src", response[key].location);
-                    recentImages[key].setAttribute("data-imagepos", response[key].pos);
-                    recentImages[key].removeAttribute("data-noimage");
-                }else {
-                    let column = Object.assign(
-                        document.createElement("div"), {
-                        "classList": "col-12 col-md-3 car-image-col",
-                    });
-
-                    let img = Object.assign(
-                        document.createElement("img"), {
-                        "src": response[key].location
-                    });
-                    img.setAttribute("data-imagepos", response[key].pos);
-                    
-                    column.appendChild(img);                
-                    document.querySelector(".car-images-row").appendChild(column);
-                   
-                } 
-
-                let hiddenInput = Object.assign(
-                    document.createElement("input"), {
-                    "type": "hidden",
-                    "name": "car_images[]",
-                    "value": response[key].location + '|' + response[key].pos
-                });
-
-                createEditCarForm.appendChild(hiddenInput);
-            } */
         }
     }
 

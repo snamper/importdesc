@@ -1294,7 +1294,7 @@
         if ($imagesNumber > 5) {
             for ($i = $imagesNumber -6; $i >= 0; $i--) {
                 echo "<div class='col-12 col-md-3 car-image-col'>
-                        <img src='{$data['car_images'][0][$i]['cp_path']}' data-imagepos='{$data['car_images'][0][$i]['cp_imagepos']}' />
+                        <img src='{$data['car_images'][0][$i]['cp_path']}' draggable='true' ondragstart='onImageDrag(event)' ondragover='allowDrop(event)' ondrop='onImageDrop(event)' data-imagepos='{$data['car_images'][0][$i]['cp_imagepos']}' />
                     </div>";
             }
         }
