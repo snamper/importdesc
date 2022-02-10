@@ -18,7 +18,7 @@
     </h1>
     <!-- END page-header -->
 
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-12 col-md-1">Make</div>
         <div class="col-2">
             <select name="car_make" id="carMake" class="form-control js-fill-refer"></select>
@@ -55,7 +55,7 @@
                 <option>19.1.2022</option>
             </select>
         </div>
-    </div>
+    </div> -->
 
     <!-- BEGIN table sample-table-1-->
 
@@ -66,21 +66,21 @@
 <div class="table-responsive">
     <table id="table_show_car" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
         <thead>
-                <th class="text-center">#</th>
-                <th class="text-center">Vehicle ID*</th>
+            <th class="text-center">#</th>
+            <th class="text-center">Vehicle ID*</th>
             <th style="white-space: nowrap">Car reference (custom)</th>
-            <!-- <th style="white-space: nowrap">Duplication Batch ID</th> -->
+            <th style="white-space: nowrap">Duplication Batch ID</th>
             <th style="white-space: nowrap">Pre-order</th>
             <th style="white-space: nowrap">VIN</th>
             <th style="white-space: nowrap">Configuration Number</th>
             <th style="white-space: nowrap">NL Registration Number</th>
-            <th style="white-space: nowrap">Make</th>
-            <th style="white-space: nowrap">Model</th>
+            <th class="select-filter" style="white-space: nowrap">Make</th>
+            <th class="select-filter" style="white-space: nowrap">Model</th>
             <th style="white-space: nowrap">Variant</th>
-            <th style="white-space: nowrap">Engine</th>
+            <th class="select-filter" style="white-space: nowrap">Engine</th>
             <th style="white-space: nowrap">Body Style</th>
-            <th style="white-space: nowrap">Created By</th>
-            <th class="text-center">Created On</th>
+            <th class="select-filter" style="white-space: nowrap">Created By</th>
+            <th class="select-filter" class="text-center">Created On</th>
             <th style="white-space: nowrap">Edit</th>
             <th style="white-space: nowrap">Duplicate</th>
 

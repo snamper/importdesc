@@ -81,7 +81,27 @@
                 [10, 25, 50, "All"]
             ],
             dom: 'Blfrtip',
-            buttons: [ 'colvis' ],
+            /* buttons: [ 'colvis' ], */
+            initComplete: function () {
+            this.api().columns('.select-filter').every( function () {
+                var column = this;
+                var select = $('<select class="selecter" id="'+ column.header().innerText+'"><option value="">'+column.header().innerText+'</option></select>')
+                    .appendTo( '.dataTables_length' )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+                column.data().unique().sort().each( function ( d, j ) {
+                	if (d != null) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' );
+                	}
+                } );
+           }  );
+        },
         });
 </script>
 <!-- <script src="assets/js/apps.min.js"></script> -->

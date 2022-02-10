@@ -550,11 +550,64 @@ class base
 		return $result;
 	}
 
+	public function removeImage($delPos, $movedNum)
+	{
+		$dbDriver = new db_driver();
+
+		$query = "DELETE FROM car_photos
+		WHERE cp_imagepos = ?; ";
+
+		for($i = 1; $i <= $movedNum; $i++)
+			$query = $query . "UPDATE car_photos
+			SET cp_imagepos = cp_imagepos - 1
+			WHERE cp_imagepos = " . ($delPos + $i) . "; ";
+
+		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+
+
+		$stmt->execute(
+			[
+				$delPos
+			]
+		);
+	}
+
 	public function deleteCar($car_id)
 	{
 		$dbDriver = new db_driver();
 
 		$query = "DELETE FROM cars WHERE ";
+	}
+
+	public function createDuplicateEntry($car_id, $dpNum, $newCarId)
+	{
+		$dbDriver = new db_driver();
+
+		$query = "INSERT INTO duplicates
+		(
+			dp_basefile,
+			dp_num,
+			dp_newfile
+		)
+		VALUES (
+			?,
+			?,
+			?
+		)";
+
+		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+
+		$stmt->execute(
+			[
+				$car_id,
+				$dpNum,
+				$newCarId
+			]
+		);
 	}
 
 	public function createCar($_post)

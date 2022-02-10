@@ -110,6 +110,11 @@ class car_start extends view
 			exit;
 		}
 
+		if (isset($_POST['removed_image'])) {
+			$this->base->removeImage($_POST['removed_image'], $_POST['moved_images']);
+			exit;
+		}
+
 		if (isset($_POST['duplicate_car'])) {
 			$car_id = isset($_POST['car_id']) ? $_POST['car_id'] : 0;
 			if($car_id) {
@@ -118,6 +123,7 @@ class car_start extends view
 					$photos = $this->base->getCarImages($car_id);
 					for($i = 0; $i < $num_copies; $i++) {
 						$inserted_car_id = $this->base->createCar($_POST);
+						$this->base->createDuplicateEntry($car_id, ('B_'.sprintf("A%'.07d", $car_id).'_'.($i+1)), $inserted_car_id);
 						foreach($photos as $photo) {
 							$this->base->insertCarPhoto($photo['cp_path'], $inserted_car_id, intval($photo['cp_imagepos']));
 						}

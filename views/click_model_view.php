@@ -642,7 +642,7 @@
                                         Purchase Price netto (ex/ex)
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <input type="text" class="form-control js-calc-input" id="inkoopprijs_ex_ex" value="<?php echo (isset($data['single_car']['purchase_price_netto']) ?  $data['single_car']['purchase_price_netto'] : "0") ?> " name="purchase_price_netto" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" id="inkoopprijs_ex_ex" value="<?php echo (isset($data['single_car']['purchase_price_netto']) ?  $data['single_car']['purchase_price_netto'] : "") ?> " name="purchase_price_netto" placeholder="">
                                     </div>
                                 </div>
 
@@ -651,7 +651,7 @@
                                         Fee Intermediate Supplier
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <input type="text" class="form-control js-calc-input" id="addAfleverkosten" value="<?php echo (isset($data['single_car']['fee_intermediate_supplier']) ?  $data['single_car']['fee_intermediate_supplier'] : '0') ?> "  name="fee_intermediate_supplier" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" id="addAfleverkosten" value="<?php echo (isset($data['single_car']['fee_intermediate_supplier']) ?  $data['single_car']['fee_intermediate_supplier'] : '') ?> "  name="fee_intermediate_supplier" placeholder="">
                                     </div>
                                 </div>
 
@@ -660,7 +660,7 @@
                                         Total Purchase Price netto
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <input class="form-control js-calc-input" readonly type="text" value="<?php echo (isset($data['single_car']['total_purchase_price_netto']) ?  $data['single_car']['total_purchase_price_netto'] : '0') ?> " name="total_purchase_price_netto" id="totalPriceNettoSuppluier">
+                                        <input class="form-control js-calc-input" readonly type="text" value="<?php echo (isset($data['single_car']['total_purchase_price_netto']) ?  $data['single_car']['total_purchase_price_netto'] : '') ?> " name="total_purchase_price_netto" id="totalPriceNettoSuppluier">
                                     </div>
                                 </div>
 
@@ -669,7 +669,7 @@
                                         Costs of Damages and Repair
                                         </div>
                                     <div class="col-12 col-md-6">
-                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['costs_damage_and_repair']) ?  $data['single_car']['costs_damage_and_repair'] : '0') ?> " id="addOpknapkosten" name="costs_damage_and_repair" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['costs_damage_and_repair']) ?  $data['single_car']['costs_damage_and_repair'] : '') ?> " id="addOpknapkosten" name="costs_damage_and_repair" placeholder="">
                                     </div>
                                 </div>
 
@@ -678,7 +678,7 @@
                                         Transport International
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <input type="text" class="form-control js-calc-input" id="addTransport_Buitenland" value="<?php echo (isset($data['single_car']['transport_international']) ?  $data['single_car']['transport_international'] : '0') ?> " name="transport_international" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" id="addTransport_Buitenland" value="<?php echo (isset($data['single_car']['transport_international']) ?  $data['single_car']['transport_international'] : '') ?> " name="transport_international" placeholder="">
                                     </div>
                                 </div>
 
@@ -687,7 +687,7 @@
                                         Transport National
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['transport_national']) ?  $data['single_car']['transport_national'] : '0') ?> " id="addTransport_Binnenland" name="transport_national" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['transport_national']) ?  $data['single_car']['transport_national'] : '') ?> " id="addTransport_Binnenland" name="transport_national" placeholder="">
                                     </div>
                                 </div>
 
@@ -696,7 +696,7 @@
                                         Costs of Taxation for BPM
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['costs_taxation_bpm']) ?  $data['single_car']['costs_taxation_bpm'] : '0') ?> " id="costTaxation" name="costs_taxation_bpm" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['costs_taxation_bpm']) ?  $data['single_car']['costs_taxation_bpm'] : '') ?> " id="costTaxation" name="costs_taxation_bpm" placeholder="">
 
                                     </div>
                                 </div>
@@ -706,7 +706,7 @@
                                         Fee GWI
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <input type="text" class="form-control js-calc-input" id="addFee" value="<?php echo (isset($data['single_car']['fee_gwi']) ?  $data['single_car']['fee_gwi'] : '0') ?> " name="fee_gwi" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" id="addFee" value="<?php echo (isset($data['single_car']['fee_gwi']) ?  $data['single_car']['fee_gwi'] : '') ?> " name="fee_gwi" placeholder="">
 
                                     </div>
                                 </div>
@@ -715,7 +715,7 @@
                                         Totaal Costs and Fee
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <input readonly class="form-control" type="text" value="<?php echo (isset($data['single_car']['total_costs_and_fee']) ?  $data['single_car']['total_costs_and_fee'] : '0') ?> " name="total_costs_fee" id="totalCostsFee">
+                                        <input readonly class="form-control" type="text" value="<?php echo (isset($data['single_car']['total_costs_and_fee']) ?  $data['single_car']['total_costs_and_fee'] : '') ?> " name="total_costs_fee" id="totalCostsFee">
                                     </div>
                                 </div>
                                 <div class="row str">
@@ -723,7 +723,7 @@
                                         Sales Price netto (ex/ex)
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <input readonly class="form-control" type="text" value="<?php echo (isset($data['single_car']['sales_price_netto']) ?  $data['single_car']['sales_price_netto'] : '0') ?> "  name="sales_price_netto" id="totalPriceFee">
+                                        <input readonly class="form-control" type="text" value="<?php echo (isset($data['single_car']['sales_price_netto']) ?  $data['single_car']['sales_price_netto'] : '') ?> "  name="sales_price_netto" id="totalPriceFee">
                                     </div>
                                 </div>
 
@@ -732,7 +732,7 @@
                                         VAT / BTW (21%)
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <input readonly type="text" class="form-control" id="addBTW_21" value="<?php echo (isset($data['single_car']['vat_btw']) ?  $data['single_car']['vat_btw'] : '0') ?> " name="vat_btw" placeholder="">
+                                        <input readonly type="text" class="form-control" id="addBTW_21" value="<?php echo (isset($data['single_car']['vat_btw']) ?  $data['single_car']['vat_btw'] : '') ?> " name="vat_btw" placeholder="">
                                     </div>
                                 </div>
                                 <div class="row str">
@@ -740,7 +740,7 @@
                                         Sales Price incl. VAT / BTW
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <input readonly type="text" class="form-control" id="addVerkoopprijs_Marge_incl" value="<?php echo (isset($data['single_car']['sales_price_incl_vat_btw']) ?  $data['single_car']['sales_price_incl_vat_btw'] : '0') ?> " name="sales_price_incl_vat_btw" placeholder="">
+                                        <input readonly type="text" class="form-control" id="addVerkoopprijs_Marge_incl" value="<?php echo (isset($data['single_car']['sales_price_incl_vat_btw']) ?  $data['single_car']['sales_price_incl_vat_btw'] : '') ?> " name="sales_price_incl_vat_btw" placeholder="">
                                     </div>
                                 </div>
                                 <div class="row str">
@@ -748,7 +748,7 @@
                                         Rest BPM (indication)
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['rest_bpm']) ?  $data['single_car']['rest_bpm'] : '0') ?> " id="addRest_BPM" name="rest_bpm" placeholder="Rest BPM Indicatief">
+                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['rest_bpm']) ?  $data['single_car']['rest_bpm'] : '') ?> " id="addRest_BPM" name="rest_bpm" placeholder="Rest BPM Indicatief">
 
                                     </div>
                                 </div>
@@ -757,7 +757,7 @@
                                         Leges (VAT / BTW free)
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['fees']) ?  $data['single_car']['fees'] : '0') ?> "  id="addLeges" name="fees" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['fees']) ?  $data['single_car']['fees'] : '') ?> "  id="addLeges" name="fees" placeholder="">
                                     </div>
                                 </div>
                                 <div class="row str">
@@ -765,7 +765,7 @@
                                         Sales Price Total (in/in)
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <input class="form-control js-calc-from-total" value="<?php echo (isset($data['single_car']['sales_price_total']) ?  $data['single_car']['sales_price_total'] : '0') ?> " type="text" name="sales_price_total" id="totalAll">
+                                        <input class="form-control js-calc-from-total" value="<?php echo (isset($data['single_car']['sales_price_total']) ?  $data['single_car']['sales_price_total'] : '') ?> " type="text" name="sales_price_total" id="totalAll">
                                     </div>
                                 </div>
                             </div>
@@ -1119,7 +1119,7 @@
         <div class="col-12 col-md-7">
 
             <div class="row">
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-5">
                     <label for="sportSeats">Sport seats</label>
                     <select name="sport_seats" id="sportSeats" class="form-control">
                         <option value="0">-</option>
@@ -1135,7 +1135,7 @@
                         ?>
                     </select>
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-5">
                     <label for="sportPackage">Sportpackage</label>
                     <select name="sport_package" id="sportPackage" class="form-control">
                         <option value="0">-</option>
@@ -1154,7 +1154,7 @@
             </div>
 
             <div class="row">
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-5">
                     <label for="seatsElectric">Seats electric</label>
                     <select name="seats_electric" id="seatsElectric" class="form-control">
                         <option value="0">-</option>
@@ -1174,7 +1174,7 @@
             </div>
 
             <div class="row">
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-5">
                     <label for="heating">Seat heating</label>
                     <select name="seat_heating" id="heating" class="form-control">
                         <option value="0">-</option>
@@ -1194,7 +1194,7 @@
             </div>
 
             <div class="row">
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-5">
                     <label for="seatMassage">Seat massage</label>
                     <select name="seat_massage" id="seatMassage" class="form-control">
                         <option value="0">-</option>
@@ -1214,7 +1214,7 @@
             </div>
 
             <div class="row">
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-5">
                     <label for="optics">Optics</label>
                     <select name="optics" id="optics" class="form-control">
                         <option value="0">-</option>
@@ -1234,7 +1234,7 @@
             </div>
 
             <div class="row">
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-5">
                     <label for="tindedWindows">Tinted windows</label>
                     <select name="tinted_windows" id="tindedWindows" class="form-control">
                         <option value="0">-</option>
@@ -1314,7 +1314,7 @@
         <div class="col col-12 col-md-5">
             <p>Internal Information</p>
             <div class="row d-flex flex-nowrap">
-                <div class="col-6 show-documents text-muted" style="white-space: nowrap; overflow: hidden;">
+                <div class="col-5 show-documents text-muted" style="white-space: nowrap; overflow: hidden;">
                     <div class="row ml-1 mt-2">Source by client</div>
                     <div class="row ml-1 mt-2">Source by</div>
                     <div class="row ml-1 mt-2">Created by</div>
@@ -1323,7 +1323,7 @@
                     <div class="row ml-1 mt-2">Last Edited on</div>
                     <div class="row ml-1 mt-2">Dealer call by</div>
                 </div>
-                <div class="col-4 p-1 show-documents" style="white-space: nowrap; background-color: white; overflow: hidden;">
+                <div class="col-4 show-documents" style="white-space: nowrap; background-color: white; overflow: hidden; border-radius: 7px;">
                     <div class="row ml-1 mt-2"><input type="checkbox" name="source-by-ch" id="sourceByCh"></div>
                     <div class="row ml-1 mt-2"><span>Source by name</span></div>
                     <div class="row ml-1 mt-2"><span><?php
@@ -1349,12 +1349,12 @@
 
     <!-- Main row 3 -->
     <p>Additional images</p>
-    <div class="row car-images-row">
+    <div class="row car-images-row" data-extra-images='true'>
         <?php
         $imagesNumber = count($data['car_images'][0]);
         if ($imagesNumber > 5) {
             for ($i = $imagesNumber -6; $i >= 0; $i--) {
-                echo "<div class='col-12 col-md-3 car-image-col' data-extra-images>
+                echo "<div class='col-12 col-md-3 car-image-col'>
                         <div class='car-image'>
                             <span class='ti-trash'></span>
                             <span class='ti-arrow-up'></span>

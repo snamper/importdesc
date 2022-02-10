@@ -1136,7 +1136,7 @@ $('.JSfunc').click(function () {
 });
 
 
-$('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
+$('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit,#BPMbrandstof').change(function () {
     var carvalue = $(this).val();
     const firstOptionHTML = "<option value='0'> - </option>";
     if (this.id == "carMakeFuel") {
@@ -1531,7 +1531,6 @@ $(document).ready(function () {
         //Allowed files depends on file or image
         if (trigger.id == "uploadCarImage") {
             formData.append("allowed", "image");
-            console.log(getLastImagePos());
             formData.append("last_imagepos", getLastImagePos() + 1);
             allowedFormats = ['image/jpeg', 'image/png'];
             allowedSizeMb = 5;
@@ -1618,6 +1617,84 @@ $(document).ready(function () {
         uploadFileContainer.classList.remove("highlighted");
     }
 
+    const onTrashBtnClick = (e) => {
+        const carImageDiv = e.target.parentNode;
+        const carImagePos = carImageDiv.children[carImageDiv.childElementCount - 1].getAttribute('data-imagepos');
+        const recentImages = document.querySelector('.recent-images-col .car-image-col');
+        const bottomImages = document.querySelector('.car-images-row');
+
+        console.log(carImageDiv.parentNode.parentNode);
+        const isBottomImage = carImageDiv.parentNode.parentNode.getAttribute('data-extra-images') ? true : false;
+
+        if(isBottomImage) {
+            carImageDiv.parentNode.parentNode.removeChild(carImageDiv.parentNode);
+        }
+        else {
+            carImageDiv.parentNode.removeChild(carImageDiv);
+            if(bottomImages && bottomImages.childElementCount > 0) {
+                recentImages.append(bottomImages.children[0].children[0]);
+                bottomImages.removeChild(bottomImages.children[0]);
+            }
+            else {
+                // Create div for image
+                let div = Object.assign(
+                    document.createElement("div"), {
+                    "className": "car-image"
+                });
+
+                let img = Object.assign(
+                    document.createElement("img"), {
+                    "src": '/assets/images/no-image.gif'
+                });
+                img.setAttribute("data-noimage", 'true');
+                img.setAttribute("data-imagepos", '0');
+
+                // Push image into div
+                div.prepend(img);
+                
+                // Push div into column
+                document.querySelector(".car-image-col").append(div);
+            }
+        }
+
+        changePositionsAbove(carImagePos);
+        changeHiddenInputs();
+    }
+
+    const changePositionsAbove = (removedPos) => {
+        const images = document.querySelectorAll('img[data-imagepos]');
+        let pos;
+        images.forEach(img => {
+            pos = img.getAttribute('data-imagepos');
+            if(pos > removedPos) {
+                img.setAttribute('data-imagepos', img.getAttribute('data-imagepos') - 1);
+            }
+        });
+    }
+
+    const changeHiddenInputs = () => {
+        const inputs = document.querySelectorAll('[name="car_images[]"]');
+        inputs.forEach(input => {
+            input.parentElement.removeChild(input);
+        });
+
+        const images = document.querySelectorAll('img[data-imagepos]');
+        let noImage = false;
+        let hiddenInput;
+        images.forEach(image => {
+            noImage = (image.getAttribute('data-noimage') == 'true') ? true : false;
+            if(!noImage) {
+                hiddenInput = Object.assign(
+                    document.createElement("input"), {
+                    "type": "hidden",
+                    "name": "car_images[]",
+                    "value": (image.getAttribute('src') + '|' + image.getAttribute('data-imagepos'))
+                });
+                createEditCarForm.appendChild(hiddenInput);
+            }
+        })
+    }
+
     function displayUploadedFiles(response, type) {
         const createEditCarForm = document.querySelector("#createEditCarForm");
         if(type == "files") {
@@ -1685,21 +1762,26 @@ $(document).ready(function () {
                     document.createElement("span"), {
                     "className": "ti-arrow-up"
                 }));
-                div.prepend(Object.assign(
+
+                span = Object.assign(
                     document.createElement("span"), {
                     "className": "ti-trash"
-                }));
+                })
+                div.prepend(span);
+                span.addEventListener('click', onTrashBtnClick);
                 
                 // Push div into column
                 document.querySelector(".car-image-col").prepend(div);
 
                 // Push hidden input of image to be uploaded
-                createEditCarForm.appendChild(Object.assign(
+                let hiddenInput = Object.assign(
                     document.createElement("input"), {
                     "type": "hidden",
                     "name": "car_images[]",
                     "value": response[key].location + '|' + response[key].pos
-                }));
+                })
+                hiddenInput.setAttribute('data-pos', response[key].pos);
+                createEditCarForm.appendChild(hiddenInput);
             }
 
             const recentImagesCol = document.querySelector(".car-image-col");
@@ -1715,7 +1797,6 @@ $(document).ready(function () {
                     }
 
                     nodeEl = recentImagesCol.children[recentImagesCol.childElementCount - 1];
-                    console.log(nodeEl.children[nodeEl.childElementCount - 1]);
                     if(nodeEl.children[nodeEl.childElementCount - 1].getAttribute('data-noimage')) {
                         recentImagesCol.removeChild(nodeEl);
                         noImageCount--;
@@ -1753,37 +1834,50 @@ function allowDrop(e) {
 function onImageDrop(e) {
     e.preventDefault();
 
+    const origin = location.origin;
     const toImage = e.target;
     const toImagePos = toImage.getAttribute('data-imagepos');
-    const toImageSrc = toImage.src;
+    const toImageSrc = toImage.src.replace(origin, '');
 
     const fromImagePos = e.dataTransfer.getData("Text");
     const fromImage = document.querySelector(`img[data-imagepos="${fromImagePos}"]`);
-    const fromImageSrc = fromImage.src;
+    const fromImageSrc = fromImage.src.replace(origin, '');
+
+    const tohiddenInputImage = document.querySelector(`[name="car_images[]"][data-pos="${toImagePos}"]`);
+    const fromhiddenInputImage = document.querySelector(`[name="car_images[]"][data-pos="${fromImagePos}"]`);
 
     fromImage.setAttribute('src', toImageSrc);
     toImage.setAttribute('src', fromImageSrc);
 
-    const formData = new FormData();
-    formData.append('move_image', 'true');
-    formData.append('car_id', $('#car_id').val());
-    formData.append('topos', toImagePos);
-    formData.append('frompos', fromImagePos);
-    formData.append('tosrc', toImageSrc);
-    formData.append('fromsrc', fromImageSrc);
+    const car_id = $('#car_id').val();
 
-    console.log(toImagePos);
-    console.log(fromImagePos);
-    console.log(toImageSrc);
-    console.log(fromImageSrc);
+    if(car_id) {
+        const formData = new FormData();
+        formData.append('move_image', 'true');
+        formData.append('car_id', car_id);
+        formData.append('topos', toImagePos);
+        formData.append('frompos', fromImagePos);
+        formData.append('tosrc', toImageSrc);
+        formData.append('fromsrc', fromImageSrc);
 
-    $.ajax({
-        url: `${location.origin}/car_start`,
-        type: 'post',
-        data: formData,
-        contentType: false,
-        processData: false,
-    });
+        $.ajax({
+            url: `${location.origin}/car_start`,
+            type: 'post',
+            data: formData,
+            contentType: false,
+            processData: false,
+        });
+    }
+
+    /* if(tohiddenInputImage) {
+        console.log(fromImageSrc);
+        console.log(fromImageSrc.src.replace(origin, ''));
+        tohiddenInputImage.setAttribute('value', (fromImageSrc.src.replace(origin, '') + '|' + toImagePos))
+    }
+
+    if(fromhiddenInputImage) {
+        fromhiddenInputImage.setAttribute('value', (toImageSrc.src.replace(origin, '') + '|' + fromImagePos))
+    } */
 }
 
 ;(function (window, doc) {
@@ -1792,40 +1886,75 @@ function onImageDrop(e) {
     if(!trashBtns)
         return;
 
-    onTrashBtnClick = (e) => {
-        const carImageDiv = e.target.offsetParent;
+    const onTrashBtnClick = (e) => {
+        const carImageDiv = e.target.parentNode;
         const carImagePos = carImageDiv.children[carImageDiv.childElementCount - 1].getAttribute('data-imagepos');
         const recentImages = document.querySelector('.recent-images-col .car-image-col');
-        const bottomImages = document.querySelector('.car-images-row .car-image-col');
+        const bottomImages = document.querySelector('.car-images-row');
 
-        if(bottomImages && bottomImages.childElementCount > 0) {
-            const isBottomImage = carImageDiv.offsetParent.getAttribute('data-extra-images');
-            carImageDiv.offsetParent.removeChild(carImageDiv);
-            if(!isBottomImage) {
-                recentImages.append(bottomImages.children[0]);
-            }
+        const isBottomImage = carImageDiv.parentNode.parentNode.getAttribute('data-extra-images') ? true : false;
+        console.log(carImageDiv.parentNode.parentNode);
+
+        if(isBottomImage) {
+            carImageDiv.parentNode.parentNode.removeChild(carImageDiv.parentNode);
         }
         else {
-            carImageDiv.offsetParent.removeChild(carImageDiv);
+            carImageDiv.parentNode.removeChild(carImageDiv);
+            if(bottomImages && bottomImages.childElementCount > 0) {
+                recentImages.append(bottomImages.children[0].children[0]);
+                bottomImages.removeChild(bottomImages.children[0]);
+            }
+            else {
+                // Create div for image
+                let div = Object.assign(
+                    document.createElement("div"), {
+                    "className": "car-image"
+                });
 
-            // Create div for image
-            let div = Object.assign(
-                document.createElement("div"), {
-                "className": "car-image"
-            });
+                let img = Object.assign(
+                    document.createElement("img"), {
+                    "src": '/assets/images/no-image.gif'
+                });
+                img.setAttribute("data-noimage", 'true');
+                img.setAttribute("data-imagepos", '0');
 
-            let img = Object.assign(
-                document.createElement("img"), {
-                "src": '/assets/images/no-image.gif'
-            });
-            img.setAttribute("data-noimage", '');
-
-            // Push image into div
-            div.prepend(img);
-            
-            // Push div into column
-            document.querySelector(".car-image-col").append(div);
+                // Push image into div
+                div.prepend(img);
+                
+                // Push div into column
+                document.querySelector(".car-image-col").append(div);
+            }
         }
+
+        const moved = changePositionsAbove(carImagePos);
+        saveNewImagePositions(carImagePos, moved);
+    }
+
+    const changePositionsAbove = (removedPos) => {
+        const images = document.querySelectorAll('img[data-imagepos]');
+        let pos, moved = 0;
+        images.forEach(img => {
+            pos = img.getAttribute('data-imagepos');
+            if(pos > removedPos) {
+                img.setAttribute('data-imagepos', img.getAttribute('data-imagepos') - 1);
+                moved++;
+            }
+        });
+        return moved;
+    }
+
+    const saveNewImagePositions = (removedPos, moved) => {
+        const formData = new FormData();
+        formData.append('removed_image', removedPos);
+        formData.append('moved_images', moved);
+
+        $.ajax({
+            url: `${location.origin}/car_start`,
+            type: 'post',
+            data: formData,
+            contentType: false,
+            processData: false,
+        });
     }
 
     trashBtns.forEach((btn) => {
@@ -1854,8 +1983,13 @@ function onImageDrop(e) {
         changer.addEventListener("change", calcValues);
     }
 
+    const getNumber = (val) => {
+        const num = parseFloat(val);
+        return isNaN(num) ? 0 : num;
+    }
+
     function calcFromTotalFn() {
-        const totalElVal = parseFloat(doc.querySelector("#totalAll").value);
+        const totalElVal = getNumber(doc.querySelector("#totalAll").value);
 
         if (!vatCheckedEl.checked) {
             const salesPriceVat = minusValues(totalElVal, "#addLeges");
@@ -1863,7 +1997,7 @@ function onImageDrop(e) {
             const totalPurchasePriceNetto = minusValues(salesPriceNetto, "#totalCostsFee");
             doc.querySelector("#addVerkoopprijs_Marge_incl").value = salesPriceVat;
             doc.querySelector("#totalPriceFee").value = salesPriceNetto;
-            doc.querySelector("#totalPriceNettoSuppluier").value = totalPurchasePriceNetto;
+            doc.querySelector("#totalPriceNettoSuppluier").value = sumValues("#inkoopprijs_ex_ex, #addAfleverkosten");
             doc.querySelector("#addFee").value = minusValues(totalPurchasePriceNetto, "#addAfleverkosten");
             doc.querySelector("#addBTW_21").value = (salesPriceVat - salesPriceNetto).toFixed(0);
 
@@ -1874,7 +2008,7 @@ function onImageDrop(e) {
             const totalPurchasePriceNetto = minusValues(salesPriceNeto, "#totalCostsFee");
             doc.querySelector("#addVerkoopprijs_Marge_incl").value = salesPriceVatBtw;
             doc.querySelector("#totalPriceFee").value = salesPriceNeto;
-            doc.querySelector("#totalPriceNettoSuppluier").value = totalPurchasePriceNetto;
+            doc.querySelector("#totalPriceNettoSuppluier").value = sumValues("#inkoopprijs_ex_ex, #addAfleverkosten");
             doc.querySelector("#addFee").value = minusValues(totalPurchasePriceNetto, "#addAfleverkosten");
         }
 
@@ -1883,7 +2017,6 @@ function onImageDrop(e) {
 
     function calcValues() {
         const vatEl = doc.querySelector("#addBTW_21");
-        doc.querySelector("#totalPriceNettoSuppluier").value = sumValues("#inkoopprijs_ex_ex, #addAfleverkosten");
         doc.querySelector("#totalPriceNettoSuppluier").value = sumValues("#inkoopprijs_ex_ex, #addAfleverkosten");
         doc.querySelector("#totalCostsFee").value = sumValues("#addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee");
         doc.querySelector("#totalPriceFee").value = sumValues("#totalPriceNettoSuppluier, #totalCostsFee");
@@ -1894,7 +2027,8 @@ function onImageDrop(e) {
         }
 
         doc.querySelector("#addVerkoopprijs_Marge_incl").value = sumValues("#totalPriceFee, #addBTW_21");
-        doc.querySelector("#totalAll").value = sumValues("#addVerkoopprijs_Marge_incl, #addRest_BPM, #addLeges");
+        const totalAll = sumValues("#addVerkoopprijs_Marge_incl, #addRest_BPM, #addLeges");
+        doc.querySelector("#totalAll").value = totalAll == 0 ? '' : totalAll;
     }
 
     function changeVatFn(e) {
@@ -1938,7 +2072,7 @@ function onImageDrop(e) {
         for (let el of elementSelectors) {
             let element = doc.querySelector(`${el}`);
             if (!isNaN(element.value) && element.value != "") {
-                sum += parseFloat(element.value);
+                sum += getNumber(element.value);
             }
         }
 
@@ -1953,7 +2087,7 @@ function onImageDrop(e) {
         for (let el of elementSelectors) {
             let element = doc.querySelector(`${el}`);
             if (!isNaN(element.value) && element.value != "") {
-                sum -= parseFloat(element.value);
+                sum -= getNumber(element.value);
             }
         }
 
@@ -1962,7 +2096,6 @@ function onImageDrop(e) {
     }
 
 })(window, document);
-
 
 ; (function (window, doc) {
     const referenceFillers = document.querySelectorAll(".js-fill-refer");
@@ -2013,3 +2146,14 @@ function delay(callback, ms) {
         }, ms || 0);
     };
 }
+
+// Remove submit on enter
+$(window).ready(function() {
+    $("#createEditCarForm").on("keypress", function (event) {
+        var keyPressed = event.keyCode || event.which;
+        if (keyPressed === 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
+});
