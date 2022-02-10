@@ -987,16 +987,7 @@ function getCarInfo(e) {
             setEditInputFormData(response);
             const hiddenInput = document.querySelector("#editCarHiddenInput");
             hiddenInput.value = thisId;
-        })/* .then(function (data) {
-            setTimeout(() => {
-                setEditInputFormData(data)
-                $('#carMake').change();
-            }, 700);
-            setTimeout(() => {
-                setEditFormSelectsData(data);
-                addResumeEditCarHeader();
-            }, 1200);
-        }) */
+        })
         .catch((error) => {
             console.log(error);
             return;
@@ -1660,12 +1651,21 @@ $(document).ready(function () {
                     "className": "car-image"
                 });
 
+                const car_id = $('[name="car_id"]').val();
+                const draggable = (car_id) ? false : true;
+
                 // Create the image object
                 img = Object.assign(
                     document.createElement("img"), {
-                    "src": response[key].location
+                    "src": response[key].location,
+                    "draggable": draggable
                 });
                 img.setAttribute("data-imagepos", response[key].pos);
+                if(draggable) {
+                    img.setAttribute("ondragstart", 'onImageDrag(event)');
+                    img.setAttribute("ondragover", 'allowDrop(event)');
+                    img.setAttribute("ondrop", 'onImageDrop(event)');
+                }
 
                 // Push image into div
                 carImageDiv.prepend(img);
@@ -1861,46 +1861,15 @@ function onImageDrop(e) {
 
 function onTrashBtnClick(e) {
     const carImageDiv = e.target.parentNode;
-    const carImagePos = carImageDiv.children[carImageDiv.childElementCount - 1].getAttribute('data-imagepos');
-    const recentImages = document.querySelector('.recent-images-col .car-image-col');
-    const recentImage = recentImages.querySelector(`[data-recent-imagepos="${carImagePos}"]`);
+    const carImagePos = carImageDiv.children[carImageDiv.childElementCount - 1].getAttribute('data-imagepos') || carImageDiv.children[carImageDiv.childElementCount - 1].getAttribute('data-recent-imagepos');
     
-    const bottomImages = document.querySelector('.car-images-row');
-
-    
-    carImageDiv.parentNode.removeChild(carImageDiv);
-    if(bottomImages && bottomImages.childElementCount > 0) {
-        recentImages.append(bottomImages.children[0].children[0]);
-        bottomImages.removeChild(bottomImages.children[0]);
-    }
-    else {
-        // Create div for image
-        let div = Object.assign(
-            document.createElement("div"), {
-            "className": "car-image"
-        });
-
-        let img = Object.assign(
-            document.createElement("img"), {
-            "src": '/assets/images/no-image.gif'
-        });
-        img.setAttribute("data-noimage", 'true');
-        img.setAttribute("data-imagepos", '0');
-
-        // Push image into div
-        div.prepend(img);
-        
-        // Push div into column
-        document.querySelector(".car-image-col").append(div);
-    }
+    carImageDiv.parentElement.parentElement.removeChild(carImageDiv.parentElement);
 
     const moved = changePositionsAbove(carImagePos);
     saveNewImagePositions(carImagePos, moved);
 
-    if(recentImage) {
-        clearRecentImages();
-        insertRecentImages();
-    }
+    clearRecentImages();
+    insertRecentImages();
 }
 
 function changePositionsAbove(removedPos) {
@@ -1928,6 +1897,19 @@ function saveNewImagePositions(removedPos, moved) {
         contentType: false,
         processData: false,
     });
+
+    const arrHiddenImputImages = Array.from(document.querySelectorAll(`[name="car_images[]"]`));
+    let pos;
+    arrHiddenImputImages.forEach(input => {
+        pos = input.getAttribute('data-pos');
+        if(pos == removedPos) {
+            input.parentElement.removeChild(input);
+        } else if(pos > removedPos) {
+            src = input.value.split('|')[0];
+            input.setAttribute('data-pos', pos - 1);
+            input.value = src + '|' + (pos - 1);
+        }
+    });
 }
 
 ; (function (window, doc) {
@@ -1936,7 +1918,6 @@ function saveNewImagePositions(removedPos, moved) {
     if (!calculationChangers || !calculationChangers.length) {
         return;
     }
-
 
     const calcFromTotal = doc.querySelector(".js-calc-from-total");
     const vatCheckedEl = doc.querySelector("#switchvat");
