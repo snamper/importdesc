@@ -776,38 +776,38 @@
                                 <div class='row'>
                                     <div class='col-12 car-image-col'>
 
-                                <?php
-                                if (empty($data['car_images'][0])) {
-                                    for ($i = 0; $i < 5; $i++) {
-                                        echo "<div class='car-image'>
-                                            <img src='/assets/images/no-image.gif' data-imagepos='0' data-noimage='true' />
-                                        </div>";
-                                    }
-                                }
-                                 else {
-                                     $imagesCount = count($data['car_images'][0]);
-                                     for($i = $imagesCount-1; $i >= 0; $i--) {
-
-                                         if ($i < $imagesCount-5) {
-                                             break;
-                                         }
-                                         echo "<div class='car-image'>
-                                            <span class='ti-trash'></span>
-                                            <span class='ti-arrow-up'></span>
-                                            <span class='ti-arrow-down'></span>
-                                            <img src='/{$data['car_images'][0][$i]['cp_path']}' draggable='true' ondragstart='onImageDrag(event)' ondragover='allowDrop(event)' ondrop='onImageDrop(event)' data-imagepos='{$data['car_images'][0][$i]['cp_imagepos']}' />
-                                        </div>";
-                                     }
-                                     $left = 5 - $imagesCount;
-                                     if ($left > 0) {
-                                         for ($i = 0; $i < $left; $i++) {
-                                             echo "<div class='car-image'>
-                                             <img src='/assets/images/no-image.gif' data-imagepos='0' data-noimage='true' />
-                                            </div>";
+                                        <?php
+                                        if (empty($data['car_images'][0])) {
+                                            for ($i = 0; $i < 5; $i++) {
+                                                echo "<div class='car-image'>
+                                                    <img src='/assets/images/no-image.gif' data-recent-imagepos='0' data-noimage='true' />
+                                                </div>";
+                                            }
                                         }
-                                    }
-                                 }
-                                ?>
+                                        else {
+                                            $imagesCount = count($data['car_images'][0]);
+                                            for($i = $imagesCount-1; $i >= 0; $i--) {
+
+                                                if ($i < $imagesCount-5) {
+                                                    break;
+                                                }
+                                                echo "<div class='car-image'>
+                                                    <span class='ti-trash'></span>
+                                                    <span class='ti-arrow-up'></span>
+                                                    <span class='ti-arrow-down'></span>
+                                                    <img src='/{$data['car_images'][0][$i]['cp_path']}' draggable='true' ondragstart='onImageDrag(event)' ondragover='allowDrop(event)' ondrop='onImageDrop(event)' data-recent-imagepos='{$data['car_images'][0][$i]['cp_imagepos']}' />
+                                                </div>";
+                                            }
+                                            $left = 5 - $imagesCount;
+                                            if ($left > 0) {
+                                                for ($i = 0; $i < $left; $i++) {
+                                                    echo "<div class='car-image'>
+                                                    <img src='/assets/images/no-image.gif' data-recent-imagepos='0' data-noimage='true' />
+                                                    </div>";
+                                                }
+                                            }
+                                        }
+                                        ?>
                                     </div>  
                                 </div>
                             </div>
@@ -1352,17 +1352,15 @@
     <div class="row car-images-row" data-extra-images='true'>
         <?php
         $imagesNumber = count($data['car_images'][0]);
-        if ($imagesNumber > 5) {
-            for ($i = $imagesNumber -6; $i >= 0; $i--) {
-                echo "<div class='col-12 col-md-3 car-image-col'>
-                        <div class='car-image'>
-                            <span class='ti-trash'></span>
-                            <span class='ti-arrow-up'></span>
-                            <span class='ti-arrow-down'></span>
-                            <img src='{$data['car_images'][0][$i]['cp_path']}' draggable='true' ondragstart='onImageDrag(event)' ondragover='allowDrop(event)' ondrop='onImageDrop(event)' data-imagepos='{$data['car_images'][0][$i]['cp_imagepos']}' />
-                        </div>
-                    </div>";
-            }
+        for ($i = $imagesNumber - 1; $i >= 0; $i--) {
+            echo "<div class='col-12 col-md-3 car-image-col'>
+                    <div class='car-image'>
+                        <span class='ti-trash'></span>
+                        <span class='ti-arrow-up'></span>
+                        <span class='ti-arrow-down'></span>
+                        <img src='{$data['car_images'][0][$i]['cp_path']}' draggable='true' ondragstart='onImageDrag(event)' ondragover='allowDrop(event)' ondrop='onImageDrop(event)' data-imagepos='{$data['car_images'][0][$i]['cp_imagepos']}' />
+                    </div>
+                </div>";
         }
 
         ?>

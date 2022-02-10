@@ -205,7 +205,7 @@
     position: relative;
 }
 
-.car-image img {
+.car-image img[draggable="true"] {
     cursor: grab;
 }
 
@@ -235,19 +235,19 @@
     opacity: 1;
 }
 
-.car-image-col[data-extra-images] .car-image > .ti-trash {
+.car-images-row[data-extra-images] .car-image-col .car-image > .ti-trash {
     top: 10px;
 }
-.car-image-col[data-extra-images] .car-image > .ti-arrow-up {
+.car-images-row[data-extra-images] .car-image-col .car-image > .ti-arrow-up {
     top: 40px;
 }
-.car-image-col[data-extra-images] .car-image > .ti-arrow-down {
+.car-images-row[data-extra-images] .car-image-col .car-image > .ti-arrow-down {
     top: 70px;
 }
 
-.car-image-col:hover[data-extra-images] .car-image > .ti-trash,
-.car-image-col:hover[data-extra-images] .car-image > .ti-arrow-up,
-.car-image-col:hover[data-extra-images] .car-image > .ti-arrow-down {
+.car-images-row[data-extra-images] .car-image-col:hover .car-image > .ti-trash,
+.car-images-row[data-extra-images] .car-image-col:hover .car-image > .ti-arrow-up,
+.car-images-row[data-extra-images] .car-image-col:hover .car-image > .ti-arrow-down {
     right: 8px;
     font-size: 1.5rem;
 }

@@ -1617,84 +1617,6 @@ $(document).ready(function () {
         uploadFileContainer.classList.remove("highlighted");
     }
 
-    const onTrashBtnClick = (e) => {
-        const carImageDiv = e.target.parentNode;
-        const carImagePos = carImageDiv.children[carImageDiv.childElementCount - 1].getAttribute('data-imagepos');
-        const recentImages = document.querySelector('.recent-images-col .car-image-col');
-        const bottomImages = document.querySelector('.car-images-row');
-
-        console.log(carImageDiv.parentNode.parentNode);
-        const isBottomImage = carImageDiv.parentNode.parentNode.getAttribute('data-extra-images') ? true : false;
-
-        if(isBottomImage) {
-            carImageDiv.parentNode.parentNode.removeChild(carImageDiv.parentNode);
-        }
-        else {
-            carImageDiv.parentNode.removeChild(carImageDiv);
-            if(bottomImages && bottomImages.childElementCount > 0) {
-                recentImages.append(bottomImages.children[0].children[0]);
-                bottomImages.removeChild(bottomImages.children[0]);
-            }
-            else {
-                // Create div for image
-                let div = Object.assign(
-                    document.createElement("div"), {
-                    "className": "car-image"
-                });
-
-                let img = Object.assign(
-                    document.createElement("img"), {
-                    "src": '/assets/images/no-image.gif'
-                });
-                img.setAttribute("data-noimage", 'true');
-                img.setAttribute("data-imagepos", '0');
-
-                // Push image into div
-                div.prepend(img);
-                
-                // Push div into column
-                document.querySelector(".car-image-col").append(div);
-            }
-        }
-
-        changePositionsAbove(carImagePos);
-        changeHiddenInputs();
-    }
-
-    const changePositionsAbove = (removedPos) => {
-        const images = document.querySelectorAll('img[data-imagepos]');
-        let pos;
-        images.forEach(img => {
-            pos = img.getAttribute('data-imagepos');
-            if(pos > removedPos) {
-                img.setAttribute('data-imagepos', img.getAttribute('data-imagepos') - 1);
-            }
-        });
-    }
-
-    const changeHiddenInputs = () => {
-        const inputs = document.querySelectorAll('[name="car_images[]"]');
-        inputs.forEach(input => {
-            input.parentElement.removeChild(input);
-        });
-
-        const images = document.querySelectorAll('img[data-imagepos]');
-        let noImage = false;
-        let hiddenInput;
-        images.forEach(image => {
-            noImage = (image.getAttribute('data-noimage') == 'true') ? true : false;
-            if(!noImage) {
-                hiddenInput = Object.assign(
-                    document.createElement("input"), {
-                    "type": "hidden",
-                    "name": "car_images[]",
-                    "value": (image.getAttribute('src') + '|' + image.getAttribute('data-imagepos'))
-                });
-                createEditCarForm.appendChild(hiddenInput);
-            }
-        })
-    }
-
     function displayUploadedFiles(response, type) {
         const createEditCarForm = document.querySelector("#createEditCarForm");
         if(type == "files") {
@@ -1724,18 +1646,16 @@ $(document).ready(function () {
 
 
         }else { // IF IMAGES 
-            let insertBottom = 0;
-            let img, span, div;
+            let img, span, carImageDiv, imageColDiv;
 
             for(let key in response) {
-                // Dont push more than 5 images on the top. Rest go to the bottom
-                if(key >= 5) {
-                    insertBottom = response.length - 5;
-                    break;
-                }
-
                 // Create div for image
-                div = Object.assign(
+                imageColDiv = Object.assign(
+                    document.createElement("div"), {
+                    "className": "col-12 col-md-3 car-image-col"
+                });
+                // Create div for image
+                carImageDiv = Object.assign(
                     document.createElement("div"), {
                     "className": "car-image"
                 });
@@ -1743,35 +1663,24 @@ $(document).ready(function () {
                 // Create the image object
                 img = Object.assign(
                     document.createElement("img"), {
-                    "src": response[key].location,
-                    "draggable": "true"
+                    "src": response[key].location
                 });
                 img.setAttribute("data-imagepos", response[key].pos);
-                img.setAttribute("ondragstart", 'onImageDrag(event)');
-                img.setAttribute("ondragover", 'allowDrop(event)');
-                img.setAttribute("ondrop", 'onImageDrop(event)');
 
                 // Push image into div
-                div.prepend(img);
+                carImageDiv.prepend(img);
                 // Push icons into div
-                div.prepend(Object.assign(
-                    document.createElement("span"), {
-                    "className": "ti-arrow-down"
-                }));
-                div.prepend(Object.assign(
-                    document.createElement("span"), {
-                    "className": "ti-arrow-up"
-                }));
 
                 span = Object.assign(
                     document.createElement("span"), {
                     "className": "ti-trash"
-                })
-                div.prepend(span);
+                });
+                carImageDiv.prepend(span);
                 span.addEventListener('click', onTrashBtnClick);
                 
+                imageColDiv.prepend(carImageDiv);
                 // Push div into column
-                document.querySelector(".car-image-col").prepend(div);
+                document.querySelector(".car-images-row").prepend(imageColDiv);
 
                 // Push hidden input of image to be uploaded
                 let hiddenInput = Object.assign(
@@ -1779,52 +1688,106 @@ $(document).ready(function () {
                     "type": "hidden",
                     "name": "car_images[]",
                     "value": response[key].location + '|' + response[key].pos
-                })
+                });
                 hiddenInput.setAttribute('data-pos', response[key].pos);
                 createEditCarForm.appendChild(hiddenInput);
             }
 
-            const recentImagesCol = document.querySelector(".car-image-col");
-
-            let moveImagesNum = (response.length >= 5) ? 5 : response.length;
-            let i = moveImagesNum - 1;
-            let nodeEl;
-            let noImageCount = recentImagesCol.querySelectorAll('[data-noimage]').length;
-            if(noImageCount) {
-                for(i; i >= 0; i--) {
-                    if(!noImageCount) {
-                        break;
-                    }
-
-                    nodeEl = recentImagesCol.children[recentImagesCol.childElementCount - 1];
-                    if(nodeEl.children[nodeEl.childElementCount - 1].getAttribute('data-noimage')) {
-                        recentImagesCol.removeChild(nodeEl);
-                        noImageCount--;
-                    }
-                }
-            }
-            
-            if(!noImageCount && recentImagesCol.childElementCount > 5) {
-                const extraImagesRow = document.querySelector(".car-images-row");
-                let column;
-
-                for(i; i >= 0; i--) {
-                    nodeEl = recentImagesCol.children[recentImagesCol.childElementCount - 1];
-                    column = Object.assign(
-                        document.createElement("div"), {
-                        "classList": "col-12 col-md-3 car-image-col car-image",
-                    });
-                    column.append(nodeEl);
-                    extraImagesRow.prepend(column);
-                }
-            }
+            updateRecentImages();
         }
     }
 
 })(window, document);
 
+function updateRecentImages() {
+    const origin = location.origin;
+
+    clearRecentImages();
+    insertRecentImages();
+}
+
+function clearRecentImages() {
+    const recentImagesCol = document.querySelector('.recent-images-col .car-image-col');
+    for(let i = recentImagesCol.childElementCount - 1; i >= 0; i--) {
+        recentImagesCol.removeChild(recentImagesCol.children[i]);
+    }
+}
+
+function insertRecentImages() {
+    let num = 0;
+    let img;
+    document.querySelectorAll('.car-images-row .car-image-col .car-image').forEach(car_image => {
+        if(num >= 5) {
+            return;
+        }
+
+        img = car_image.children[car_image.childElementCount - 1];
+        insertRecentImage(img.src.replace(origin, ''), img.getAttribute('data-imagepos'), (img.getAttribute('draggable') == 'true' ? true : false));
+        num++;
+    });
+
+    if(num < 5) {
+        for(let i=0; i<5-num; i++) {
+            insertRecentImage();
+        }
+    }
+}
+
+function insertRecentImage(src, pos, draggable) {
+    const recentImgCol = document.querySelector('.recent-images-col .car-image-col');
+    let img;
+
+    // Create div for image
+    let carImageDiv = Object.assign(
+        document.createElement("div"), {
+        "className": "car-image"
+    });
+
+    if(src) {
+        // Create the image object
+        img = Object.assign(
+            document.createElement("img"), {
+            "src": src,
+            "draggable": draggable
+        });
+        img.setAttribute("data-recent-imagepos", pos);
+        if(draggable) {
+            img.setAttribute("ondragstart", 'onImageDrag(event)');
+            img.setAttribute("ondragover", 'allowDrop(event)');
+            img.setAttribute("ondrop", 'onImageDrop(event)');
+        }
+    }
+    else {
+        // Create empty image object
+        img = Object.assign(
+            document.createElement("img"), {
+            "src": '/assets/images/no-image.gif'
+        });
+    }
+    
+    // Push image into div
+    carImageDiv.prepend(img);
+    // Push icons into div
+    carImageDiv.prepend(Object.assign(
+        document.createElement("span"), {
+        "className": "ti-arrow-down"
+    }));
+    carImageDiv.prepend(Object.assign(
+        document.createElement("span"), {
+        "className": "ti-arrow-up"
+    }));
+
+    let span = Object.assign(
+        document.createElement("span"), {
+        "className": "ti-trash"
+    })
+    carImageDiv.prepend(span);
+
+    recentImgCol.append(carImageDiv);
+}
+
 function onImageDrag(e) {
-    e.dataTransfer.setData("Text", e.target.getAttribute('data-imagepos'));
+    e.dataTransfer.setData("Text", e.target.getAttribute('data-imagepos') || e.target.getAttribute('data-recent-imagepos'));
 }
 
 function allowDrop(e) {
@@ -1834,13 +1797,16 @@ function allowDrop(e) {
 function onImageDrop(e) {
     e.preventDefault();
 
-    const origin = location.origin;
-    const toImage = e.target;
-    const toImagePos = toImage.getAttribute('data-imagepos');
+    const origin = location.origin + '/';
+    
+    const toImagePos = e.target.getAttribute('data-imagepos') || e.target.getAttribute('data-recent-imagepos');
+    const toImage = document.querySelector(`img[data-imagepos="${toImagePos}"]`);
     const toImageSrc = toImage.src.replace(origin, '');
 
     const fromImagePos = e.dataTransfer.getData("Text");
     const fromImage = document.querySelector(`img[data-imagepos="${fromImagePos}"]`);
+    if(!fromImage)
+        return;
     const fromImageSrc = fromImage.src.replace(origin, '');
 
     const tohiddenInputImage = document.querySelector(`[name="car_images[]"][data-pos="${toImagePos}"]`);
@@ -1849,16 +1815,16 @@ function onImageDrop(e) {
     fromImage.setAttribute('src', toImageSrc);
     toImage.setAttribute('src', fromImageSrc);
 
-    const car_id = $('#car_id').val();
+    const car_id = $('[name="car_id"]').val();
 
     if(car_id) {
         const formData = new FormData();
         formData.append('move_image', 'true');
         formData.append('car_id', car_id);
-        formData.append('topos', toImagePos);
+        formData.append('fromsrc', fromImageSrc);
         formData.append('frompos', fromImagePos);
         formData.append('tosrc', toImageSrc);
-        formData.append('fromsrc', fromImageSrc);
+        formData.append('topos', toImagePos);
 
         $.ajax({
             url: `${location.origin}/car_start`,
@@ -1868,16 +1834,17 @@ function onImageDrop(e) {
             processData: false,
         });
     }
-
-    /* if(tohiddenInputImage) {
-        console.log(fromImageSrc);
-        console.log(fromImageSrc.src.replace(origin, ''));
-        tohiddenInputImage.setAttribute('value', (fromImageSrc.src.replace(origin, '') + '|' + toImagePos))
+    else {
+        tohiddenInputImage.setAttribute('value', (fromImageSrc + '|' + toImagePos));
+        fromhiddenInputImage.setAttribute('value', (toImageSrc + '|' + fromImagePos));
     }
 
-    if(fromhiddenInputImage) {
-        fromhiddenInputImage.setAttribute('value', (toImageSrc.src.replace(origin, '') + '|' + fromImagePos))
-    } */
+    const recentImage = document.querySelector(`img[data-recent-imagepos="${fromImagePos}"]`) || document.querySelector(`img[data-recent-imagepos="${toImagePos}"]`);
+
+    if(recentImage) {
+        clearRecentImages();
+        insertRecentImages();
+    }
 }
 
 ;(function (window, doc) {
@@ -1886,82 +1853,82 @@ function onImageDrop(e) {
     if(!trashBtns)
         return;
 
-    const onTrashBtnClick = (e) => {
-        const carImageDiv = e.target.parentNode;
-        const carImagePos = carImageDiv.children[carImageDiv.childElementCount - 1].getAttribute('data-imagepos');
-        const recentImages = document.querySelector('.recent-images-col .car-image-col');
-        const bottomImages = document.querySelector('.car-images-row');
-
-        const isBottomImage = carImageDiv.parentNode.parentNode.getAttribute('data-extra-images') ? true : false;
-        console.log(carImageDiv.parentNode.parentNode);
-
-        if(isBottomImage) {
-            carImageDiv.parentNode.parentNode.removeChild(carImageDiv.parentNode);
-        }
-        else {
-            carImageDiv.parentNode.removeChild(carImageDiv);
-            if(bottomImages && bottomImages.childElementCount > 0) {
-                recentImages.append(bottomImages.children[0].children[0]);
-                bottomImages.removeChild(bottomImages.children[0]);
-            }
-            else {
-                // Create div for image
-                let div = Object.assign(
-                    document.createElement("div"), {
-                    "className": "car-image"
-                });
-
-                let img = Object.assign(
-                    document.createElement("img"), {
-                    "src": '/assets/images/no-image.gif'
-                });
-                img.setAttribute("data-noimage", 'true');
-                img.setAttribute("data-imagepos", '0');
-
-                // Push image into div
-                div.prepend(img);
-                
-                // Push div into column
-                document.querySelector(".car-image-col").append(div);
-            }
-        }
-
-        const moved = changePositionsAbove(carImagePos);
-        saveNewImagePositions(carImagePos, moved);
-    }
-
-    const changePositionsAbove = (removedPos) => {
-        const images = document.querySelectorAll('img[data-imagepos]');
-        let pos, moved = 0;
-        images.forEach(img => {
-            pos = img.getAttribute('data-imagepos');
-            if(pos > removedPos) {
-                img.setAttribute('data-imagepos', img.getAttribute('data-imagepos') - 1);
-                moved++;
-            }
-        });
-        return moved;
-    }
-
-    const saveNewImagePositions = (removedPos, moved) => {
-        const formData = new FormData();
-        formData.append('removed_image', removedPos);
-        formData.append('moved_images', moved);
-
-        $.ajax({
-            url: `${location.origin}/car_start`,
-            type: 'post',
-            data: formData,
-            contentType: false,
-            processData: false,
-        });
-    }
-
     trashBtns.forEach((btn) => {
         btn.addEventListener('click', onTrashBtnClick); 
     });
 
 })(window, document);
+
+function onTrashBtnClick(e) {
+    const carImageDiv = e.target.parentNode;
+    const carImagePos = carImageDiv.children[carImageDiv.childElementCount - 1].getAttribute('data-imagepos');
+    const recentImages = document.querySelector('.recent-images-col .car-image-col');
+    const recentImage = recentImages.querySelector(`[data-recent-imagepos="${carImagePos}"]`);
+    
+    const bottomImages = document.querySelector('.car-images-row');
+
+    
+    carImageDiv.parentNode.removeChild(carImageDiv);
+    if(bottomImages && bottomImages.childElementCount > 0) {
+        recentImages.append(bottomImages.children[0].children[0]);
+        bottomImages.removeChild(bottomImages.children[0]);
+    }
+    else {
+        // Create div for image
+        let div = Object.assign(
+            document.createElement("div"), {
+            "className": "car-image"
+        });
+
+        let img = Object.assign(
+            document.createElement("img"), {
+            "src": '/assets/images/no-image.gif'
+        });
+        img.setAttribute("data-noimage", 'true');
+        img.setAttribute("data-imagepos", '0');
+
+        // Push image into div
+        div.prepend(img);
+        
+        // Push div into column
+        document.querySelector(".car-image-col").append(div);
+    }
+
+    const moved = changePositionsAbove(carImagePos);
+    saveNewImagePositions(carImagePos, moved);
+
+    if(recentImage) {
+        clearRecentImages();
+        insertRecentImages();
+    }
+}
+
+function changePositionsAbove(removedPos) {
+    const images = document.querySelectorAll('img[data-imagepos]');
+    let pos, moved = 0;
+    images.forEach(img => {
+        pos = img.getAttribute('data-imagepos');
+        if(pos > removedPos) {
+            img.setAttribute('data-imagepos', img.getAttribute('data-imagepos') - 1);
+            moved++;
+        }
+    });
+    return moved;
+}
+
+function saveNewImagePositions(removedPos, moved) {
+    const formData = new FormData();
+    formData.append('removed_image', removedPos);
+    formData.append('moved_images', moved);
+
+    $.ajax({
+        url: `${location.origin}/car_start`,
+        type: 'post',
+        data: formData,
+        contentType: false,
+        processData: false,
+    });
+}
 
 ; (function (window, doc) {
     const calculationChangers = doc.querySelectorAll(".js-calc-input");

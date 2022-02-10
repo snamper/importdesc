@@ -1267,32 +1267,38 @@ class base
 	public function switchImages($_post, $car_id) {
 		
 		$dbDriver = new db_driver();
-		$filename1 = explode("/", $_post['tosrc']);
-		$filename2 = explode("/", $_post['fromsrc']);
 
-		$sql = "UPDATE car_photos SET
-		cp_imagepos = ?
-		WHERE cp_filename = ?";
+		if(isset($_post['frompos'])) {
+			$filename = explode("/", $_post['tosrc']);
 
-		$stmt1 = $dbDriver->dbCon->prepare($sql);
-		$stmt1->execute(
-			[
-				$_post['frompos'],
-				$filename1[count($filename1)-1]
-			]
-		);
-		
-		$sql = "UPDATE car_photos SET
-		cp_imagepos = ?
-		WHERE cp_filename = ?";
+			$sql = "UPDATE `car_photos` SET `cp_filename`=?,`cp_path`=? WHERE `cp_car_id`=? AND `cp_imagepos`=?";
 
-		$stmt1 = $dbDriver->dbCon->prepare($sql);
-		$stmt1->execute(
-			[
-				$_post['topos'],
-				$filename2[count($filename2)-1]
-			]
-		);
+			$stmt1 = $dbDriver->dbCon->prepare($sql);
+			$stmt1->execute(
+				[
+					$filename[count($filename)-1],
+					$_post['tosrc'],
+					$car_id,
+					$_post['frompos']
+				]
+			);
+		}
+
+		if(isset($_post['topos'])) {
+			$filename = explode("/", $_post['fromsrc']);
+			
+			$sql = "UPDATE `car_photos` SET `cp_filename`=?,`cp_path`=? WHERE `cp_car_id`=? AND `cp_imagepos`=?";
+
+			$stmt1 = $dbDriver->dbCon->prepare($sql);
+			$stmt1->execute(
+				[
+					$filename[count($filename)-1],
+					$_post['fromsrc'],
+					$car_id,
+					$_post['topos']
+				]
+			);
+		}
 	}
 
 	public function insertCarPhoto($path, $inserted_car_id, $imagepos)
