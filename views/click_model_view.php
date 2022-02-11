@@ -722,7 +722,7 @@
                                         Totaal Costs and Fee
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <input readonly class="form-control" type="text" value="<?php echo (isset($data['single_car']['total_costs_and_fee']) ?  $data['single_car']['total_costs_and_fee'] : '') ?> " name="total_costs_fee" id="totalCostsFee">
+                                        <input readonly class="form-control" type="text" value="<?php echo (isset($data['single_car']['total_costs_and_fee']) ?  $data['single_car']['total_costs_and_fee'] : '') ?> " name="total_costs_and_fee" id="totalCostsFee">
                                     </div>
                                 </div>
                                 <div class="row str">
@@ -800,8 +800,6 @@
                                                 }
                                                 echo "<div class='car-image'>
                                                     <span class='ti-trash'></span>
-                                                    <span class='ti-arrow-up'></span>
-                                                    <span class='ti-arrow-down'></span>
                                                     <img src='/{$data['car_images'][0][$i]['cp_path']}' draggable='true' ondragstart='onImageDrag(event)' ondragover='allowDrop(event)' ondrop='onImageDrop(event)' data-recent-imagepos='{$data['car_images'][0][$i]['cp_imagepos']}' />
                                                 </div>";
                                             }
@@ -1377,8 +1375,6 @@
             echo "<div class='col-12 col-md-3 car-image-col'>
                     <div class='car-image'>
                         <span class='ti-trash'></span>
-                        <span class='ti-arrow-up'></span>
-                        <span class='ti-arrow-down'></span>
                         <img src='{$data['car_images'][0][$i]['cp_path']}' draggable='true' ondragstart='onImageDrag(event)' ondragover='allowDrop(event)' ondrop='onImageDrop(event)' data-imagepos='{$data['car_images'][0][$i]['cp_imagepos']}' />
                     </div>
                 </div>";

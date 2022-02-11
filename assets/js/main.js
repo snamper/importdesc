@@ -1918,7 +1918,7 @@ function insertRecentImage(src, pos, draggable) {
     // Push image into div
     carImageDiv.prepend(img);
     // Push icons into div
-    carImageDiv.prepend(Object.assign(
+    /* carImageDiv.prepend(Object.assign(
         document.createElement("span"), {
         "className": "ti-arrow-down"
     }));
@@ -1931,7 +1931,7 @@ function insertRecentImage(src, pos, draggable) {
         document.createElement("span"), {
         "className": "ti-trash"
     })
-    carImageDiv.prepend(span);
+    carImageDiv.prepend(span); */
 
     recentImgCol.append(carImageDiv);
 }
@@ -2092,11 +2092,22 @@ function saveNewImagePositions(removedPos, moved) {
         return isNaN(num) ? 0 : num;
     }
 
+    const val = (id) => {
+        return Number($(`#${id}`).val()) || 0;
+    }
+
     function calcFromTotalFn() {
         const totalElVal = getNumber(doc.querySelector("#totalAll").value);
 
         if (!vatCheckedEl.checked) {
-            const salesPriceVat = minusValues(totalElVal, "#addLeges");
+
+            $('#addVerkoopprijs_Marge_incl').val(totalElVal - val('addLeges'));
+            $('#totalPriceFee').val(val('addVerkoopprijs_Marge_incl') - val('addBTW_21'));
+            $('#totalCostsFee').val(val('totalPriceFee') - val('totalPriceNettoSuppluier'));
+            $('#addFee').val(val('totalCostsFee') - (val('addOpknapkosten') + val('addTransport_Buitenland') + val('addTransport_Binnenland') + val('costTaxation')));
+
+
+            /* const salesPriceVat = minusValues(totalElVal, "#addLeges");
             const salesPriceNetto = (salesPriceVat / 1.21).toFixed(0);
             const totalPurchasePriceNetto = minusValues(salesPriceNetto, "#totalCostsFee");
             const totalCostsFee = salesPriceNetto - totalPurchasePriceNetto;
@@ -2108,17 +2119,22 @@ function saveNewImagePositions(removedPos, moved) {
             console.log('totalCostsFee: ' + totalCostsFee);
             console.log('sumValues: ' + sumValues("#addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation"));
             console.log('addFee: ' + doc.querySelector("#addFee").value);
-            doc.querySelector("#addBTW_21").value = (salesPriceVat - salesPriceNetto).toFixed(0);
+            doc.querySelector("#addBTW_21").value = (salesPriceVat - salesPriceNetto).toFixed(0); */
 
         } else {
 
-            const salesPriceVatBtw = minusValues(totalElVal, "#addLeges");
+            $('#addVerkoopprijs_Marge_incl').val(totalElVal - val('addLeges'));
+            $('#totalPriceFee').val(val('addVerkoopprijs_Marge_incl') - val('addBTW_21'));
+            $('#totalCostsFee').val(val('totalPriceFee') - val('totalPriceNettoSuppluier'));
+            $('#addFee').val(val('totalCostsFee') - (val('addOpknapkosten') + val('addTransport_Buitenland') + val('addTransport_Binnenland') + val('costTaxation')));
+
+            /* const salesPriceVatBtw = minusValues(totalElVal, "#addLeges");
             const salesPriceNeto = minusValues(salesPriceVatBtw, "#addBTW_21");
             const totalPurchasePriceNetto = minusValues(salesPriceNeto, "#totalCostsFee");
             doc.querySelector("#addVerkoopprijs_Marge_incl").value = salesPriceVatBtw;
             doc.querySelector("#totalPriceFee").value = salesPriceNeto;
             doc.querySelector("#totalPriceNettoSuppluier").value = sumValues("#inkoopprijs_ex_ex, #addAfleverkosten");
-            doc.querySelector("#addFee").value = minusValues(totalPurchasePriceNetto, "#addAfleverkosten");
+            doc.querySelector("#addFee").value = minusValues(totalPurchasePriceNetto, "#addAfleverkosten"); */
         }
 
 
