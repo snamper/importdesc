@@ -48,6 +48,9 @@ class car_start extends view
 			$documents = [];
 		}
 
+		$users = $this->base->getAllUsers();
+		$this->setData("users", $users);
+
 		if(isset($_POST['move_image'])) {
 			$this->base->switchImages($_POST, $_POST['car_id']);
 			exit;

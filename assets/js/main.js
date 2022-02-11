@@ -2073,6 +2073,12 @@ function saveNewImagePositions(removedPos, moved) {
     const vatCheckedEl = doc.querySelector("#switchvat");
     const margeCheckedEl = doc.querySelector("#switchmargin");
 
+    if (!vatCheckedEl.checked) {
+        $('#priceNetoText').html('Purchase Price margin');
+    } else {
+        $('#priceNetoText').html('Purchase Price netto (ex/ex)');
+    }
+
     vatCheckedEl.addEventListener("change", changeVatFn);
     margeCheckedEl.addEventListener("change", changeMargeFn);
     calcFromTotal.addEventListener("change", calcFromTotalFn);
@@ -2093,10 +2099,15 @@ function saveNewImagePositions(removedPos, moved) {
             const salesPriceVat = minusValues(totalElVal, "#addLeges");
             const salesPriceNetto = (salesPriceVat / 1.21).toFixed(0);
             const totalPurchasePriceNetto = minusValues(salesPriceNetto, "#totalCostsFee");
+            const totalCostsFee = salesPriceNetto - totalPurchasePriceNetto;
             doc.querySelector("#addVerkoopprijs_Marge_incl").value = salesPriceVat;
             doc.querySelector("#totalPriceFee").value = salesPriceNetto;
-            doc.querySelector("#totalPriceNettoSuppluier").value = sumValues("#inkoopprijs_ex_ex, #addAfleverkosten");
-            doc.querySelector("#addFee").value = minusValues(totalPurchasePriceNetto, "#addAfleverkosten");
+            doc.querySelector("#totalPriceNettoSuppluier").value = totalPurchasePriceNetto;
+            doc.querySelector("#totalCostsFee").value = totalCostsFee;
+            doc.querySelector("#addFee").value = totalCostsFee - sumValues("#addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation");
+            console.log('totalCostsFee: ' + totalCostsFee);
+            console.log('sumValues: ' + sumValues("#addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation"));
+            console.log('addFee: ' + doc.querySelector("#addFee").value);
             doc.querySelector("#addBTW_21").value = (salesPriceVat - salesPriceNetto).toFixed(0);
 
         } else {
@@ -2253,5 +2264,12 @@ $(window).ready(function() {
             event.preventDefault();
             return false;
         }
+    });
+});
+
+// Remove submit on enter
+$(window).ready(function() {
+    $("#sourceByCh").on("change", function (e) {
+        document.getElementById('sourceBy').disabled = !$("#sourceByCh").is(":checked");
     });
 });

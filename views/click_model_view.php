@@ -626,9 +626,16 @@
                                         <div class="col-12 col-md-4 spacer flex-nowrap"></div>
                                             <div class="col-12 col-md-8">
                                                 <span>VAT</span>
-                                                <input type="checkbox" name="switchvat" id="switchvat" checked>
+                                                <input type="checkbox" name="switchvat" id="switchvat" <?php 
+                                                    if(isset($data['single_car']['car_vat_marge'])) {
+                                                        echo ($data['single_car']['car_vat_marge'] == '0') ? "checked" : "";
+                                                    }
+                                                    else {
+                                                        echo 'checked';
+                                                    }
+                                                ?>>
                                                 <span>Margin</span>
-                                                <input type="checkbox" name="switchmargin" id="switchmargin">
+                                                <input type="checkbox" name="switchmargin" id="switchmargin" <?php echo ((isset($data['single_car']['car_vat_marge']) && $data['single_car']['car_vat_marge'] == '1') ? "checked" : "") ?>>
                                             </div>
                                         </div>
                                     </div>
@@ -1323,13 +1330,20 @@
                     <div class="row ml-1 mt-2">Last Edited on</div>
                     <div class="row ml-1 mt-2">Dealer call by</div>
                 </div>
-                <div class="col-4 show-documents" style="white-space: nowrap; background-color: white; overflow: hidden; border-radius: 3px;">
-                    <div class="row ml-1 mt-2"><input type="checkbox" name="source-by-ch" id="sourceByCh" <?php echo ($data['single_car']['car_source'] == '1') ? "checked" : "" ?>/></div>
+                <div class="col-4 show-documents" style="white-space: nowrap; background-color: white; overflow: hidden; border-radius: 3px; border: 1px solid #DCDCDC;">
+                    <div class="row ml-1 mt-2"><input type="checkbox" name="source" id="sourceByCh" <?php echo (isset($data['single_car']['car_source']) && $data['single_car']['car_source'] == '1') ? "checked" : "" ?>/></div>
                     <div class="row ml-1 mt-2"><span>
-                        <select name="source_by_name" id="sourceByName" class="form-control" disabled>
+                        <select name="source_id" id="sourceBy" class="form-control" <?php echo (isset($data['single_car']['car_source']) && $data['single_car']['car_source'] == '1') ? "" : "disabled" ?>>
                             <option value="0">-</option>
                             <?php
-                                echo '<option value="0">source option</option>';
+                                foreach ($data['users'][0] as $user) {
+                                    if (isset($data['single_car']['car_source_id']) && $data['single_car']['car_source_id'] == $user["expo_users_ID"]) {
+                                        $selected = "selected";
+                                    } else {
+                                        $selected = "";
+                                    }
+                                    echo "<option $selected value='{$user["expo_users_ID"]}'>{$user["expo_users_name"]} </option>";
+                                }
                             ?>
                         </select>
                     </span></div>
