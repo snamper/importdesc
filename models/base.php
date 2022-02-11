@@ -395,7 +395,7 @@ class base
 	public function getFuelAllFuelTypes()
 	{
 		$dbDriver = new db_driver();
-		$query = "SELECT * FROM conversie_tabel_gwi WHERE `conversie_soort` = 'brandstof'";
+		$query = "SELECT * FROM conversions WHERE `conversion_type` = 'fuel'";
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([]);
@@ -445,6 +445,19 @@ class base
 		return $result;
 	}
 
+	public function getModelsByMake($make_id)
+	{
+
+		$dbDriver = new db_driver();
+		$query = "SELECT * FROM car_models WHERE cmodel_make_id = ?";
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$make_id]);
+		$result = $stmt->fetchAll();
+
+		return $result;
+	}
+
 	public function getUitvoeringsByMake($make_id)
 	{
 
@@ -455,6 +468,21 @@ class base
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$make_id]);
 		$result = $stmt->fetchAll();
+
+		return $result;
+	}
+
+	public function getFuelByMake($make_id)
+	{
+
+		$dbDriver = new db_driver();
+		$query = "SELECT cmotor_fuel_id, conv.conversion_name  FROM car_motors
+		INNER JOIN conversions conv on conv.conversion_id = car_motors.cmotor_fuel_id
+		 WHERE cmotor_id = ?";
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$make_id]);
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		return $result;
 	}
@@ -481,6 +509,20 @@ class base
 		$query = "SELECT * FROM car_motors WHERE cmotor_fuel_id = $fuel_id AND cmotor_make_id = $make_id";
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$fuel_id, $make_id]);
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		return $result;
+	}
+
+	public function getFuelsByMotor($motor_id)
+	{
+
+		$dbDriver = new db_driver();
+		$query = "SELECT * FROM conversions conv
+		INNER JOIN car_motors cm on conv.conversion_id = cm.cmotor_fuel_id
+		WHERE cm.cmotor_id = $motor_id";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$motor_id]);
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		return $result;

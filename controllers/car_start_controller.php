@@ -157,11 +157,63 @@ class car_start extends view
 			exit;
 		}
 
+		// Fetch form fields data
+
 		if (isset($_GET['all_car_makes'])) {
 			$car_makes = $this->base->getAllCarMakes();
 			echo json_encode($car_makes);
 			exit;
 		}
+
+		if(isset($_GET['make_id_get_motors'])) {
+            $motors = $this->base->getMotorsByMake($_GET['make_id_get_motors']);
+        
+            echo json_encode($motors, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
+            exit;
+        }
+
+        if(isset($_GET['make_id_get_uitvoering'])) {
+            $uitvoerings = $this->base->getUitvoeringsByMake($_GET['make_id_get_uitvoering']);
+        
+            echo json_encode($uitvoerings, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
+            exit;
+        }
+
+        if(isset($_GET['make_id_get_fuels'])) {
+            $fuels = $this->base->getFuelByMake($_GET['make_id_get_fuels']);
+            echo json_encode($fuels, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
+            exit;
+        }
+
+        if(isset($_GET['get_all_fuels'])) {
+            $fuels = $this->base->getFuelAllFuelTypes();
+            echo json_encode($fuels, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
+            exit;
+        }
+
+        if(isset($_GET['fuel_id_get_motors'])) {
+            $motors = $this->base->getMotorsByFuel($_GET['fuel_id_get_motors'], $_GET['car_make_id']);
+            echo json_encode($motors, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
+            exit;
+        }
+
+        if(isset($_GET['get_fuel_by_make'])) {
+            $motors = $this->base->getFuelByMake($_GET['get_fuel_by_make'], $_GET['car_make_id']);
+            echo json_encode($motors, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
+            exit;
+        }
+
+        if(isset($_GET['get_fuel_by_motor'])) {
+            $motors = $this->base->getFuelByMotor($_GET['get_fuel_by_motor']);
+            echo json_encode($motors, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
+            exit;
+        }
+
+        if(isset($_GET['make_id_get_models'])) {
+            $motors = $this->base->getModelsByMake($_GET['make_id_get_models']);
+            echo json_encode($motors, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
+            exit;
+        }
 
 
 

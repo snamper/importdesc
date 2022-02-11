@@ -215,9 +215,9 @@
     position: absolute;
     background: white;
     right: 3px;
-    opacity: 0;
     cursor: pointer;
     border: 1px solid rgb(109, 109, 109);
+    display: none;
 }
 
 .car-image > .ti-trash {
@@ -232,7 +232,7 @@
 .car-image:hover > .ti-trash,
 .car-image:hover > .ti-arrow-up,
 .car-image:hover > .ti-arrow-down {
-    opacity: 1;
+    display: block;
 }
 
 .car-images-row[data-extra-images] .car-image-col .car-image > .ti-trash {

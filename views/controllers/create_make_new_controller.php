@@ -35,6 +35,12 @@ class create_make_new extends view
             exit;
         }
 
+        if(isset($_GET['make_id_get_models'])) {
+            $motors = $this->base->getModelsByMake($_GET['car_make_id']);
+            echo json_encode($motors, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
+            exit;
+        }
+
         if (isset($_SESSION['user'])) parent::__construct('create_make_new_view.php');
         else parent::__construct('login_view.php');
         

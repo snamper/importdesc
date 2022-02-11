@@ -49,7 +49,7 @@
             <div class="custom-row">
                 <div class="custom-row-close">X</div>
                 <div class="custom-col">
-                    <a href="/car_start" class="btn btn-danger">Delete all Data </a>
+                    <a href="/car_start" class="btn btn-danger" onclick="return confirm('Are you sure?');">Delete all Data </a>
                 </div>
 
                 <div class="custom-col">
@@ -357,7 +357,7 @@
                                 <div class="col-6 pr-0">
 
                                     <select class="form-control" name="car_variant" id="carUitvoering">
-                                        <option value="">-</option>
+                                        <option value="0">-</option>
                                         <?php
                                         if (isset($_GET['car_id'])) {
                                             echo "<option selected value='{$data['single_car']['cmu_id']}'> {$data['single_car']['cmu_name']}</option>";
@@ -417,7 +417,7 @@
                                 <div class="col-6 pr-0">
 
                                     <select required class="form-control js-car-motor" name="motor" id="carMotor">
-                                        <option value="">-</option>
+                                        <option value="0">-</option>
                                         <?php if (isset($_GET['car_id'])) {
                                             echo "<option selected value='{$data['single_car']['cmotor_id']}'> {$data['single_car']['cmotor_name']}</option>";
                                         } ?>
@@ -616,7 +616,7 @@
 
                <!-- Rigth col  -->
                <div class="col-12 col-md-7">
-                    <div class="container" id="calculationContainer">
+                    <div class="container" id="calculationContainer" style="margin-left: 0!important;padding-left: 0!important;">
                         <div class="row align-items-start">
                             <div class="col-12 col-md-8 calculation-col">
                             <div class="row">
@@ -1323,9 +1323,16 @@
                     <div class="row ml-1 mt-2">Last Edited on</div>
                     <div class="row ml-1 mt-2">Dealer call by</div>
                 </div>
-                <div class="col-4 show-documents" style="white-space: nowrap; background-color: white; overflow: hidden; border-radius: 7px;">
-                    <div class="row ml-1 mt-2"><input type="checkbox" name="source-by-ch" id="sourceByCh"></div>
-                    <div class="row ml-1 mt-2"><span>Source by name</span></div>
+                <div class="col-4 show-documents" style="white-space: nowrap; background-color: white; overflow: hidden; border-radius: 3px;">
+                    <div class="row ml-1 mt-2"><input type="checkbox" name="source-by-ch" id="sourceByCh" <?php echo ($data['single_car']['car_source'] == '1') ? "checked" : "" ?>/></div>
+                    <div class="row ml-1 mt-2"><span>
+                        <select name="source_by_name" id="sourceByName" class="form-control" disabled>
+                            <option value="0">-</option>
+                            <?php
+                                echo '<option value="0">source option</option>';
+                            ?>
+                        </select>
+                    </span></div>
                     <div class="row ml-1 mt-2"><span><?php
                         echo (isset($data['single_car']['created_by']) ? $data['single_car']['created_by']  : "__")
                     ?></span></div>

@@ -1127,9 +1127,10 @@ $('.JSfunc').click(function () {
 });
 
 
-$('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit,#BPMbrandstof').change(function () {
+/* $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit').change(function () {
     var carvalue = $(this).val();
     const firstOptionHTML = "<option value='0'> - </option>";
+    
     if (this.id == "carMakeFuel") {
         var carModel = document.getElementById('carModelFuel');
     } else if (this.id == "carMakeMotor") {
@@ -1161,7 +1162,7 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit,#BPMbrandstof').change(func
 
     if (carvalue == 0) $('#carMakeInput').val('');
     else $('#carMakeInput').val($(this).find('option:selected').text());
-});
+}); */
 
 // $('#carModelFuel, #carModelUit').change(function () {
 //     var carvalue = $(this).val();
@@ -1187,14 +1188,13 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit,#BPMbrandstof').change(func
 // });
 
 
-; (function (window, document) {
+/* ; (function (window, document) {
 
     const carMake = document.querySelector('#carMake');
 
-    if (!carMake) {
+    if(!carMake) {
         return;
     }
-
 
     const queryString = window.location.search;
     const parameters = new URLSearchParams(queryString);
@@ -1229,7 +1229,6 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit,#BPMbrandstof').change(func
                     console.log(error);
                     return;
                 });
-
         }
 
         //FETCH MOTORS 
@@ -1263,6 +1262,46 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit,#BPMbrandstof').change(func
                 return;
             });
 
+        // Fetch Fuel
+        let fuelHTML = `<option value="">-</option>
+        <option value="1">Gasoline</option>
+        <option value="2">Diesel</option>
+        <option value="3">Hybrid</option>
+        <option value="4">Electric</option>
+        <option value="5">LPG</option>
+        <option value="6">Natural Gas</option>
+        <option value="7">Alcohol</option>
+        <option value="8">Cryogenic</option>
+        <option value="9">Hydrogen</option>
+        `;
+
+        const selectedMakeId = carMake.value;
+
+        if(selectedMakeId !== '0') {
+            let urlGetMotorsByFuel = `${location.origin}/create_make_new?fuel_id_get_motors=${trigger.value}&car_make_id=${selectedMakeId}`;
+
+            const motorSelect = document.querySelector("#carMotor");
+            const motorSelVal = motorSelect.value;
+
+            if (trigger.value == "") {
+                urlGetMotorsByFuel = `${location.origin}/create_make_new?make_id_get_motors=${selectedMakeId}`;
+            }
+
+            fetch(urlGetMotorsByFuel)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (response) {
+                    fillSelectFromJson(".js-car-motor", response, "cmotor_name", "cmotor_id");
+                    motorSelect.value = motorSelVal;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    return;
+                });
+
+            carFuel.innerHTML = fuelHTML;
+        }
     });
 
 
@@ -1364,6 +1403,144 @@ $('#carMake, #carMakeFuel, #carMakeMotor,#carMakeUit,#BPMbrandstof').change(func
 
 
 
+})(window, document); */
+
+; (function (window, doc) {
+
+    const carMake = document.querySelector('#carMake');
+
+    if(!carMake)
+        return;
+
+    const queryString = window.location.search;
+    const parameters = new URLSearchParams(queryString);
+    const car_id = parameters.get('car_id');
+
+    if(!car_id) {
+        window.addEventListener('DOMContentLoaded', (event) => {
+            carMake.value = 0;
+            carMake.dispatchEvent(new Event('change'));
+        });
+    }
+    else {
+        window.addEventListener('DOMContentLoaded', (event) => {
+            carMake.dispatchEvent(new Event('change'));
+        });
+    }
+
+    const carFuel = document.getElementById('BPMbrandstof');
+    const carMotor = document.getElementById('carMotor');
+
+    carMake.addEventListener("change", (e) => {
+        const trigger = e.currentTarget;
+
+        fetchCarItems(`${location.origin}/car_start?all_car_makes=0`, "#carMake", "cmake_name", "cmake_id");
+
+        // FETCH Uitvoering
+        fetchCarItems(`${location.origin}/car_start?make_id_get_uitvoering=${trigger.value}`, "#carUitvoering", "cmu_name", "cmu_id");
+        // FETCH Models
+        fetchCarItems(`${location.origin}/car_start?make_id_get_models=${trigger.value}`, "#carModel", "cmodel_name", "cmodel_id");
+
+        //FETCH MOTORS 
+        fetchCarItems(`${location.origin}/car_start?make_id_get_motors=${trigger.value}`, "#carMotor", "cmotor_name", "cmotor_id");
+
+        if(trigger.value !== 0) {
+            carFuel.dispatchEvent(new Event('change'));
+            carMotor.dispatchEvent(new Event('change'));
+        }
+        else {
+            resetSelectElement(carFuel);
+            resetSelectElement(carMotor);
+        }
+    });
+
+    carFuel.addEventListener("change", (e) => {
+        if(carMake.value == 0) {
+            resetSelectElement(e.currentTarget);
+            return;
+        }
+        if(e.currentTarget.value == 0) {
+            // FETCH All Fuel
+            fetchCarItems(`${location.origin}/car_start?get_all_fuels`, "#BPMbrandstof", "conversion_name", "conversion_id");
+
+            //FETCH MOTORS 
+            fetchCarItems(`${location.origin}/car_start?make_id_get_motors=${carMake.value}`, "#carMotor", "cmotor_name", "cmotor_id");
+        }
+        else {
+            fetchCarItems(`${location.origin}/car_start?fuel_id_get_motors=${e.currentTarget.value}&car_make_id=${carMake.value}`, "#carMotor", "cmotor_name", "cmotor_id");
+        }
+    });
+
+    carMotor.addEventListener("change", (e) => {
+        if(carMake.value == 0) {
+            resetSelectElement(e.currentTarget);
+            return;
+        }
+        if(e.currentTarget.value == 0) {
+            // FETCH All Fuel
+            fetchCarItems(`${location.origin}/car_start?get_all_fuels`, "#BPMbrandstof", "conversion_name", "conversion_id");
+        }
+        else {
+            fetchCarItems(`${location.origin}/car_start?get_fuel_by_motor=${e.currentTarget.value}`, "#BPMbrandstof", "conversion_name", "cmotor_fuel_id");
+        }
+    });
+
+    function fetchCarItems(url, fill_id, opt_text, opt_val) {
+        fetch(url)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (response) {
+                fillSelectFromJson(fill_id, response, opt_text, opt_val);
+            })
+            .catch((error) => {
+                console.log(error);
+                return;
+            });
+    }
+
+    function resetSelectElement(el) {
+        el.innerHTML = '';
+        el.appendChild(Object.assign(
+            document.createElement("option"), {
+            "text": "-",
+            "value": "0",
+            "selected": "true"
+        }));
+    }
+
+    function fillSelectFromJson(selector, jsonData, selectTextProp, selectValProp, changeInnerHTML = false) {
+
+        let emptyOption = Object.assign(
+            document.createElement("option"), {
+            "text": "-",
+            "value": "0"
+        });
+    
+        const selectEl = document.querySelector(`${selector}`);
+
+        const selectedOption = selectEl.value;
+    
+        selectEl.innerHTML = "";
+        selectEl.appendChild(emptyOption);
+    
+        for (let key in jsonData) {
+            if (!jsonData.hasOwnProperty(key)) {
+                continue;
+            }
+            let option = Object.assign(
+                document.createElement("option"), {
+                "text": jsonData[key][selectTextProp],
+                "value": jsonData[key][selectValProp]
+            });
+
+            if(selectedOption && option.value == selectedOption)
+                option.selected = true;
+    
+            selectEl.appendChild(option)
+        }
+    }
+
 })(window, document);
 
 // TABS SAVE STATS
@@ -1400,33 +1577,6 @@ $("#languageselect").change(function () {
         }
     });
 });
-function fillSelectFromJson(selector, jsonData, selectTextProp, selectValProp, changeInnerHTML = false) {
-
-    let emptyOption = Object.assign(
-        document.createElement("option"), {
-        "text": "-",
-        "value": ""
-    });
-
-    const selectEl = document.querySelector(`${selector}`);
-
-
-    selectEl.innerHTML = "";
-    selectEl.appendChild(emptyOption);
-
-    for (let key in jsonData) {
-        if (!jsonData.hasOwnProperty(key)) {
-            continue;
-        }
-        let option = Object.assign(
-            document.createElement("option"), {
-            "text": jsonData[key][selectTextProp],
-            "value": jsonData[key][selectValProp],
-        });
-
-        selectEl.appendChild(option)
-    }
-}
 
 // MENU ACTIVE PAGES HANDLE
 ; (function (window, doc) {
@@ -1615,12 +1765,12 @@ $(document).ready(function () {
             const documentsContainer = document.querySelector(".show-documents");
 
             for(let key in response) {
-                let arrLink = response[key].split('/');
+                let arrLink = response[key].location.split('/');
 
 
                 let documentElement = Object.assign(
                     document.createElement("a"), {
-                    "href": response[key],
+                    "href": response[key].location,
                     "innerText": arrLink[arrLink.length-1]
                 });
 
@@ -1628,7 +1778,7 @@ $(document).ready(function () {
                     document.createElement("input"), {
                     "type": "hidden",
                     "name": "car_documents[]",
-                    "value": response[key]
+                    "value": response[key].location
                 });
                 documentsContainer.appendChild(documentElement);
                 documentsContainer.appendChild(document.createElement("br"));
