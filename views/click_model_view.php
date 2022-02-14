@@ -634,7 +634,7 @@
                                 </div>
 
                                 <!-- Current date  -->
-                                <input type="hidden" autocomplete="off"  class="form-control" name="huidigedatumbpm" id="datepicker2">
+                                <input type="" autocomplete="off"  class="form-control" name="huidigedatumbpm" id="datepicker2" value="<?php echo date('d-m-Y') ?>">
 
                                 <div class="row str">
                                     <div class="col-12 col-md-6" id="priceNetoText">
@@ -743,6 +743,7 @@
                                     </div>
                                 </div>
                                 <div class="row str">
+                                <input type="text" class="form-control" id="percentage" name="percentage" placeholder="Restwaarde Percentage">
                                     <div class="col-12 col-md-6">
                                         <?php echo $_SESSION['lang']['car_start_page_58'] ?>
                                     </div>
