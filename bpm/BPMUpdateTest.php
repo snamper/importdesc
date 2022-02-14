@@ -195,8 +195,7 @@ function NEW_forfetaire_berekening_tenaamstelling_nlWLTP() {
 $_SESSION['BPMSAready']=1234; // dit om het pop up scherm te tonen.
 
 $_POST['bpmPrice'] = min(array_filter($_POST["BPMArray"]));
-var_dump($_POST['BPMArray']);
-die;
+
 
 $redirect_pagina = "../../../crm/bpmcalculatorWLTP.php?SoortVoertuig=".$_POST['SoortVoertuig']."&BPMCO2WLTP=".$_POST['BPMCO2WLTP']."&BPMproductiedatum=".$_POST['BPMproductiedatum']."&BPMbrandstof=".$_POST['BPMbrandstof']."&BPMtenaamstellingNL=".$_POST["BPMtenaamstellingNL"]."&variabeledatumbpm=".$_POST['variabeledatumbpm']."&a=".$_POST['forfetaire_uitkomst']."&b=".$_POST['forfetaire_variabel_uitkomst']."&variabeledatumbpm=".$_POST['variabeledatumbpm']."&percentage=".$_POST['percentageX']."&percentagec=".$_POST['percentage']."&bpmprice=".$_POST['forfetaire_brutobpm'];
 // echo "<META HTTP-EQUIV=\"REFRESH\" CONTENT=\"0; URL=" . $redirect_pagina . " \" >";

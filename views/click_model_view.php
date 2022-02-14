@@ -749,17 +749,7 @@
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input readonly type="text" class="form-control" id="addVerkoopprijs_Marge_incl" value="<?php echo (isset($data['single_car']['sales_price_incl_vat_btw']) ?  $data['single_car']['sales_price_incl_vat_btw'] : '') ?> " name="sales_price_incl_vat_btw" placeholder="">
                                     </div>
-                                </div>
-                                <div class="row str">
-                                <input type="text" class="form-control" id="percentage" name="percentage" placeholder="Restwaarde Percentage">
-                                    <div class="col-12 col-md-6">
-                                        Rest BPM (indication)
-                                    </div>
-                                    <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['rest_bpm']) ?  $data['single_car']['rest_bpm'] : '') ?> " id="addRest_BPM" name="rest_bpm" placeholder="Rest BPM Indicatief">
-
-                                    </div>
-                                </div>
+                                </div>                                
                                 <div class="row str">
                                     <div class="col-12 col-md-6">
                                         Leges (VAT / BTW free)
@@ -775,25 +765,25 @@
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input class="form-control js-calc-from-total" value="<?php echo (isset($data['single_car']['sales_price_total']) ?  $data['single_car']['sales_price_total'] : '') ?> " type="text" name="sales_price_total" id="totalAll">
                                     </div>
-                                </div>
-
-
-                                
+                                </div>                                
                                 <div class="row mt-4"></div>
                                 <div class="row str">
                                     <div class="col-12 col-md-6 font-weight-bold">
                                         % BPM
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input class="form-control" type="text" name="bpm_output_1" id="" placeholder="" disabled>
+                                        <input readonly type="text" class="form-control" id="percentage" name="percentage" placeholder="">
                                     </div>
                                 </div>
+
+                              
                                 <div class="row str">
                                     <div class="col-12 col-md-6 font-weight-bold">
                                         Rest BPM (indication)
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input class="form-control" type="text" name="bpm_output_1" id="" placeholder="" disabled>
+                                        <input readonly type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['rest_bpm']) ?  $data['single_car']['rest_bpm'] : '') ?> " id="addRest_BPM" name="rest_bpm" placeholder="Rest BPM Indicatief">
+
                                     </div>
                                 </div>
                             </div>
