@@ -625,8 +625,8 @@
                                     <div class="row" style="margin-left: 30%; padding-bottom: 5px;">
                                         <div class="col-12 col-md-4 spacer flex-nowrap"></div>
                                             <div class="col-12 col-md-8">
-                                                <span>Margin</span>
-                                                <input type="checkbox" name="switchvat" id="switchvat" <?php 
+                                                <span>Vat</span>
+                                                <input type="checkbox" name="switchmargin" id="switchmargin" <?php 
                                                     if(isset($data['single_car']['car_vat_marge'])) {
                                                         echo ($data['single_car']['car_vat_marge'] == '0') ? "checked" : "";
                                                     }
@@ -634,8 +634,8 @@
                                                         echo 'checked';
                                                     }
                                                 ?>>
-                                                <span>Vat</span>
-                                                <input type="checkbox" name="switchmargin" id="switchmargin" <?php echo ((isset($data['single_car']['car_vat_marge']) && $data['single_car']['car_vat_marge'] == '1') ? "checked" : "") ?>>
+                                                <span>Margin</span>
+                                                <input type="checkbox" name="switchvat" id="switchvat" <?php echo ((isset($data['single_car']['car_vat_marge']) && $data['single_car']['car_vat_marge'] == '1') ? "checked" : "") ?>>
                                             </div>
                                         </div>
                                     </div>
@@ -773,6 +773,21 @@
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input class="form-control js-calc-from-total" value="<?php echo (isset($data['single_car']['sales_price_total']) ?  $data['single_car']['sales_price_total'] : '') ?> " type="text" name="sales_price_total" id="totalAll">
+                                    </div>
+                                </div>
+                                <div class="row str">
+                                    <div class="col-12 col-md-6 font-weight-bold">
+                                        BPM output
+                                    </div>
+                                    <div class="col-12 col-md-6" style="padding-left: 3%;">
+                                        <div class="row">
+                                            <div class="col-6 pr-0">
+                                                <input class="form-control" type="text" name="bpm_output_1" id="" placeholder="" disabled>
+                                            </div>
+                                            <div class="col-6 pl-0">
+                                                <input class="form-control" type="text" name="bpm_output_2" id="" placeholder="" disabled>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

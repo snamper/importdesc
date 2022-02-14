@@ -259,6 +259,20 @@ class base
 		return $dbDriver->fetchAssoc();
 	}
 
+	function getLangTranslations($lang_id) {
+		$dbDriver = new db_driver();
+		$query = "SELECT * FROM translate WHERE `langID` = ?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$lang_id]);
+		$result = array();
+
+		while($lang = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$result[$lang['label']] = $lang['description'];
+		}
+
+		return $result;
+	}
+
 	public function getCarDocuments($car_id)
 	{
 

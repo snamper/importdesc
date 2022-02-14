@@ -8,14 +8,14 @@
 
     <!-- BEGIN breadcrumb -->
     <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Overzichten</a></li>
-        <li class="breadcrumb-item active">Alle organisaties </li>
+        <li class="breadcrumb-item"><a href="#"><?php echo $_SESSION['lang']['organizations_page_1'] ?></a></li>
+        <li class="breadcrumb-item active"><?php echo $_SESSION['lang']['organizations_page_2'] ?></li>
     </ul>
     <!-- END breadcrumb -->
     <!-- BEGIN page-header -->
     <h1 class="page-header">
-        Alle organisaties
-        <small>Hieronder alle organisaties...</small>
+        <?php echo $_SESSION['lang']['organizations_page_3'] ?>
+        <small><?php echo $_SESSION['lang']['organizations_page_4'] ?></small>
     </h1>
     <!-- END page-header -->
 
@@ -23,15 +23,15 @@
 
     <table id="sample-table-5" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
         <thead>
-            <th>BcCo</th>
-            <th style="white-space: nowrap">Name_afas</th>
+            <th><?php echo $_SESSION['lang']['organizations_page_5'] ?></th>
+            <th style="white-space: nowrap"><?php echo $_SESSION['lang']['organizations_page_6'] ?></th>
 
-            <th style="white-space: nowrap">AdressLine1</th>
+            <th style="white-space: nowrap"><?php echo $_SESSION['lang']['organizations_page_7'] ?></th>
 
-            <th>AdressLine3</th>
-            <th style="white-space: nowrap">TelWork</th>
-            <th style="white-space: nowrap">MailWork</th>
-            <th style="white-space: nowrap">Homepage</th>
+            <th><?php echo $_SESSION['lang']['organizations_page_8'] ?></th>
+            <th style="white-space: nowrap"><?php echo $_SESSION['lang']['organizations_page_9'] ?></th>
+            <th style="white-space: nowrap"><?php echo $_SESSION['lang']['organizations_page_10'] ?></th>
+            <th style="white-space: nowrap"><?php echo $_SESSION['lang']['organizations_page_11'] ?></th>
 
         </thead>
         <tbody>
