@@ -642,7 +642,7 @@
                                 </div>
 
                                 <!-- Current date  -->
-                                <input type="hidden" autocomplete="off"  class="form-control" name="huidigedatumbpm" id="datepicker2">
+                                <input type="" autocomplete="off"  class="form-control" name="huidigedatumbpm" id="datepicker2" value="<?php echo date('d-m-Y') ?>">
 
                                 <div class="row str">
                                     <div class="col-12 col-md-6" id="priceNetoText">
@@ -751,6 +751,7 @@
                                     </div>
                                 </div>
                                 <div class="row str">
+                                <input type="text" class="form-control" id="percentage" name="percentage" placeholder="Restwaarde Percentage">
                                     <div class="col-12 col-md-6">
                                         Rest BPM (indication)
                                     </div>
@@ -773,6 +774,26 @@
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input class="form-control js-calc-from-total" value="<?php echo (isset($data['single_car']['sales_price_total']) ?  $data['single_car']['sales_price_total'] : '') ?> " type="text" name="sales_price_total" id="totalAll">
+                                    </div>
+                                </div>
+
+
+                                
+                                <div class="row mt-4"></div>
+                                <div class="row str">
+                                    <div class="col-12 col-md-6 font-weight-bold">
+                                        % BPM
+                                    </div>
+                                    <div class="col-12 col-md-6" style="padding-left: 3%;">
+                                        <input class="form-control" type="text" name="bpm_output_1" id="" placeholder="" disabled>
+                                    </div>
+                                </div>
+                                <div class="row str">
+                                    <div class="col-12 col-md-6 font-weight-bold">
+                                        Rest BPM (indication)
+                                    </div>
+                                    <div class="col-12 col-md-6" style="padding-left: 3%;">
+                                        <input class="form-control" type="text" name="bpm_output_1" id="" placeholder="" disabled>
                                     </div>
                                 </div>
                             </div>
