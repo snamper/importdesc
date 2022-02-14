@@ -13,7 +13,7 @@
                     </div>
                 </li>
                 <li class="nav-divider"></li>
-                <li class="nav-header active"><?php echo $_SESSION['lang']['sidebar_menu_11'] ?></li>
+                <li class="nav-header active"><?php echo $_SESSION['lang']['sidebar_menu_19'] ?></li>
                 <li><a href="home"><i class="ti-home"></i><span><?php echo $_SESSION['lang']['sidebar_menu_1'] ?></span></a></li>
                 <li><a href="dossier"><i class="ti-target"></i><span><?php echo $_SESSION['lang']['sidebar_menu_2'] ?></span></a></li>
                 <li><a href="agenda"><i class="ti-pencil-alt"></i><span><?php echo $_SESSION['lang']['sidebar_menu_3'] ?></span></a></li>

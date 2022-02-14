@@ -157,7 +157,7 @@
                                     } else {
                                         $selected = "";
                                     }
-                                    echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                    echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                                 }
                                 ?>
                             </select>
@@ -237,7 +237,7 @@
                                     } else {
                                         $selected = "";
                                     }
-                                    echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                    echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                                 }
                                 ?>
                             </select>
@@ -255,7 +255,7 @@
                                     } else {
                                         $selected = "";
                                     }
-                                    echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                    echo "<option value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                                 }
                                 ?>
                             </select>
@@ -377,7 +377,7 @@
                                     } else {
                                         $selected = "";
                                     }
-                                    echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                    echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                                 }
                                 ?>
                             </select>
@@ -436,7 +436,7 @@
                                             } else {
                                                 $selected = "";
                                             }
-                                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                                         }
                                         ?>
                                     </select>
@@ -476,7 +476,7 @@
                                     } else {
                                         $selected = "";
                                     }
-                                    echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                    echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                                 }
                                 ?>
                             </select>
@@ -525,7 +525,7 @@
                                     } else {
                                         $selected = "";
                                     }
-                                    echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                    echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                                 }
                                 ?>
                             </select>
@@ -546,7 +546,7 @@
                                             } else {
                                                 $selected = "";
                                             }
-                                            echo "<option value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                            echo "<option value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                                         }
                                         ?>
                                     </select>
@@ -572,7 +572,7 @@
                                             } else {
                                                 $selected = "";
                                             }
-                                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                                         }
                                         ?>
                                     </select>
@@ -596,7 +596,7 @@
                                     } else {
                                         $selected = "";
                                     }
-                                    echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                                    echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                                 }
                                 ?>
                             </select>
@@ -767,19 +767,21 @@
                                         <input class="form-control js-calc-from-total" value="<?php echo (isset($data['single_car']['sales_price_total']) ?  $data['single_car']['sales_price_total'] : '') ?> " type="text" name="sales_price_total" id="totalAll">
                                     </div>
                                 </div>
+                                <div class="row mt-4"></div>
                                 <div class="row str">
                                     <div class="col-12 col-md-6 font-weight-bold">
-                                        BPM output
+                                        % BPM
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <div class="row">
-                                            <div class="col-6 pr-0">
-                                                <input class="form-control" type="text" name="bpm_output_1" id="" placeholder="" disabled>
-                                            </div>
-                                            <div class="col-6 pl-0">
-                                                <input class="form-control" type="text" name="bpm_output_2" id="" placeholder="" disabled>
-                                            </div>
-                                        </div>
+                                        <input class="form-control" type="text" name="bpm_output_1" id="" placeholder="" disabled>
+                                    </div>
+                                </div>
+                                <div class="row str">
+                                    <div class="col-12 col-md-6 font-weight-bold">
+                                        Rest BPM (indication)
+                                    </div>
+                                    <div class="col-12 col-md-6" style="padding-left: 3%;">
+                                        <input class="form-control" type="text" name="bpm_output_1" id="" placeholder="" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -841,7 +843,7 @@
             <!-- Rows  -->
             <div class="row">
                 <div class="col-12 col-md-4">
-                    <span> First reg. ever</span>
+                    <span><?php echo $_SESSION['lang']['car_start_page_61'] ?></span>
                 </div>
                 <div class="col-12 col-md-8">
                     <input type="text" autocomplete="off" class="form-control" name="first_registration_date" id="datepicker1" value="<?php echo (isset($data['single_car']['cd_first_registration_date']) ? date("d-m-Y", strtotime($data['single_car']['cd_first_registration_date']))   : "") ?>">
@@ -850,7 +852,7 @@
 
             <div class="row">
                 <div class="col-12 col-md-4">
-                    <span>First reg. in NL</span>
+                    <span><?php echo $_SESSION['lang']['car_start_page_62'] ?></span>
                 </div>
                 <div class="col-12 col-md-8">
                     <input type="text" autocomplete="off" class="form-control" value="<?php echo (isset($data['single_car']['cd_first_nl_registration']) ? date("d-m-Y", strtotime($data['single_car']['cd_first_nl_registration']))   : "") ?>" name="first_nl_registration" id="datepicker3">
@@ -859,7 +861,7 @@
 
             <div class="row">
                 <div class="col-12 col-md-4">
-                    <span>First reg. on a name in NL</span>
+                    <span><?php echo $_SESSION['lang']['car_start_page_63'] ?></span>
                 </div>
                 <div class="col-12 col-md-8">
                     <input class="form-control" autocomplete="off" type="text" name="first_name_nl_registration" value="<?php echo (isset($data['single_car']['cd_first_name_nl_registration']) ? date("d-m-Y", strtotime($data['single_car']['cd_first_name_nl_registration']))  : "") ?>" id="datepicker10" placeholder="" />
@@ -868,7 +870,7 @@
 
             <div class="row">
                 <div class="col-12 col-md-4">
-                    <span>Last reg. on a name</span>
+                    <span><?php echo $_SESSION['lang']['car_start_page_64'] ?></span>
                 </div>
                 <div class="col-12 col-md-8">
                     <input class="form-control" autocomplete="off" type="text" name="last_name_registration" id="datepicker11" value="<?php echo (isset($data['single_car']['cd_last_name_registration']) ? date("d-m-Y", strtotime($data['single_car']['cd_last_name_registration']))  : "") ?>" />
@@ -883,7 +885,7 @@
             <!-- Rows  -->
             <div class="row">
                 <div class="col-12 col-md-4">
-                    <span>NL Registration number</span>
+                    <span><?php echo $_SESSION['lang']['car_start_page_65'] ?></span>
                 </div>
                 <div class="col-12 col-md-6">
                     <input class="form-control" type="text" name="nl_registration_number" value="<?php echo (isset($data['single_car']['cd_nl_registration_number']) ? $data['single_car']['cd_nl_registration_number']  : "") ?>" placeholder="" />
@@ -893,7 +895,7 @@
 
             <div class="row my-1">
                 <div class="col-12 col-md-4">
-                    <span>Identification code (meldcode)</span>
+                    <span><?php echo $_SESSION['lang']['car_start_page_66'] ?></span>
                 </div>
                 <div class="col-12 col-md-6">
                     <input type="text" class="form-control" name="meldcode" id="melcode" value="<?php echo (isset($data['single_car']['cd_meldcode']) ? $data['single_car']['cd_meldcode']  : "") ?>">
@@ -901,7 +903,7 @@
             </div>
             <div class="row">
                 <div class="col-12 col-md-4">
-                    <span>APK / Check valid until</span>
+                    <span><?php echo $_SESSION['lang']['car_start_page_67'] ?></span>
                 </div>
                 <div class="col-12 col-md-6">
                     <input class="form-control" type="text" name="apk_valid" id="datepicker13" value="<?php echo (isset($data['single_car']['cd_apk_valid']) ? date("d-m-Y", strtotime($data['single_car']['cd_apk_valid']))  : "") ?>" />
@@ -913,12 +915,12 @@
     <!-- .ROW  -->
     <br />
     <hr />
-    <p>Factory Options / Highlights</p>
+    <p><?php echo $_SESSION['lang']['car_start_page_68'] ?></p>
     <div class="row">
         <div class="col-12 col-md-5">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <label for="navigation">Navigation</label>
+                    <label for="navigation"><?php echo $_SESSION['lang']['car_start_page_69'] ?></label>
                     <select name="navigation" id="navigation" class="form-control">
                         <option value="0">-</option>
                         <?php
@@ -928,13 +930,13 @@
                             } else {
                                 $selected = "";
                             }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                         }
                         ?>
                     </select>
                 </div>
                 <div class="col-12 col-md-6">
-                    <label for="keylessEntry">Keyless entry</label>
+                    <label for="keylessEntry"><?php echo $_SESSION['lang']['car_start_page_70'] ?></label>
                     <select name="keyless_entry" id="keylessEntry" class="form-control">
                         <option value="0">-</option>
                         <?php
@@ -944,7 +946,7 @@
                             } else {
                                 $selected = "";
                             }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                         }
                         ?>
                     </select>
@@ -953,7 +955,7 @@
 
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <label for="appConnect">App Connect</label>
+                    <label for="appConnect"><?php echo $_SESSION['lang']['car_start_page_71'] ?></label>
                     <select name="app_connect" id="appConnect" class="form-control">
                         <option value="0">-</option>
                         <?php
@@ -963,13 +965,13 @@
                             } else {
                                 $selected = "";
                             }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                         }
                         ?>
                     </select>
                 </div>
                 <div class="col-12 col-md-6">
-                    <label for="airco">Airco</label>
+                    <label for="airco"><?php echo $_SESSION['lang']['car_start_page_72'] ?></label>
                     <select name="airco" id="airco" class="form-control">
                         <option value="0">-</option>
                         <?php
@@ -979,7 +981,7 @@
                             } else {
                                 $selected = "";
                             }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                         }
                         ?>
                     </select>
@@ -988,7 +990,7 @@
 
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <label for="roof">Panorama</label>
+                    <label for="roof"><?php echo $_SESSION['lang']['car_start_page_73'] ?></label>
                     <select name="roof" id="roof" class="form-control">
                         <option value="0">-</option>
                         <?php
@@ -998,13 +1000,13 @@
                             } else {
                                 $selected = "";
                             }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                         }
                         ?>
                     </select>
                 </div>
                 <div class="col-12 col-md-6">
-                    <label for="wheels">Alloy Wheels</label>
+                    <label for="wheels"><?php echo $_SESSION['lang']['car_start_page_74'] ?></label>
                     <select name="wheels" id="wheels" class="form-control">
                         <option value="0">-</option>
                         <?php
@@ -1014,7 +1016,7 @@
                             } else {
                                 $selected = "";
                             }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                         }
                         ?>
                     </select>
@@ -1023,7 +1025,7 @@
 
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <label for="headlights">Headlights</label>
+                    <label for="headlights"><?php echo $_SESSION['lang']['car_start_page_75'] ?></label>
                     <select name="headlights" id="headlights" class="form-control">
                         <option value="0">-</option>
                         <?php
@@ -1033,13 +1035,13 @@
                             } else {
                                 $selected = "";
                             }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                         }
                         ?>
                     </select>
                 </div>
                 <div class="col-12 col-md-6">
-                    <label for="pdc">PDC</label>
+                    <label for="pdc"><?php echo $_SESSION['lang']['car_start_page_76'] ?></label>
                     <select name="pdc" id="pdc" class="form-control">
                         <option value="0">-</option>
                         <?php
@@ -1049,7 +1051,7 @@
                             } else {
                                 $selected = "";
                             }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                         }
                         ?>
                     </select>
@@ -1058,7 +1060,7 @@
 
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <label for="cockpit">Digital Cockpit</label>
+                    <label for="cockpit"><?php echo $_SESSION['lang']['car_start_page_77'] ?></label>
                     <select name="cockpit" id="cockpit" class="form-control">
                         <option value="0">-</option>
                         <?php
@@ -1068,13 +1070,13 @@
                             } else {
                                 $selected = "";
                             }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                         }
                         ?>
                     </select>
                 </div>
                 <div class="col-12 col-md-6">
-                    <label for="camera">Camera</label>
+                    <label for="camera"><?php echo $_SESSION['lang']['car_start_page_78'] ?></label>
                     <select name="camera" id="camera" class="form-control">
                         <option value="0">-</option>
                         <?php
@@ -1084,7 +1086,7 @@
                             } else {
                                 $selected = "";
                             }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                         }
                         ?>
                     </select>
@@ -1093,7 +1095,7 @@
 
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <label for="cruise">Cruise Control</label>
+                    <label for="cruise"><?php echo $_SESSION['lang']['car_start_page_79'] ?></label>
                     <select name="cruise_control" id="cruise" class="form-control">
                         <option value="0">-</option>
                         <?php
@@ -1103,13 +1105,13 @@
                             } else {
                                 $selected  = "";
                             }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                         }
                         ?>
                     </select>
                 </div>
                 <div class="col-12 col-md-6">
-                    <label for="tow">Tow Bar</label>
+                    <label for="tow"><?php echo $_SESSION['lang']['car_start_page_80'] ?></label>
                     <select name="tow_bar" id="tow" class="form-control">
                         <option value="0">-</option>
                         <?php
@@ -1119,7 +1121,7 @@
                             } else {
                                 $selected  = "";
                             }
-                            echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                         }
                         ?>
                     </select>
@@ -1132,7 +1134,7 @@
 
             <div class="row">
                 <div class="col-12 col-md-5">
-                    <label for="sportSeats">Sport seats</label>
+                    <label for="sportSeats"><?php echo $_SESSION['lang']['car_start_page_81'] ?></label>
                     <select name="sport_seats" id="sportSeats" class="form-control">
                         <option value="0">-</option>
                         <?php
@@ -1142,13 +1144,13 @@
                             } else {
                                 $selected  = "";
                             }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                         }
                         ?>
                     </select>
                 </div>
                 <div class="col-12 col-md-5">
-                    <label for="sportPackage">Sportpackage</label>
+                    <label for="sportPackage"><?php echo $_SESSION['lang']['car_start_page_82'] ?></label>
                     <select name="sport_package" id="sportPackage" class="form-control">
                         <option value="0">-</option>
                         <?php
@@ -1158,7 +1160,7 @@
                             } else {
                                 $selected  = "";
                             }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                         }
                         ?>
                     </select>
@@ -1167,7 +1169,7 @@
 
             <div class="row">
                 <div class="col-12 col-md-5">
-                    <label for="seatsElectric">Seats electric</label>
+                    <label for="seatsElectric"><?php echo $_SESSION['lang']['car_start_page_83'] ?></label>
                     <select name="seats_electric" id="seatsElectric" class="form-control">
                         <option value="0">-</option>
                         <?php
@@ -1177,7 +1179,7 @@
                             } else {
                                 $selected  = "";
                             }
-                            echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                         }
                         ?>
                     </select>
@@ -1187,7 +1189,7 @@
 
             <div class="row">
                 <div class="col-12 col-md-5">
-                    <label for="heating">Seat heating</label>
+                    <label for="heating"><?php echo $_SESSION['lang']['car_start_page_84'] ?></label>
                     <select name="seat_heating" id="heating" class="form-control">
                         <option value="0">-</option>
                         <?php
@@ -1197,7 +1199,7 @@
                             } else {
                                 $selected  = "";
                             }
-                            echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                         }
                         ?>
                     </select>
@@ -1207,7 +1209,7 @@
 
             <div class="row">
                 <div class="col-12 col-md-5">
-                    <label for="seatMassage">Seat massage</label>
+                    <label for="seatMassage"><?php echo $_SESSION['lang']['car_start_page_85'] ?></label>
                     <select name="seat_massage" id="seatMassage" class="form-control">
                         <option value="0">-</option>
                         <?php
@@ -1217,7 +1219,7 @@
                             } else {
                                 $selected  = "";
                             }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                         }
                         ?>
                     </select>
@@ -1227,7 +1229,7 @@
 
             <div class="row">
                 <div class="col-12 col-md-5">
-                    <label for="optics">Optics</label>
+                    <label for="optics"><?php echo $_SESSION['lang']['car_start_page_86'] ?></label>
                     <select name="optics" id="optics" class="form-control">
                         <option value="0">-</option>
                         <?php
@@ -1237,7 +1239,7 @@
                             } else {
                                 $selected  = "";
                             }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                         }
                         ?>
                     </select>
@@ -1247,7 +1249,7 @@
 
             <div class="row">
                 <div class="col-12 col-md-5">
-                    <label for="tindedWindows">Tinted windows</label>
+                    <label for="tindedWindows"><?php echo $_SESSION['lang']['car_start_page_87'] ?></label>
                     <select name="tinted_windows" id="tindedWindows" class="form-control">
                         <option value="0">-</option>
                         <?php
@@ -1257,7 +1259,7 @@
                             } else {
                                 $selected  = "";
                             }
-                            echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$opt_value['conversion_name']} </option>";
+                            echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
                         }
                         ?>
                     </select>
@@ -1270,7 +1272,7 @@
 
     <hr />
 
-    <p>Options </p>
+    <p><?php echo $_SESSION['lang']['car_start_page_88'] ?></p>
     <div class="row d-flex align-items-stretch">
         <div class="col col-11">
             <textarea placeholder="" rows="7" style="resize: none;" class="w-150 form-control" name="options" id="options"><?php echo (isset($data['single_car']['cd_options']) ? $data['single_car']['cd_options']  : "") ?></textarea>
@@ -1284,12 +1286,12 @@
     <div class="row d-flex align-items-stretch">
 
         <div class="col col-6">
-            <p>Remarks / Notes (internal)</p>
+            <p><?php echo $_SESSION['lang']['car_start_page_89'] ?></p>
             <textarea placeholder="" rows="7" style="resize: none;" class="form-control" name="notes" id="notes"><?php echo (isset($data['single_car']['cd_notes']) ? $data['single_car']['cd_notes']  : "") ?></textarea>
         </div>
         <div class="col-12 col-md-1"></div>
         <div class="col col-12 col-md-4">
-            <p>Uploaded Documents</p>
+            <p><?php echo $_SESSION['lang']['car_start_page_90'] ?></p>
             <div class="form-control show-documents" name="uploaded_files" id="uploadedFiles">
                 <?php
                 if (!is_null($data['single_car_documents'][0])) {
@@ -1309,36 +1311,36 @@
     <div class="row d-flex align-items-stretch">
 
         <div class="col col-12 col-md-6">
-            <p>Connected to the Modules</p>
+            <p><?php echo $_SESSION['lang']['car_start_page_91'] ?></p>
             <div class="row d-flex flex-nowrap align-items-stretch form-control show-documents text-muted">
                 <div class="col-3">
-                    Offer
+                    <?php echo $_SESSION['lang']['car_start_page_92'] ?>
                 </div>
-                <div class="col-3">Purchase Order
+                <div class="col-3"><?php echo $_SESSION['lang']['car_start_page_93'] ?>
                 </div>
-                <div class="col-3">Sales Order
+                <div class="col-3"><?php echo $_SESSION['lang']['car_start_page_94'] ?>
                 </div>
-                <div class="col-3">File
+                <div class="col-3"><?php echo $_SESSION['lang']['car_start_page_95'] ?>
                 </div>
             </div>
         </div>
         <div class="col-12 col-md-1"></div>
         <div class="col col-12 col-md-5">
-            <p>Internal Information</p>
+            <p><?php echo $_SESSION['lang']['car_start_page_96'] ?></p>
             <div class="row d-flex flex-nowrap">
                 <div class="col-5 show-documents text-muted" style="white-space: nowrap; overflow: hidden;">
-                    <div class="row ml-1 mt-2">Source by client</div>
-                    <div class="row ml-1 mt-2">Source by</div>
-                    <div class="row ml-1 mt-2">Created by</div>
-                    <div class="row ml-1 mt-2">Created on</div>
-                    <div class="row ml-1 mt-2">Last Edited by</div>
-                    <div class="row ml-1 mt-2">Last Edited on</div>
-                    <div class="row ml-1 mt-2">Dealer call by</div>
+                    <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_97'] ?></div>
+                    <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_98'] ?></div>
+                    <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_99'] ?></div>
+                    <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_100'] ?></div>
+                    <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_101'] ?></div>
+                    <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_102'] ?></div>
+                    <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_103'] ?></div>
                 </div>
                 <div class="col-4 show-documents" style="white-space: nowrap; background-color: white; overflow: hidden; border-radius: 3px; border: 1px solid #DCDCDC; margin-left: 4%;">
                     <div class="row ml-1 mt-2"><input type="checkbox" name="source" id="sourceByCh" <?php echo (isset($data['single_car']['car_source']) && $data['single_car']['car_source'] == '1') ? "checked" : "" ?>/></div>
                     <div class="row ml-1 mt-2"><span>
-                        <select name="source_id" id="sourceBy" class="form-control" <?php echo (isset($data['single_car']['car_source']) && $data['single_car']['car_source'] == '0') ? "" : "disabled" ?>>
+                        <select name="source_id" id="sourceBy" class="form-control" <?php echo (isset($data['single_car']['car_source']) && $data['single_car']['car_source'] == '1') ? "disabled" : "" ?>>
                             <option value="0">-</option>
                             <?php
                                 foreach ($data['users'][0] as $user) {
@@ -1374,7 +1376,7 @@
     <hr />
 
     <!-- Main row 3 -->
-    <p>Additional images</p>
+    <p><?php echo $_SESSION['lang']['car_start_page_104'] ?></p>
     <div class="row car-images-row" data-extra-images='true'>
         <?php
         $imagesNumber = count($data['car_images'][0]);
