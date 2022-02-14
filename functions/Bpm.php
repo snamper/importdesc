@@ -1,8 +1,8 @@
 <?php
 /** Error reporting */
-//error_reporting( E_ALL );
-//ini_set( 'display_errors', true );
-//ini_set( 'display_startup_errors', true );
+// error_reporting( E_ALL );
+// ini_set( 'display_errors', true );
+// ini_set( 'display_startup_errors', true );
 //date_default_timezone_set( 'Europe/London' );
 
 
@@ -96,6 +96,16 @@ function calculateBpmTest($co2 = 0, $datum_toelating = null, $bpm_brandstof_type
         $bpm_arr                  = selectBpmWLTP( $co2, $bpm_periode_id, 3 ); // Brandstof Type op benzine (1) i.v.m. berekening.
         $pre_bpm                  = (($co2 - $bpm_arr[0]['meer_dan']) * $bpm_arr[0]['bedrag_vermenigvuldigen']) + $bpm_arr[0]['bedrag_optellen'];
         $bpm                      = $pre_bpm + $co2_diesel_toeslag;
+    }elseif ($jaar_toelating == 2022 && $bpm_brandstof_type_id == 4) {
+
+
+    $diesel_toeslag_vanaf_co2 = 75;
+    $diesel_toeslag           = 86.67;
+    $co2_diesel               = $co2 - $diesel_toeslag_vanaf_co2;
+    $co2_diesel_toeslag       = $co2_diesel * $diesel_toeslag;
+    $bpm_arr                  = selectBpmWLTP( $co2, $bpm_periode_id, 3 ); // Brandstof Type op benzine (1) i.v.m. berekening.
+    $pre_bpm                  = (($co2 - $bpm_arr[0]['meer_dan']) * $bpm_arr[0]['bedrag_vermenigvuldigen']) + $bpm_arr[0]['bedrag_optellen'];
+    $bpm                      = $pre_bpm + $co2_diesel_toeslag;
     }else {
         $bpm_arr = selectBpmWLTP( $co2, $bpm_periode_id, $bpm_brandstof_type_id );
         $bpm     = (($co2 - $bpm_arr[0]['meer_dan']) * $bpm_arr[0]['bedrag_vermenigvuldigen']) + $bpm_arr[0]['bedrag_optellen'];
@@ -165,6 +175,14 @@ function calculateBpm($co2 = 0, $datum_toelating = null, $bpm_brandstof_type_id 
         $pre_bpm                  = (($co2 - $bpm_arr[0]['meer_dan']) * $bpm_arr[0]['bedrag_vermenigvuldigen']) + $bpm_arr[0]['bedrag_optellen'];
         $bpm                      = $pre_bpm + $co2_diesel_toeslag;
     } elseif ($jaar_toelating == 2021 && $bpm_brandstof_type_id == 2) {
+        $diesel_toeslag_vanaf_co2 = 0;
+        $diesel_toeslag           = 0;
+        $co2_diesel               = $co2 - $diesel_toeslag_vanaf_co2;
+        $co2_diesel_toeslag       = $co2_diesel * $diesel_toeslag;
+        $bpm_arr                  = selectBpm( $co2, $bpm_periode_id, 1 ); // Brandstof Type op benzine (1) i.v.m. berekening.
+        $pre_bpm                  = (($co2 - $bpm_arr[0]['meer_dan']) * $bpm_arr[0]['bedrag_vermenigvuldigen']) + $bpm_arr[0]['bedrag_optellen'];
+        $bpm                      = $pre_bpm + $co2_diesel_toeslag;
+    }elseif ($jaar_toelating == 2022 && $bpm_brandstof_type_id == 2) {
         $diesel_toeslag_vanaf_co2 = 0;
         $diesel_toeslag           = 0;
         $co2_diesel               = $co2 - $diesel_toeslag_vanaf_co2;
@@ -264,7 +282,6 @@ function selectBpmWLTP($co2, $bpm_periode_id, $bpm_brandstof_type_id) {
 		AND bpm_periode_id = \"$bpm_periode_id\"
 		AND meer_dan < \"$co2\" AND niet_meer_dan >= \"$co2\"
 		";
-
     $result = $_POST['GWIconnector']->query( $query );
     if ( ! $result) {
         $rows[] = null;
