@@ -22,19 +22,19 @@
     <div class="col-xs-12 table-list">
         <div class="row my-4 align-items-start">
                 <div class="col-12 col-md-5">
-                    <div class="upload-file js-upload">Upload photo
+                    <div class="upload-file js-upload"><?php echo $_SESSION['lang']['car_start_page_1'] ?>
                         <input type="file" name="upload_photo[]" multiple id="uploadCarImage">
                     </div>
                 </div>
                 <div class="col-12 col-md-5">
-                    <div class="upload-file js-upload">Upload document
+                    <div class="upload-file js-upload"><?php echo $_SESSION['lang']['car_start_page_2'] ?>
                         <input type="file" name="upload_document[]" multiple id="uploadCarDocument">
                     </div>
                 </div>
             <?php if(isset($_GET['duplicate'])): ?>
-                <button type="submit" name="duplicate_car" class="btn btn-primary">Duplicate offer</button>
+                <button type="submit" name="duplicate_car" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_9'] ?></button>
             <?php else: ?>
-                <button type="submit" class="btn btn-primary">Create and open Offer</button>
+                <button type="submit" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_3'] ?></button>
             <?php endif ?>
         </div>
 
@@ -49,23 +49,23 @@
             <div class="custom-row">
                 <div class="custom-row-close">X</div>
                 <div class="custom-col">
-                    <a href="/car_start" class="btn btn-danger" onclick="return confirm('Are you sure?');">Delete all Data </a>
+                    <a href="/car_start" class="btn btn-danger" onclick="return confirm('Are you sure?');"><?php echo $_SESSION['lang']['car_start_page_4'] ?></a>
                 </div>
 
                 <div class="custom-col">
-                    <button type="submit" name="update_car" class="btn btn-info">Save</button>
+                    <button type="submit" name="update_car" class="btn btn-info"><?php echo $_SESSION['lang']['car_start_page_5'] ?></button>
                 </div>
 
                 <div class="custom-col">
-                    <button type="submit" class="btn btn-primary">Save and Close</button>
+                    <button type="submit" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_6'] ?></button>
                 </div>
 
                 <div class="custom-col">
-                    <button type="submit" name="duplicate_car" class="btn btn-primary">Duplicate</button>
+                    <button type="submit" name="duplicate_car" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_9'] ?></button>
                 </div>
 
                 <div class="custom-col">
-                    <button type="submit" name="create_car" class="btn btn-primary">Create and go to PO</button>
+                    <button type="submit" name="create_car" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_8'] ?></button>
                 </div>
 
             </div>
@@ -76,7 +76,7 @@
 
             <div class="row">
                 <div class="col-12">
-                    <span class="font-weight-bold">Duplication</span>
+                    <span class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_10'] ?></span>
                 </div>
             </div>
 
@@ -86,7 +86,7 @@
 
                     <div class="row" style="height: 30px;">
                         <div class="col-12 col-md-4">
-                            <span>Original vehicle ID</span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_11'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <?php
@@ -101,7 +101,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Number of duplicates*</span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_12'] ?></span>
                         </div>
                         <div class="col-12 col-md-6">
                             <input class="form-control" id="duplicateNumber" type="number" name="duplicate_number" value="1" placeholder="" required />
@@ -115,7 +115,7 @@
             <hr />
             <div class="row">
                 <div class="col-12">
-                    <span class="font-weight-bold">Basic Information</span>
+                    <span class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_13'] ?></span>
                 </div>
             </div>
             <!-- Main row 1 -->
@@ -124,7 +124,7 @@
                     <div class="row">
                         <div class="col-12 col-md-4 spacer"></div>
                         <div class="col-12 col-md-8">
-                            <span>Preorder</span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_14'] ?></span>
                         <input type="checkbox" name="preorder" id="preorder" <?php echo (isset($data['single_car']['car_preorder']) && $data['single_car']['car_preorder'] == '1') ? 'checked' : ''; ?>>
                     </div>
                     </div>
@@ -132,7 +132,7 @@
                 <div class="col-12 col-md-5">
                     <div class="row" style="height: 30px;">
                         <div class="col-12 col-md-6">
-                            <span>Vehicle ID</span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_15'] ?></span>
                         </div>
                         <div class="col-12 col-md-6">
                             <?php echo isset($_GET['car_id']) ? sprintf("A%'.07d\n", $_GET['car_id']) : ''; ?>
@@ -146,17 +146,9 @@
                     <!-- Rows  -->
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Current car status* </span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_16'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
-
-                            <?php
-                            //                             echo '<pre>';
-                            //                             var_dump($data['single_car']);
-                            //                             echo '</pre>';
-                            //                             exit;
-                            ?>
-
                             <select required class="form-control" name="status">
                                 <option value="0">-</option>
                                 <?php foreach ($data['car_status'] as $opt_value) {
@@ -174,7 +166,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Car reference (custom)</span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_17'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="form-control" id="customReference" type="text" name="car_ref_custom" value="<?php echo (isset($data['single_car']['cd_car_ref_custom']) ? $data['single_car']['cd_car_ref_custom']  : "") ?>" placeholder="" />
@@ -183,7 +175,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>VIN</span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_18'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="form-control js-fill-refer" type="text" name="vin" id="vin" value="<?php echo (isset($data['single_car']['cd_vin']) ? $data['single_car']['cd_vin']  : "") ?>" placeholder="" />
@@ -192,7 +184,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Komm. Number</span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_19'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="form-control" type="text" name="komm_number" value="<?php echo (isset($data['single_car']['cd_komm_number']) ? $data['single_car']['cd_komm_number']  : "") ?>" />
@@ -201,7 +193,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Link to Advert</span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_20'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="form-control" type="text" name="advert_link" value="<?php echo (isset($data['single_car']['cd_advert_link']) ? $data['single_car']['cd_advert_link']  : "") ?>" />
@@ -216,7 +208,7 @@
                     <!-- Rows  -->
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Source Supplier </span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_21'] ?></span>
                         </div>
                         <div class="col-12 col-md-6">
                             <input class="form-control js-fill-refer" type="text" name="source_supplier" id="sourceSupplier" value="<?php echo (isset($data['single_car']['cd_source_supplier']) ? $data['single_car']['cd_source_supplier']  : "") ?>" placeholder="" />
@@ -225,7 +217,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Reference Number Supplier</span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_22'] ?></span>
                         </div>
                         <div class="col-12 col-md-6">
                             <input class="form-control" type="text" name="supplier_ref" value="<?php echo (isset($data['single_car']['cd_supplier_ref']) ? $data['single_car']['cd_supplier_ref']  : "") ?>" />
@@ -235,7 +227,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Current Registration</span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_23'] ?></span>
                         </div>
                         <div class="col-12 col-md-6">
                             <select class="form-control" name="current_registration" id="">
@@ -253,7 +245,7 @@
                     </div>
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>COC</span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_24'] ?></span>
                         </div>
                         <div class="col-12 col-md-6">
                             <select class="form-control" name="coc" id="">
@@ -272,7 +264,7 @@
                     </div>
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Configuration number</span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_25'] ?></span>
                         </div>
                         <div class="col-12 col-md-6">
                              <input class="form-control" type="number" name="conf_number" value="<?php echo (isset($data['single_car']['cd_conf_number']) ? $data['single_car']['cd_conf_number']  : "") ?>" />
@@ -285,7 +277,7 @@
             <!-- Main row 2 -->
             <div class="row">
                 <div class="col-12">
-                    <span class="font-weight-bold">Vehicle and Calculation</span>
+                    <span class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_26'] ?></span>
                 </div>
             </div>
             <div class="row justify-content-center align-items-stretch">
@@ -294,7 +286,7 @@
                     <!-- Rows  -->
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Vehicle Type* </span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_27'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <select name="car_vehicle_type" id="SoortVoertuig" class="form-control">
@@ -311,7 +303,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Make* </span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_28'] ?></span>
                         </div>
 
                         <div class="col-12 col-md-8">
@@ -326,7 +318,7 @@
                     </div>
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Model* </span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_29'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <div class="row">
@@ -350,7 +342,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Variant</span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_30'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <div class="row">
@@ -375,7 +367,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Body Style</span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_31'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <select class="form-control" name="car_body_style" id="">
@@ -395,7 +387,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Fuel Type* </span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_32'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <select required class="form-control js-car-fuel" name="car_fuel" id="BPMbrandstof">
@@ -410,7 +402,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Engine* </span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_33'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <div class="row">
@@ -432,7 +424,7 @@
                     </div>
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Transmission* </span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_34'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <div class="row">
@@ -458,7 +450,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Power kW / Pk</span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_35'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <div class="row">
@@ -474,7 +466,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Drive</span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_36'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <select class="form-control" name="wheel_drive">
@@ -493,7 +485,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>CO² WLTP</span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_37'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <input type="text" class="form-control" id="BPMCO2WLTP" name="co_wltp" placeholder="" value="<?php echo (isset($data['single_car']['cd_co_wltp']) ? $data['single_car']['cd_co_wltp']  : "") ?>">
@@ -502,7 +494,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>CO² NEDC</span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_38'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <input type="text" class="form-control" id="BPMCO2" name="co_nedc" placeholder="" value="<?php echo (isset($data['single_car']['cd_co_nedc']) ? $data['single_car']['cd_co_nedc']  : "") ?>">
@@ -511,7 +503,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Kilometers </span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_39'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="form-control" type="number" name="kilometers" onfocus="this.value=''" value="<?php echo (isset($data['single_car']['cd_kilometers']) ? $data['single_car']['cd_kilometers']  : 0) ?>">
@@ -522,7 +514,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            Paint Type
+                            <?php echo $_SESSION['lang']['car_start_page_40'] ?>
                         </div>
                         <div class="col-12 col-md-8">
                             <select name="paint_type" class="form-control" id="paintType">
@@ -542,7 +534,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Colour | Colour name OEM </span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_41'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <div class="row">
@@ -568,7 +560,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Interior color | Interior name OEM </span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_42'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <div class="row">
@@ -594,7 +586,7 @@
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Interior material </span>
+                            <span><?php echo $_SESSION['lang']['car_start_page_43'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
                             <select class="form-control" name="interior_material" id="">
@@ -625,7 +617,7 @@
                                     <div class="row" style="margin-left: 30%; padding-bottom: 5px;">
                                         <div class="col-12 col-md-4 spacer flex-nowrap"></div>
                                             <div class="col-12 col-md-8">
-                                                <span>Vat</span>
+                                                <span><?php echo $_SESSION['lang']['car_start_page_45'] ?></span>
                                                 <input type="checkbox" name="switchmargin" id="switchmargin" <?php 
                                                     if(isset($data['single_car']['car_vat_marge'])) {
                                                         echo ($data['single_car']['car_vat_marge'] == '0') ? "checked" : "";
@@ -634,7 +626,7 @@
                                                         echo 'checked';
                                                     }
                                                 ?>>
-                                                <span>Margin</span>
+                                                <span><?php echo $_SESSION['lang']['car_start_page_44'] ?></span>
                                                 <input type="checkbox" name="switchvat" id="switchvat" <?php echo ((isset($data['single_car']['car_vat_marge']) && $data['single_car']['car_vat_marge'] == '1') ? "checked" : "") ?>>
                                             </div>
                                         </div>
@@ -646,7 +638,7 @@
 
                                 <div class="row str">
                                     <div class="col-12 col-md-6" id="priceNetoText">
-                                        Purchase Price margin
+                                        <?php echo $_SESSION['lang']['car_start_page_46'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input type="text" class="form-control js-calc-input" id="inkoopprijs_ex_ex" value="<?php echo (isset($data['single_car']['purchase_price_netto']) ?  $data['single_car']['purchase_price_netto'] : "") ?> " name="purchase_price_netto" placeholder="">
@@ -655,7 +647,7 @@
 
                                 <div class="row str">
                                     <div class="col-12 col-md-6">
-                                        Fee Intermediate Supplier
+                                        <?php echo $_SESSION['lang']['car_start_page_47'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input type="text" class="form-control js-calc-input" id="addAfleverkosten" value="<?php echo (isset($data['single_car']['fee_intermediate_supplier']) ?  $data['single_car']['fee_intermediate_supplier'] : '') ?> "  name="fee_intermediate_supplier" placeholder="">
@@ -664,7 +656,7 @@
 
                                 <div class="row str">
                                     <div class="col-12 col-md-6 font-weight-bold">
-                                        Total Purchase Price netto
+                                        <?php echo $_SESSION['lang']['car_start_page_48'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input class="form-control js-calc-input" readonly type="text" value="<?php echo (isset($data['single_car']['total_purchase_price_netto']) ?  $data['single_car']['total_purchase_price_netto'] : '') ?> " name="total_purchase_price_netto" id="totalPriceNettoSuppluier">
@@ -673,7 +665,7 @@
 
                                 <div class="row str">
                                     <div class="col-12 col-md-6">
-                                        Costs of Damages and Repair
+                                        <?php echo $_SESSION['lang']['car_start_page_49'] ?>
                                         </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['costs_damage_and_repair']) ?  $data['single_car']['costs_damage_and_repair'] : '') ?> " id="addOpknapkosten" name="costs_damage_and_repair" placeholder="">
@@ -682,7 +674,7 @@
 
                                 <div class="row str">
                                     <div class="col-12 col-md-6">
-                                        Transport International
+                                        <?php echo $_SESSION['lang']['car_start_page_50'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input type="text" class="form-control js-calc-input" id="addTransport_Buitenland" value="<?php echo (isset($data['single_car']['transport_international']) ?  $data['single_car']['transport_international'] : '') ?> " name="transport_international" placeholder="">
@@ -691,7 +683,7 @@
 
                                 <div class="row str">
                                     <div class="col-12 col-md-6">
-                                        Transport National
+                                        <?php echo $_SESSION['lang']['car_start_page_51'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['transport_national']) ?  $data['single_car']['transport_national'] : '') ?> " id="addTransport_Binnenland" name="transport_national" placeholder="">
@@ -700,7 +692,7 @@
 
                                 <div class="row str">
                                     <div class="col-12 col-md-6">
-                                        Costs of Taxation for BPM
+                                        <?php echo $_SESSION['lang']['car_start_page_52'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['costs_taxation_bpm']) ?  $data['single_car']['costs_taxation_bpm'] : '') ?> " id="costTaxation" name="costs_taxation_bpm" placeholder="">
@@ -710,7 +702,7 @@
 
                                 <div class="row str">
                                     <div class="col-12 col-md-6">
-                                        Fee GWI
+                                        <?php echo $_SESSION['lang']['car_start_page_53'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input type="text" class="form-control js-calc-input" id="addFee" value="<?php echo (isset($data['single_car']['fee_gwi']) ?  $data['single_car']['fee_gwi'] : '') ?> " name="fee_gwi" placeholder="">
@@ -719,7 +711,7 @@
                                 </div>
                                 <div class="row str">
                                     <div class="col-12 col-md-6 font-weight-bold">
-                                        Totaal Costs and Fee
+                                        <?php echo $_SESSION['lang']['car_start_page_54'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input readonly class="form-control" type="text" value="<?php echo (isset($data['single_car']['total_costs_and_fee']) ?  $data['single_car']['total_costs_and_fee'] : '') ?> " name="total_costs_and_fee" id="totalCostsFee">
@@ -727,7 +719,7 @@
                                 </div>
                                 <div class="row str">
                                     <div class="col-12 col-md-6 font-weight-bold ">
-                                        Sales Price netto (ex/ex)
+                                        <?php echo $_SESSION['lang']['car_start_page_55'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input readonly class="form-control" type="text" value="<?php echo (isset($data['single_car']['sales_price_netto']) ?  $data['single_car']['sales_price_netto'] : '') ?> "  name="sales_price_netto" id="totalPriceFee">
@@ -736,7 +728,7 @@
 
                                 <div class="row str">
                                     <div class="col-12 col-md-6">
-                                        VAT / BTW (21%)
+                                        <?php echo $_SESSION['lang']['car_start_page_56'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input readonly type="text" class="form-control" id="addBTW_21" value="<?php echo (isset($data['single_car']['vat_btw']) ?  $data['single_car']['vat_btw'] : '') ?> " name="vat_btw" placeholder="">
@@ -744,7 +736,7 @@
                                 </div>
                                 <div class="row str">
                                     <div class="col-12 col-md-6">
-                                        Sales Price incl. VAT / BTW
+                                        <?php echo $_SESSION['lang']['car_start_page_57'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input readonly type="text" class="form-control" id="addVerkoopprijs_Marge_incl" value="<?php echo (isset($data['single_car']['sales_price_incl_vat_btw']) ?  $data['single_car']['sales_price_incl_vat_btw'] : '') ?> " name="sales_price_incl_vat_btw" placeholder="">
@@ -752,7 +744,7 @@
                                 </div>
                                 <div class="row str">
                                     <div class="col-12 col-md-6">
-                                        Rest BPM (indication)
+                                        <?php echo $_SESSION['lang']['car_start_page_58'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['rest_bpm']) ?  $data['single_car']['rest_bpm'] : '') ?> " id="addRest_BPM" name="rest_bpm" placeholder="Rest BPM Indicatief">
@@ -761,7 +753,7 @@
                                 </div>
                                 <div class="row str">
                                     <div class="col-12 col-md-6">
-                                        Leges (VAT / BTW free)
+                                        <?php echo $_SESSION['lang']['car_start_page_59'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['fees']) ?  $data['single_car']['fees'] : '') ?> "  id="addLeges" name="fees" placeholder="">
@@ -769,7 +761,7 @@
                                 </div>
                                 <div class="row str">
                                     <div class="col-12 col-md-6 font-weight-bold">
-                                        Sales Price Total (in/in)
+                                        <?php echo $_SESSION['lang']['car_start_page_60'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input class="form-control js-calc-from-total" value="<?php echo (isset($data['single_car']['sales_price_total']) ?  $data['single_car']['sales_price_total'] : '') ?> " type="text" name="sales_price_total" id="totalAll">
