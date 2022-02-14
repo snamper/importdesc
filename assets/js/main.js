@@ -2073,7 +2073,7 @@ function saveNewImagePositions(removedPos, moved) {
     const vatCheckedEl = doc.querySelector("#switchvat");
     const margeCheckedEl = doc.querySelector("#switchmargin");
 
-    if (!vatCheckedEl.checked) {
+    if (vatCheckedEl.checked) {
         $('#priceNetoText').html('Purchase Price margin');
     } else {
         $('#priceNetoText').html('Purchase Price netto (ex/ex)');
@@ -2087,139 +2087,62 @@ function saveNewImagePositions(removedPos, moved) {
         changer.addEventListener("change", calcValues);
     }
 
-    const getNumber = (val) => {
-        const num = parseFloat(val);
-        return isNaN(num) ? 0 : num;
+    const v = (id) => {
+        return parseFloat($(`#${id}`).val()) || 0;
     }
 
-    const val = (id) => {
-        return Number($(`#${id}`).val()) || 0;
+    const set = (id, num) => {
+        return $(`#${id}`).val(num.toFixed(0));
     }
 
     function calcFromTotalFn() {
-        const totalElVal = getNumber(doc.querySelector("#totalAll").value);
+        const lastSalesPriceTotal = v('addVerkoopprijs_Marge_incl') + v('addRest_BPM') + v('addLeges');
+        const totalDiff = lastSalesPriceTotal - v('totalAll');
+        const deductFee = totalDiff / 1.21;
+        const deductVat = totalDiff - deductFee;
+        const fee = v('addFee') - deductFee;
+        const vat = v('addBTW_21') - deductVat;
+        set('addFee', fee);
+        set('addBTW_21', vat);
 
-        if (!vatCheckedEl.checked) {
-
-            $('#addVerkoopprijs_Marge_incl').val(totalElVal - val('addLeges'));
-            $('#totalPriceFee').val(val('addVerkoopprijs_Marge_incl') - val('addBTW_21'));
-            $('#totalCostsFee').val(val('totalPriceFee') - val('totalPriceNettoSuppluier'));
-            $('#addFee').val(val('totalCostsFee') - (val('addOpknapkosten') + val('addTransport_Buitenland') + val('addTransport_Binnenland') + val('costTaxation')));
-            margeCheckedEl.dispatchEvent(new Event('change'));
-
-
-            /* const salesPriceVat = minusValues(totalElVal, "#addLeges");
-            const salesPriceNetto = (salesPriceVat / 1.21).toFixed(0);
-            const totalPurchasePriceNetto = minusValues(salesPriceNetto, "#totalCostsFee");
-            const totalCostsFee = salesPriceNetto - totalPurchasePriceNetto;
-            doc.querySelector("#addVerkoopprijs_Marge_incl").value = salesPriceVat;
-            doc.querySelector("#totalPriceFee").value = salesPriceNetto;
-            doc.querySelector("#totalPriceNettoSuppluier").value = totalPurchasePriceNetto;
-            doc.querySelector("#totalCostsFee").value = totalCostsFee;
-            doc.querySelector("#addFee").value = totalCostsFee - sumValues("#addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation");
-            console.log('totalCostsFee: ' + totalCostsFee);
-            console.log('sumValues: ' + sumValues("#addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation"));
-            console.log('addFee: ' + doc.querySelector("#addFee").value);
-            doc.querySelector("#addBTW_21").value = (salesPriceVat - salesPriceNetto).toFixed(0); */
-
-        } else {
-
-            $('#addVerkoopprijs_Marge_incl').val(totalElVal - val('addLeges'));
-            $('#totalPriceFee').val(val('addVerkoopprijs_Marge_incl') - val('addBTW_21'));
-            $('#totalCostsFee').val(val('totalPriceFee') - val('totalPriceNettoSuppluier'));
-            $('#addFee').val(val('totalCostsFee') - (val('addOpknapkosten') + val('addTransport_Buitenland') + val('addTransport_Binnenland') + val('costTaxation')));
-            vatCheckedEl.dispatchEvent(new Event('change'));
-
-            /* const salesPriceVatBtw = minusValues(totalElVal, "#addLeges");
-            const salesPriceNeto = minusValues(salesPriceVatBtw, "#addBTW_21");
-            const totalPurchasePriceNetto = minusValues(salesPriceNeto, "#totalCostsFee");
-            doc.querySelector("#addVerkoopprijs_Marge_incl").value = salesPriceVatBtw;
-            doc.querySelector("#totalPriceFee").value = salesPriceNeto;
-            doc.querySelector("#totalPriceNettoSuppluier").value = sumValues("#inkoopprijs_ex_ex, #addAfleverkosten");
-            doc.querySelector("#addFee").value = minusValues(totalPurchasePriceNetto, "#addAfleverkosten"); */
-        }
-
-
+        calcValues();
     }
 
     function calcValues() {
-        const vatEl = doc.querySelector("#addBTW_21");
-        doc.querySelector("#totalPriceNettoSuppluier").value = sumValues("#inkoopprijs_ex_ex, #addAfleverkosten");
-        doc.querySelector("#totalCostsFee").value = sumValues("#addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee");
-        doc.querySelector("#totalPriceFee").value = sumValues("#totalPriceNettoSuppluier, #totalCostsFee");
+        set('totalPriceNettoSuppluier', v('inkoopprijs_ex_ex') + v('addAfleverkosten'));
+        set('totalCostsFee', v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee'));
+        set('totalPriceFee', v('totalPriceNettoSuppluier') + v('totalCostsFee'));
+
         if (vatCheckedEl.checked) {
-            vatEl.value = (sumValues("#addAfleverkosten, #addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee") * 0.21).toFixed(0);
+            set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * 0.21);
         } else {
-            vatEl.value = (sumValues("#totalPriceFee") * 0.21).toFixed(0);
+            set('addBTW_21', v('totalPriceFee') * 0.21);
         }
 
-        doc.querySelector("#addVerkoopprijs_Marge_incl").value = sumValues("#totalPriceFee, #addBTW_21");
-        const totalAll = sumValues("#addVerkoopprijs_Marge_incl, #addRest_BPM, #addLeges");
-        doc.querySelector("#totalAll").value = totalAll == 0 ? '' : totalAll;
+        set('addVerkoopprijs_Marge_incl', v('totalPriceFee') + v('addBTW_21'));
+        set('totalAll', v('addVerkoopprijs_Marge_incl') + v('addLeges'));
     }
 
     function changeVatFn(e) {
-        const vatEl = doc.querySelector("#addBTW_21");
-        const trigger = e.currentTarget;
-        if (!trigger.checked) {
-            vatEl.value = (sumValues("#addAfleverkosten, #addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee") * 0.21).toFixed(2);
-            $('#priceNetoText').html('Purchase Price margin');
-            margeCheckedEl.checked = true;
-        } else {
-            vatEl.value = (sumValues("#totalPriceFee") * 0.21).toFixed(2);
-            $('#priceNetoText').html('Purchase Price netto (ex/ex)');
-            margeCheckedEl.checked = false;
-        }
-
-        calcValues();
-
+        changeVatMarge(true);
     }
-    
     function changeMargeFn(e) {
-        const vatEl = doc.querySelector("#addBTW_21");
-        const trigger = e.currentTarget;
-        if (trigger.checked) {
-            vatEl.value = (sumValues("#addAfleverkosten, #addOpknapkosten, #addTransport_Buitenland, #addTransport_Binnenland, #costTaxation, #addFee") * 0.21).toFixed(2);
+        changeVatMarge(false);
+    }
+    function changeVatMarge(vat) {
+        if(vat) {
+            set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * 0.21);
+            $('#switchmargin').prop('checked', false);
+            $('#switchvat').prop('checked', true);
             $('#priceNetoText').html('Purchase Price margin');
-            vatCheckedEl.checked = false;
         } else {
-            vatEl.value = (sumValues("#totalPriceFee") * 0.21).toFixed(2);
+            set('addBTW_21', v('totalPriceFee') * 0.21);
+            $('#switchvat').prop('checked', false);
+            $('#switchmargin').prop('checked', true);
             $('#priceNetoText').html('Purchase Price netto (ex/ex)');
-            vatCheckedEl.checked = true;
         }
 
         calcValues();
-
-    }
-
-    function sumValues(selectors) {
-        const elementSelectors = selectors.split(",");
-        let sum = 0;
-
-        for (let el of elementSelectors) {
-            let element = doc.querySelector(`${el}`);
-            if (!isNaN(element.value) && element.value != "") {
-                sum += getNumber(element.value);
-            }
-        }
-
-        return sum.toFixed(0);
-    }
-
-
-    function minusValues(sum, selectors) {
-
-        const elementSelectors = selectors.split(",");
-
-        for (let el of elementSelectors) {
-            let element = doc.querySelector(`${el}`);
-            if (!isNaN(element.value) && element.value != "") {
-                sum -= getNumber(element.value);
-            }
-        }
-
-        return sum.toFixed(0);
-
     }
 
 })(window, document);

@@ -646,7 +646,7 @@
 
                                 <div class="row str">
                                     <div class="col-12 col-md-6" id="priceNetoText">
-                                        Purchase Price netto (ex/ex)
+                                        Purchase Price margin
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input type="text" class="form-control js-calc-input" id="inkoopprijs_ex_ex" value="<?php echo (isset($data['single_car']['purchase_price_netto']) ?  $data['single_car']['purchase_price_netto'] : "") ?> " name="purchase_price_netto" placeholder="">
