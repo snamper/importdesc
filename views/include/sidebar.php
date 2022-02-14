@@ -44,11 +44,13 @@
                     <select  class="form-control input-sm m-b-20" style="width:90%; margin:auto;" id="languageselect">
 
                         <?php
-                            $langs = $_SESSION['langs'];
+                            $langs = $_SESSION['base']->getLangs();
                         ?>
                         <?php foreach ($langs as $k => $v): ?>
                             <a href="#<?php echo $v['lang'] ?>">
-                                <option <?php echo ($_SESSION['lang']==$v['langID']? 'selected':'') ?>  data-content="<span class='flag-icon flag-icon-<?php echo $v['lang']?>'> <?php echo $v['langfull'] ?> </span>"value="<?php echo $v['langID'] ?>"><?php echo $v['langfull'] ?></option>
+                                <option <?php echo ($_SESSION['user'][0]['langID']==$v['langID']? 'selected':'') ?>  value="<?php echo $v['langID'] ?>">
+                                    <span class='flag-icon flag-icon-<?php echo $v['lang']?>'> <?php echo $v['langfull'] ?> </span>
+                                </option>
                             </a>
                         <?php endforeach ?>
                     </select>

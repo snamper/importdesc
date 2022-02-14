@@ -8,10 +8,11 @@ class home extends view{
     public function __construct() {
 		// displayed page index
 		$this->base = $_SESSION['base'];
-//		if(isset($_POST['changes'])){
-//			$this->setLang($_SESSION['user'][0]['expo_users_ID'],$_POST['changes']);
-//			$_SESSION['user'][0]['langID']=$_POST['changes'];
-//		}
+		if(isset($_POST['changes'])){
+			$this->setLang($_SESSION['user'][0]['expo_users_ID'], $_POST['changes']);
+			$_SESSION['user'][0]['langID']=$_POST['changes'];
+			$_SESSION['lang'] = $this->base->getLangTranslations($_POST['changes']);
+		}
 //		$_SESSION['langs'] = $this->getLangs();
 //		$_SESSION['lang'] = isset($_SESSION['user'])?$_SESSION['user'][0]['langID']:26;
 //		$_SESSION['translate'] = $this->getTranslate($_SESSION['lang']);
