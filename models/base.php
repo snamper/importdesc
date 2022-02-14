@@ -409,10 +409,12 @@ class base
 	public function getFuelAllFuelTypes()
 	{
 		$dbDriver = new db_driver();
-		$query = "SELECT * FROM conversions WHERE `conversion_type` = 'fuel'";
+		$query = "SELECT * FROM conversions
+		INNER JOIN translate on conversions.conversion_name = translate.label AND translate.langID = ?
+		WHERE `conversion_type` = 'fuel'";
 
 		$stmt = $dbDriver->dbCon->prepare($query);
-		$stmt->execute([]);
+		$stmt->execute([$_SESSION['user'][0]['langID']]);
 		$result = $stmt->fetchAll();
 
 		return $result;
