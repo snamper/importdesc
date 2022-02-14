@@ -2105,6 +2105,7 @@ function saveNewImagePositions(removedPos, moved) {
             $('#totalPriceFee').val(val('addVerkoopprijs_Marge_incl') - val('addBTW_21'));
             $('#totalCostsFee').val(val('totalPriceFee') - val('totalPriceNettoSuppluier'));
             $('#addFee').val(val('totalCostsFee') - (val('addOpknapkosten') + val('addTransport_Buitenland') + val('addTransport_Binnenland') + val('costTaxation')));
+            margeCheckedEl.dispatchEvent(new Event('change'));
 
 
             /* const salesPriceVat = minusValues(totalElVal, "#addLeges");
@@ -2127,6 +2128,7 @@ function saveNewImagePositions(removedPos, moved) {
             $('#totalPriceFee').val(val('addVerkoopprijs_Marge_incl') - val('addBTW_21'));
             $('#totalCostsFee').val(val('totalPriceFee') - val('totalPriceNettoSuppluier'));
             $('#addFee').val(val('totalCostsFee') - (val('addOpknapkosten') + val('addTransport_Buitenland') + val('addTransport_Binnenland') + val('costTaxation')));
+            vatCheckedEl.dispatchEvent(new Event('change'));
 
             /* const salesPriceVatBtw = minusValues(totalElVal, "#addLeges");
             const salesPriceNeto = minusValues(salesPriceVatBtw, "#addBTW_21");
@@ -2286,6 +2288,6 @@ $(window).ready(function() {
 // Remove submit on enter
 $(window).ready(function() {
     $("#sourceByCh").on("change", function (e) {
-        document.getElementById('sourceBy').disabled = !$("#sourceByCh").is(":checked");
+        document.getElementById('sourceBy').disabled = $("#sourceByCh").is(":checked");
     });
 });
