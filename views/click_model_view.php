@@ -632,14 +632,7 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="row str">
-                                    <div class="col-12 col-md-6" id="priceNetoText">Purchase Price margin</div>
-                                    <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input type="text" class="form-control js-calc-input" id="inkoopprijs_ex_ex" value=" " name="purchase_price_netto" placeholder="">
-                                    </div>
-                                </div>
-
+                                
                                 <div class="row str">
                                     <div class="col-12 col-md-6" id="priceNetoText">
                                         <?php echo $_SESSION['lang']['car_start_page_46'] ?>
