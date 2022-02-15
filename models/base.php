@@ -778,7 +778,6 @@ class base
 				cd_transmission_additional,
 				cd_power_kpw,
 				cd_cubic_capacity,
-				cd_wheel_drive,
 				cd_co_wltp,
 				cd_co_nedc,
 				cd_kilometers,
@@ -818,7 +817,6 @@ class base
 				cd_notes
 			)
 				VALUES (
-					?,
 					?,
 					?,
 					?,
@@ -904,7 +902,6 @@ class base
 				$_post['transmission_additional'],
 				$_post['power_kpw'],
 				$_post['cubic_capacity'],
-				$_post['wheel_drive'],
 				$_post['co_wltp'],
 				$_post['co_nedc'],
 				$_post['kilometers'],
@@ -1044,7 +1041,6 @@ class base
 				cd_transmission_additional = ?,
 				cd_power_kpw = ?,
 				cd_cubic_capacity = ?,
-				cd_wheel_drive = ?,
 				cd_co_wltp = ?,
 				cd_co_nedc = ?,
 				cd_kilometers = ?,
@@ -1108,7 +1104,6 @@ class base
 				$_post['transmission_additional'],
 				$_post['power_kpw'],
 				$_post['cubic_capacity'],
-				$_post['wheel_drive'],
 				$_post['co_wltp'],
 				$_post['co_nedc'],
 				$_post['kilometers'],
@@ -1162,7 +1157,7 @@ class base
 		   cd.cd_vin,cd.cd_status, cd.cd_komm_number, cd.cd_advert_link,
 				cd.cd_source_supplier,cd.cd_supplier_ref, cd.cd_current_registration,
 				cd.cd_coc,c.car_vehicle_type, cd.cd_transmission_additional,
-				cd.cd_power_kpw,cd.cd_cubic_capacity,conv4.conversion_id as wheel_drive,cd.cd_co_wltp,cd.cd_co_nedc,
+				cd.cd_power_kpw,cd.cd_cubic_capacity,cd.cd_co_wltp,cd.cd_co_nedc,
 				cd.cd_kilometers,cd.cd_paint_type,conv3.conversion_id as color_name,cd.cd_color_additional,cd.cd_interior_color,
 				cd.cd_interior_color_additional,cd.cd_interior_material,cd.cd_first_registration_date,
 				cd.cd_nl_registration_number,cd.cd_meldcode,cd.cd_apk_valid,cd.cd_last_name_registration,
@@ -1186,7 +1181,6 @@ class base
 		   INNER JOIN conversions conv2 on cd.cd_transmission = conv2.conversion_id
 		   INNER JOIN conversions conv3 on cd.cd_color = conv3.conversion_id
 		   INNER JOIN car_make_uitvoerings cmu on c.car_variant  = cmu.cmu_id
-			INNER JOIN conversions conv4 on cd.cd_wheel_drive = conv4.conversion_id
 			INNER JOIN calculations calc on c.car_id = calc.calculation_for_car_id
 			INNER JOIN expo_users u_edit on c.updated_by_id = u_edit.expo_users_ID
 			INNER JOIN expo_users u_cr on c.user_id = u_cr.expo_users_ID 
@@ -1196,6 +1190,7 @@ class base
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$car_id]);
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
 
 		return $result;
 	}

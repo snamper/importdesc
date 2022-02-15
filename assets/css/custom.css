@@ -73,6 +73,14 @@
         box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
         margin: 0 5px;
         border-radius: 3px;       
+        transform: translateY(-200%);
+        transition: 300ms ease-in;
+        opacity: 0;
+    }
+
+    .custom-row_show {
+        transform: translateY(0%);
+        opacity: 1;
     }
 
     .custom-row-close {
@@ -197,7 +205,6 @@
 }
 
 .show-documents{
-    min-height: 140px;
     overflow-y: scroll;
 }
 

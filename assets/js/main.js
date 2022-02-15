@@ -459,52 +459,64 @@ $(function () {
 });
 $('#datepicker1').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker2').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker3').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    orientation: "bottom"
+    orientation: "bottom",
+    weekStart : 1
 });
 $('#datepicker4').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker5').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker6').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker7').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker8').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker9').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker10').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker11').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker12').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker13').datepicker({
     dateFormat: 'dd-mm-yy',
@@ -512,7 +524,8 @@ $('#datepicker13').datepicker({
 });
 $('#datepicker14').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker15').datepicker({
     dateFormat: 'dd-mm-yy',
@@ -520,67 +533,83 @@ $('#datepicker15').datepicker({
 });
 $('#datepicker16').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker17').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker18').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker19').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker20').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker21').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker22').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker23').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker24').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker25').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker26').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker27').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker28').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker29').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker99').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 $('#datepicker100').datepicker({
     dateFormat: 'dd-mm-yy',
-    autoclose: true
+    autoclose: true,
+    weekStart : 1
 });
 
 $('#datepicker1, #datepicker2,#datepicker3,#datepicker4').change(function () {
@@ -2069,6 +2098,20 @@ function saveNewImagePositions(removedPos, moved) {
         return;
     }
 
+    const v = (id) => {
+        return parseFloat($(`#${id}`).val()
+        .replace(",", "") // remove thousand before sum
+        .replace("€", "")) // remove euro sign before sum
+        || 0;
+    }
+    const set = (id, num) => {
+        // Add thousand separator
+        const number = num.toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        // Add Euro sign
+        const val = `€${number}`
+        return $(`#${id}`).val(val);
+    }
+
     const calcFromTotal = doc.querySelector(".js-calc-from-total");
     const vatCheckedEl = doc.querySelector("#switchvat");
     const margeCheckedEl = doc.querySelector("#switchmargin");
@@ -2085,17 +2128,14 @@ function saveNewImagePositions(removedPos, moved) {
 
     for (let changer of calculationChangers) {
         changer.addEventListener("change", calcValues);
+        changer.addEventListener("focus", (e) => {
+            e.currentTarget.value =  parseFloat(e.currentTarget.value.replace(",", "") // remove thousand before sum
+            .replace("€", "")) // remove euro sign before sum
+            || '';
+        });
     }
 
-    const v = (id) => {
-        return parseFloat($(`#${id}`).val()) || 0;
-    }
-
-    const set = (id, num) => {
-        return $(`#${id}`).val(num.toFixed(0));
-    }
-
-    function calcFromTotalFn() {
+    function calcFromTotalFn(e) {
         const lastSalesPriceTotal = v('addVerkoopprijs_Marge_incl') + v('addRest_BPM') + v('addLeges');
         const totalDiff = lastSalesPriceTotal - v('totalAll');
         const deductFee = totalDiff / 1.21;
@@ -2105,10 +2145,12 @@ function saveNewImagePositions(removedPos, moved) {
         set('addFee', fee);
         set('addBTW_21', vat);
 
-        calcValues();
+        calcValues(e);
     }
 
-    function calcValues() {       
+    function calcValues(e) {
+        const trigger = e.currentTarget;
+        const triggerVal = trigger.value;
         set('totalPriceNettoSuppluier', v('inkoopprijs_ex_ex') + v('addAfleverkosten'));
         set('totalCostsFee', v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee'));
         set('totalPriceFee', v('totalPriceNettoSuppluier') + v('totalCostsFee'));
@@ -2123,6 +2165,7 @@ function saveNewImagePositions(removedPos, moved) {
         set('totalAll', v('addVerkoopprijs_Marge_incl') + v('addLeges'));
 
         restBpmCalc();
+        trigger.value = `€${triggerVal.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}`;
     }
 
     function changeVatFn(e) {
@@ -2173,9 +2216,12 @@ function saveNewImagePositions(removedPos, moved) {
             },
             success: function (data) {
                 // console.log(json[0]['BPMCO2WLTP']);
-                var json = JSON.parse(data);
-                doc.querySelector('#addRest_BPMReadOnly').value = json[0].bpmprice;
-                
+                try {
+                    var json = JSON.parse(data);
+                    doc.querySelector('#addRest_BPMReadOnly').value = json[0].bpmprice;
+                }  catch (e) {
+                    return "A required field for BPM is not filled";
+                }           
             },
             error: function (request, status, error) {
                 console.log(request.responseText);
@@ -2246,9 +2292,25 @@ function saveNewImagePositions(removedPos, moved) {
         });
     });
 
-    // Remove submit on enter
-    $(window).ready(function () {
-        $("#sourceByCh").on("change", function (e) {
-            document.getElementById('sourceBy').disabled = $("#sourceByCh").is(":checked");
-        });
+// Remove submit on enter
+$(window).ready(function () {
+    $("#sourceByCh").on("change", function (e) {
+        const sourceBy =  document.getElementById('sourceBy');
+        sourceBy.disabled = $("#sourceByCh").is(":checked");
+        sourceBy.value = '0';
     });
+
+    $('#toggle_nav').click((e) => {
+        $('#create_nav').toggleClass('custom-row_show');
+    });
+
+    // On preorder change disable fields
+    $('#preorder').change((e) => {
+        const disabled = $(e.currentTarget).is(":checked");
+        const arr = ['#vin', '#curReg', '#cOc', '#datepicker1', '#datepicker3', '#datepicker10', '#datepicker11', '#nlRegNumber'];
+
+        arr.forEach(e => {
+            $(e).prop('disabled', disabled);
+        })
+    })
+});

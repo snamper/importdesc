@@ -15,7 +15,6 @@
     <!-- BEGIN page-header -->
     <h1 class="page-header">
         <?php echo $_SESSION['lang']['debtor_page_3'] ?>
-        <small><?php echo $_SESSION['lang']['debtor_page_4'] ?></small>
     </h1>
     <!-- END page-header -->
 
@@ -23,10 +22,10 @@
 
     <table id="sample-table-9" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
         <thead>
-            <th><?php echo $_SESSION['lang']['debtor_page_5'] ?></th>
-            <th style="white-space: nowrap"><?php echo $_SESSION['lang']['debtor_page_6'] ?></th>
+            <th><?php echo $_SESSION['lang']['debtor_page_4'] ?></th>
+            <th style="white-space: nowrap"><?php echo $_SESSION['lang']['debtor_page_5'] ?></th>
 
-            <th style="white-space: nowrap"><?php echo $_SESSION['lang']['debtor_page_'] ?></th>
+            <th style="white-space: nowrap"><?php echo $_SESSION['lang']['debtor_page_6'] ?></th>
 
             <th><?php echo $_SESSION['lang']['debtor_page_7'] ?></th>
             <th style="white-space: nowrap"><?php echo $_SESSION['lang']['debtor_page_8'] ?></th>
