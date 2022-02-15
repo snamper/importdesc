@@ -1481,7 +1481,7 @@ $('.JSfunc').click(function () {
             fetchCarItems(`${location.origin}/car_start?get_all_fuels`, "#BPMbrandstof", "description", "conversion_id");
         }
         else {
-            fetchCarItems(`${location.origin}/car_start?get_fuel_by_motor=${e.currentTarget.value}`, "#BPMbrandstof", "conversion_name", "cmotor_fuel_id");
+            fetchCarItems(`${location.origin}/car_start?get_fuel_by_motor=${e.currentTarget.value}`, "#BPMbrandstof", "description", "cmotor_fuel_id");
         }
     });
 
