@@ -1461,7 +1461,7 @@ $('.JSfunc').click(function () {
         }
         if (e.currentTarget.value == 0) {
             // FETCH All Fuel
-            fetchCarItems(`${location.origin}/car_start?get_all_fuels`, "#BPMbrandstof", "conversion_name", "conversion_id");
+            fetchCarItems(`${location.origin}/car_start?get_all_fuels`, "#BPMbrandstof", "description", "conversion_id");
 
             //FETCH MOTORS 
             fetchCarItems(`${location.origin}/car_start?make_id_get_motors=${carMake.value}`, "#carMotor", "cmotor_name", "cmotor_id");
@@ -1478,7 +1478,7 @@ $('.JSfunc').click(function () {
         }
         if (e.currentTarget.value == 0) {
             // FETCH All Fuel
-            fetchCarItems(`${location.origin}/car_start?get_all_fuels`, "#BPMbrandstof", "conversion_name", "conversion_id");
+            fetchCarItems(`${location.origin}/car_start?get_all_fuels`, "#BPMbrandstof", "description", "conversion_id");
         }
         else {
             fetchCarItems(`${location.origin}/car_start?get_fuel_by_motor=${e.currentTarget.value}`, "#BPMbrandstof", "conversion_name", "cmotor_fuel_id");

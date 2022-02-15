@@ -26,7 +26,7 @@
 						<label class="control-label"><?php echo $_SESSION['lang']['login_3'] ?></label>
 						<input type="password" class="form-control" id="userPassword" name="userPassword" placeholder="Password" />
 					</div>
-					<button type="submit" class="btn btn-primary"><?php echo $_SESSION['lang']['login_4'] ?></button>
+					<button type="submit" class="btn btn-primary"><?php echo isset($_SESSION['lang']) ? $_SESSION['lang']['login_4'] : "Sign In"; ?></button>
 					<input type="hidden" name="login">
 				</form>
 				<!-- END login-form -->
