@@ -2174,7 +2174,7 @@ function saveNewImagePositions(removedPos, moved) {
             success: function (data) {
                 // console.log(json[0]['BPMCO2WLTP']);
                 var json = JSON.parse(data);
-                doc.querySelector('#addRest_BPM').value = json[0].bpmprice;
+                doc.querySelector('#addRest_BPMReadOnly').value = json[0].bpmprice;
                 
             },
             error: function (request, status, error) {
