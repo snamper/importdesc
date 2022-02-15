@@ -36,6 +36,7 @@ class login extends view{
 					
            		 if($user){
            		 	$_SESSION['user']=$user;	
+					$_SESSION['lang'] = $this->base->getLangTranslations($user[0]['langID']);
            		 	// $verify = password_verify($obj->userPassword, $_SESSION['user']);
            		 	header("Location: home");
            		 }

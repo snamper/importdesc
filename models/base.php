@@ -259,6 +259,20 @@ class base
 		return $dbDriver->fetchAssoc();
 	}
 
+	function getLangTranslations($lang_id) {
+		$dbDriver = new db_driver();
+		$query = "SELECT * FROM translate WHERE `langID` = ?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$lang_id]);
+		$result = array();
+
+		while($lang = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$result[$lang['label']] = $lang['description'];
+		}
+
+		return $result;
+	}
+
 	public function getCarDocuments($car_id)
 	{
 
@@ -395,10 +409,12 @@ class base
 	public function getFuelAllFuelTypes()
 	{
 		$dbDriver = new db_driver();
-		$query = "SELECT * FROM conversions WHERE `conversion_type` = 'fuel'";
+		$query = "SELECT * FROM conversions
+		INNER JOIN translate on conversions.conversion_name = translate.label AND translate.langID = ?
+		WHERE `conversion_type` = 'fuel'";
 
 		$stmt = $dbDriver->dbCon->prepare($query);
-		$stmt->execute([]);
+		$stmt->execute([$_SESSION['user'][0]['langID']]);
 		$result = $stmt->fetchAll();
 
 		return $result;

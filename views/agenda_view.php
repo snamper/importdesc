@@ -4,14 +4,14 @@
     
     <!-- BEGIN breadcrumb -->
     <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Agenda</a></li>
-        <li class="breadcrumb-item active">Agenda bedrijf</li>
+        <li class="breadcrumb-item"><a href="#"><?php echo $_SESSION['lang']['agenda_page_1'] ?></a></li>
+        <li class="breadcrumb-item active"><?php echo $_SESSION['lang']['agenda_page_2'] ?></li>
     </ul>
     <!-- END breadcrumb -->
     <!-- BEGIN page-header -->
     <h1 class="page-header">
-        Agenda
-        <small>Bekijk alle ingeplande items....</small>
+    <?php echo $_SESSION['lang']['agenda_page_3'] ?>
+        <small><?php echo $_SESSION['lang']['agenda_page_4'] ?></small>
     </h1>
 
 
