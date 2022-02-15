@@ -1482,23 +1482,6 @@ $('.JSfunc').click(function () {
         }
         else {
             fetchCarItems(`${location.origin}/car_start?get_fuel_by_motor=${e.currentTarget.value}`, "#BPMbrandstof", "description", "cmotor_fuel_id");
-<<<<<<< HEAD
-=======
-        }
-    });
-
-    carMotor.addEventListener("change", (e) => {
-        if (carMake.value == 0) {
-            resetSelectElement(e.currentTarget);
-            return;
-        }
-        if (e.currentTarget.value == 0) {
-            // FETCH All Fuel
-            fetchCarItems(`${location.origin}/car_start?get_all_fuels`, "#BPMbrandstof", "description", "conversion_id");
-        }
-        else {
-            fetchCarItems(`${location.origin}/car_start?get_fuel_by_motor=${e.currentTarget.value}`, "#BPMbrandstof", "conversion_name", "cmotor_fuel_id");
->>>>>>> 06ced6026a8187c9837343b0619d05d7ffec0597
         }
     });
 
