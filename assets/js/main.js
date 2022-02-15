@@ -1409,14 +1409,14 @@ $('.JSfunc').click(function () {
 
     const carMake = document.querySelector('#carMake');
 
-    if(!carMake)
+    if (!carMake)
         return;
 
     const queryString = window.location.search;
     const parameters = new URLSearchParams(queryString);
     const car_id = parameters.get('car_id');
 
-    if(!car_id) {
+    if (!car_id) {
         window.addEventListener('DOMContentLoaded', (event) => {
             carMake.value = 0;
             carMake.dispatchEvent(new Event('change'));
@@ -1444,7 +1444,7 @@ $('.JSfunc').click(function () {
         //FETCH MOTORS 
         fetchCarItems(`${location.origin}/car_start?make_id_get_motors=${trigger.value}`, "#carMotor", "cmotor_name", "cmotor_id");
 
-        if(trigger.value !== 0) {
+        if (trigger.value !== 0) {
             carFuel.dispatchEvent(new Event('change'));
             carMotor.dispatchEvent(new Event('change'));
         }
@@ -1455,11 +1455,11 @@ $('.JSfunc').click(function () {
     });
 
     carFuel.addEventListener("change", (e) => {
-        if(carMake.value == 0) {
+        if (carMake.value == 0) {
             resetSelectElement(e.currentTarget);
             return;
         }
-        if(e.currentTarget.value == 0) {
+        if (e.currentTarget.value == 0) {
             // FETCH All Fuel
             fetchCarItems(`${location.origin}/car_start?get_all_fuels`, "#BPMbrandstof", "conversion_name", "conversion_id");
 
@@ -1472,11 +1472,11 @@ $('.JSfunc').click(function () {
     });
 
     carMotor.addEventListener("change", (e) => {
-        if(carMake.value == 0) {
+        if (carMake.value == 0) {
             resetSelectElement(e.currentTarget);
             return;
         }
-        if(e.currentTarget.value == 0) {
+        if (e.currentTarget.value == 0) {
             // FETCH All Fuel
             fetchCarItems(`${location.origin}/car_start?get_all_fuels`, "#BPMbrandstof", "conversion_name", "conversion_id");
         }
@@ -1516,14 +1516,14 @@ $('.JSfunc').click(function () {
             "text": "-",
             "value": "0"
         });
-    
+
         const selectEl = document.querySelector(`${selector}`);
 
         const selectedOption = selectEl.value;
-    
+
         selectEl.innerHTML = "";
         selectEl.appendChild(emptyOption);
-    
+
         for (let key in jsonData) {
             if (!jsonData.hasOwnProperty(key)) {
                 continue;
@@ -1534,9 +1534,9 @@ $('.JSfunc').click(function () {
                 "value": jsonData[key][selectValProp]
             });
 
-            if(selectedOption && option.value == selectedOption)
+            if (selectedOption && option.value == selectedOption)
                 option.selected = true;
-    
+
             selectEl.appendChild(option)
         }
     }
@@ -1659,16 +1659,16 @@ $(document).ready(function () {
 
         function getLastImagePos() {
             const images = $(`img[data-imagepos]:not([data-imagepos='0'])`);
-            var num = $(images).map(function() {
+            var num = $(images).map(function () {
                 return $(this).data('imagepos');
             }).get();//get all data values in an array
-            
+
             var highest = Math.max.apply(Math, num);//find the highest value from them
-            return $(images).filter(function(){
+            return $(images).filter(function () {
                 return $(this).data('imagepos') == highest;//return the highest div
             }).data('imagepos') || 0;//append to that div
         }
-        
+
         //Allowed files depends on file or image
         if (trigger.id == "uploadCarImage") {
             formData.append("allowed", "image");
@@ -1677,7 +1677,7 @@ $(document).ready(function () {
             allowedSizeMb = 5;
         } else { // If document 
             formData.append("allowed", "documents");
-            allowedFormats = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+            allowedFormats = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
             allowedSizeMb = 10;
 
         }
@@ -1711,12 +1711,12 @@ $(document).ready(function () {
             data: formData,
             contentType: false,
             processData: false,
-            success: function(response){
-                
+            success: function (response) {
+
                 let type = "";
-                if(allowedFormats.includes("application/pdf")) {
+                if (allowedFormats.includes("application/pdf")) {
                     type = "files";
-                }else {
+                } else {
                     type = "photos";
                 }
 
@@ -1760,18 +1760,18 @@ $(document).ready(function () {
 
     function displayUploadedFiles(response, type) {
         const createEditCarForm = document.querySelector("#createEditCarForm");
-        if(type == "files") {
+        if (type == "files") {
 
             const documentsContainer = document.querySelector(".show-documents");
 
-            for(let key in response) {
+            for (let key in response) {
                 let arrLink = response[key].location.split('/');
 
 
                 let documentElement = Object.assign(
                     document.createElement("a"), {
                     "href": response[key].location,
-                    "innerText": arrLink[arrLink.length-1]
+                    "innerText": arrLink[arrLink.length - 1]
                 });
 
                 let hiddenInput = Object.assign(
@@ -1786,10 +1786,10 @@ $(document).ready(function () {
             }
 
 
-        }else { // IF IMAGES 
+        } else { // IF IMAGES 
             let img, span, carImageDiv, imageColDiv;
 
-            for(let key in response) {
+            for (let key in response) {
                 // Create div for image
                 imageColDiv = Object.assign(
                     document.createElement("div"), {
@@ -1811,7 +1811,7 @@ $(document).ready(function () {
                     "draggable": draggable
                 });
                 img.setAttribute("data-imagepos", response[key].pos);
-                if(draggable) {
+                if (draggable) {
                     img.setAttribute("ondragstart", 'onImageDrag(event)');
                     img.setAttribute("ondragover", 'allowDrop(event)');
                     img.setAttribute("ondrop", 'onImageDrop(event)');
@@ -1827,7 +1827,7 @@ $(document).ready(function () {
                 });
                 carImageDiv.prepend(span);
                 span.addEventListener('click', onTrashBtnClick);
-                
+
                 imageColDiv.prepend(carImageDiv);
                 // Push div into column
                 document.querySelector(".car-images-row").prepend(imageColDiv);
@@ -1858,7 +1858,7 @@ function updateRecentImages() {
 
 function clearRecentImages() {
     const recentImagesCol = document.querySelector('.recent-images-col .car-image-col');
-    for(let i = recentImagesCol.childElementCount - 1; i >= 0; i--) {
+    for (let i = recentImagesCol.childElementCount - 1; i >= 0; i--) {
         recentImagesCol.removeChild(recentImagesCol.children[i]);
     }
 }
@@ -1867,7 +1867,7 @@ function insertRecentImages() {
     let num = 0;
     let img;
     document.querySelectorAll('.car-images-row .car-image-col .car-image').forEach(car_image => {
-        if(num >= 5) {
+        if (num >= 5) {
             return;
         }
 
@@ -1876,8 +1876,8 @@ function insertRecentImages() {
         num++;
     });
 
-    if(num < 5) {
-        for(let i=0; i<5-num; i++) {
+    if (num < 5) {
+        for (let i = 0; i < 5 - num; i++) {
             insertRecentImage();
         }
     }
@@ -1893,7 +1893,7 @@ function insertRecentImage(src, pos, draggable) {
         "className": "car-image"
     });
 
-    if(src) {
+    if (src) {
         // Create the image object
         img = Object.assign(
             document.createElement("img"), {
@@ -1901,7 +1901,7 @@ function insertRecentImage(src, pos, draggable) {
             "draggable": draggable
         });
         img.setAttribute("data-recent-imagepos", pos);
-        if(draggable) {
+        if (draggable) {
             img.setAttribute("ondragstart", 'onImageDrag(event)');
             img.setAttribute("ondragover", 'allowDrop(event)');
             img.setAttribute("ondrop", 'onImageDrop(event)');
@@ -1914,7 +1914,7 @@ function insertRecentImage(src, pos, draggable) {
             "src": '/assets/images/no-image.gif'
         });
     }
-    
+
     // Push image into div
     carImageDiv.prepend(img);
     // Push icons into div
@@ -1948,14 +1948,14 @@ function onImageDrop(e) {
     e.preventDefault();
 
     const origin = location.origin + '/';
-    
+
     const toImagePos = e.target.getAttribute('data-imagepos') || e.target.getAttribute('data-recent-imagepos');
     const toImage = document.querySelector(`img[data-imagepos="${toImagePos}"]`);
     const toImageSrc = toImage.src.replace(origin, '');
 
     const fromImagePos = e.dataTransfer.getData("Text");
     const fromImage = document.querySelector(`img[data-imagepos="${fromImagePos}"]`);
-    if(!fromImage)
+    if (!fromImage)
         return;
     const fromImageSrc = fromImage.src.replace(origin, '');
 
@@ -1967,7 +1967,7 @@ function onImageDrop(e) {
 
     const car_id = $('[name="car_id"]').val();
 
-    if(car_id) {
+    if (car_id) {
         const formData = new FormData();
         formData.append('move_image', 'true');
         formData.append('car_id', car_id);
@@ -1991,20 +1991,20 @@ function onImageDrop(e) {
 
     const recentImage = document.querySelector(`img[data-recent-imagepos="${fromImagePos}"]`) || document.querySelector(`img[data-recent-imagepos="${toImagePos}"]`);
 
-    if(recentImage) {
+    if (recentImage) {
         clearRecentImages();
         insertRecentImages();
     }
 }
 
-;(function (window, doc) {
+; (function (window, doc) {
     const trashBtns = doc.querySelectorAll('.car-image > .ti-trash');
 
-    if(!trashBtns)
+    if (!trashBtns)
         return;
 
     trashBtns.forEach((btn) => {
-        btn.addEventListener('click', onTrashBtnClick); 
+        btn.addEventListener('click', onTrashBtnClick);
     });
 
 })(window, document);
@@ -2012,7 +2012,7 @@ function onImageDrop(e) {
 function onTrashBtnClick(e) {
     const carImageDiv = e.target.parentNode;
     const carImagePos = carImageDiv.children[carImageDiv.childElementCount - 1].getAttribute('data-imagepos') || carImageDiv.children[carImageDiv.childElementCount - 1].getAttribute('data-recent-imagepos');
-    
+
     carImageDiv.parentElement.parentElement.removeChild(carImageDiv.parentElement);
 
     const moved = changePositionsAbove(carImagePos);
@@ -2027,7 +2027,7 @@ function changePositionsAbove(removedPos) {
     let pos, moved = 0;
     images.forEach(img => {
         pos = img.getAttribute('data-imagepos');
-        if(pos > removedPos) {
+        if (pos > removedPos) {
             img.setAttribute('data-imagepos', img.getAttribute('data-imagepos') - 1);
             moved++;
         }
@@ -2052,9 +2052,9 @@ function saveNewImagePositions(removedPos, moved) {
     let pos;
     arrHiddenImputImages.forEach(input => {
         pos = input.getAttribute('data-pos');
-        if(pos == removedPos) {
+        if (pos == removedPos) {
             input.parentElement.removeChild(input);
-        } else if(pos > removedPos) {
+        } else if (pos > removedPos) {
             src = input.value.split('|')[0];
             input.setAttribute('data-pos', pos - 1);
             input.value = src + '|' + (pos - 1);
@@ -2108,7 +2108,7 @@ function saveNewImagePositions(removedPos, moved) {
         calcValues();
     }
 
-    function calcValues() {
+    function calcValues() {       
         set('totalPriceNettoSuppluier', v('inkoopprijs_ex_ex') + v('addAfleverkosten'));
         set('totalCostsFee', v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee'));
         set('totalPriceFee', v('totalPriceNettoSuppluier') + v('totalCostsFee'));
@@ -2121,6 +2121,8 @@ function saveNewImagePositions(removedPos, moved) {
 
         set('addVerkoopprijs_Marge_incl', v('totalPriceFee') + v('addBTW_21'));
         set('totalAll', v('addVerkoopprijs_Marge_incl') + v('addLeges'));
+
+        restBpmCalc();
     }
 
     function changeVatFn(e) {
@@ -2130,7 +2132,7 @@ function saveNewImagePositions(removedPos, moved) {
         changeVatMarge(false);
     }
     function changeVatMarge(vat) {
-        if(vat) {
+        if (vat) {
             set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * 0.21);
             $('#switchmargin').prop('checked', false);
             $('#switchvat').prop('checked', true);
@@ -2143,74 +2145,110 @@ function saveNewImagePositions(removedPos, moved) {
         }
 
         calcValues();
+ 
     }
 
-})(window, document);
 
-; (function (window, doc) {
-    const referenceFillers = document.querySelectorAll(".js-fill-refer");
-    if (!referenceFillers) {
-        return;
+
+    function restBpmCalc() {
+        const SoortVoertuig = document.querySelector("#SoortVoertuig").value;
+        const BPMbrandstof = document.querySelector("#BPMbrandstof").value;
+        const BPMproductiedatum = document.querySelector("#datepicker1").value;
+        const BPMtenaamstellingNL = document.querySelector("#datepicker10").value;
+        const BPMCO2WLTP = document.querySelector("#BPMCO2WLTP").value;
+        const percentage = document.querySelector("#percentage").value;
+        const variabeledatumbpm = document.querySelector("#datepicker2").value;
+        
+        $.ajax({
+            type: "POST",
+            url: '../bpm/BPMUpdateTest.php',
+            data: {
+                "SoortVoertuig": SoortVoertuig,
+                "BPMbrandstof": BPMbrandstof,
+                "BPMproductiedatum": BPMproductiedatum,
+                "BPMtenaamstellingNL": BPMtenaamstellingNL,
+                "variabeledatumbpm": variabeledatumbpm,
+                "BPMCO2WLTP": BPMCO2WLTP,
+                "percentage": percentage,
+            },
+            success: function (data) {
+                // console.log(json[0]['BPMCO2WLTP']);
+                var json = JSON.parse(data);
+                doc.querySelector('#addRest_BPMReadOnly').value = json[0].bpmprice;
+                
+            },
+            error: function (request, status, error) {
+                console.log(request.responseText);
+            }
+        });
     }
 
-    for (ref of referenceFillers) {
+}) (window, document);
 
-        ref.addEventListener("change", addReference);
-    }
-
-    function addReference(e) {
-        const trigger = e.currentTarget;
-        let text = "";
-        if (trigger.value == "" || trigger.value == 0) {
+    ; (function (window, doc) {
+        const referenceFillers = document.querySelectorAll(".js-fill-refer");
+        if (!referenceFillers) {
             return;
         }
 
-        if (trigger.tagName == "SELECT") {
-            text = trigger.options[trigger.selectedIndex].innerText;
-        } else { // IF input
-            text = trigger.value;
+        for (ref of referenceFillers) {
+
+            ref.addEventListener("change", addReference);
         }
 
-         if(trigger.getAttribute('id') == 'carMake' && text.length > 3) {
-            text = text.slice(0, 3);
-        }
-        else if(trigger.getAttribute('id') == 'vin' && text.length > 4) {
-            text = text.slice(-4);
+        function addReference(e) {
+            const trigger = e.currentTarget;
+            let text = "";
+            if (trigger.value == "" || trigger.value == 0) {
+                return;
+            }
+
+            if (trigger.tagName == "SELECT") {
+                text = trigger.options[trigger.selectedIndex].innerText;
+            } else { // IF input
+                text = trigger.value;
+            }
+
+            if (trigger.getAttribute('id') == 'carMake' && text.length > 3) {
+                text = text.slice(0, 3);
+            }
+            else if (trigger.getAttribute('id') == 'vin' && text.length > 4) {
+                text = text.slice(-4);
+            }
+
+            doc.querySelector(`[data-ref=${trigger.id}]`).innerText = text;
         }
 
-        doc.querySelector(`[data-ref=${trigger.id}]`).innerText = text;
+    })(window, document);
+
+
+
+    function delay(callback, ms) {
+        var timer = 0;
+        return function () {
+            var context = this,
+                args = arguments;
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                callback.apply(context, args);
+            }, ms || 0);
+        };
     }
 
-})(window, document);
-
-
-
-function delay(callback, ms) {
-    var timer = 0;
-    return function () {
-        var context = this,
-            args = arguments;
-        clearTimeout(timer);
-        timer = setTimeout(function () {
-            callback.apply(context, args);
-        }, ms || 0);
-    };
-}
-
-// Remove submit on enter
-$(window).ready(function() {
-    $("#createEditCarForm").on("keypress", function (event) {
-        var keyPressed = event.keyCode || event.which;
-        if (keyPressed === 13) {
-            event.preventDefault();
-            return false;
-        }
+    // Remove submit on enter
+    $(window).ready(function () {
+        $("#createEditCarForm").on("keypress", function (event) {
+            var keyPressed = event.keyCode || event.which;
+            if (keyPressed === 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
     });
-});
 
-// Remove submit on enter
-$(window).ready(function() {
-    $("#sourceByCh").on("change", function (e) {
-        document.getElementById('sourceBy').disabled = $("#sourceByCh").is(":checked");
+    // Remove submit on enter
+    $(window).ready(function () {
+        $("#sourceByCh").on("change", function (e) {
+            document.getElementById('sourceBy').disabled = $("#sourceByCh").is(":checked");
+        });
     });
-});

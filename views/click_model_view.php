@@ -632,7 +632,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
+                                <!-- Current date  -->
+                                <input type="hidden" autocomplete="off"  class="form-control" name="huidigedatumbpm" id="datepicker2" value="<?php echo date('d-m-Y') ?>">
+
                                 <div class="row str">
                                     <div class="col-12 col-md-6" id="priceNetoText">
                                         <?php echo $_SESSION['lang']['car_start_page_46'] ?>
@@ -738,7 +741,7 @@
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input readonly type="text" class="form-control" id="addVerkoopprijs_Marge_incl" value="<?php echo (isset($data['single_car']['sales_price_incl_vat_btw']) ?  $data['single_car']['sales_price_incl_vat_btw'] : '') ?> " name="sales_price_incl_vat_btw" placeholder="">
                                     </div>
-                                </div>
+                                </div>      
                                 <div class="row str">
                                     <div class="col-12 col-md-6">
                                         <?php echo $_SESSION['lang']['car_start_page_58'] ?>
@@ -747,7 +750,7 @@
                                         <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['rest_bpm']) ?  $data['single_car']['rest_bpm'] : '') ?> " id="addRest_BPM" name="rest_bpm" placeholder="Rest BPM Indicatief">
 
                                     </div>
-                                </div>
+                                </div>                          
                                 <div class="row str">
                                     <div class="col-12 col-md-6">
                                         <?php echo $_SESSION['lang']['car_start_page_59'] ?>
@@ -763,24 +766,27 @@
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input class="form-control js-calc-from-total" value="<?php echo (isset($data['single_car']['sales_price_total']) ?  $data['single_car']['sales_price_total'] : '') ?> " type="text" name="sales_price_total" id="totalAll">
                                     </div>
-                                </div>
+                                </div>                                
                                 <div class="row mt-4"></div>
                                 <div class="row str">
                                     <div class="col-12 col-md-6 font-weight-bold">
                                         % BPM
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input class="form-control" type="text" name="bpm_output_1" id="" placeholder="" disabled>
+                                        <input readonly type="text" class="form-control" id="percentage" name="percentage" placeholder="">
                                     </div>
-                                </div>
-                                <div class="row str">
-                                    <div class="col-12 col-md-6 font-weight-bold">
+                                </div>  
+                                
+                                <div class="row str">                                
+                                <div class="col-12 col-md-6">
                                         Rest BPM (indication)
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input class="form-control" type="text" name="bpm_output_1" id="" placeholder="" disabled>
+                                        <input readonly type="text" class="form-control" value="<?php echo (isset($data['single_car']['rest_bpm']) ?  $data['single_car']['rest_bpm'] : '') ?> " id="addRest_BPMReadOnly" name="rest_bpm" placeholder="Rest BPM Indicatief">
+
                                     </div>
                                 </div>
+
                             </div>
                             <!-- Calculation  -->
 

@@ -455,7 +455,7 @@ class base
 		$query = "SELECT * FROM expo_users";
 
 		$stmt = $dbDriver->dbCon->prepare($query);
-		$stmt->execute([$make_id]);
+		$stmt->execute([]);
 		$result = $stmt->fetchAll();
 
 		return $result;

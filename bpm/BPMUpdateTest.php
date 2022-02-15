@@ -36,7 +36,7 @@ $_POST['variabeledatumbpm'] = $_POST['BPMtenaamstellingNL'];
 <?php if ($co2 != '' && $year_tns != '1970' && $co2 != '')
     foreach ( $years as $key => $value ) { ?>
        
-<?php // floor( calculateBpmTest( $co2, $value['bpm_date'], $brandstof ) ); ?>
+<?php // floor( calculateBpmTest( $co2, $value['bpm_date'], $brandstof ) );?>
         <?php $_POST['BPMArray'][]=floor( calculateBpmTest( $co2, $value['bpm_date'], $brandstof ) ); ?>
 
     <?php } else { ?>
@@ -112,6 +112,7 @@ $_POST['variabeledatumbpm'] = $_POST['BPMtenaamstellingNL'];
             NEW_forfetaire_berekening_tenaamstelling_nlWLTP();
 //            NEW_forfetaire_berekening_bpm();
 
+
 $_POST['forfetaire_brutobpm']=min($_POST['BPMArray']);
 
 
@@ -133,7 +134,7 @@ $_POST['percentageX']=($_POST['percentage']*$_POST['forfetaire_brutobpm'])/100;
 //		WHERE (forfaitaire_periode.geldig_van <= '" . $datum . "' AND forfaitaire_periode.geldig_tot >= '" . $datum . "')
 
 function NEW_forfetaire_berekeningWLTP() {
-    $datum  = date( 'Y-m-d', ( strtotime( $_POST['huidigedatumbpm'] ) ) );
+    $datum  = date( 'Y-m-d', ( $d2 ) );
 
     $foretaireA=$_POST['forfetaire_mnd'];
 
@@ -192,7 +193,10 @@ function NEW_forfetaire_berekening_tenaamstelling_nlWLTP() {
 // return to sender
 //
 $_SESSION['BPMSAready']=1234; // dit om het pop up scherm te tonen.
+
 $_POST['bpmPrice'] = min(array_filter($_POST["BPMArray"]));
+
+
 $redirect_pagina = "../../../crm/bpmcalculatorWLTP.php?SoortVoertuig=".$_POST['SoortVoertuig']."&BPMCO2WLTP=".$_POST['BPMCO2WLTP']."&BPMproductiedatum=".$_POST['BPMproductiedatum']."&BPMbrandstof=".$_POST['BPMbrandstof']."&BPMtenaamstellingNL=".$_POST["BPMtenaamstellingNL"]."&variabeledatumbpm=".$_POST['variabeledatumbpm']."&a=".$_POST['forfetaire_uitkomst']."&b=".$_POST['forfetaire_variabel_uitkomst']."&variabeledatumbpm=".$_POST['variabeledatumbpm']."&percentage=".$_POST['percentageX']."&percentagec=".$_POST['percentage']."&bpmprice=".$_POST['forfetaire_brutobpm'];
 // echo "<META HTTP-EQUIV=\"REFRESH\" CONTENT=\"0; URL=" . $redirect_pagina . " \" >";
  $return_arr[] = array(
