@@ -8,14 +8,13 @@
 
     <!-- BEGIN breadcrumb -->
     <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Overzichten</a></li>
-        <li class="breadcrumb-item active">Alle medewerkers </li>
+        <li class="breadcrumb-item"><a href="#"><?php echo $_SESSION['lang']['employees_page_1'] ?></a></li>
+        <li class="breadcrumb-item active"><?php echo $_SESSION['lang']['employees_page_2'] ?></li>
     </ul>
     <!-- END breadcrumb -->
     <!-- BEGIN page-header -->
     <h1 class="page-header">
-        Alle medewerkers
-        <small>Hieronder alle medewerkers...</small>
+        <?php echo $_SESSION['lang']['employees_page_3'] ?>
     </h1>
     <!-- END page-header -->
 
@@ -23,15 +22,15 @@
 
     <table id="sample-table-7" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
         <thead>
-            <th>PersonId</th>
-            <th style="white-space: nowrap">Initials</th>
+            <th><?php echo $_SESSION['lang']['employees_page_4'] ?></th>
+            <th style="white-space: nowrap"><?php echo $_SESSION['lang']['employees_page_5'] ?></th>
 
-            <th style="white-space: nowrap">BirthName</th>
+            <th style="white-space: nowrap"><?php echo $_SESSION['lang']['employees_page_6'] ?></th>
 
-            <th>DateOfBirth</th>
-            <th style="white-space: nowrap">Street HouseNumber</th>
-            <th style="white-space: nowrap">City</th>
-            <th style="white-space: nowrap">FunctionDesc</th>
+            <th><?php echo $_SESSION['lang']['employees_page_7'] ?></th>
+            <th style="white-space: nowrap"><?php echo $_SESSION['lang']['employees_page_8'] ?></th>
+            <th style="white-space: nowrap"><?php echo $_SESSION['lang']['employees_page_9'] ?></th>
+            <th style="white-space: nowrap"><?php echo $_SESSION['lang']['employees_page_10'] ?></th>
 
         </thead>
         <tbody>
