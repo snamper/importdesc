@@ -520,12 +520,13 @@ class base
 	{
 
 		$dbDriver = new db_driver();
-		$query = "SELECT cmotor_fuel_id, conv.conversion_name  FROM car_motors
+		$query = "SELECT cmotor_fuel_id, translate.description  FROM car_motors
 		INNER JOIN conversions conv on conv.conversion_id = car_motors.cmotor_fuel_id
+		INNER JOIN translate on conv.conversion_name = translate.label AND translate.langID = ?
 		 WHERE cmotor_id = ?";
 
 		$stmt = $dbDriver->dbCon->prepare($query);
-		$stmt->execute([$motor_id]);
+		$stmt->execute([$_SESSION['user'][0]['langID'], $motor_id]);
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		return $result;
