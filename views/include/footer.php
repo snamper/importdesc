@@ -82,7 +82,7 @@
             ],
             dom: 'Blfrtip',
             /* buttons: [ 'colvis' ], */
-            initComplete: function () {
+            /* initComplete: function () {
             this.api().columns('.select-filter').every( function () {
                 var column = this;
                 var select = $('<select class="selecter" id="'+ column.header().innerText+'"><option value="">'+column.header().innerText+'</option></select>')
@@ -101,7 +101,7 @@
                 	}
                 } );
            }  );
-        },
+        }, */
         });
 </script>
 <!-- <script src="assets/js/apps.min.js"></script> -->
