@@ -598,31 +598,7 @@ class base
 
 		return $result;
 	}
-
-	public function getAllTransmitions()
-	{
-		$dbDriver = new db_driver();
-		$query = "SELECT * FROM conversie_tabel_gwi WHERE `conversie_soort` = 'transmissie'";
-
-		$stmt = $dbDriver->dbCon->prepare($query);
-		$stmt->execute([]);
-		$result = $stmt->fetchAll();
-
-		return $result;
-	}
-
-	public function getAllCarDoors()
-	{
-		$dbDriver = new db_driver();
-		$query = "SELECT * FROM conversie_tabel_gwi WHERE `conversie_soort` = 'aantal_deuren'";
-
-		$stmt = $dbDriver->dbCon->prepare($query);
-		$stmt->execute([]);
-		$result = $stmt->fetchAll();
-
-		return $result;
-	}
-
+	
 	public function removeImage($delPos, $movedNum)
 	{
 		$dbDriver = new db_driver();
@@ -1309,28 +1285,6 @@ class base
 
 		]);
 		
-	}
-
-	public function getAllCars($carID = 0)
-	{
-		$dbDriver = new db_driver();
-
-		$sql = "SELECT * FROM dossier
-		LEFT JOIN car ON car.carID = dossier.carID
-		INNER JOIN car_make cm on car.car_mаке = cm.id_car_make 
-		INNER JOIN car_model cmod on car.car_model = cmod.id_car_model
-		INNER JOIN car_type ct on cmod.id_car_type = ct.id_car_type
-		INNER JOIN conversie_tabel_gwi ctw on car.brandstof = ctw.conversie_tabel_ID
-		";
-		if ($carID) {
-			$sql .= ' WHERE `dossier`.`carID` = ' . $carID;
-		}
-		$stmt = $dbDriver->dbCon->prepare($sql);
-		$stmt->execute([]);
-		$result = $stmt->fetchAll(PDO::FETCH_NAMED);
-
-
-		return $result;
 	}
 
 	public function getPhotoLastPos($inserted_car_id)

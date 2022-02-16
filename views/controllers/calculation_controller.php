@@ -53,7 +53,6 @@ class calculation extends view{
 		// displayed page index
 		$obj = (object)[];
 		$this->base = $_SESSION['base'];
-		$cars = $this->base->getAllCars();
 
 		if(isset($_POST['add_calculation'])) {
 			$this->base->insertCalculation($_REQUEST);

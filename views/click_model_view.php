@@ -58,6 +58,7 @@
                     <button type="submit" name="duplicate_car" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_9'] ?></button>
                 </div>
 
+                <?php if(!isset($_GET[''])) ?>
                 <div class="custom-col">
                     <button type="submit" name="create_car" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_8'] ?></button>
                 </div>

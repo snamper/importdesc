@@ -23,24 +23,15 @@ class show_cars extends view
     public function __construct()
     {
         $obj = (object)[];
-        $this->base = $_SESSION['base'];        
-        $cars = $this->getAllCars();       
-        $creditors = $this->getCreditors();
-        $fuel_types = $this->getFuelAllFuelTypes();
-        $transmitions = $this->getAllTransmitions();
-        $car_doors = $this->getAllCarDoors();      
+        $this->base = $_SESSION['base'];   
+        $fuel_types = $this->getFuelAllFuelTypes();   
         
         if(isset($_GET['delete'])) {
             
             exit;
         }
               
-        $this->setData("cars", $cars);  
-        $this->setData("creditors", $creditors);
         $this->setData("fuel_types", $fuel_types);
-        $this->setData("transmitions", $transmitions);
-        $this->setData("car_doors", $car_doors);
-
         
         if (isset($_SESSION['user'])) parent::__construct('show_cars_view.php');
         else parent::__construct('login_view.php');
