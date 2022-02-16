@@ -2163,7 +2163,7 @@ function saveNewImagePositions(removedPos, moved) {
             set('addBTW_21', v('totalPriceFee') * 0.21);
         }
         set('addVerkoopprijs_Marge_incl', v('totalPriceFee') + v('addBTW_21'));
-        set('totalAll', v('addVerkoopprijs_Marge_incl') + v('addLeges'));
+        set('totalAll', v('addRest_BPM') + v('addVerkoopprijs_Marge_incl') + v('addLeges'));
         restBpmCalc();
     }
 

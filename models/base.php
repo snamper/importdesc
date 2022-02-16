@@ -35,6 +35,7 @@ class base
 	{
 		$dbDriver = new db_driver();
 		$EmailAddress = $obj->EmailAddress;
+		$userPassword = $obj->userPassword;
 		$sql = "SELECT * FROM `users` WHERE `emailAddress` = '$EmailAddress' AND `password` = '$userPassword'";
 		$sql = "INSERT INTO `logtable`(`emailAddress`) VALUES ('$obj->EmailAddress')";
 		$dbDriver->querySelects($sql);
