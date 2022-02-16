@@ -24,12 +24,17 @@
     font-size: 2em;
     background: white;
     padding: 0.3em;
-    border-radius: 5px;
+    border-radius: 50%;
     position: fixed;
     right: 1em;
     bottom: 1em;
     z-index: 2;
     display: none;
+    transition: 500ms ease-in-out;
+}
+
+.rotate-additional-options {
+    transform: rotateZ(405deg);
 }
 
 
@@ -66,12 +71,15 @@
     .custom-row {
         display: flex;
         flex-wrap: wrap;
+        flex-direction: column;
+        gap: .5rem;
         padding: 4px;
         top: 100px;
         width: calc(100% - 10px);
-        background-color: white;
+        background-color: rgba(255, 255, 255, 0.5);
         box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
         margin: 0 5px;
+        padding: 1rem 0;
         border-radius: 3px;       
         transform: translateY(-200%);
         transition: 300ms ease-in;

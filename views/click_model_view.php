@@ -46,6 +46,7 @@
                     <a href="/car_start" class="btn btn-danger" onclick="return confirm('Are you sure?');"><?php echo $_SESSION['lang']['car_start_page_4'] ?></a>
                 </div>
 
+                <?php if(isset($_GET['car_id'])): ?>
                 <div class="custom-col">
                     <button type="submit" name="update_car" class="btn btn-info"><?php echo $_SESSION['lang']['car_start_page_5'] ?></button>
                 </div>
@@ -57,6 +58,7 @@
                 <div class="custom-col">
                     <button type="submit" name="duplicate_car" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_9'] ?></button>
                 </div>
+                <?php endif ?>
 
                 <div class="custom-col">
                     <button type="submit" name="create_car" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_8'] ?></button>

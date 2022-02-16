@@ -2301,6 +2301,7 @@ $(window).ready(function () {
 
     $('#toggle_nav').click((e) => {
         $('#create_nav').toggleClass('custom-row_show');
+        $('#toggle_nav').toggleClass('rotate-additional-options');
     });
 
     // On preorder change disable fields
