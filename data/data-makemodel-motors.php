@@ -10,13 +10,14 @@ include("connection.php");
 /* Array of database columns which should be read and sent back to DataTables. Use a space where
  * you want to insert a non-database field (for example a counter or static image)
  */
-$aColumns = array( 'cmr.cmotor_id', 'c.cmake_name', 'cmr.cmotor_name', 'convers.conversion_name');
+$aColumns = array( 'cmr.cmotor_id', 'c.cmake_name', 'cmr.cmotor_name', 'tr.description');
 /* Indexed column (used for fast and accurate table cardinality) */
 $sIndexColumn = "cmr.cmotor_id as number";
 /* DB table to use */
 $sTable = "car_motors cmr";
 $sJoin .= ' INNER JOIN car_makes c ON c.cmake_id = cmr.cmotor_make_id ';
 $sJoin .= ' INNER JOIN conversions convers ON convers.conversion_id = cmr.cmotor_fuel_id ';
+$sJoin .= ' INNER JOIN translate tr on convers.conversion_name = tr.label ';
 // $sJoin .= ' INNER JOIN car_trim ct ON cm.id_car_model = ct.id_car_model';
 // $sJoin .= ' INNER JOIN car_make_uitvoering on cmu_make_id = cm.id_car_make';
 // $sJoin .= ' INNER JOIN conversie_tabel_gwi ctg on ctg.conversie_tabel_ID = ct.fuel_id';

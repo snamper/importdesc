@@ -8,7 +8,7 @@ include("connection.php");
 /* Array of database columns which should be read and sent back to DataTables. Use a space where
  * you want to insert a non-database field (for example a counter or static image)
  */
-$aColumns = array( 'cp.cp_path', 'c.car_id', 'cd.cd_car_ref_custom', 'dp.dp_num', 'c.car_preorder', 'cd.cd_vin', 'cd.cd_conf_number', 'cd.cd_nl_registration_number','cm.cmake_name','cmod.cmodel_name','cmu.cmu_name','cmotor.cmotor_name', 'bs.conversion_name', 'u_cr.expo_users_name', 'c.created_at', 'c.car_id as edit','c.car_id as duplicate');
+$aColumns = array( 'cp.cp_path', 'c.car_id', 'cd.cd_car_ref_custom', 'dp.dp_num', 'c.car_preorder', 'cd.cd_vin', 'cd.cd_conf_number', 'cd.cd_nl_registration_number','cm.cmake_name','cmod.cmodel_name','cmu.cmu_name','cmotor.cmotor_name', 'tr.description', 'u_cr.expo_users_name', 'c.created_at', 'c.car_id as edit','c.car_id as duplicate');
 /* Indexed column (used for fast and accurate table cardinality) */
 $sIndexColumn = "c.car_id as number";
 /* DB table to use */
@@ -21,6 +21,7 @@ $sJoin .= '   INNER JOIN car_make_uitvoerings cmu on c.car_variant  = cmu.cmu_id
 $sJoin .= '   LEFT JOIN car_photos cp on c.car_id = cp.cp_car_id AND cp.cp_imagepos = 1';
 $sJoin .= '   INNER JOIN expo_users u_cr on c.user_id = u_cr.expo_users_ID ';
 $sJoin .= '   INNER JOIN conversions bs on c.car_body_style = bs.conversion_id ';
+$sJoin .= '   INNER JOIN translate tr on bs.conversion_name = tr.label ';
 $sJoin .= '   LEFT JOIN duplicates dp on c.car_id = dp.dp_newfile ';
 
 /*

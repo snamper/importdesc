@@ -1170,7 +1170,7 @@ class base
 				calc.costs_damage_and_repair, calc.transport_international,	calc.transport_national,
 				calc.costs_taxation_bpm, calc.fee_gwi, calc.total_costs_and_fee, calc.sales_price_netto,
 				calc.vat_btw, calc.sales_price_incl_vat_btw, calc.rest_bpm, calc.fees, calc.sales_price_total, c.updated_at,
-				 u_cr.expo_users_name as created_by, c.car_vat_marge, c.car_source, c.car_source_id
+				u_cr.expo_users_name as created_by, u_edit.expo_users_name as last_edited_by, c.car_vat_marge, c.car_source, c.car_source_id
 
 		   FROM
 			 cars c
