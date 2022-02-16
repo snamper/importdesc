@@ -35,6 +35,7 @@ class base
 	{
 		$dbDriver = new db_driver();
 		$EmailAddress = $obj->EmailAddress;
+		$userPassword = $obj->userPassword;
 		$sql = "SELECT * FROM `users` WHERE `emailAddress` = '$EmailAddress' AND `password` = '$userPassword'";
 		$sql = "INSERT INTO `logtable`(`emailAddress`) VALUES ('$obj->EmailAddress')";
 		$dbDriver->querySelects($sql);
@@ -905,7 +906,7 @@ class base
 				$_post['co_wltp'],
 				$_post['co_nedc'],
 				$_post['kilometers'],
-				$_post['paint_type'],
+				$_post['paint_type'] ? 1 : 0,
 				$_post['color'],
 				$_post['color_additional'],
 				$_post['interior_color'],
@@ -1107,7 +1108,7 @@ class base
 				$_post['co_wltp'],
 				$_post['co_nedc'],
 				$_post['kilometers'],
-				$_post['paint_type'],
+				$_post['paint_type'] ? 1 : 0,
 				$_post['color'],
 				$_post['color_additional'],
 				$_post['interior_color'],

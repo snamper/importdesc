@@ -392,7 +392,7 @@
                             <select required class="form-control js-car-fuel" name="car_fuel" id="BPMbrandstof">
                                 <option value="">-</option>
                                 <?php if (isset($_GET['car_id'])) {
-                                    echo "<option selected value='{$data['single_car']['fuel_id']}'> {$data['single_car']['fuel_name']}</option>";
+                                    echo "<option selected value='{$data['single_car']['fuel_id']}'> {$_SESSION['lang'][$data['single_car']['fuel_name']]}</option>";
                                 } ?>
 
                             </select>
@@ -499,12 +499,12 @@
 
                     <hr />
 
-                    <div class="row">
+                    <div class="row" style="height: 30px;">
                         <div class="col-12 col-md-4">
                             <?php echo $_SESSION['lang']['car_start_page_40'] ?>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input type="checkbox" name="paint_type"  <?php echo ($data['single_car'] == 1 ? "checked" : "") ?>/>
+                            <input type="checkbox" name="paint_type"  <?php echo (isset($data['single_car']['cd_paint_type']) && $data['single_car']['cd_paint_type'] == '1' ? "checked" : "") ?>/>
                         </div>
                     </div>
 
@@ -589,7 +589,7 @@
                     <div class="container" id="calculationContainer" style="margin-left: 0!important;padding-left: 0!important;">
                         <div class="row align-items-start" style="gap: 1%;">
                             <div class="col-12 col-md-8 calculation-col">
-                                <div class="row" style="height: 30px;">
+                                <div class="row" style="height: 30px; align-items: center;">
 
                                     <div class="col-12">
                                         <div class="row" style="margin-left: 30%; padding-bottom: 5px;">
@@ -598,14 +598,14 @@
                                                     <span><?php echo $_SESSION['lang']['car_start_page_45'] ?></span>
                                                     <input type="checkbox" name="switchmargin" id="switchmargin" <?php 
                                                         if(isset($data['single_car']['car_vat_marge'])) {
-                                                            echo ($data['single_car']['car_vat_marge'] == '0') ? "checked" : "";
+                                                            echo ($data['single_car']['car_vat_marge'] == '1') ? "checked" : "";
                                                         }
                                                         else {
                                                             echo 'checked';
                                                         }
                                                     ?>>
                                                     <span><?php echo $_SESSION['lang']['car_start_page_44'] ?></span>
-                                                    <input type="checkbox" name="switchvat" id="switchvat" <?php echo ((isset($data['single_car']['car_vat_marge']) && $data['single_car']['car_vat_marge'] == '1') ? "checked" : "") ?>>
+                                                    <input type="checkbox" name="switchvat" id="switchvat" <?php echo ((isset($data['single_car']['car_vat_marge']) && $data['single_car']['car_vat_marge'] == '0') ? "checked" : "") ?>>
                                                 </div>
                                             </div>
                                         </div>

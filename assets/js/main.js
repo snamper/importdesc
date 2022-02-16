@@ -2128,10 +2128,15 @@ function saveNewImagePositions(removedPos, moved) {
 
     for (let changer of calculationChangers) {
         changer.addEventListener("change", calcValues);
-        changer.addEventListener("focus", (e) => {
+        changer.addEventListener("focusin", (e) => {
             e.currentTarget.value =  parseFloat(e.currentTarget.value.replace(",", "") // remove thousand before sum
             .replace("€", "")) // remove euro sign before sum
             || '';
+        });
+        changer.addEventListener("focusout", (e) => {
+            const trigger = e.currentTarget;
+            const triggerVal = trigger.value;
+            trigger.value = `€${triggerVal.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}`;
         });
     }
 
@@ -2148,30 +2153,24 @@ function saveNewImagePositions(removedPos, moved) {
         calcValues(e);
     }
 
-    function calcValues(e) {
-        const trigger = e.currentTarget;
-        const triggerVal = trigger.value;
+    function calcValues() {
         set('totalPriceNettoSuppluier', v('inkoopprijs_ex_ex') + v('addAfleverkosten'));
         set('totalCostsFee', v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee'));
         set('totalPriceFee', v('totalPriceNettoSuppluier') + v('totalCostsFee'));
-
         if (vatCheckedEl.checked) {
             set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * 0.21);
         } else {
             set('addBTW_21', v('totalPriceFee') * 0.21);
         }
-
         set('addVerkoopprijs_Marge_incl', v('totalPriceFee') + v('addBTW_21'));
-        set('totalAll', v('addVerkoopprijs_Marge_incl') + v('addLeges'));
-
+        set('totalAll', v('addRest_BPM') + v('addVerkoopprijs_Marge_incl') + v('addLeges'));
         restBpmCalc();
-        trigger.value = `€${triggerVal.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}`;
     }
 
-    function changeVatFn(e) {
+    function changeVatFn() {
         changeVatMarge(true);
     }
-    function changeMargeFn(e) {
+    function changeMargeFn() {
         changeVatMarge(false);
     }
     function changeVatMarge(vat) {
