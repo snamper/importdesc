@@ -2115,6 +2115,7 @@ function saveNewImagePositions(removedPos, moved) {
     const calcFromTotal = doc.querySelector(".js-calc-from-total");
     const vatCheckedEl = doc.querySelector("#switchvat");
     const margeCheckedEl = doc.querySelector("#switchmargin");
+    const vatPercentage = doc.querySelector("#vatPercentage");
 
     if (vatCheckedEl.checked) {
         $('#priceNetoText').html('Purchase Price margin');
@@ -2125,6 +2126,7 @@ function saveNewImagePositions(removedPos, moved) {
     vatCheckedEl.addEventListener("change", changeVatFn);
     margeCheckedEl.addEventListener("change", changeMargeFn);
     calcFromTotal.addEventListener("change", calcFromTotalFn);
+    vatPercentage.addEventListener("change", calcValues);
 
     for (let changer of calculationChangers) {
         changer.addEventListener("change", calcValues);
@@ -2136,6 +2138,12 @@ function saveNewImagePositions(removedPos, moved) {
         changer.addEventListener("focusout", (e) => {
             const trigger = e.currentTarget;
             const triggerVal = trigger.value;
+
+            if(isNaN(triggerVal)) {
+                trigger.value = "";
+                return alert("The input data MUST contain only numbers");
+            }
+            
             trigger.value = `€${triggerVal.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}`;
         });
     }
@@ -2158,9 +2166,9 @@ function saveNewImagePositions(removedPos, moved) {
         set('totalCostsFee', v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee'));
         set('totalPriceFee', v('totalPriceNettoSuppluier') + v('totalCostsFee'));
         if (vatCheckedEl.checked) {
-            set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * 0.21);
+            set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * (v('vatPercentage')/100));
         } else {
-            set('addBTW_21', v('totalPriceFee') * 0.21);
+            set('addBTW_21', v('totalPriceFee') * (v('vatPercentage')/100));
         }
         set('addVerkoopprijs_Marge_incl', v('totalPriceFee') + v('addBTW_21'));
         set('totalAll', v('addRest_BPM') + v('addVerkoopprijs_Marge_incl') + v('addLeges'));
@@ -2174,16 +2182,24 @@ function saveNewImagePositions(removedPos, moved) {
         changeVatMarge(false);
     }
     function changeVatMarge(vat) {
+        const vatMarginTexts = [
+            { id: '#priceNetoText', vat: 'Purchase Price margin', marge: 'Purchase Price netto (ex/ex)'},
+            { id: '#totalPriceNetoText', vat: 'Total Purchase Price margin', marge: 'Total Purchase Price netto'},
+            { id: '#salesPriceNetoText', vat: 'Sales Price netto (margin)', marge: 'Sales Price netto (ex/ex)'},
+            { id: '#addBTWText', vat: 'VAT / BTW on Costs and Fee', marge: 'VAT / BTW (21%)'},
+            { id: '#addVerkooText', vat: 'Sales Price margin', marge: 'Sales Price incl. VAT / BTW'},
+            { id: '#salesPriceTotalText', vat: 'Sales Price Total (margin)', marge: 'Sales Price Total (in/in)'}
+        ]
         if (vat) {
-            set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * 0.21);
+            set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * (v('vatPercentage')/100));
             $('#switchmargin').prop('checked', false);
             $('#switchvat').prop('checked', true);
-            $('#priceNetoText').html('Purchase Price margin');
+            vatMarginTexts.forEach(el => $(el.id).html(el.vat));
         } else {
-            set('addBTW_21', v('totalPriceFee') * 0.21);
+            set('addBTW_21', v('totalPriceFee') * (v('vatPercentage')/100));
             $('#switchvat').prop('checked', false);
             $('#switchmargin').prop('checked', true);
-            $('#priceNetoText').html('Purchase Price netto (ex/ex)');
+            vatMarginTexts.forEach(el => $(el.id).html(el.marge));
         }
 
         calcValues();

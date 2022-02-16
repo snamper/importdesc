@@ -278,7 +278,7 @@
             <div class="row justify-content-center align-items-stretch">
                 <!-- Left col  -->
                 <div class="col-12 col-md-5">
-                    <div class="row" style="height: 30px;">
+                    <div class="row" style="height: 50px;">
                         <div class="col-12 col-md-4">
                             <span class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_26'] ?></span>
                         </div>
@@ -591,27 +591,44 @@
                     <div class="container" id="calculationContainer" style="margin-left: 0!important;padding-left: 0!important;">
                         <div class="row align-items-start" style="gap: 1%;">
                             <div class="col-12 col-md-8 calculation-col">
-                                <div class="row" style="height: 30px; align-items: center;">
+                                <div class="row flex-nowrap" style="height: 50px; align-items: center;">
 
-                                    <div class="col-12">
-                                        <div class="row" style="margin-left: 30%; padding-bottom: 5px;">
-                                            <div class="col-12 col-md-4 spacer flex-nowrap"></div>
-                                                <div class="col-12 col-md-8">
-                                                    <span><?php echo $_SESSION['lang']['car_start_page_45'] ?></span>
-                                                    <input type="checkbox" name="switchmargin" id="switchmargin" <?php 
-                                                        if(isset($data['single_car']['car_vat_marge'])) {
-                                                            echo ($data['single_car']['car_vat_marge'] == '1') ? "checked" : "";
-                                                        }
-                                                        else {
-                                                            echo 'checked';
-                                                        }
-                                                    ?>>
-                                                    <span><?php echo $_SESSION['lang']['car_start_page_44'] ?></span>
-                                                    <input type="checkbox" name="switchvat" id="switchvat" <?php echo ((isset($data['single_car']['car_vat_marge']) && $data['single_car']['car_vat_marge'] == '0') ? "checked" : "") ?>>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="col-12 col-md-5">
+                                        <span><?php echo $_SESSION['lang']['car_start_page_45'] ?></span>
+                                        <input type="checkbox" name="switchmargin" id="switchmargin" <?php 
+                                            if(isset($data['single_car']['car_vat_marge'])) {
+                                                echo ($data['single_car']['car_vat_marge'] == '1') ? "checked" : "";
+                                            }
+                                            else {
+                                                echo 'checked';
+                                            }
+                                        ?>>
+                                        <span><?php echo $_SESSION['lang']['car_start_page_44'] ?></span>
+                                        <input type="checkbox" name="switchvat" id="switchvat" <?php echo ((isset($data['single_car']['car_vat_marge']) && $data['single_car']['car_vat_marge'] == '0') ? "checked" : "") ?>>
                                     </div>
+                                    <div class="col-12 col-md-3" style="padding-left: 3%; white-space: nowrap;">
+                                        <span>Lock sales price</span>
+                                        <input type="checkbox" name="lock_sales_price" id="lockSalesPriceCh" <?php echo (isset($data['single_car']['lock_sales_price']) && $data['single_car']['lock_sales_price'] == '1') ? "checked" : "" ?>/>
+                                    </div>
+                                    <div class="col-12 col-md-2" style="white-space: nowrap;">
+                                        <span>VAT percentage</span>
+                                    </div>
+                                    <div class="col-12 col-md-2">
+                                        <select name="vat_percentage" id="vatPercentage" class="form-control">
+                                            <option value="17">17%</option>
+                                            <option value="18">18%</option>
+                                            <option value="19">19%</option>
+                                            <option value="20">20%</option>
+                                            <option value="21" selected>21%</option>
+                                            <option value="22">22%</option>
+                                            <option value="23">23%</option>
+                                            <option value="24">24%</option>
+                                            <option value="25">25%</option>
+                                            <option value="26">26%</option>
+                                            <option value="27">27%</option>
+                                        </select>
+                                    </div>
+                                </div>
 
                                 <!-- Current date  -->
                                 <input type="hidden" autocomplete="off"  class="form-control" name="huidigedatumbpm" id="datepicker2" value="<?php echo date('d-m-Y') ?>">
@@ -635,7 +652,7 @@
                                 </div>
 
                                 <div class="row str">
-                                    <div class="col-12 col-md-6 font-weight-bold">
+                                    <div class="col-12 col-md-6 font-weight-bold" id="totalPriceNetoText">
                                         <?php echo $_SESSION['lang']['car_start_page_48'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
@@ -666,7 +683,7 @@
                                         <?php echo $_SESSION['lang']['car_start_page_51'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['transport_national']) ?  $data['single_car']['transport_national'] : '') ?> " id="addTransport_Binnenland" name="transport_national" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['transport_national']) ?  $data['single_car']['transport_national'] : '€85') ?> " id="addTransport_Binnenland" name="transport_national" placeholder="">
                                     </div>
                                 </div>
 
@@ -698,7 +715,7 @@
                                     </div>
                                 </div>
                                 <div class="row str">
-                                    <div class="col-12 col-md-6 font-weight-bold ">
+                                    <div class="col-12 col-md-6 font-weight-bold " id="salesPriceNetoText">
                                         <?php echo $_SESSION['lang']['car_start_page_55'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
@@ -707,7 +724,7 @@
                                 </div>
 
                                 <div class="row str">
-                                    <div class="col-12 col-md-6">
+                                    <div class="col-12 col-md-6" id="addBTWText">
                                         <?php echo $_SESSION['lang']['car_start_page_56'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
@@ -715,7 +732,7 @@
                                     </div>
                                 </div>
                                 <div class="row str">
-                                    <div class="col-12 col-md-6">
+                                    <div class="col-12 col-md-6" id="addVerkooText">
                                         <?php echo $_SESSION['lang']['car_start_page_57'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
@@ -740,7 +757,7 @@
                                     </div>
                                 </div>
                                 <div class="row str">
-                                    <div class="col-12 col-md-6 font-weight-bold">
+                                    <div class="col-12 col-md-6 font-weight-bold" id="salesPriceTotalText">
                                         <?php echo $_SESSION['lang']['car_start_page_60'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
@@ -748,6 +765,16 @@
                                     </div>
                                 </div>                                
                                 <div class="row mt-4"></div>
+                                
+                                <div class="row str">                                
+                                    <div class="col-12 col-md-6">
+                                        Bruto BPM (indication)
+                                    </div>
+                                    <div class="col-12 col-md-6" style="padding-left: 3%;">
+                                        <input readonly type="text" class="form-control" value="<?php echo (isset($data['single_car']['bruto_bpm']) ?  $data['single_car']['bruto_bpm'] : '') ?> " id="BPMBruto" name="bruto_bpm" placeholder="">
+                                    </div>
+                                </div>
+
                                 <div class="row str">
                                     <div class="col-12 col-md-6 font-weight-bold">
                                         % BPM
@@ -756,14 +783,13 @@
                                         <input readonly type="text" class="form-control" id="percentage" name="percentage" placeholder="">
                                     </div>
                                 </div>  
-                                
+
                                 <div class="row str">                                
-                                <div class="col-12 col-md-6">
+                                    <div class="col-12 col-md-6">
                                         Rest BPM (indication)
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input readonly type="text" class="form-control" value="<?php echo (isset($data['single_car']['rest_bpm']) ?  $data['single_car']['rest_bpm'] : '') ?> " id="addRest_BPMReadOnly" name="rest_bpm" placeholder="Rest BPM Indicatief">
-
                                     </div>
                                 </div>
 
