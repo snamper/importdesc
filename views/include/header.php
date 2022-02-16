@@ -110,13 +110,13 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="login?logout"><?php echo $_SESSION['lang']['profile_1'] ?></a></li>
 
-                                    <li class='d-md-block d-lg-none d-lg-block d-xl-none'><a href="#one" class="btn btn-default"> Basis gegevens</a></li>
+                                    <!-- <li class='d-md-block d-lg-none d-lg-block d-xl-none'><a href="#one" class="btn btn-default"> Basis gegevens</a></li>
                                     <li class=' d-md-block d-lg-none   d-lg-block d-xl-none'><a href="#two" class="btn btn-default"> Aanbieden en mailen</a></li>
                                     <li class=' d-md-block d-lg-none   d-lg-block d-xl-none'><a href="#three" class="btn btn-default"> Offreren en verkopen</a></li>
                                     <li class=' d-md-block d-lg-none   d-lg-block d-xl-none'><a href="#four" class="btn btn-default"> Inkoop</a></li>
                                     <li class=' d-md-block d-lg-none   d-lg-block d-xl-none'><a href="#five" class="btn btn-default"> Facturatie</a></li>
                                     <li class=' d-md-block d-lg-none   d-lg-block d-xl-none'><a href="#six" class="btn btn-default"> BPM & RDW gegevens</a></li>
-                                    <li class=' d-md-block d-lg-none   d-lg-block d-xl-none'><a href="#seven" class="btn btn-default"> Alle doc & comm.</a></li>
+                                    <li class=' d-md-block d-lg-none   d-lg-block d-xl-none'><a href="#seven" class="btn btn-default"> Alle doc & comm.</a></li> -->
 
 
                                 </ul>

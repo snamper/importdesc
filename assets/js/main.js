@@ -2304,6 +2304,10 @@ $(window).ready(function () {
         $('#toggle_nav').toggleClass('rotate-additional-options');
     });
 
+    $('.navbar-toggle').click((e) => {
+        $('#sidebar').toggleClass('show_sidebar');
+    });
+
     // On preorder change disable fields
     $('#preorder').change((e) => {
         const disabled = $(e.currentTarget).is(":checked");
