@@ -2113,6 +2113,7 @@ function saveNewImagePositions(removedPos, moved) {
     }
 
     const calcFromTotal = doc.querySelector(".js-calc-from-total");
+    const calcFromBpm = doc.querySelector(".js-calc-from-bpm");
     const vatCheckedEl = doc.querySelector("#switchvat");
     const margeCheckedEl = doc.querySelector("#switchmargin");
     const vatPercentage = doc.querySelector("#vatPercentage");
@@ -2151,33 +2152,66 @@ function saveNewImagePositions(removedPos, moved) {
         });
     }
 
-    function calcFromTotalFn(e) {
-        const lastSalesPriceTotal = v('addVerkoopprijs_Marge_incl') + v('addRest_BPM') + v('addLeges');
-        const totalDiff = lastSalesPriceTotal - v('totalAll');
-        const deductFee = totalDiff / 1.21;
-        const deductVat = totalDiff - deductFee;
+    function calcFromTotalFn(e, calledFromRestBpm) {
+        const trigger = e.currentTarget;
+        let diff;
+        if(trigger.id === 'addRest_BPM' && lockedPrice.checked) {
+            const oldBpmVal = trigger.getAttribute('data-old-val') || 0;
+            const newBpmVal = trigger.value;
+            diff = newBpmVal - oldBpmVal;
+        }
+        else {
+            const lastSalesPriceTotal = v('addVerkoopprijs_Marge_incl') + v('addRest_BPM') + v('addLeges');
+            diff = lastSalesPriceTotal - v('totalAll');
+        }
+
+        const deductFee = diff / (v('vatPercentage') / 100);
+        const deductVat = diff - deductFee;
         const fee = v('addFee') - deductFee;
         const vat = v('addBTW_21') - deductVat;
         set('addFee', fee);
         set('addBTW_21', vat);
-
-        calcValues(e);
+        
+        if(!calledFromRestBpm)
+            calcValues(e);
     }
 
     function calcValues(e) {
+        const trigger = e.currentTarget;
+        if(trigger.id === 'addRest_BPM') {
+            if(lockedPrice.checked) {
+                calcFromTotalFn(e, true);
+                set('totalCostsFee', v('addOpknapkosten') + v('recyclingFee') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee'));
+                set('totalPriceFee', v('totalPriceNettoSuppluier') + v('totalCostsFee'));
+                set('addVerkoopprijs_Marge_incl', v('totalPriceFee') + v('addBTW_21'));
+            }
+            else {
+                set('totalAll', v('addRest_BPM') + v('addVerkoopprijs_Marge_incl') + v('addLeges'));
+            }
 
-        if (lockedPrice.checked) { // IF Lock sales price checked
-
-            console.log($('#inkoopprijs_totalCostsFeeex_ex'));
-
-            // set('addFee', v('inkoopprijs_totalCostsFeeex_ex') -  v('addOpknapkosten') - v('addTransport_Buitenland') - v('addTransport_Binnenland') - v('costTaxation') - v('recyclingFee'));
+            trigger.setAttribute('data-old-val', trigger.value);
+            return;
         }
 
+        const oldtotalPriceNetto = v('totalPriceNettoSuppluier');
+        const totalPriceNetto = v('inkoopprijs_ex_ex') + v('addAfleverkosten');
+        
+        set('totalPriceNettoSuppluier', totalPriceNetto);
 
-        set('totalPriceNettoSuppluier', v('inkoopprijs_ex_ex') + v('addAfleverkosten'));
-        set('totalPriceNettoSuppluier', v('inkoopprijs_ex_ex') + v('addAfleverkosten'));
-        set('totalCostsFee', v('addOpknapkosten') + v('recyclingFee') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee'));
-        set('totalPriceFee', v('totalPriceNettoSuppluier') + v('totalCostsFee'));
+        if (lockedPrice.checked && e.currentTarget.id !== 'totalAll') { // IF Lock sales price checked
+            if(totalPriceNetto != oldtotalPriceNetto) {
+                set('addFee', v('addFee') - ( v('totalCostsFee') - ( v('totalPriceFee') - totalPriceNetto) ) );
+            }
+            else {
+                set('addFee', v('totalCostsFee') - ( v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('recyclingFee')));
+            }
+            set('totalCostsFee', v('addOpknapkosten') + v('recyclingFee') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee'));
+        }
+        else {
+            set('totalCostsFee', v('addOpknapkosten') + v('recyclingFee') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee'));
+        }
+
+        set('totalPriceFee', totalPriceNetto + v('totalCostsFee'));
         if (vatCheckedEl.checked) {
             set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('recyclingFee') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * (v('vatPercentage') / 100));
         } else {
