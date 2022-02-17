@@ -2118,10 +2118,19 @@ function saveNewImagePositions(removedPos, moved) {
     const vatPercentage = doc.querySelector("#vatPercentage");
     const lockedPrice = doc.querySelector("#lockSalesPriceCh");
 
+    const vatMarginTexts = [
+        { id: '#priceNetoText', marge: 'Purchase Price margin', vat: 'Purchase Price netto (ex/ex)' },
+        { id: '#totalPriceNetoText', marge: 'Total Purchase Price margin', vat: 'Total Purchase Price netto' },
+        { id: '#salesPriceNetoText', marge: 'Sales Price netto (margin)', vat: 'Sales Price netto (ex/ex)' },
+        { id: '#addBTWText', marge: 'VAT / BTW on Costs and Fee', vat: 'VAT / BTW (21%)' },
+        { id: '#addVerkooText', marge: 'Sales Price margin', vat: 'Sales Price incl. VAT / BTW' },
+        { id: '#salesPriceTotalText', marge: 'Sales Price Total (margin)', vat: 'Sales Price Total (in/in)' }
+    ];
+
     if (vatCheckedEl.checked) {
-        $('#priceNetoText').html('Purchase Price margin');
+        vatMarginTexts.forEach(el => $(el.id).html(el.vat));
     } else {
-        $('#priceNetoText').html('Purchase Price netto (ex/ex)');
+        vatMarginTexts.forEach(el => $(el.id).html(el.marge));
     }
 
     vatCheckedEl.addEventListener("change", changeVatFn);
@@ -2139,22 +2148,27 @@ function saveNewImagePositions(removedPos, moved) {
         });
         changer.addEventListener("focusout", (e) => {
             const trigger = e.currentTarget;
-            const triggerVal = trigger.value;
+            let triggerVal = trigger.value;
+
+            if (triggerVal.length == 0) {
+                return;
+            }
 
             if (isNaN(triggerVal)) {
                 trigger.value = "";
                 return alert("The input data MUST contain only numbers");
             }
 
-            if (triggerVal != '')
-                trigger.value = `€ ${triggerVal.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}`;
+            triggerVal = parseFloat(triggerVal).toFixed(2).toString(); // Add .00 after the value
+
+            trigger.value = `€ ${triggerVal.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}`;
         });
     }
 
     function calcFromTotalFn(e, calledFromRestBpm) {
         const trigger = e.currentTarget;
         let diff;
-        if(trigger.id === 'addRest_BPM' && lockedPrice.checked) {
+        if (trigger.id === 'addRest_BPM' && lockedPrice.checked) {
             const oldBpmVal = trigger.getAttribute('data-old-val') || 0;
             const newBpmVal = trigger.value;
             diff = newBpmVal - oldBpmVal;
@@ -2164,21 +2178,36 @@ function saveNewImagePositions(removedPos, moved) {
             diff = lastSalesPriceTotal - v('totalAll');
         }
 
+        // If count from total & is margin & locked execute and don't enter calcValues()
+        if (margeCheckedEl.checked && lockedPrice.checked) {
+            calcFromTotalMarginLock(e);
+            return;
+        }
+
         const deductFee = diff / (v('vatPercentage') / 100);
         const deductVat = diff - deductFee;
         const fee = v('addFee') - deductFee;
         const vat = v('addBTW_21') - deductVat;
         set('addFee', fee);
         set('addBTW_21', vat);
-        
-        if(!calledFromRestBpm)
+
+        if (!calledFromRestBpm) {
             calcValues(e);
+        }
+    }
+
+    function calcFromTotalMarginLock(e) {
+        set('addVerkoopprijs_Marge_incl', v('totalAll') - v('addRest_BPM') - v('addLeges'));
+        set('totalCostsFee', ((v('addVerkoopprijs_Marge_incl') - v('inkoopprijs_ex_ex')) / (1 + (v('vatPercentage') / 100))) - v('addAfleverkosten'))
+        set('addBTW_21', (v('totalCostsFee') + v('addAfleverkosten')) * (v('vatPercentage') / 100));
+        set('totalPriceFee', v('addVerkoopprijs_Marge_incl') - v('addBTW_21'));
+        set('addFee', v('totalCostsFee') - (v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('recyclingFee')));
     }
 
     function calcValues(e) {
         const trigger = e.currentTarget;
-        if(trigger.id === 'addRest_BPM') {
-            if(lockedPrice.checked) {
+        if (trigger.id === 'addRest_BPM') {
+            if (lockedPrice.checked) {
                 calcFromTotalFn(e, true);
                 set('totalCostsFee', v('addOpknapkosten') + v('recyclingFee') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee'));
                 set('totalPriceFee', v('totalPriceNettoSuppluier') + v('totalCostsFee'));
@@ -2194,15 +2223,15 @@ function saveNewImagePositions(removedPos, moved) {
 
         const oldtotalPriceNetto = v('totalPriceNettoSuppluier');
         const totalPriceNetto = v('inkoopprijs_ex_ex') + v('addAfleverkosten');
-        
+
         set('totalPriceNettoSuppluier', totalPriceNetto);
 
         if (lockedPrice.checked && e.currentTarget.id !== 'totalAll') { // IF Lock sales price checked
-            if(totalPriceNetto != oldtotalPriceNetto) {
-                set('addFee', v('addFee') - ( v('totalCostsFee') - ( v('totalPriceFee') - totalPriceNetto) ) );
+            if (totalPriceNetto != oldtotalPriceNetto) {
+                set('addFee', v('addFee') - (v('totalCostsFee') - (v('totalPriceFee') - totalPriceNetto)));
             }
             else {
-                set('addFee', v('totalCostsFee') - ( v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('recyclingFee')));
+                set('addFee', v('totalCostsFee') - (v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('recyclingFee')));
             }
             set('totalCostsFee', v('addOpknapkosten') + v('recyclingFee') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee'));
         }
@@ -2229,15 +2258,6 @@ function saveNewImagePositions(removedPos, moved) {
         changeVatMarge(e, false);
     }
     function changeVatMarge(e, vat) {
-        const vatMarginTexts = [
-            { id: '#priceNetoText', marge: 'Purchase Price margin', vat: 'Purchase Price netto (ex/ex)' },
-            { id: '#totalPriceNetoText', marge: 'Total Purchase Price margin', vat: 'Total Purchase Price netto' },
-            { id: '#salesPriceNetoText', marge: 'Sales Price netto (margin)', vat: 'Sales Price netto (ex/ex)' },
-            { id: '#addBTWText', marge: 'VAT / BTW on Costs and Fee', vat: 'VAT / BTW (21%)' },
-            { id: '#addVerkooText', marge: 'Sales Price margin', vat: 'Sales Price incl. VAT / BTW' },
-            { id: '#salesPriceTotalText', marge: 'Sales Price Total (margin)', vat: 'Sales Price Total (in/in)' }
-        ];
-
         if (vat) {
             set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('recyclingFee') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * (v('vatPercentage') / 100));
             $('#switchmargin').prop('checked', false);
@@ -2282,6 +2302,8 @@ function saveNewImagePositions(removedPos, moved) {
                 try {
                     var json = JSON.parse(data);
                     doc.querySelector('#addRest_BPMReadOnly').value = json[0].bpmprice;
+                    const bruto = (json[0].bpmprice / (percentage / 100));
+                    doc.querySelector('#BPMBruto').value = isNaN(bruto) ? '' : bruto.toFixed(0);
                 } catch (e) {
                     return "A required field for BPM is not filled";
                 }
