@@ -134,8 +134,9 @@ $_POST['percentageX']=($_POST['percentage']*$_POST['forfetaire_brutobpm'])/100;
 //		WHERE (forfaitaire_periode.geldig_van <= '" . $datum . "' AND forfaitaire_periode.geldig_tot >= '" . $datum . "')
 
 function NEW_forfetaire_berekeningWLTP() {
+    $today = date( "Y-m-d" );
+    $d2 = strtotime( $today );
     $datum  = date( 'Y-m-d', ( $d2 ) );
-
     $foretaireA=$_POST['forfetaire_mnd'];
 
         $query = "SELECT *
