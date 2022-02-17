@@ -2179,11 +2179,18 @@ function saveNewImagePositions(removedPos, moved) {
         }
 
         // If count from total & is margin & locked execute and don't enter calcValues()
-        if (margeCheckedEl.checked && lockedPrice.checked) {
-            calcFromTotalMarginLock(e);
+        if (lockedPrice.checked) {
+
+            if (margeCheckedEl.checked) {
+                
+                calcFromTotalMarginLock(e);
+            } else {
+
+                calcFromTotalVatLock(e);
+            }
+
             return;
         }
-
         const deductFee = diff / (v('vatPercentage') / 100);
         const deductVat = diff - deductFee;
         const fee = v('addFee') - deductFee;
@@ -2200,6 +2207,15 @@ function saveNewImagePositions(removedPos, moved) {
         set('addVerkoopprijs_Marge_incl', v('totalAll') - v('addRest_BPM') - v('addLeges'));
         set('totalCostsFee', ((v('addVerkoopprijs_Marge_incl') - v('inkoopprijs_ex_ex')) / (1 + (v('vatPercentage') / 100))) - v('addAfleverkosten'))
         set('addBTW_21', (v('totalCostsFee') + v('addAfleverkosten')) * (v('vatPercentage') / 100));
+        set('totalPriceFee', v('addVerkoopprijs_Marge_incl') - v('addBTW_21'));
+        set('addFee', v('totalCostsFee') - (v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('recyclingFee')));
+    }
+
+
+    function calcFromTotalVatLock(e) {
+        set('addVerkoopprijs_Marge_incl', v('totalAll') - v('addRest_BPM') - v('addLeges'));
+        set('totalCostsFee', ((v('addVerkoopprijs_Marge_incl') - v('inkoopprijs_ex_ex')) / (1 + (v('vatPercentage') / 100))) - v('addAfleverkosten'))
+        set('addBTW_21', (v('addVerkoopprijs_Marge_incl') / (1 + v('vatPercentage') / 100) * (v('vatPercentage') / 100)));
         set('totalPriceFee', v('addVerkoopprijs_Marge_incl') - v('addBTW_21'));
         set('addFee', v('totalCostsFee') - (v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('recyclingFee')));
     }
