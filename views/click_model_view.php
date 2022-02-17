@@ -607,7 +607,7 @@
                                         <input type="checkbox" name="switchvat" id="switchvat" <?php echo ((isset($data['single_car']['car_vat_marge']) && $data['single_car']['car_vat_marge'] == '0') ? "checked" : "") ?>>
                                     </div>
                                     <div class="col-6 col-md-3" style="padding-left: 3%; white-space: nowrap;">
-                                        <span>Lock sales price</span>
+                                        <label for="lockSalesPriceCh" class="font-weight-normal">Lock sales price</label>
                                         <input type="checkbox" name="lock_sales_price" id="lockSalesPriceCh" <?php echo (isset($data['single_car']['lock_sales_price']) && $data['single_car']['lock_sales_price'] == '1') ? "checked" : "" ?>/>
                                     </div>
                                     <div class="col-6 col-md-2" style="white-space: nowrap;">
@@ -683,7 +683,7 @@
                                         <?php echo $_SESSION['lang']['car_start_page_51'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['transport_national']) ?  $data['single_car']['transport_national'] : '€ 85') ?> " id="addTransport_Binnenland" name="transport_national" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['transport_national']) ?  $data['single_car']['transport_national'] : '€ 85.00') ?> " id="addTransport_Binnenland" name="transport_national" placeholder="">
                                     </div>
                                 </div>
 

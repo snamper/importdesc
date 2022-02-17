@@ -460,63 +460,63 @@ $(function () {
 $('#datepicker1').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker2').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker3').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
     orientation: "bottom",
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker4').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker5').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker6').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker7').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker8').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker9').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker10').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker11').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker12').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker13').datepicker({
     dateFormat: 'dd-mm-yy',
@@ -525,7 +525,7 @@ $('#datepicker13').datepicker({
 $('#datepicker14').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker15').datepicker({
     dateFormat: 'dd-mm-yy',
@@ -534,82 +534,82 @@ $('#datepicker15').datepicker({
 $('#datepicker16').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker17').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker18').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker19').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker20').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker21').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker22').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker23').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker24').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker25').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker26').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker27').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker28').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker29').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker99').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 $('#datepicker100').datepicker({
     dateFormat: 'dd-mm-yy',
     autoclose: true,
-    weekStart : 1
+    weekStart: 1
 });
 
 $('#datepicker1, #datepicker2,#datepicker3,#datepicker4').change(function () {
@@ -2100,9 +2100,9 @@ function saveNewImagePositions(removedPos, moved) {
 
     const v = (id) => {
         return parseFloat($(`#${id}`).val()
-        .replace(",", "") // remove thousand before sum
-        .replace("€ ", "")) // remove euro sign before sum
-        || 0;
+            .replace(",", "") // remove thousand before sum
+            .replace("€ ", "")) // remove euro sign before sum
+            || 0;
     }
     const set = (id, num) => {
         // Add thousand separator
@@ -2116,6 +2116,7 @@ function saveNewImagePositions(removedPos, moved) {
     const vatCheckedEl = doc.querySelector("#switchvat");
     const margeCheckedEl = doc.querySelector("#switchmargin");
     const vatPercentage = doc.querySelector("#vatPercentage");
+    const lockedPrice = doc.querySelector("#lockSalesPriceCh");
 
     if (vatCheckedEl.checked) {
         $('#priceNetoText').html('Purchase Price margin');
@@ -2130,21 +2131,22 @@ function saveNewImagePositions(removedPos, moved) {
 
     for (let changer of calculationChangers) {
         changer.addEventListener("change", calcValues);
+
         changer.addEventListener("focusin", (e) => {
-            e.currentTarget.value =  parseFloat(e.currentTarget.value.replace(",", "") // remove thousand before sum
-            .replace("€ ", "")) // remove euro sign before sum
-            || '';
+            e.currentTarget.value = parseFloat(e.currentTarget.value.replace(",", "") // remove thousand before sum
+                .replace("€ ", "")) // remove euro sign before sum
+                || '';
         });
         changer.addEventListener("focusout", (e) => {
             const trigger = e.currentTarget;
             const triggerVal = trigger.value;
 
-            if(isNaN(triggerVal)) {
+            if (isNaN(triggerVal)) {
                 trigger.value = "";
                 return alert("The input data MUST contain only numbers");
             }
-            
-            if(triggerVal != '')
+
+            if (triggerVal != '')
                 trigger.value = `€ ${triggerVal.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}`;
         });
     }
@@ -2162,18 +2164,29 @@ function saveNewImagePositions(removedPos, moved) {
         calcValues(e);
     }
 
-    function calcValues() {
+    function calcValues(e) {
+
+        if (lockedPrice.checked) { // IF Lock sales price checked
+
+            console.log($('#inkoopprijs_totalCostsFeeex_ex'));
+
+            // set('addFee', v('inkoopprijs_totalCostsFeeex_ex') -  v('addOpknapkosten') - v('addTransport_Buitenland') - v('addTransport_Binnenland') - v('costTaxation') - v('recyclingFee'));
+        }
+
+
+        set('totalPriceNettoSuppluier', v('inkoopprijs_ex_ex') + v('addAfleverkosten'));
         set('totalPriceNettoSuppluier', v('inkoopprijs_ex_ex') + v('addAfleverkosten'));
         set('totalCostsFee', v('addOpknapkosten') + v('recyclingFee') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee'));
         set('totalPriceFee', v('totalPriceNettoSuppluier') + v('totalCostsFee'));
         if (vatCheckedEl.checked) {
-            set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('recyclingFee') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * (v('vatPercentage')/100));
+            set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('recyclingFee') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * (v('vatPercentage') / 100));
         } else {
-            set('addBTW_21', v('totalPriceFee') * (v('vatPercentage')/100));
+            set('addBTW_21', v('totalPriceFee') * (v('vatPercentage') / 100));
         }
         set('addVerkoopprijs_Marge_incl', v('totalPriceFee') + v('addBTW_21'));
         set('totalAll', v('addRest_BPM') + v('addVerkoopprijs_Marge_incl') + v('addLeges'));
         restBpmCalc();
+
     }
 
     function changeVatFn() {
@@ -2184,28 +2197,28 @@ function saveNewImagePositions(removedPos, moved) {
     }
     function changeVatMarge(vat) {
         const vatMarginTexts = [
-            { id: '#priceNetoText', vat: 'Purchase Price margin', marge: 'Purchase Price netto (ex/ex)'},
-            { id: '#totalPriceNetoText', vat: 'Total Purchase Price margin', marge: 'Total Purchase Price netto'},
-            { id: '#salesPriceNetoText', vat: 'Sales Price netto (margin)', marge: 'Sales Price netto (ex/ex)'},
-            { id: '#addBTWText', vat: 'VAT / BTW on Costs and Fee', marge: 'VAT / BTW (21%)'},
-            { id: '#addVerkooText', vat: 'Sales Price margin', marge: 'Sales Price incl. VAT / BTW'},
-            { id: '#salesPriceTotalText', vat: 'Sales Price Total (margin)', marge: 'Sales Price Total (in/in)'}
+            { id: '#priceNetoText', vat: 'Purchase Price margin', marge: 'Purchase Price netto (ex/ex)' },
+            { id: '#totalPriceNetoText', vat: 'Total Purchase Price margin', marge: 'Total Purchase Price netto' },
+            { id: '#salesPriceNetoText', vat: 'Sales Price netto (margin)', marge: 'Sales Price netto (ex/ex)' },
+            { id: '#addBTWText', vat: 'VAT / BTW on Costs and Fee', marge: 'VAT / BTW (21%)' },
+            { id: '#addVerkooText', vat: 'Sales Price margin', marge: 'Sales Price incl. VAT / BTW' },
+            { id: '#salesPriceTotalText', vat: 'Sales Price Total (margin)', marge: 'Sales Price Total (in/in)' }
         ];
 
         if (vat) {
-            set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('recyclingFee') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * (v('vatPercentage')/100));
+            set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('recyclingFee') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * (v('vatPercentage') / 100));
             $('#switchmargin').prop('checked', false);
             $('#switchvat').prop('checked', true);
             vatMarginTexts.forEach(el => $(el.id).html(el.vat));
         } else {
-            set('addBTW_21', v('totalPriceFee') * (v('vatPercentage')/100));
+            set('addBTW_21', v('totalPriceFee') * (v('vatPercentage') / 100));
             $('#switchvat').prop('checked', false);
             $('#switchmargin').prop('checked', true);
             vatMarginTexts.forEach(el => $(el.id).html(el.marge));
         }
 
         calcValues();
- 
+
     }
 
 
@@ -2218,7 +2231,7 @@ function saveNewImagePositions(removedPos, moved) {
         const BPMCO2WLTP = document.querySelector("#BPMCO2WLTP").value;
         const percentage = document.querySelector("#percentage").value;
         const variabeledatumbpm = document.querySelector("#datepicker2").value;
-        
+
         $.ajax({
             type: "POST",
             url: '../bpm/BPMUpdateTest.php',
@@ -2236,9 +2249,9 @@ function saveNewImagePositions(removedPos, moved) {
                 try {
                     var json = JSON.parse(data);
                     doc.querySelector('#addRest_BPMReadOnly').value = json[0].bpmprice;
-                }  catch (e) {
+                } catch (e) {
                     return "A required field for BPM is not filled";
-                }           
+                }
             },
             error: function (request, status, error) {
                 console.log(request.responseText);
@@ -2246,73 +2259,73 @@ function saveNewImagePositions(removedPos, moved) {
         });
     }
 
-}) (window, document);
+})(window, document);
 
-    ; (function (window, doc) {
-        const referenceFillers = document.querySelectorAll(".js-fill-refer");
-        if (!referenceFillers) {
+; (function (window, doc) {
+    const referenceFillers = document.querySelectorAll(".js-fill-refer");
+    if (!referenceFillers) {
+        return;
+    }
+
+    for (ref of referenceFillers) {
+
+        ref.addEventListener("change", addReference);
+    }
+
+    function addReference(e) {
+        const trigger = e.currentTarget;
+        let text = "";
+        if (trigger.value == "" || trigger.value == 0) {
             return;
         }
 
-        for (ref of referenceFillers) {
-
-            ref.addEventListener("change", addReference);
+        if (trigger.tagName == "SELECT") {
+            text = trigger.options[trigger.selectedIndex].innerText;
+        } else { // IF input
+            text = trigger.value;
         }
 
-        function addReference(e) {
-            const trigger = e.currentTarget;
-            let text = "";
-            if (trigger.value == "" || trigger.value == 0) {
-                return;
-            }
-
-            if (trigger.tagName == "SELECT") {
-                text = trigger.options[trigger.selectedIndex].innerText;
-            } else { // IF input
-                text = trigger.value;
-            }
-
-            if (trigger.getAttribute('id') == 'carMake' && text.length > 3) {
-                text = text.slice(0, 3);
-            }
-            else if (trigger.getAttribute('id') == 'vin' && text.length > 4) {
-                text = text.slice(-4);
-            }
-
-            doc.querySelector(`[data-ref=${trigger.id}]`).innerText = text;
+        if (trigger.getAttribute('id') == 'carMake' && text.length > 3) {
+            text = text.slice(0, 3);
+        }
+        else if (trigger.getAttribute('id') == 'vin' && text.length > 4) {
+            text = text.slice(-4);
         }
 
-    })(window, document);
-
-
-
-    function delay(callback, ms) {
-        var timer = 0;
-        return function () {
-            var context = this,
-                args = arguments;
-            clearTimeout(timer);
-            timer = setTimeout(function () {
-                callback.apply(context, args);
-            }, ms || 0);
-        };
+        doc.querySelector(`[data-ref=${trigger.id}]`).innerText = text;
     }
 
-    // Remove submit on enter
-    $(window).ready(function () {
-        $("#createEditCarForm").on("keypress", function (event) {
-            var keyPressed = event.keyCode || event.which;
-            if (keyPressed === 13) {
-                event.preventDefault();
-                return false;
-            }
-        });
+})(window, document);
+
+
+
+function delay(callback, ms) {
+    var timer = 0;
+    return function () {
+        var context = this,
+            args = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            callback.apply(context, args);
+        }, ms || 0);
+    };
+}
+
+// Remove submit on enter
+$(window).ready(function () {
+    $("#createEditCarForm").on("keypress", function (event) {
+        var keyPressed = event.keyCode || event.which;
+        if (keyPressed === 13) {
+            event.preventDefault();
+            return false;
+        }
     });
+});
 
 // Remove submit on enter
 $(window).ready(function () {
     $("#sourceByCh").on("change", function (e) {
-        const sourceBy =  document.getElementById('sourceBy');
+        const sourceBy = document.getElementById('sourceBy');
         sourceBy.disabled = $("#sourceByCh").is(":checked");
         sourceBy.value = '0';
     });
