@@ -2113,7 +2113,6 @@ function saveNewImagePositions(removedPos, moved) {
     }
 
     const calcFromTotal = doc.querySelector(".js-calc-from-total");
-    const calcFromBpm = doc.querySelector(".js-calc-from-bpm");
     const vatCheckedEl = doc.querySelector("#switchvat");
     const margeCheckedEl = doc.querySelector("#switchmargin");
     const vatPercentage = doc.querySelector("#vatPercentage");
@@ -2213,9 +2212,9 @@ function saveNewImagePositions(removedPos, moved) {
 
         set('totalPriceFee', totalPriceNetto + v('totalCostsFee'));
         if (vatCheckedEl.checked) {
-            set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('recyclingFee') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * (v('vatPercentage') / 100));
-        } else {
             set('addBTW_21', v('totalPriceFee') * (v('vatPercentage') / 100));
+        } else {
+            set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('recyclingFee') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * (v('vatPercentage') / 100));
         }
         set('addVerkoopprijs_Marge_incl', v('totalPriceFee') + v('addBTW_21'));
         set('totalAll', v('addRest_BPM') + v('addVerkoopprijs_Marge_incl') + v('addLeges'));
@@ -2223,20 +2222,20 @@ function saveNewImagePositions(removedPos, moved) {
 
     }
 
-    function changeVatFn() {
-        changeVatMarge(true);
+    function changeVatFn(e) {
+        changeVatMarge(e, true);
     }
-    function changeMargeFn() {
-        changeVatMarge(false);
+    function changeMargeFn(e) {
+        changeVatMarge(e, false);
     }
-    function changeVatMarge(vat) {
+    function changeVatMarge(e, vat) {
         const vatMarginTexts = [
-            { id: '#priceNetoText', vat: 'Purchase Price margin', marge: 'Purchase Price netto (ex/ex)' },
-            { id: '#totalPriceNetoText', vat: 'Total Purchase Price margin', marge: 'Total Purchase Price netto' },
-            { id: '#salesPriceNetoText', vat: 'Sales Price netto (margin)', marge: 'Sales Price netto (ex/ex)' },
-            { id: '#addBTWText', vat: 'VAT / BTW on Costs and Fee', marge: 'VAT / BTW (21%)' },
-            { id: '#addVerkooText', vat: 'Sales Price margin', marge: 'Sales Price incl. VAT / BTW' },
-            { id: '#salesPriceTotalText', vat: 'Sales Price Total (margin)', marge: 'Sales Price Total (in/in)' }
+            { id: '#priceNetoText', marge: 'Purchase Price margin', vat: 'Purchase Price netto (ex/ex)' },
+            { id: '#totalPriceNetoText', marge: 'Total Purchase Price margin', vat: 'Total Purchase Price netto' },
+            { id: '#salesPriceNetoText', marge: 'Sales Price netto (margin)', vat: 'Sales Price netto (ex/ex)' },
+            { id: '#addBTWText', marge: 'VAT / BTW on Costs and Fee', vat: 'VAT / BTW (21%)' },
+            { id: '#addVerkooText', marge: 'Sales Price margin', vat: 'Sales Price incl. VAT / BTW' },
+            { id: '#salesPriceTotalText', marge: 'Sales Price Total (margin)', vat: 'Sales Price Total (in/in)' }
         ];
 
         if (vat) {
@@ -2251,7 +2250,7 @@ function saveNewImagePositions(removedPos, moved) {
             vatMarginTexts.forEach(el => $(el.id).html(el.marge));
         }
 
-        calcValues();
+        calcValues(e);
 
     }
 

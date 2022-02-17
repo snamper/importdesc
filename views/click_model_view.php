@@ -595,16 +595,18 @@
 
                                     <div class="col-6 col-md-5">
                                         <span><?php echo $_SESSION['lang']['car_start_page_45'] ?></span>
-                                        <input type="checkbox" name="switchmargin" id="switchmargin" <?php 
+                                        <input type="checkbox" name="switchvat" id="switchvat" <?php 
                                             if(isset($data['single_car']['car_vat_marge'])) {
-                                                echo ($data['single_car']['car_vat_marge'] == '1') ? "checked" : "";
+                                                echo ($data['single_car']['car_vat_marge'] == '0') ? "checked" : "";
                                             }
                                             else {
                                                 echo 'checked';
                                             }
                                         ?>>
                                         <span><?php echo $_SESSION['lang']['car_start_page_44'] ?></span>
-                                        <input type="checkbox" name="switchvat" id="switchvat" <?php echo ((isset($data['single_car']['car_vat_marge']) && $data['single_car']['car_vat_marge'] == '0') ? "checked" : "") ?>>
+                                        <input type="checkbox" name="switchmargin" id="switchmargin" <?php
+                                            echo ((isset($data['single_car']['car_vat_marge']) && $data['single_car']['car_vat_marge'] == '1') ? "checked" : "")
+                                        ?>>
                                     </div>
                                     <div class="col-6 col-md-3" style="padding-left: 3%; white-space: nowrap;">
                                         <label for="lockSalesPriceCh" class="font-weight-normal">Lock sales price</label>
