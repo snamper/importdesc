@@ -1168,8 +1168,8 @@ class base
 				cd.cd_seat_heating,cd.cd_seat_massage,cd.cd_optics,cd.cd_tinted_windows,cd.cd_options,cd.cd_notes,c.car_body_style,
 				calc.purchase_price_netto, calc.fee_intermediate_supplier,calc.total_purchase_price_netto,
 				calc.costs_damage_and_repair, calc.transport_international,	calc.transport_national,
-				calc.costs_taxation_bpm, calc.fee_gwi, calc.total_costs_and_fee, calc.sales_price_netto,
-				calc.vat_btw, calc.sales_price_incl_vat_btw, calc.rest_bpm, calc.fees, calc.sales_price_total, c.updated_at,
+				calc.costs_taxation_bpm, calc.fee_gwi, calc.recycling_fee, calc.total_costs_and_fee, calc.sales_price_netto,
+				calc.vat_btw, calc.sales_price_incl_vat_btw, calc.rest_bpm, calc.fees, calc.sales_price_total, calc.bruto_bpm, calc.percentage, calc.rest_bpm_indication, c.updated_at,
 				u_cr.expo_users_name as created_by, u_edit.expo_users_name as last_edited_by, c.car_vat_marge, c.car_source, c.car_source_id
 
 		   FROM
@@ -1210,6 +1210,7 @@ class base
 			transport_international,
 			transport_national,
 			costs_taxation_bpm,
+			recycling_fee,
 			fee_gwi,
 			total_costs_and_fee,
 			sales_price_netto,
@@ -1218,9 +1219,16 @@ class base
 			rest_bpm,
 			fees,
 			sales_price_total,
+			bruto_bpm,
+			percentage,
+			rest_bpm_indication,
 			`user_id`
 
 		) VALUES (
+			?,
+			?,
+			?,
+			?,
 			?,
 			?,
 			?,
@@ -1251,6 +1259,7 @@ class base
 			$_post['transport_international'],
 			$_post['transport_national'],
 			$_post['costs_taxation_bpm'],
+			$_post['recycling_fee'],
 			$_post['fee_gwi'],
 			$_post['total_costs_and_fee'],
 			$_post['sales_price_netto'],
@@ -1259,6 +1268,9 @@ class base
 			$_post['rest_bpm'],
 			$_post['fees'],
 			$_post['sales_price_total'],
+			$_post['bruto_bpm'],
+			$_post['percentage'],
+			$_post['rest_bpm_indication'],
 			$_SESSION['user'][0]['expo_users_ID']
 
 		]);
@@ -1275,6 +1287,7 @@ class base
 			transport_international =?,
 			transport_national =?,
 			costs_taxation_bpm =?,
+			recycling_fee =?,
 			fee_gwi =?,
 			total_costs_and_fee =?,
 			sales_price_netto =?,
@@ -1283,6 +1296,9 @@ class base
 			rest_bpm =?,
 			fees =?,
 			sales_price_total =?,
+			bruto_bpm =?,
+			percentage =?,
+			rest_bpm_indication =?,
 			`user_id` = ?
 			WHERE calculation_for_car_id = ?";
 
@@ -1296,6 +1312,7 @@ class base
 			$_post['transport_international'],
 			$_post['transport_national'],
 			$_post['costs_taxation_bpm'],
+			$_post['recycling_fee'],
 			$_post['fee_gwi'],
 			$_post['total_costs_and_fee'],
 			$_post['sales_price_netto'],
@@ -1304,6 +1321,9 @@ class base
 			$_post['rest_bpm'],
 			$_post['fees'],
 			$_post['sales_price_total'],
+			$_post['bruto_bpm'],
+			$_post['percentage'],
+			$_post['rest_bpm_indication'],
 			$_SESSION['user'][0]['expo_users_ID'],
 			$car_id,
 

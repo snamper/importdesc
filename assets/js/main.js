@@ -2144,7 +2144,8 @@ function saveNewImagePositions(removedPos, moved) {
                 return alert("The input data MUST contain only numbers");
             }
             
-            trigger.value = `€${triggerVal.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}`;
+            if(triggerVal != '')
+                trigger.value = `€${triggerVal.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}`;
         });
     }
 
@@ -2163,10 +2164,10 @@ function saveNewImagePositions(removedPos, moved) {
 
     function calcValues() {
         set('totalPriceNettoSuppluier', v('inkoopprijs_ex_ex') + v('addAfleverkosten'));
-        set('totalCostsFee', v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee'));
+        set('totalCostsFee', v('addOpknapkosten') + v('recyclingFee') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee'));
         set('totalPriceFee', v('totalPriceNettoSuppluier') + v('totalCostsFee'));
         if (vatCheckedEl.checked) {
-            set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * (v('vatPercentage')/100));
+            set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('recyclingFee') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * (v('vatPercentage')/100));
         } else {
             set('addBTW_21', v('totalPriceFee') * (v('vatPercentage')/100));
         }
@@ -2189,9 +2190,10 @@ function saveNewImagePositions(removedPos, moved) {
             { id: '#addBTWText', vat: 'VAT / BTW on Costs and Fee', marge: 'VAT / BTW (21%)'},
             { id: '#addVerkooText', vat: 'Sales Price margin', marge: 'Sales Price incl. VAT / BTW'},
             { id: '#salesPriceTotalText', vat: 'Sales Price Total (margin)', marge: 'Sales Price Total (in/in)'}
-        ]
+        ];
+
         if (vat) {
-            set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * (v('vatPercentage')/100));
+            set('addBTW_21', (v('addAfleverkosten') + v('addOpknapkosten') + v('recyclingFee') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee')) * (v('vatPercentage')/100));
             $('#switchmargin').prop('checked', false);
             $('#switchvat').prop('checked', true);
             vatMarginTexts.forEach(el => $(el.id).html(el.vat));
