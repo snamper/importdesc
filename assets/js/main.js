@@ -2101,14 +2101,14 @@ function saveNewImagePositions(removedPos, moved) {
     const v = (id) => {
         return parseFloat($(`#${id}`).val()
         .replace(",", "") // remove thousand before sum
-        .replace("€", "")) // remove euro sign before sum
+        .replace("€ ", "")) // remove euro sign before sum
         || 0;
     }
     const set = (id, num) => {
         // Add thousand separator
         const number = num.toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         // Add Euro sign
-        const val = `€${number}`
+        const val = `€ ${number}`
         return $(`#${id}`).val(val);
     }
 
@@ -2132,7 +2132,7 @@ function saveNewImagePositions(removedPos, moved) {
         changer.addEventListener("change", calcValues);
         changer.addEventListener("focusin", (e) => {
             e.currentTarget.value =  parseFloat(e.currentTarget.value.replace(",", "") // remove thousand before sum
-            .replace("€", "")) // remove euro sign before sum
+            .replace("€ ", "")) // remove euro sign before sum
             || '';
         });
         changer.addEventListener("focusout", (e) => {
@@ -2145,7 +2145,7 @@ function saveNewImagePositions(removedPos, moved) {
             }
             
             if(triggerVal != '')
-                trigger.value = `€${triggerVal.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}`;
+                trigger.value = `€ ${triggerVal.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}`;
         });
     }
 

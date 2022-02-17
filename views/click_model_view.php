@@ -683,7 +683,7 @@
                                         <?php echo $_SESSION['lang']['car_start_page_51'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['transport_national']) ?  $data['single_car']['transport_national'] : '€85') ?> " id="addTransport_Binnenland" name="transport_national" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['transport_national']) ?  $data['single_car']['transport_national'] : '€ 85') ?> " id="addTransport_Binnenland" name="transport_national" placeholder="">
                                     </div>
                                 </div>
 
@@ -702,7 +702,7 @@
                                         Recycling fee
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['recycling_fee']) ?  $data['single_car']['recycling_fee'] : '€20.66') ?> " id="recyclingFee" name="recycling_fee" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['recycling_fee']) ?  $data['single_car']['recycling_fee'] : '€ 20.66') ?> " id="recyclingFee" name="recycling_fee" placeholder="">
 
                                     </div>
                                 </div>
@@ -763,7 +763,7 @@
                                         <?php echo $_SESSION['lang']['car_start_page_59'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['fees']) ?  $data['single_car']['fees'] : '€91.80') ?> "  id="addLeges" name="fees" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['fees']) ?  $data['single_car']['fees'] : '€ 91.80') ?> "  id="addLeges" name="fees" placeholder="">
                                     </div>
                                 </div>
                                 <div class="row str">
