@@ -260,16 +260,29 @@ class base
 		return $dbDriver->fetchAssoc();
 	}
 
-	function getLangTranslations($lang_id) {
+	function getLangTranslations($lang_id, $page_name = NULL) {
 		$dbDriver = new db_driver();
-		$query = "SELECT * FROM translate WHERE `langID` = ?";
-		$stmt = $dbDriver->dbCon->prepare($query);
-		$stmt->execute([$lang_id]);
+		if(!is_null($page_name)) {
+			$query = "SELECT * FROM translate WHERE `langID` = ? AND page_name = ?";
+			$stmt = $dbDriver->dbCon->prepare($query);
+			$stmt->execute([$lang_id, $page_name]);
+			
+		}else {
+			$query = "SELECT * FROM translate WHERE `langID` = ?";
+			$stmt = $dbDriver->dbCon->prepare($query);
+			$stmt->execute([$lang_id]);
+		}
+		
+	
 		$result = array();
-
 		while($lang = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			$result[$lang['label']] = $lang['description'];
 		}
+
+		// echo '<pre>';
+		// var_dump($result);
+		// echo '</pre>';
+		// exit;
 
 		return $result;
 	}

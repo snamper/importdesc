@@ -660,7 +660,7 @@
                                         <?php echo $_SESSION['lang']['car_start_page_48'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input class="form-control js-calc-input" readonly type="text" value="<?php echo (isset($data['single_car']['total_purchase_price_netto']) ?  $data['single_car']['total_purchase_price_netto'] : '') ?> " name="total_purchase_price_netto" id="totalPriceNettoSuppluier">
+                                        <input class="form-control" readonly type="text" value="<?php echo (isset($data['single_car']['total_purchase_price_netto']) ?  $data['single_car']['total_purchase_price_netto'] : '') ?> " name="total_purchase_price_netto" id="totalPriceNettoSuppluier">
                                     </div>
                                 </div>
 

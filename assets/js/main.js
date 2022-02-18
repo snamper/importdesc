@@ -2127,6 +2127,9 @@ function saveNewImagePositions(removedPos, moved) {
         { id: '#salesPriceTotalText', marge: 'Sales Price Total (margin)', vat: 'Sales Price Total (in/in)' }
     ];
 
+    // const transl = getTranslations("car_start");
+    // console.log(getTranslations("car_start"));
+
     if (vatCheckedEl.checked) {
         vatMarginTexts.forEach(el => $(el.id).html(el.vat));
     } else {
@@ -2141,30 +2144,11 @@ function saveNewImagePositions(removedPos, moved) {
     for (let changer of calculationChangers) {
         changer.addEventListener("change", calcValues);
 
-        changer.addEventListener("focusin", (e) => {
-            e.currentTarget.value = parseFloat(e.currentTarget.value.replace(",", "") // remove thousand before sum
-                .replace("€ ", "")) // remove euro sign before sum
-                || '';
-        });
-        changer.addEventListener("focusout", (e) => {
-            
-            const trigger = e.currentTarget;
-            let triggerVal = trigger.value;
-
-            if (triggerVal.length == 0) {
-                return;
-            }
-
-            if (isNaN(triggerVal)) {
-                trigger.value = "";                
-                return alert("The input data MUST contain only numbers");
-            }
-
-            triggerVal = parseFloat(triggerVal).toFixed(2).toString(); // Add .00 after the value
-
-            trigger.value = `€ ${triggerVal.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}`;
-        });
+        changer.addEventListener("focusin", removeCurrencyFormat);
+        changer.addEventListener("focusout", addCurrencyFormat);       
     }
+    doc.querySelector('#totalAll').addEventListener("focusin", removeCurrencyFormat);
+    doc.querySelector('#totalAll').addEventListener("focusout", addCurrencyFormat);
 
     function calcFromTotalFn(e, calledFromRestBpm) {
         const trigger = e.currentTarget;
@@ -2421,3 +2405,41 @@ $(window).ready(function () {
         })
     })
 });
+
+function getTranslations(pageName) {
+
+    fetch(`${location.origin}/lang?lang_page=${pageName}`, {
+    }).then(function (response) {
+        if (response.ok) {
+            console.log(response);
+            return response.json();
+        }
+    }).catch(function (error) {
+        console.warn('Something went wrong.', error);
+    });
+}
+
+
+function removeCurrencyFormat(e) {
+    e.currentTarget.value = parseFloat(e.currentTarget.value.replace(",", "") // remove thousand before sum
+    .replace("€ ", "")) // remove euro sign before sum
+    || '';
+}
+
+function addCurrencyFormat(e) {
+    const trigger = e.currentTarget;
+    let triggerVal = trigger.value;
+
+    if (triggerVal.length == 0) {
+        return;
+    }
+
+    if (isNaN(triggerVal)) {
+        trigger.value = "";                
+        return alert("The input data MUST contain only numbers");
+    }
+
+    triggerVal = parseFloat(triggerVal).toFixed(2).toString(); // Add .00 after the value
+
+    trigger.value = `€ ${triggerVal.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}`;
+}
