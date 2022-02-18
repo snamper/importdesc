@@ -26,7 +26,7 @@ class login extends view{
 		$obj = new element;
 
 		if(isset($_POST['login']) && isset($_POST['username']) && isset($_POST['userPassword'])){	
-				
+
 				 $obj->username = $_POST['username'];
 				 $obj->username=hash('sha512', $obj->username);
 				 // $obj->EmailAddress=hash('sha512', $obj->EmailAddress);

@@ -593,7 +593,7 @@
                             <div class="col-6 col-md-8 calculation-col">
                                 <div class="row flex-nowrap" style="height: 50px; align-items: center;">
 
-                                    <div class="col-6 col-md-5">
+                                    <div class="col-6 col-md-6">
                                         <span><?php echo $_SESSION['lang']['car_start_page_45'] ?></span>
                                         <input type="checkbox" name="switchvat" id="switchvat" <?php 
                                             if(isset($data['single_car']['car_vat_marge'])) {
@@ -612,8 +612,8 @@
                                         <label for="lockSalesPriceCh" class="font-weight-normal">Lock sales price</label>
                                         <input type="checkbox" name="lock_sales_price" id="lockSalesPriceCh" <?php echo (isset($data['single_car']['calculation_lock_sales_price']) && $data['single_car']['calculation_lock_sales_price'] == '1') ? "checked" : "" ?>/>
                                     </div>
-                                    <div class="col-6 col-md-2" style="white-space: nowrap;">
-                                        <span>VAT percentage</span>
+                                    <div class="col-6 col-md-1 text-right">
+                                        <span>VAT</span>
                                     </div>
                                     <div class="col-6 col-md-2">
                                         <select name="vat_percentage" id="vatPercentage" class="form-control">
@@ -716,7 +716,7 @@
                                         <?php echo $_SESSION['lang']['car_start_page_53'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input type="text" class="form-control js-calc-input" id="addFee" value="<?php echo (isset($data['single_car']['fee_gwi']) ?  $data['single_car']['fee_gwi'] : '') ?> " name="fee_gwi" placeholder="">
+                                        <input type="text" <?php echo (isset($data['single_car']['calculation_lock_sales_price']) && $data['single_car']['calculation_lock_sales_price'] == 0 || !isset($data['single_car']['calculation_lock_sales_price'])  ? "" : "readonly" ) ?> class="form-control js-calc-input" id="addFee" value="<?php echo (isset($data['single_car']['fee_gwi']) ?  $data['single_car']['fee_gwi'] : '') ?> " name="fee_gwi" placeholder="">
 
                                     </div>
                                 </div>
@@ -775,7 +775,7 @@
                                         <?php echo $_SESSION['lang']['car_start_page_60'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input class="form-control js-calc-from-total" value="<?php echo (isset($data['single_car']['sales_price_total']) ?  $data['single_car']['sales_price_total'] : '') ?> " type="text" name="sales_price_total" id="totalAll">
+                                        <input class="form-control js-calc-from-total" <?php echo (isset($data['single_car']['calculation_lock_sales_price']) && $data['single_car']['calculation_lock_sales_price'] == 0 || !isset($data['single_car']['calculation_lock_sales_price'])  ? "readonly" : "" ) ?> value="<?php echo (isset($data['single_car']['sales_price_total']) ?  $data['single_car']['sales_price_total'] : '') ?> " type="text" name="sales_price_total" id="totalAll">
                                     </div>
                                 </div>                                
                                 <div class="row mt-4"></div>
@@ -794,7 +794,7 @@
                                         % BPM
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input readonly type="text" class="form-control" id="percentage" value="<?php echo (isset($data['single_car']['percentage']) ?  $data['single_car']['percentage'] : '') ?>" name="percentage" placeholder="">
+                                        <input type="text" class="form-control js-percantege-change-calc" id="percentage" value="<?php echo (isset($data['single_car']['percentage']) ?  $data['single_car']['percentage'] : '') ?>" name="percentage" placeholder="">
                                     </div>
                                 </div>  
 
@@ -1299,11 +1299,11 @@
 
         <div class="col col-5">
             <p><?php echo $_SESSION['lang']['car_start_page_89'] ?></p>
-            <textarea placeholder="" rows="7" style="resize: none;" class="form-control" name="notes" id="notes"><?php echo (isset($data['single_car']['cd_notes']) ? $data['single_car']['cd_notes']  : "") ?></textarea>
+            <textarea placeholder="" rows="7" class="form-control remarks" name="notes" id="notes"><?php echo (isset($data['single_car']['cd_notes']) ? $data['single_car']['cd_notes']  : "") ?></textarea>
         </div>
         <div class="col col-12 col-md-6">
             <p><?php echo $_SESSION['lang']['car_start_page_90'] ?></p>
-            <div class="form-control show-documents" name="uploaded_files" id="uploadedFiles" style="min-height: 175px;">
+            <div class="form-control show-documents uploaded-documents-col" name="uploaded_files" id="uploadedFiles">
                 <?php
                 if (!is_null($data['single_car_documents'][0])) {
                     foreach ($data['single_car_documents'][0] as $key => $doc) {
@@ -1324,7 +1324,7 @@
 
         <div class="col col-12 col-md-5">
             <p><?php echo $_SESSION['lang']['car_start_page_91'] ?></p>
-            <div class="row d-flex flex-nowrap align-items-stretch form-control show-documents text-muted" style="min-height: 240px;">
+            <div class="row d-flex flex-nowrap align-items-stretch form-control show-documents text-muted connected-modules">
                 <div class="col-3">
                     <?php echo $_SESSION['lang']['car_start_page_92'] ?>
                 </div>
@@ -1348,7 +1348,7 @@
                     <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_102'] ?></div>
                     <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_103'] ?></div>
                 </div>
-                <div class="col-5 show-documents" style="white-space: nowrap; background-color: white; overflow: hidden; border-radius: 3px; border: 1px solid #DCDCDC;">
+                <div class="col-5 show-documents internal-information" style="white-space: nowrap; background-color: white; overflow: hidden; border-radius: 3px; border: 1px solid #DCDCDC;">
                     <div class="row ml-1 mt-2"><input type="checkbox" name="source" id="sourceByCh" <?php echo (isset($data['single_car']['car_source']) && $data['single_car']['car_source'] == '1') ? "checked" : "" ?>/></div>
                     <div class="row ml-1 mt-2"><span>
                         <select name="source_id" id="sourceBy" class="form-control" <?php echo (isset($data['single_car']['car_source']) && $data['single_car']['car_source'] == '1') ? "disabled" : "" ?>>

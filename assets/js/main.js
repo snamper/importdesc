@@ -2117,6 +2117,8 @@ function saveNewImagePositions(removedPos, moved) {
     const margeCheckedEl = doc.querySelector("#switchmargin");
     const vatPercentage = doc.querySelector("#vatPercentage");
     const lockedPrice = doc.querySelector("#lockSalesPriceCh");
+    const bpmPercentage = doc.querySelector("#percentage");  
+    const totalAll = doc.querySelector("#totalAll");
 
     const vatMarginTexts = [
         { id: '#priceNetoText', marge: 'Purchase Price margin', vat: 'Purchase Price netto (ex/ex)' },
@@ -2127,6 +2129,11 @@ function saveNewImagePositions(removedPos, moved) {
         { id: '#salesPriceTotalText', marge: 'Sales Price Total (margin)', vat: 'Sales Price Total (in/in)' }
     ];
 
+    lockedPrice.addEventListener("change", (e) => {
+       doc.querySelector("#totalAll").readOnly = !(e.currentTarget.checked);
+       doc.querySelector("#addFee").readOnly = e.currentTarget.checked;
+    })
+
     // const transl = getTranslations("car_start");
     // console.log(getTranslations("car_start"));
 
@@ -2136,19 +2143,26 @@ function saveNewImagePositions(removedPos, moved) {
         vatMarginTexts.forEach(el => $(el.id).html(el.marge));
     }
 
+    // Add event listeners 
     vatCheckedEl.addEventListener("change", changeVatFn);
     margeCheckedEl.addEventListener("change", changeMargeFn);
     calcFromTotal.addEventListener("change", calcFromTotalFn);
     vatPercentage.addEventListener("change", calcValues);
+   
 
     for (let changer of calculationChangers) {
         changer.addEventListener("change", calcValues);
-
         changer.addEventListener("focusin", removeCurrencyFormat);
         changer.addEventListener("focusout", addCurrencyFormat);       
     }
-    doc.querySelector('#totalAll').addEventListener("focusin", removeCurrencyFormat);
-    doc.querySelector('#totalAll').addEventListener("focusout", addCurrencyFormat);
+
+    totalAll.addEventListener("focusin", removeCurrencyFormat);
+    totalAll.addEventListener("focusout", addCurrencyFormat);
+
+    bpmPercentage.addEventListener("focusin", removePercantageFormat);
+    bpmPercentage.addEventListener("focusout", calculateBpmBrutto);
+
+   
 
     function calcFromTotalFn(e, calledFromRestBpm) {
         const trigger = e.currentTarget;
@@ -2206,7 +2220,9 @@ function saveNewImagePositions(removedPos, moved) {
     }
 
     function calcValues(e) {
+       
         const trigger = e.currentTarget;
+   
         if (trigger.id === 'addRest_BPM') {
             if (lockedPrice.checked) {
                 calcFromTotalFn(e, true);
@@ -2248,6 +2264,7 @@ function saveNewImagePositions(removedPos, moved) {
         }
         set('addVerkoopprijs_Marge_incl', v('totalPriceFee') + v('addBTW_21'));
         set('totalAll', v('addRest_BPM') + v('addVerkoopprijs_Marge_incl') + v('addLeges'));
+
         restBpmCalc();
 
     }
@@ -2276,44 +2293,6 @@ function saveNewImagePositions(removedPos, moved) {
     }
 
 
-
-    function restBpmCalc() {
-        const SoortVoertuig = document.querySelector("#SoortVoertuig").value;
-        const BPMbrandstof = document.querySelector("#BPMbrandstof").value;
-        const BPMproductiedatum = document.querySelector("#datepicker1").value;
-        const BPMtenaamstellingNL = document.querySelector("#datepicker10").value;
-        const BPMCO2WLTP = document.querySelector("#BPMCO2WLTP").value;
-        const percentage = document.querySelector("#percentage").value.replace("%", "");
-        const variabeledatumbpm = document.querySelector("#datepicker2").value;
-
-        $.ajax({
-            type: "POST",
-            url: '../bpm/BPMUpdateTest.php',
-            data: {
-                "SoortVoertuig": SoortVoertuig,
-                "BPMbrandstof": BPMbrandstof,
-                "BPMproductiedatum": BPMproductiedatum,
-                "BPMtenaamstellingNL": BPMtenaamstellingNL,
-                "variabeledatumbpm": variabeledatumbpm,
-                "BPMCO2WLTP": BPMCO2WLTP,
-                "percentage": percentage,
-            },
-            success: function (data) {
-                // console.log(json[0]['BPMCO2WLTP']);
-                try {
-                    var json = JSON.parse(data);
-                    doc.querySelector('#addRest_BPMReadOnly').value = json[0].bpmprice;
-                    const bruto = (json[0].bpmprice / (percentage / 100));
-                    doc.querySelector('#BPMBruto').value = isNaN(bruto) ? '' : bruto.toFixed(0);
-                } catch (e) {
-                    return "A required field for BPM is not filled";
-                }
-            },
-            error: function (request, status, error) {
-                console.log(request.responseText);
-            }
-        });
-    }
 
 })(window, document);
 
@@ -2442,4 +2421,76 @@ function addCurrencyFormat(e) {
     triggerVal = parseFloat(triggerVal).toFixed(2).toString(); // Add .00 after the value
 
     trigger.value = `€ ${triggerVal.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}`;
+}
+
+
+function removePercantageFormat(e) {
+    e.currentTarget.value = parseFloat(e.currentTarget.value.replace("%", "")) || '';  // remove % sign before sum
+
+}
+
+function calculateBpmBrutto(e) {
+
+    restBpmCalc();
+    addPercantageFormat(e);
+
+}
+
+
+function addPercantageFormat(e) {
+    const trigger = e.currentTarget;
+    let triggerVal = trigger.value;
+
+    if (triggerVal.length == 0) {
+        return;
+    }
+
+    if (isNaN(triggerVal)) {
+        trigger.value = "";                
+        return alert("The input data MUST contain only numbers");
+    }
+
+    triggerVal = parseFloat(triggerVal).toFixed(0).toString(); // Add .00 after the value
+
+    trigger.value = `${triggerVal}%`;
+}
+
+
+function restBpmCalc() {
+
+    const SoortVoertuig = document.querySelector("#SoortVoertuig").value;
+    const BPMbrandstof = document.querySelector("#BPMbrandstof").value;
+    const BPMproductiedatum = document.querySelector("#datepicker1").value;
+    const BPMtenaamstellingNL = document.querySelector("#datepicker10").value;
+    const BPMCO2WLTP = document.querySelector("#BPMCO2WLTP").value;
+    const percentage = parseFloat(document.querySelector("#percentage").value.replace("%", ""));
+    const variabeledatumbpm = document.querySelector("#datepicker2").value;
+
+    $.ajax({
+        type: "POST",
+        url: '../bpm/BPMUpdateTest.php',
+        data: {
+            "SoortVoertuig": SoortVoertuig,
+            "BPMbrandstof": BPMbrandstof,
+            "BPMproductiedatum": BPMproductiedatum,
+            "BPMtenaamstellingNL": BPMtenaamstellingNL,
+            "variabeledatumbpm": variabeledatumbpm,
+            "BPMCO2WLTP": BPMCO2WLTP,
+            "percentage": percentage,
+        },
+        success: function (data) {
+            try {
+                var json = JSON.parse(data);
+                document.querySelector('#addRest_BPMReadOnly').value = json[0].bpmprice;
+                const bruto = (json[0].bpmprice / (percentage / 100));
+                console.log(bruto);
+                document.querySelector('#BPMBruto').value = isNaN(bruto) ? '' : bruto.toFixed(0);
+            } catch (e) {
+                return "A required field for BPM is not filled";
+            }
+        },
+        error: function (request, status, error) {
+            console.log(request.responseText);
+        }
+    });
 }

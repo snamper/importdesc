@@ -279,10 +279,6 @@ class base
 			$result[$lang['label']] = $lang['description'];
 		}
 
-		// echo '<pre>';
-		// var_dump($result);
-		// echo '</pre>';
-		// exit;
 
 		return $result;
 	}
