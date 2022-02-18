@@ -702,7 +702,6 @@ class base
 			$_post['preorder'] = 0;
 		}
 
-
 		// try {
 		$query = "INSERT INTO cars
         (
@@ -1169,7 +1168,7 @@ class base
 				calc.purchase_price_netto, calc.fee_intermediate_supplier,calc.total_purchase_price_netto,
 				calc.costs_damage_and_repair, calc.transport_international,	calc.transport_national,
 				calc.costs_taxation_bpm, calc.fee_gwi, calc.recycling_fee, calc.total_costs_and_fee, calc.sales_price_netto,
-				calc.vat_btw, calc.sales_price_incl_vat_btw, calc.rest_bpm, calc.fees, calc.sales_price_total, calc.bruto_bpm, calc.percentage, calc.rest_bpm_indication, c.updated_at,
+				calc.vat_btw, calc.calculation_vat_percentage, calc.calculation_lock_sales_price, calc.sales_price_incl_vat_btw, calc.rest_bpm, calc.fees, calc.sales_price_total, calc.bruto_bpm, calc.percentage, calc.rest_bpm_indication, c.updated_at,
 				u_cr.expo_users_name as created_by, u_edit.expo_users_name as last_edited_by, c.car_vat_marge, c.car_source, c.car_source_id
 
 		   FROM
@@ -1222,9 +1221,13 @@ class base
 			bruto_bpm,
 			percentage,
 			rest_bpm_indication,
+			calculation_lock_sales_price,
+			calculation_vat_percentage,
 			`user_id`
 
 		) VALUES (
+			?,
+			?,
 			?,
 			?,
 			?,
@@ -1268,9 +1271,11 @@ class base
 			$_post['rest_bpm'],
 			$_post['fees'],
 			$_post['sales_price_total'],
-			$_post['bruto_bpm'],
+			$_post['bruto_bpm'],			
 			$_post['percentage'],
 			$_post['rest_bpm_indication'],
+			$_post['lock_sales_price'] ? 1 : 0, 
+			$_post['vat_percentage'],
 			$_SESSION['user'][0]['expo_users_ID']
 
 		]);
@@ -1299,6 +1304,8 @@ class base
 			bruto_bpm =?,
 			percentage =?,
 			rest_bpm_indication =?,
+			calculation_lock_sales_price =?,
+			calculation_vat_percentage = ?,
 			`user_id` = ?
 			WHERE calculation_for_car_id = ?";
 
@@ -1324,6 +1331,8 @@ class base
 			$_post['bruto_bpm'],
 			$_post['percentage'],
 			$_post['rest_bpm_indication'],
+			$_post['lock_sales_price'] ? 1 : 0, 
+			$_post['vat_percentage'],
 			$_SESSION['user'][0]['expo_users_ID'],
 			$car_id,
 

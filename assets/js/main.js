@@ -663,7 +663,7 @@ $('#datepicker1, #datepicker2,#datepicker3,#datepicker4').change(function () {
     } else {
         percentage = 92 + (howevermanymonths - 1) * 0.083;
     }
-    $('#percentage').val(Math.floor(percentage));
+    $('#percentage').val(Math.floor(percentage)+"%");
 });
 
 $("#updaters_dossier").click(function (event) {
@@ -2147,6 +2147,7 @@ function saveNewImagePositions(removedPos, moved) {
                 || '';
         });
         changer.addEventListener("focusout", (e) => {
+            
             const trigger = e.currentTarget;
             let triggerVal = trigger.value;
 
@@ -2155,7 +2156,7 @@ function saveNewImagePositions(removedPos, moved) {
             }
 
             if (isNaN(triggerVal)) {
-                trigger.value = "";
+                trigger.value = "";                
                 return alert("The input data MUST contain only numbers");
             }
 
@@ -2214,9 +2215,9 @@ function saveNewImagePositions(removedPos, moved) {
 
     function calcFromTotalVatLock(e) {
         set('addVerkoopprijs_Marge_incl', v('totalAll') - v('addRest_BPM') - v('addLeges'));
-        set('totalCostsFee', ((v('addVerkoopprijs_Marge_incl') - v('inkoopprijs_ex_ex')) / (1 + (v('vatPercentage') / 100))) - v('addAfleverkosten'))
-        set('addBTW_21', (v('addVerkoopprijs_Marge_incl') / (1 + v('vatPercentage') / 100) * (v('vatPercentage') / 100)));
+        set('addBTW_21', v('addVerkoopprijs_Marge_incl')/ (1 + (v('vatPercentage') / 100)) * (v('vatPercentage') / 100));
         set('totalPriceFee', v('addVerkoopprijs_Marge_incl') - v('addBTW_21'));
+        set('totalCostsFee', ((v('totalPriceFee') - v('totalPriceNettoSuppluier'))));
         set('addFee', v('totalCostsFee') - (v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('recyclingFee')));
     }
 
@@ -2298,7 +2299,7 @@ function saveNewImagePositions(removedPos, moved) {
         const BPMproductiedatum = document.querySelector("#datepicker1").value;
         const BPMtenaamstellingNL = document.querySelector("#datepicker10").value;
         const BPMCO2WLTP = document.querySelector("#BPMCO2WLTP").value;
-        const percentage = document.querySelector("#percentage").value;
+        const percentage = document.querySelector("#percentage").value.replace("%", "");
         const variabeledatumbpm = document.querySelector("#datepicker2").value;
 
         $.ajax({

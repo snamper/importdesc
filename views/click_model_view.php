@@ -610,24 +610,26 @@
                                     </div>
                                     <div class="col-6 col-md-3" style="padding-left: 3%; white-space: nowrap;">
                                         <label for="lockSalesPriceCh" class="font-weight-normal">Lock sales price</label>
-                                        <input type="checkbox" name="lock_sales_price" id="lockSalesPriceCh" <?php echo (isset($data['single_car']['lock_sales_price']) && $data['single_car']['lock_sales_price'] == '1') ? "checked" : "" ?>/>
+                                        <input type="checkbox" name="lock_sales_price" id="lockSalesPriceCh" <?php echo (isset($data['single_car']['calculation_lock_sales_price']) && $data['single_car']['calculation_lock_sales_price'] == '1') ? "checked" : "" ?>/>
                                     </div>
                                     <div class="col-6 col-md-2" style="white-space: nowrap;">
                                         <span>VAT percentage</span>
                                     </div>
                                     <div class="col-6 col-md-2">
                                         <select name="vat_percentage" id="vatPercentage" class="form-control">
-                                            <option value="17">17%</option>
-                                            <option value="18">18%</option>
-                                            <option value="19">19%</option>
-                                            <option value="20">20%</option>
-                                            <option value="21" selected>21%</option>
-                                            <option value="22">22%</option>
-                                            <option value="23">23%</option>
-                                            <option value="24">24%</option>
-                                            <option value="25">25%</option>
-                                            <option value="26">26%</option>
-                                            <option value="27">27%</option>
+                                            <?php  
+                                            $percentage = isset($data['single_car']['calculation_vat_percentage']) ? $data['single_car']['calculation_vat_percentage'] : 21;  
+                                                                                    
+                                                for($i = 17; $i <= 27; $i++) {
+                                                    if($percentage == $i) {
+                                                        $selected = "selected";
+                                                    }else {
+                                                        $selected = "";
+                                                    }
+
+                                                    echo "<option $selected value='$i'>$i%</option>";
+                                                }
+                                            ?>
                                         </select>
                                     </div>
                                 </div>
@@ -792,7 +794,7 @@
                                         % BPM
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input readonly type="text" class="form-control" id="percentage" name="percentage" placeholder="">
+                                        <input readonly type="text" class="form-control" id="percentage" value="<?php echo (isset($data['single_car']['percentage']) ?  $data['single_car']['percentage'] : '') ?>" name="percentage" placeholder="">
                                     </div>
                                 </div>  
 
