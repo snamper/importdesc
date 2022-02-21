@@ -138,6 +138,8 @@
                         </div>
                     </div>
 
+                    <?php if(!isset($_GET['lines'])): ?>
+
                     <div class="row">
                         <div class="col-12 col-md-4">
                             <span>Internal reference (custom)</span>
@@ -147,6 +149,7 @@
                         </div>
                     </div>
 
+                    <?php endif ?>
 
                     <div class="row">
                         <div class="col-12 col-md-4">
@@ -157,6 +160,13 @@
                         </div>
                     </div>
                     
+                    <?php if(isset($_GET['lines'])): ?>
+
+                    <div class="row mt-3"></div>
+                    <div class="row mt-3"></div>
+
+                    <?php endif ?>
+
                     <div class="row mt-3"></div>
                     <div class="row mt-4"></div>
 
@@ -183,7 +193,7 @@
                             <span class="font-weight-bold">Purchase order lines*</span>
                         </div>
                         <div class="col-12 col-md-4">
-                            <button class="btn btn-primary">Show all Purchase Order Lines</button>
+                            <a href="<?php echo (isset($_GET['lines']) ? '/create_po' : '/create_po?lines'); ?>" class="btn btn-primary">Show all Purchase Order Lines</a>
                         </div>
                     </div>
                     <div class="row mt-3"></div>
@@ -233,7 +243,7 @@
             <hr />
             <!-- Main row 2 -->
             
-
+            <?php if(!isset($_GET['lines'])): ?>
 
             <div class="row d-flex align-items-stretch">
 
@@ -328,6 +338,15 @@
     </div><!-- ./ ROW  -->
 
     <!-- ./ Main row 3 -->
+    <?php else: ?>
+
+        asdasdasd
+
+        <div class="list-pl-modal">
+
+        </div>
+
+    <?php endif ?>
 
 
 </form>
