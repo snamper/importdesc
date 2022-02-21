@@ -206,6 +206,9 @@
                             <span>3</span>
                         </div>
                     </div>
+                    <?php if(isset($_GET['lines'])) {
+                        echo "<span  class='btn btn-primary' </span>";
+                    } ?>
                     <!-- ./ ROWS  -->
                 </div>
                 <!-- ./ Left col  -->
