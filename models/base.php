@@ -283,6 +283,10 @@ class base
 		return $result;
 	}
 
+	public function addPoLines($_post){ 
+		
+	}
+
 	public function getCarDocuments($car_id)
 	{
 

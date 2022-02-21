@@ -8,7 +8,7 @@ include("connection.php");
 /* Array of database columns which should be read and sent back to DataTables. Use a space where
  * you want to insert a non-database field (for example a counter or static image)
  */
-$aColumns = array( 'cp.cp_path', 'c.car_id', 'cd.cd_car_ref_custom', 'dp.dp_num', 'c.car_preorder', 'cd.cd_vin', 'cd.cd_conf_number', 'cd.cd_nl_registration_number','cm.cmake_name','cmod.cmodel_name','cmu.cmu_name','cmotor.cmotor_name', 'tr.description', 'u_cr.expo_users_name', 'c.created_at', 'c.car_id as edit','c.car_id as duplicate');
+$aColumns = array( 'c.car_id as checkboxIcon', 'cp.cp_path', 'c.car_id', 'cd.cd_car_ref_custom', 'dp.dp_num', 'c.car_preorder', 'cd.cd_vin', 'cd.cd_conf_number', 'cd.cd_nl_registration_number','cm.cmake_name','cmod.cmodel_name','cmu.cmu_name','cmotor.cmotor_name', 'tr.description', 'u_cr.expo_users_name', 'c.created_at');
 /* Indexed column (used for fast and accurate table cardinality) */
 $sIndexColumn = "c.car_id as number";
 /* DB table to use */
@@ -212,10 +212,8 @@ while ( $aRow = mysqli_fetch_array( $rResult ) ) {
             $row[] = ( $aRow[ $aColumns[ $i ] ] == "0" ) ? '-' : $aRow[ $aColumns[ $i ] ];
         }   elseif ( $aColumns[ $i ] == 'c.car_make' ) {
              $row[] = '<center>'.$j.'</center>';
-        } elseif ( $aColumns[ $i ] == 'c.car_id as edit' ) {
-            $row[] = '<center style="display:flex;"><a href="car_start?car_id='.$aRow[$i].'" class="btn btn-default btn-xs"><i class="ti-brush"></i></a><a href="show_cars?delete='.$aRow[$i].'" class="btn btn-default btn-xs"><i class="ti-trash"></i></a></center>';
-        }elseif ( $aColumns[ $i ] == 'c.car_id as duplicate' ) {
-            $row[] = '<center style="display:flex;"><a href="car_start?car_id='.$aRow[$i].'&duplicate" class="btn btn-default btn-xs"><i class="ti-files"></i></a></center>';
+        } elseif ( $aColumns[ $i ] == 'c.car_id as checkboxIcon' ) { 
+            $row[] = '<center style="display:flex; justify-content:center; align-items:center"><input type="checkbox" name="add_purchase_line[]" value="'.$aRow[$i].'" /></center>';
         } elseif ( $aColumns[ $i ] == 'cp.cp_path' ) {
             $row[] = '<center style="display:flex;"><img src="'.($aRow[$i] == '' ? '/assets/images/no-image.gif' : $aRow[$i]).'" style="width: 100px;"></center>';
         } elseif ( $aColumns[ $i ] == 'c.car_id' ) {

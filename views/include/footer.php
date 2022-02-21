@@ -86,8 +86,7 @@
                 {
                     extend: 'excelHtml5',
                     exportOptions: {
-                        columns: ':visible',
-                        columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+                        columns: ':visible'
                     }
                 },
                 {
@@ -128,6 +127,53 @@
                     }
                 },
             ],
+            /* initComplete: function () {
+            this.api().columns('.select-filter').every( function () {
+                var column = this;
+                var select = $('<select class="selecter" id="'+ column.header().innerText+'"><option value="">'+column.header().innerText+'</option></select>')
+                    .appendTo( '.dataTables_length' )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+                column.data().unique().sort().each( function ( d, j ) {
+                	if (d != null) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' );
+                	}
+                } );
+           }  );
+        }, */
+        });
+
+    var oTable401 = $('#poLinesTable')
+        .DataTable({
+            "bprocessing": true,
+            "bserverSide": true,
+            "sServerMethod": "POST",
+            "sAjaxSource": "./data/data-purchase-order-lines.php",
+            stateSave: true,
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+
+            initComplete: function () {
+
+               document.querySelector("[type='search']").style="min-width:150px";
+
+               const purchaseLines = document.querySelectorAll("[name='purchase_lines[]']");
+
+               for(let line of purchaseLines) {
+                   document.querySelector(`[name='add_purchase_line[]'][value='${line.value}']`).checked = true;
+               }
+
+
+            }
+
             /* initComplete: function () {
             this.api().columns('.select-filter').every( function () {
                 var column = this;
