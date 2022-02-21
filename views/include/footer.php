@@ -91,51 +91,41 @@
                     }
                 },
                 {
-                    extend: 'pdfHtml5',
-                    orientation: 'landscape',
-                    exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-                    },
-                    customize: function(doc) {
-                        function getBase64Image(src, callback, outputFormat) {
-                            const img = new Image();
-                            img.crossOrigin = 'Anonymous';
-                            img.onload = () => {
-                                const canvas = document.createElement('canvas');
-                                const ctx = canvas.getContext('2d');
-                                let dataURL;
-                                canvas.height = img.naturalHeight;
-                                canvas.width = img.naturalWidth;
-                                ctx.drawImage(img, 0, 0);
-                                dataURL = canvas.toDataURL(outputFormat);
-                                callback(dataURL);
-                            };
+                    text: 'PDF/Print',
+                    action: function(e, dt, node, config) {
+                        const content = document.querySelector("#table_show_car").parentElement.innerHTML;
+                        const cssURL = document.querySelector("#styleMinCss").getAttribute("href");
+                        const cssURL2 = document.querySelector("#styleBoostrap").getAttribute("href");
+                        const popupWin = window.open('', '_blank', 'width=1100,height=600');
+                        popupWin.document.open();
+                        popupWin.document.write(`
+                            <html> 
+                            <head>
+                                <link rel="stylesheet" href="${cssURL}" media="all">
+                                <link rel="stylesheet" href="${cssURL2}" media="all">
+                                <style type="text/css">                             
+                                    table {
+                                    break-inside: avoid;
+                                    }
+                                    @page { size: landscape; }
+                                    .dt-buttons,
+                                    #table_show_car_length,
+                                    #table_show_car_filter
+                                     {
+                                        display:none;
+                                    }
 
-                            img.src = src;
-                            if (img.complete || img.complete === undefined) {
-                                img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
-                                img.src = src;
-                            }
-                        }
-                        //find paths of all images, already in base64 format
-                        var arr2 = $('.car-head-image').map(function() {
-                            getBase64Image(this);
-                            return this.src;
-                        }).get();
-
-                        for (var i = 0, c = 1; i < arr2.length; i++, c++) {
-                            doc.content[1].table.body[c][6] = {
-                                image: arr2[i],
-                                width: 100
-                            }
-                        }
-                    },
-                },
-                {
-                    extend: 'print',
-                    exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-                    },
+                                    #table_show_car {
+                                        max-width: 100%;
+                                    }
+                                </style>
+                            </head>
+                            <body onload="window.print()">
+                                ${content}
+                            </body>
+                            </html>`);
+                        popupWin.document.close();
+                    }
                 },
             ],
             /* initComplete: function () {
