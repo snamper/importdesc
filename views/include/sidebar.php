@@ -39,6 +39,7 @@
                             <li><a href="wltp"><i class="ti-plus"></i><span>BPM calculator WLTP</span></a></li>-->
                 <li><a href="create_make_new"><i class="ti-plus"></i><span><?php echo $_SESSION['lang']['sidebar_menu_17'] ?></span></a></li>
                 <li><a href="create_make"><i class="ti-plus"></i><span><?php echo $_SESSION['lang']['sidebar_menu_18'] ?></span></a></li>
+                <li><a href="create_po"><i class="ti-plus"></i><span>Create Purchase Order (PO)</span></a></li>
 
                  <div class="m90x">
                     <select  class="form-control input-sm m-b-20" style="width:90%; margin:auto;" id="languageselect">

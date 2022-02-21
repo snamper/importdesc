@@ -54,6 +54,8 @@
 
 	$route['car_start'] = 'controllers/car_start_controller.php';
 
+	$route['create_po'] = 'controllers/create_po_controller.php';
+
 
 
 	
