@@ -26,6 +26,20 @@ class car_start extends view
 		$obj = new element();
 		$this->base = $_SESSION['base'];
 
+		// Translations 
+		if(!isset($_SESSION['user'])) {
+            
+            echo json_encode($this->base->getLangTranslations(2));
+            return;
+        }
+
+        if(isset($_GET['lang_page'])) {
+
+            echo json_encode($this->base->getLangTranslations($_SESSION['user'][0]['langID'], $_GET['lang_page']));
+            return;
+        }
+
+
 		/**
 		 * At least one of the params MUST BE SET 
 		 * IF isset $conversion_type - it WILL GET the conversions for Type

@@ -81,7 +81,11 @@
                 [10, 25, 50, "All"]
             ],
             dom: 'Blfrtip',
-            /* buttons: [ 'colvis' ], */
+            buttons: [  'colvis',
+                        'excel',
+                        'pdf',
+                        'print',                       
+                     ],
             /* initComplete: function () {
             this.api().columns('.select-filter').every( function () {
                 var column = this;

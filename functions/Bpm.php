@@ -184,16 +184,16 @@ function calculateBpm($co2 = 0, $datum_toelating = null, $bpm_brandstof_type_id 
         $pre_bpm                  = (($co2 - $bpm_arr[0]['meer_dan']) * $bpm_arr[0]['bedrag_vermenigvuldigen']) + $bpm_arr[0]['bedrag_optellen'];
         $bpm                      = $pre_bpm + $co2_diesel_toeslag;
     } elseif ($jaar_toelating == 2021 && $bpm_brandstof_type_id == 2) {
-        $diesel_toeslag_vanaf_co2 = 0;
-        $diesel_toeslag           = 0;
+        $diesel_toeslag_vanaf_co2 = 77;
+        $diesel_toeslag           = 83.59;
         $co2_diesel               = $co2 - $diesel_toeslag_vanaf_co2;
         $co2_diesel_toeslag       = $co2_diesel * $diesel_toeslag;
         $bpm_arr                  = selectBpm( $co2, $bpm_periode_id, 1 ); // Brandstof Type op benzine (1) i.v.m. berekening.
         $pre_bpm                  = (($co2 - $bpm_arr[0]['meer_dan']) * $bpm_arr[0]['bedrag_vermenigvuldigen']) + $bpm_arr[0]['bedrag_optellen'];
         $bpm                      = $pre_bpm + $co2_diesel_toeslag;
     }elseif ($jaar_toelating == 2022 && $bpm_brandstof_type_id == 2) {
-        $diesel_toeslag_vanaf_co2 = 0;
-        $diesel_toeslag           = 0;
+        $diesel_toeslag_vanaf_co2 = 75;
+        $diesel_toeslag           = 86.67;
         $co2_diesel               = $co2 - $diesel_toeslag_vanaf_co2;
         $co2_diesel_toeslag       = $co2_diesel * $diesel_toeslag;
         $bpm_arr                  = selectBpm( $co2, $bpm_periode_id, 1 ); // Brandstof Type op benzine (1) i.v.m. berekening.

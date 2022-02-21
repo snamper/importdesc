@@ -217,6 +217,18 @@
     height: 1.8rem;
 }
 
+.uploaded-documents-col,
+textarea.form-control.remarks,
+.connected-modules,
+.internal-information {
+    height: 240px;
+}
+
+textarea.remarks {
+    resize: none;
+    overflow-y: auto;
+}
+
 .show-documents{
     overflow-y: scroll;
 }
