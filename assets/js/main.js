@@ -2222,6 +2222,7 @@ function saveNewImagePositions(removedPos, moved) {
     function calcValues(e) {
        
         const trigger = e.currentTarget;
+        const lockedPrice = doc.querySelector("#lockSalesPriceCh");
    
         if (trigger.id === 'addRest_BPM') {
             if (lockedPrice.checked) {
@@ -2235,6 +2236,19 @@ function saveNewImagePositions(removedPos, moved) {
             }
 
             trigger.setAttribute('data-old-val', trigger.value);
+            return;
+        }
+
+        if (trigger.id === 'addLeges') {
+            if (lockedPrice.checked) {
+                calcFromTotalFn(e, true);
+                set('totalCostsFee', v('addOpknapkosten') + v('recyclingFee') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('addFee'));
+                set('totalPriceFee', v('totalPriceNettoSuppluier') + v('totalCostsFee'));
+                set('addVerkoopprijs_Marge_incl', v('totalPriceFee') + v('addBTW_21'));
+            }
+            else {
+                set('totalAll', v('addRest_BPM') + v('addVerkoopprijs_Marge_incl') + v('addLeges'));
+            }
             return;
         }
 
