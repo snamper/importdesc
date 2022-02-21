@@ -217,7 +217,7 @@ while ( $aRow = mysqli_fetch_array( $rResult ) ) {
         }elseif ( $aColumns[ $i ] == 'c.car_id as duplicate' ) {
             $row[] = '<center style="display:flex;"><a href="car_start?car_id='.$aRow[$i].'&duplicate" class="btn btn-default btn-xs"><i class="ti-files"></i></a></center>';
         } elseif ( $aColumns[ $i ] == 'cp.cp_path' ) {
-            $row[] = '<center style="display:flex;"><img src="'.($aRow[$i] == '' ? '/assets/images/no-image.gif' : $aRow[$i]).'" style="width: 100px;"></center>';
+            $row[] = '<center style="display:flex;"><img class="car-head-image" src="'.($aRow[$i] == '' ? '/assets/images/no-image.gif' : $aRow[$i]).'" style="width: 100px;"></center>';
         } elseif ( $aColumns[ $i ] == 'c.car_id' ) {
             $row[] = '<center style="display:flex;">'.sprintf("A%'.07d\n", $aRow[$i]).'</center>';
         } elseif ( $aColumns[ $i ] == 'c.car_preorder' ) {

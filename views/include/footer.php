@@ -81,11 +81,63 @@
                 [10, 25, 50, "All"]
             ],
             dom: 'Blfrtip',
-            buttons: [  'colvis',
-                        'excel',
-                        'pdf',
-                        'print',                       
-                     ],
+            lengthChange: true,
+            buttons: ['colvis',
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: ':visible',
+                        columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+                    },
+                    customize: function(doc) {
+                        function getBase64Image(src, callback, outputFormat) {
+                            const img = new Image();
+                            img.crossOrigin = 'Anonymous';
+                            img.onload = () => {
+                                const canvas = document.createElement('canvas');
+                                const ctx = canvas.getContext('2d');
+                                let dataURL;
+                                canvas.height = img.naturalHeight;
+                                canvas.width = img.naturalWidth;
+                                ctx.drawImage(img, 0, 0);
+                                dataURL = canvas.toDataURL(outputFormat);
+                                callback(dataURL);
+                            };
+
+                            img.src = src;
+                            if (img.complete || img.complete === undefined) {
+                                img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+                                img.src = src;
+                            }
+                        }
+                        //find paths of all images, already in base64 format
+                        var arr2 = $('.car-head-image').map(function() {
+                            getBase64Image(this);
+                            return this.src;
+                        }).get();
+
+                        for (var i = 0, c = 1; i < arr2.length; i++, c++) {
+                            doc.content[1].table.body[c][6] = {
+                                image: arr2[i],
+                                width: 100
+                            }
+                        }
+                    },
+                },
+                {
+                    extend: 'print',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+                    },
+                },
+            ],
             /* initComplete: function () {
             this.api().columns('.select-filter').every( function () {
                 var column = this;
@@ -493,7 +545,7 @@
         document.getElementById('connect_car').value = (oTable36.row(this).data()[0]);
         // console.log(oTable36.row(this).data());
     });
-$('.selectpicker').selectpicker();
+    $('.selectpicker').selectpicker();
 
 
 
