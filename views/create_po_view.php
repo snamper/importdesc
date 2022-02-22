@@ -1,8 +1,7 @@
 <?php
-if (isset($_POST['hide_all_purch_lines'])) {
-    unset($_POST['show_all_purch_lines']);
-}
+    $data['purch_order'] = $data['purch_order'][0];
 ?>
+
 
 <div class="content" id="createPOView">
     <form action="create_po" action="create_po" method="POST" id="createPOForm" class="listing__form">
@@ -67,7 +66,7 @@ if (isset($_POST['hide_all_purch_lines'])) {
                             <span>Purchase order number</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" name="purch_order_number" value="<?php echo (isset($_POST['purch_order_number']) ? $_POST['purch_order_number'] : ''); ?>" />
+                            <input class="form-control" type="text" name="purch_order_number" value="<?php echo $data['purch_order']['purch_order_number']; ?>" />
                         </div>
                     </div>
 
@@ -76,7 +75,7 @@ if (isset($_POST['hide_all_purch_lines'])) {
                             <span>Date*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" id="datepicker2" autocomplete="false" required type="text" name="purch_date" value="<?php echo (isset($_POST['purch_date']) ? $_POST['purch_date'] : ''); ?>" />
+                            <input class="form-control" id="datepicker2" autocomplete="false" required type="text" name="purch_date" value="<?php echo $data['purch_order']['purch_date']; ?>" />
                         </div>
                     </div>
 
@@ -85,7 +84,7 @@ if (isset($_POST['hide_all_purch_lines'])) {
                             <span>(Intermediary) supplier*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" required type="text" name="intermediary_supplier" value="<?php echo (isset($_POST['intermediary_supplier']) ? $_POST['intermediary_supplier'] : ''); ?>" />
+                            <input class="form-control" required type="text" name="intermediary_supplier" value="<?php echo $data['purch_order']['intermediary_supplier']; ?>" />
                         </div>
                     </div>
 
