@@ -283,8 +283,51 @@ class base
 		return $result;
 	}
 
-	public function addPoLines($_post){ 
-		
+	public function addPoLines($_post, $purchase_id){ 
+
+		$dbDriver = new db_driver();
+		$query = "INSERT INTO purchase_order_lines (
+			pl_pre_order,
+			pl_type,
+			pl_purchase_type,
+			pl_vehicle_id,
+			pl_vat_margin,
+			pl_make,
+			pl_model,
+			pl_variant,
+			pl_engine,
+			pl_expected_delivery,
+			pl_km_delivery,
+			pl_purchase_price_excl_vat,
+			pl_purchase_price_incl_vat,
+			pl_accident_free,
+			pl_expected_damage_amount,
+			pl_extra_set_of_wheels,
+			pl_deposit
+			) VALUES (
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?
+		)";
+
+		$stmt1 = $dbDriver->dbCon->prepare($query);
+		$stmt1->execute([
+
+		]);
 	}
 
 	public function getCarDocuments($car_id)
