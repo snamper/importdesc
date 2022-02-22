@@ -2347,6 +2347,26 @@ function saveNewImagePositions(removedPos, moved) {
 })(window, document);
 
 
+;(function (window, doc) {
+
+    const jsElSubmitters = doc.querySelectorAll(".js-submit-form");
+
+    for(let submitter of jsElSubmitters) {
+
+        submitter.addEventListener("click", submitForm)
+        
+    }
+
+   
+
+})(window, document);
+
+
+function submitForm(e) {
+    e.currentTarget.closest("form").submit();
+}
+
+
 
 function delay(callback, ms) {
     var timer = 0;

@@ -1,5 +1,14 @@
+<?php
+if (isset($_POST['hide_all_purch_lines'])) {
+    unset($_POST['show_all_purch_lines']);
+}
+?>
+
 <div class="content" id="createPOView">
     <form action="create_po" action="create_po" method="POST" id="createPOForm" class="listing__form">
+    <?php if (!isset($_GET['order_id'])) { 
+        echo "<input type='hidden' name='update_order' value='{$_GET['order_id']}' />";
+    } ?>
         <?php if (!empty($data['purchase_lines'])) {
             foreach ($data['purchase_lines'][0] as $line) {
                 echo "<input name='purchase_lines[]' type='hidden' value='$line' />";
@@ -25,29 +34,19 @@
 
             <div class="custom-row" id="create_nav">
                 <div class="custom-col">
-                    <a href="/car_start" class="btn btn-danger" onclick="return confirm('Are you sure?');"><?php echo $_SESSION['lang']['car_start_page_4'] ?></a>
-                </div>
-
-                <?php if (isset($_GET['car_id'])) : ?>
-                    <div class="custom-col">
-                        <button type="submit" name="update_car" class="btn btn-info"><?php echo $_SESSION['lang']['car_start_page_5'] ?></button>
-                    </div>
-
-                    <div class="custom-col">
-                        <button type="submit" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_6'] ?></button>
-                    </div>
-
-                    <div class="custom-col">
-                        <button type="submit" name="duplicate_car" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_9'] ?></button>
-                    </div>
-                <?php endif ?>
-
-                <div class="custom-col">
-                    <button type="submit" name="create_car" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_8'] ?></button>
+                    <a href="/create_po" class="btn btn-danger" onclick="return confirm('Are you sure?');"><?php echo $_SESSION['lang']['car_start_page_4'] ?></a>
                 </div>
 
                 <div class="custom-col">
-                    <button type="submit" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_3'] ?></button>
+                    <button type="submit" name="save_order" class="btn btn-info"><?php echo $_SESSION['lang']['car_start_page_5'] ?></button>
+                </div>
+
+                <div class="custom-col">
+                    <button type="submit" name="update_order_close" class="btn btn-primary">Save and Close</button>
+                </div>
+
+                <div class="custom-col">
+                    <button type="submit" name="update_order_submit" class="btn btn-primary">Save and Submit</button>
                 </div>
 
             </div>
@@ -77,7 +76,7 @@
                             <span>Date*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" name="purch_date" value="<?php echo (isset($_POST['purch_date']) ? $_POST['purch_date'] : ''); ?>" />
+                            <input class="form-control" id="datepicker2" autocomplete="false" required type="text" name="purch_date" value="<?php echo (isset($_POST['purch_date']) ? $_POST['purch_date'] : ''); ?>" />
                         </div>
                     </div>
 
@@ -86,7 +85,7 @@
                             <span>(Intermediary) supplier*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" name="intermediary_supplier" value="<?php echo (isset($_POST['intermediary_supplier']) ? $_POST['intermediary_supplier'] : ''); ?>" />
+                            <input class="form-control" required type="text" name="intermediary_supplier" value="<?php echo (isset($_POST['intermediary_supplier']) ? $_POST['intermediary_supplier'] : ''); ?>" />
                         </div>
                     </div>
 
@@ -95,7 +94,7 @@
                             <span>Contact person supplier*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" name="contact_person_supplier" value="<?php echo (isset($_POST['contact_person_supplier']) ? $_POST['contact_person_supplier'] : ''); ?>" />
+                            <input class="form-control" required type="text" name="contact_person_supplier" value="<?php echo (isset($_POST['contact_person_supplier']) ? $_POST['contact_person_supplier'] : ''); ?>" />
                         </div>
                     </div>
 
@@ -131,7 +130,7 @@
                             <span>Purchasing entity*</span>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input class="form-control" type="text" name="purch_entity" value="<?php echo (isset($_POST['purch_entity']) ? $_POST['purch_entity'] : ''); ?>" />
+                            <input class="form-control" required type="text" name="purch_entity" value="<?php echo (isset($_POST['purch_entity']) ? $_POST['purch_entity'] : ''); ?>" />
                         </div>
                     </div>
 
@@ -140,7 +139,7 @@
                             <span>Buyer*</span>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input class="form-control" type="text" name="purch_buyer" value="<?php echo (isset($_POST['purch_buyer']) ? $_POST['purch_buyer'] : ''); ?>" />
+                            <input class="form-control" required type="text" name="purch_buyer" value="<?php echo (isset($_POST['purch_buyer']) ? $_POST['purch_buyer'] : ''); ?>" />
                         </div>
                     </div>
 
@@ -162,7 +161,7 @@
                             <span>External order number</span>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input class="form-control" type="text" name="external_order_number" value="<?php echo (isset($_POST['external_order_number']) ? $_POST['external_order_number'] : ''); ?>" />
+                            <input class="form-control" type="number" name="external_order_number" value="<?php echo (isset($_POST['external_order_number']) ? $_POST['external_order_number'] : 0); ?>" />
                         </div>
                     </div>
 
@@ -200,12 +199,11 @@
                         </div>
                         <div class="col-12 col-md-4">
                             <?php if (isset($_POST['show_all_purch_lines'])) : ?>
-
-                                <button type="submit" name="hide_all_purch_lines" class="btn btn-primary">Back to standart view</button>
-
+                                <input type="hidden" name="hide_all_purch_lines" value="" />
+                                <span class="btn btn-primary js-submit-form">Back to standart view</span>
                             <?php else : ?>
-
-                                <button type="submit" name="show_all_purch_lines" class="btn btn-primary">Show all Purchase Order Lines</button>
+                                <input type="hidden" name="show_all_purch_lines" value="" />
+                                <span class="btn btn-primary js-submit-form">Show all Purchase Order Lines</span>
 
                             <?php endif ?>
                         </div>
@@ -290,7 +288,7 @@
                             <span>Prepayment amount</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" name="date" value="" />
+                            <input class="form-control" type="number" name="prepayment_amount" />
                         </div>
                     </div>
 
@@ -299,7 +297,7 @@
                             <span>Expected invoice date</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" name="date" value="" />
+                            <input class="form-control" type="text" name="expected_invoice_date" value="" />
                         </div>
                     </div>
                 </div>
@@ -400,11 +398,34 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button class="btn btn-primary">Save changes</button>
+                    <span class="btn btn-primary js-submit-form">Save changes</span>
                 </div>
             </div>
         </div>
-    </div>
+    </div>  
+
+    <div class="table-responsive">
+    <table id="tableShowPoLines" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
+        <thead>
+            <th class="text-center">PL ID</th>
+            <th class="text-center">Pre-order</th>
+            <th style="white-space: nowrap">Type</th>
+            <th style="white-space: nowrap">Vehicle ID</th>
+            <th style="white-space: nowrap">VAT/Margin</th>
+            <th style="white-space: nowrap">Make</th>
+            <th style="white-space: nowrap">Model</th>
+            <th style="white-space: nowrap">Variant</th>
+            <th style="white-space: nowrap">Engine</th>
+            <th style="white-space: nowrap">Purchase price excl. VAT</th>
+            <th style="white-space: nowrap"></th>               
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+    <!-- END table -->
+
+
+
 <?php endif ?>
 
 </form>
