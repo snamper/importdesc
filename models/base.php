@@ -481,6 +481,21 @@ class base
 	}
 
 
+	public function getSinglePurchaseOrder($purchase_order_id)
+	{
+
+		$dbDriver = new db_driver();
+
+		$query = "SELECT * FROM purchase_order
+		INNER JOIN purchase_order_lines on po_id = pl_purchase_id
+		 WHERE po_id = ?";
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$purchase_order_id]);
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		return $result;
+	}
 
 
 	function getCarData($carID)
@@ -491,6 +506,7 @@ class base
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
 	}
+	
 	function getConditionData($carID)
 	{
 		$dbDriver = new db_driver();

@@ -44,7 +44,7 @@ class create_po extends view
 		if (isset($_POST['save_order'])) {
 
 			if(isset($_POST['update_order'])) {
-				
+
 				$this->base->updateOrder($_POST);
 			}
 
@@ -74,6 +74,7 @@ class create_po extends view
 			}
 		}
 		else if(isset($_GET['order_id'])) {
+			$singleOrder = $this->base->getSinglePurchaseOrder($_GET['order_id']);
 			foreach($arr_items as $item) {
 				$arr[$item] = isset($_POST[$item]) ? $_POST[$item] : '';
 			}
