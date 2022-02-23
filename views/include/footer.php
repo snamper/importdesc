@@ -60,7 +60,7 @@
 
 <!-- ================== BEGIN BASE JS ================== -->
 
-
+<script src="assets/js/main.js"></script>
 
 <!-- ================== END BASE JS ================== -->
 
@@ -82,12 +82,15 @@
             ],
             dom: 'Blfrtip',
             lengthChange: true,
-            buttons: ['colvis',
+            buttons: [{
+                    extend: 'colvis',
+                    text: "Grid View"
+
+                },
                 {
                     extend: 'excelHtml5',
                     exportOptions: {
-                        columns: ':visible',
-                        columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+                        columns: ':visible'
                     }
                 },
                 {
@@ -149,9 +152,80 @@
            }  );
         }, */
         });
+
+
+    // Purchase Orders 
+
+    const queryString = window.location.search;
+    const parameters = new URLSearchParams(queryString);
+    let pOrderId = parameters.get('order_id');
+
+    if (!pOrderId) {
+        pOrderIdEl = document.querySelector("[name='update_order']");
+        if (pOrderIdEl) {
+            pOrderId = pOrderIdEl.value;
+        }
+    }
+
+    if (!pOrderId) {
+        pOrderId = "";
+    }
+
+
+    var oTable401 = $('#poLinesTable')
+        .DataTable({
+            "bprocessing": true,
+            "bserverSide": true,
+            "sServerMethod": "POST",
+            "sAjaxSource": `./data/data-purchase-show-cars-lines.php`,
+            stateSave: true,
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+
+            initComplete: function() {
+
+                document.querySelector("[type='search']").style = "min-width:150px";
+
+                const purchaseLines = document.querySelectorAll("[name='purchase_lines[]']");
+
+                for (let line of purchaseLines) {
+                    document.querySelector(`[name='add_purchase_line[]'][value='${line.value}']`).checked = true;
+                }
+
+            }
+
+        });
+
+    var oTable402 = $('#tableShowPoLines')
+        .DataTable({
+            "bprocessing": true,
+            "bserverSide": true,
+            "sServerMethod": "POST",
+            "sAjaxSource": `./data/data-purchase-show-lines.php?order_id=${pOrderId}`,
+            stateSave: true,
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+
+            initComplete: function() {
+                document.querySelector("[type='search']").style = "min-width:150px";
+
+                const elToGetIds = document.querySelectorAll("[data-line-id]");
+
+                for (let el of elToGetIds) {
+                    const elDataId = el.getAttribute("data-line-id");
+                    document.querySelector(`[data-check-line='${elDataId}']`).checked = true;
+                }
+
+                editableTable();
+            }
+        });
+
 </script>
 <!-- <script src="assets/js/apps.min.js"></script> -->
-<script src="assets/js/main.js"></script>
 
 <script>
     var oTable366 = $('#datatables-makemodel')

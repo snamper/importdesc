@@ -50,7 +50,8 @@ class base
 		return $dbDriver->fetchAssoc();
 	}
 
-	public function getAllCarMakes() {
+	public function getAllCarMakes()
+	{
 
 		$dbDriver = new db_driver();
 
@@ -59,9 +60,8 @@ class base
 		$stmt = $dbDriver->dbCon->prepare($sql);
 		$stmt->execute([]);
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		
-		return $result;
 
+		return $result;
 	}
 
 	function getCarMark($carTypeID = 1, $active = 1)
@@ -260,27 +260,228 @@ class base
 		return $dbDriver->fetchAssoc();
 	}
 
-	function getLangTranslations($lang_id, $page_name = NULL) {
+	function getLangTranslations($lang_id, $page_name = NULL)
+	{
 		$dbDriver = new db_driver();
-		if(!is_null($page_name)) {
+		if (!is_null($page_name)) {
 			$query = "SELECT * FROM translate WHERE `langID` = ? AND page_name = ?";
 			$stmt = $dbDriver->dbCon->prepare($query);
 			$stmt->execute([$lang_id, $page_name]);
-			
-		}else {
+		} else {
 			$query = "SELECT * FROM translate WHERE `langID` = ?";
 			$stmt = $dbDriver->dbCon->prepare($query);
 			$stmt->execute([$lang_id]);
 		}
-		
-	
+
+
 		$result = array();
-		while($lang = $stmt->fetch(PDO::FETCH_ASSOC)) {
+		while ($lang = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			$result[$lang['label']] = $lang['description'];
 		}
 
 
 		return $result;
+	}
+
+	public function changePurchaseTableCol($_post){
+
+		$dbDriver = new db_driver();
+
+		if($_post['col-name'] == "pl_expected_delivery") {
+			$_post['col-value'] = date('Y-m-d', strtotime($_post['col-value']));
+		}
+
+		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
+		$query = "UPDATE purchase_order_lines SET {$_post['col-name']} = ? WHERE pl_id = ?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$_post['col-value'], $_post['row-id']]);		
+		return $stmt->rowCount();		
+
+	}
+
+	public function createNewOrder($_post)
+	{
+		$dbDriver = new db_driver();
+
+		$_post['po_date'] = date("Y-m-d", strtotime($_post['po_date']));
+		$_post['po_expected_invoice_date'] = date("Y-m-d", strtotime($_post['po_expected_invoice_date']));
+		
+
+
+		$query = "INSERT INTO purchase_order
+        (
+			po_number,
+			po_date,
+			po_intermediary_supplier,
+			po_contact_person,
+			po_source_supplier,
+			po_contact_person_source,
+			po_purchasing_entity,
+			po_buyer,
+			po_internal_reference_custom,
+			po_external_order_number,
+			-- po_status,
+			-- po_number_vehicles,
+			-- po_total_purchase_excl_vat,
+			-- po_total_purchase_incl_vat,
+			po_payment_terms,
+			po_prepayment_amount,
+			po_expected_invoice_date,
+			po_remarks,
+			po_created_by_id
+        )
+            VALUES (
+				?,
+				?,
+				?,
+				?,
+				?,
+				?,
+				?,
+				?,
+				?,
+				?,
+				?,
+				?,
+				?,
+				?,
+				?
+            )";
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+
+		$stmt->execute(
+			[
+				$_post['po_number'],
+				$_post['po_purch_date'],
+				$_post['po_intermediary_supplier'],
+				$_post['po_contact_person'],
+				$_post['po_source_supplier'],
+				$_post['po_contact_person_source'],
+				$_post['po_purch_entity'],
+				$_post['po_purch_buyer'],
+				$_post['po_internal_reference_custom'],
+				$_post['po_external_order_number'],
+				//$_post['purch_status'],
+				//$_post['number_vehicles'],
+				//$_post['total_purchase_excl_vat'],
+				//$_post['total_purchase_incl_vat'],
+				$_post['po_payment_terms'],
+				$_post['po_prepayment_amount'],
+				$_post['po_expected_invoice_date'],
+				$_post['po_notes'],
+				$_SESSION['user'][0]['expo_users_ID']
+			]
+		);
+
+		$inserted_order_id = $dbDriver->dbCon->lastInsertId();
+
+
+
+		return $inserted_order_id;
+	}
+
+	public function updateOrder($_post)
+	{
+
+		$_post['po_date'] = date("Y-m-d", strtotime($_post['po_date']));
+		$_post['po_expected_invoice_date'] = date("Y-m-d", strtotime($_post['po_expected_invoice_date']));
+
+		$dbDriver = new db_driver();
+		$query = "UPDATE purchase_order
+		SET 
+			po_number = ?,
+			po_date = ?,
+			po_intermediary_supplier =?,
+			po_contact_person =?,
+			po_source_supplier =?,
+			po_contact_person_source =?,
+			po_purchasing_entity =?,
+			po_buyer =?,
+			po_internal_reference_custom =?,
+			po_external_order_number =?,
+			-- po_status,
+			-- po_number_vehicles,
+			-- po_total_purchase_excl_vat,
+			-- po_total_purchase_incl_vat,
+			po_payment_terms =?,
+			po_prepayment_amount =?,
+			po_expected_invoice_date =?,
+			po_remarks =?,
+			po_updated_by_id =?
+			WHERE po_id = ?";
+
+$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([
+			$_post['po_number'],
+			$_post['po_date'],
+			$_post['po_intermediary_supplier'],
+			$_post['po_contact_person'],
+			$_post['po_source_supplier'],
+			$_post['po_contact_person_source'],
+			$_post['po_purchasing_entity'],
+			$_post['po_buyer'],
+			$_post['po_internal_reference_custom'],
+			$_post['po_external_order_number'],
+			//$_post['purch_status'],
+			//$_post['number_vehicles'],
+			//$_post['total_purchase_excl_vat'],
+			//$_post['total_purchase_incl_vat'],
+			$_post['po_payment_terms'],
+			$_post['po_prepayment_amount'],
+			$_post['po_expected_invoice_date'],
+			$_post['po_remarks'],
+			$_SESSION['user'][0]['expo_users_ID'],
+			$_post['update_order']
+		]);
+
+
+	}
+
+	public function addPoLines($car_info, $purchase_id)
+	{
+
+		$dbDriver = new db_driver();
+		$query = "INSERT INTO purchase_order_lines (
+			pl_purchase_id,
+			pl_pre_order,
+			pl_type,
+			pl_vehicle_id,
+			pl_vat_margin,
+			pl_make,
+			pl_model,
+			pl_variant,
+			pl_engine,
+			pl_purchase_price_excl_vat
+			) VALUES (			
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?,
+			?			
+		)";
+
+		$stmt1 = $dbDriver->dbCon->prepare($query);
+
+		$stmt1->execute([
+			$purchase_id,
+			$car_info['car_preorder'],
+			$car_info['car_vehicle_type'],
+			$car_info['car_id'],
+			$car_info['car_vat_marge'],
+			$car_info['cmake_id'],
+			$car_info['car_model'],
+			$car_info['car_variant'],
+			$car_info['cd_motor'],
+			$car_info['purchase_price_netto']
+		]);
 	}
 
 	public function getCarDocuments($car_id)
@@ -301,6 +502,21 @@ class base
 	}
 
 
+	public function getSinglePurchaseOrder($purchase_order_id)
+	{
+
+		$dbDriver = new db_driver();
+
+		$query = "SELECT * FROM purchase_order
+		INNER JOIN purchase_order_lines on po_id = pl_purchase_id
+		 WHERE po_id = ?";
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$purchase_order_id]);
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		return $result[0];
+	}
 
 
 	function getCarData($carID)
@@ -311,6 +527,7 @@ class base
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
 	}
+	
 	function getConditionData($carID)
 	{
 		$dbDriver = new db_driver();
@@ -442,7 +659,7 @@ class base
 		)";
 
 		$stmt1 = $dbDriver->dbCon->prepare($query1);
-		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		// 
 		$stmt1->execute([$_post['modelId'], 458, $_post['addMotor'], $_post['fuelName']]);
 		$motor_id = $dbDriver->dbCon->lastInsertId();
 
@@ -578,7 +795,7 @@ class base
 			?
 		)";
 
-		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		// 
 		$stmt1 = $dbDriver->dbCon->prepare($query1);
 		$stmt1->execute([$_post['create_motor_name'], $_post['fuelType'], $_post['car_make']]);
 	}
@@ -590,7 +807,7 @@ class base
 
 		$query1 = "INSERT INTO car_make_uitvoerings (cmu_name, cmu_make_id) VALUES (?,?)";
 
-		// $dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
+		//  
 		$stmt1 = $dbDriver->dbCon->prepare($query1);
 		$stmt1->execute([$_post['uitvoering_create'], $_post['car_make']]);
 	}
@@ -639,12 +856,12 @@ class base
 		$query = "DELETE FROM car_photos
 		WHERE cp_imagepos = ?; ";
 
-		for($i = 1; $i <= $movedNum; $i++)
+		for ($i = 1; $i <= $movedNum; $i++)
 			$query = $query . "UPDATE car_photos
 			SET cp_imagepos = cp_imagepos - 1
 			WHERE cp_imagepos = " . ($delPos + $i) . "; ";
 
-		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 
@@ -678,8 +895,6 @@ class base
 			?,
 			?
 		)";
-
-		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 
@@ -741,7 +956,7 @@ class base
 				?,
 				?
             )";
-		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 
@@ -1002,7 +1217,7 @@ class base
 			WHERE car_id = ?
            ";
 
-		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 		$stmt = $dbDriver->dbCon->prepare($query);
 
 		$stmt->execute(
@@ -1159,7 +1374,7 @@ class base
 	{
 		$dbDriver = new db_driver();
 		$query = "SELECT c.created_at,
-		   c.car_id, c.car_preorder, c.car_model, cd.cd_car_ref_custom, cd.cd_conf_number, cm.cmake_id, cm.cmake_name, cmod.cmodel_name,
+		   c.car_id, c.car_preorder, c.car_model, c.car_variant, cd.cd_car_ref_custom, cd.cd_conf_number, cd.cd_motor, cm.cmake_id, cm.cmake_name, cmod.cmodel_name,
 		   cmu.cmu_id, cmu.cmu_name, cmotor.cmotor_id, cmotor.cmotor_name, cv.conversion_name as fuel_name, cv.conversion_id as fuel_id,
 		   conv2.conversion_id as transmission_name, cd.cd_first_registration_date,
 		   cd.cd_kilometers, cd.cd_first_nl_registration,
@@ -1195,7 +1410,7 @@ class base
 			INNER JOIN expo_users u_cr on c.user_id = u_cr.expo_users_ID 
 		   WHERE c.car_id = ?
 		   ";
-		
+
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$car_id]);
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -1260,7 +1475,7 @@ class base
 			?
 		)";
 
-		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([
 			$car_id,
@@ -1280,17 +1495,18 @@ class base
 			$_post['rest_bpm'],
 			$_post['fees'],
 			$_post['sales_price_total'],
-			$_post['bruto_bpm'],			
+			$_post['bruto_bpm'],
 			$_post['percentage'],
 			$_post['rest_bpm_indication'],
-			$_post['lock_sales_price'] ? 1 : 0, 
+			$_post['lock_sales_price'] ? 1 : 0,
 			$_post['vat_percentage'],
 			$_SESSION['user'][0]['expo_users_ID']
 
 		]);
 	}
 
-	public function updateCalculation($_post, $car_id) {
+	public function updateCalculation($_post, $car_id)
+	{
 
 		$dbDriver = new db_driver();
 		$query = "UPDATE calculations SET
@@ -1318,7 +1534,7 @@ class base
 			`user_id` = ?
 			WHERE calculation_for_car_id = ?";
 
-		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([
 			$_post['purchase_price_netto'],
@@ -1340,13 +1556,12 @@ class base
 			$_post['bruto_bpm'],
 			$_post['percentage'],
 			$_post['rest_bpm_indication'],
-			$_post['lock_sales_price'] ? 1 : 0, 
+			$_post['lock_sales_price'] ? 1 : 0,
 			$_post['vat_percentage'],
 			$_SESSION['user'][0]['expo_users_ID'],
 			$car_id,
 
 		]);
-		
 	}
 
 	public function getAllCars($carID = 0)
@@ -1385,11 +1600,12 @@ class base
 		return $stmt->execute([$inserted_car_id]);
 	}
 
-	public function switchImages($_post, $car_id) {
-		
+	public function switchImages($_post, $car_id)
+	{
+
 		$dbDriver = new db_driver();
 
-		if(isset($_post['frompos'])) {
+		if (isset($_post['frompos'])) {
 			$filename = explode("/", $_post['tosrc']);
 
 			$sql = "UPDATE `car_photos` SET `cp_filename`=?,`cp_path`=? WHERE `cp_car_id`=? AND `cp_imagepos`=?";
@@ -1397,7 +1613,7 @@ class base
 			$stmt1 = $dbDriver->dbCon->prepare($sql);
 			$stmt1->execute(
 				[
-					$filename[count($filename)-1],
+					$filename[count($filename) - 1],
 					$_post['tosrc'],
 					$car_id,
 					$_post['frompos']
@@ -1405,15 +1621,15 @@ class base
 			);
 		}
 
-		if(isset($_post['topos'])) {
+		if (isset($_post['topos'])) {
 			$filename = explode("/", $_post['fromsrc']);
-			
+
 			$sql = "UPDATE `car_photos` SET `cp_filename`=?,`cp_path`=? WHERE `cp_car_id`=? AND `cp_imagepos`=?";
 
 			$stmt1 = $dbDriver->dbCon->prepare($sql);
 			$stmt1->execute(
 				[
-					$filename[count($filename)-1],
+					$filename[count($filename) - 1],
 					$_post['fromsrc'],
 					$car_id,
 					$_post['topos']
@@ -1445,7 +1661,7 @@ class base
 	public function insertCarDocument($path, $inserted_car_id)
 	{
 		$file_name = end(explode("/", $path));
-		
+
 		$dbDriver = new db_driver();
 
 		$sql = "INSERT INTO car_documents (cd_car_id, cd_filename, cd_path, cd_user_id)

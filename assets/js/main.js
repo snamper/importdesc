@@ -663,7 +663,7 @@ $('#datepicker1, #datepicker2,#datepicker3,#datepicker4').change(function () {
     } else {
         percentage = 92 + (howevermanymonths - 1) * 0.083;
     }
-    $('#percentage').val(Math.floor(percentage)+"%");
+    $('#percentage').val(Math.floor(percentage) + "%");
 });
 
 $("#updaters_dossier").click(function (event) {
@@ -1002,8 +1002,6 @@ function getCarInfo(e) {
         thisId = trigger.getAttribute("data-id");
 
     }
-
-
 
     const url = `${location.origin}/car_start?quick_edit=${thisId}`;
 
@@ -2117,7 +2115,7 @@ function saveNewImagePositions(removedPos, moved) {
     const margeCheckedEl = doc.querySelector("#switchmargin");
     const vatPercentage = doc.querySelector("#vatPercentage");
     const lockedPrice = doc.querySelector("#lockSalesPriceCh");
-    const bpmPercentage = doc.querySelector("#percentage");  
+    const bpmPercentage = doc.querySelector("#percentage");
     const totalAll = doc.querySelector("#totalAll");
 
     const vatMarginTexts = [
@@ -2130,8 +2128,8 @@ function saveNewImagePositions(removedPos, moved) {
     ];
 
     lockedPrice.addEventListener("change", (e) => {
-       doc.querySelector("#totalAll").readOnly = !(e.currentTarget.checked);
-       doc.querySelector("#addFee").readOnly = e.currentTarget.checked;
+        doc.querySelector("#totalAll").readOnly = !(e.currentTarget.checked);
+        doc.querySelector("#addFee").readOnly = e.currentTarget.checked;
     })
 
     // const transl = getTranslations("car_start");
@@ -2148,12 +2146,12 @@ function saveNewImagePositions(removedPos, moved) {
     margeCheckedEl.addEventListener("change", changeMargeFn);
     calcFromTotal.addEventListener("change", calcFromTotalFn);
     vatPercentage.addEventListener("change", calcValues);
-   
+
 
     for (let changer of calculationChangers) {
         changer.addEventListener("change", calcValues);
         changer.addEventListener("focusin", removeCurrencyFormat);
-        changer.addEventListener("focusout", addCurrencyFormat);       
+        changer.addEventListener("focusout", addCurrencyFormat);
     }
 
     totalAll.addEventListener("focusin", removeCurrencyFormat);
@@ -2162,7 +2160,7 @@ function saveNewImagePositions(removedPos, moved) {
     bpmPercentage.addEventListener("focusin", removePercantageFormat);
     bpmPercentage.addEventListener("focusout", calculateBpmBrutto);
 
-   
+
 
     function calcFromTotalFn(e, calledFromRestBpm) {
         const trigger = e.currentTarget;
@@ -2181,7 +2179,7 @@ function saveNewImagePositions(removedPos, moved) {
         if (lockedPrice.checked) {
 
             if (margeCheckedEl.checked) {
-                
+
                 calcFromTotalMarginLock(e);
             } else {
 
@@ -2213,17 +2211,17 @@ function saveNewImagePositions(removedPos, moved) {
 
     function calcFromTotalVatLock(e) {
         set('addVerkoopprijs_Marge_incl', v('totalAll') - v('addRest_BPM') - v('addLeges'));
-        set('addBTW_21', v('addVerkoopprijs_Marge_incl')/ (1 + (v('vatPercentage') / 100)) * (v('vatPercentage') / 100));
+        set('addBTW_21', v('addVerkoopprijs_Marge_incl') / (1 + (v('vatPercentage') / 100)) * (v('vatPercentage') / 100));
         set('totalPriceFee', v('addVerkoopprijs_Marge_incl') - v('addBTW_21'));
         set('totalCostsFee', ((v('totalPriceFee') - v('totalPriceNettoSuppluier'))));
         set('addFee', v('totalCostsFee') - (v('addOpknapkosten') + v('addTransport_Buitenland') + v('addTransport_Binnenland') + v('costTaxation') + v('recyclingFee')));
     }
 
     function calcValues(e) {
-       
+
         const trigger = e.currentTarget;
         const lockedPrice = doc.querySelector("#lockSalesPriceCh");
-   
+
         if (trigger.id === 'addRest_BPM') {
             if (lockedPrice.checked) {
                 calcFromTotalFn(e, true);
@@ -2347,18 +2345,26 @@ function saveNewImagePositions(removedPos, moved) {
 })(window, document);
 
 
+; (function (window, doc) {
 
-function delay(callback, ms) {
-    var timer = 0;
-    return function () {
-        var context = this,
-            args = arguments;
-        clearTimeout(timer);
-        timer = setTimeout(function () {
-            callback.apply(context, args);
-        }, ms || 0);
-    };
+    const jsElSubmitters = doc.querySelectorAll(".js-submit-form");
+
+    for (let submitter of jsElSubmitters) {
+
+        submitter.addEventListener("click", submitForm)
+
+    }
+
+
+
+})(window, document);
+
+
+function submitForm(e) {
+    e.currentTarget.closest("form").submit();
 }
+
+
 
 // Remove submit on enter
 $(window).ready(function () {
@@ -2399,6 +2405,86 @@ $(window).ready(function () {
     })
 });
 
+
+// JS FUNCTIONS 
+
+function editableTable() {
+
+    const clickableTableTds = document.querySelectorAll("td span.js-clickable-table");
+
+    if (!clickableTableTds) {
+        return;
+    }
+
+    for (let tdEl of clickableTableTds) {
+        tdEl.parentElement.addEventListener("dblclick", editTd);
+        tdEl.parentElement.addEventListener("focusout", savetoDb);
+    }
+
+    function editTd(e) {
+        const trigger = e.currentTarget;
+        const triggerText = trigger.innerText;
+        trigger.contentEditable = true;
+        trigger.setAttribute("data-old-text", triggerText);
+        e.target.focus();
+    }
+
+    function savetoDb(e) {
+        const trigger = e.currentTarget;
+        const triggerSpan = trigger.querySelector("span");     
+        const triggerText = trigger.innerText.trim();
+        const triggerRowId = triggerSpan.getAttribute("data-db-row");
+        const triggerColName = triggerSpan.getAttribute("data-col-name");
+        const oldText =  trigger.getAttribute("data-old-text");
+        
+        if(triggerText == oldText) {
+            return;
+        }
+
+        const fData = new FormData();
+
+        console.log(triggerText);
+
+        fData.append("clickable-table-post", "");
+        fData.append(`row-id`, triggerRowId);
+        fData.append(`col-name`, triggerColName);
+        fData.append(`col-value`, triggerText);
+
+
+        fetch(`${location.origin}/create_po`, {
+            method: 'POST',
+            body: fData
+        }).then(function (response) {
+            return response.text().then(function (text) {
+                if (text == 0) {
+                    triggerSpan.innerText = oldText;
+                    alert("Something went wrong. Please check if your datatype is correct");
+                    return;
+                }
+            })
+        }).catch(function (error) {
+            alert("Something went wrong. Please try again");
+        });
+
+
+    }
+
+}
+
+
+function delay(callback, ms) {
+    var timer = 0;
+    return function () {
+        var context = this,
+            args = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            callback.apply(context, args);
+        }, ms || 0);
+    };
+}
+
+
 function getTranslations(pageName) {
 
     fetch(`${location.origin}/lang?lang_page=${pageName}`, {
@@ -2415,8 +2501,8 @@ function getTranslations(pageName) {
 
 function removeCurrencyFormat(e) {
     e.currentTarget.value = parseFloat(e.currentTarget.value.replace(",", "") // remove thousand before sum
-    .replace("€ ", "")) // remove euro sign before sum
-    || '';
+        .replace("€ ", "")) // remove euro sign before sum
+        || '';
 }
 
 function addCurrencyFormat(e) {
@@ -2428,7 +2514,7 @@ function addCurrencyFormat(e) {
     }
 
     if (isNaN(triggerVal)) {
-        trigger.value = "";                
+        trigger.value = "";
         return alert("The input data MUST contain only numbers");
     }
 
@@ -2460,7 +2546,7 @@ function addPercantageFormat(e) {
     }
 
     if (isNaN(triggerVal)) {
-        trigger.value = "";                
+        trigger.value = "";
         return alert("The input data MUST contain only numbers");
     }
 
