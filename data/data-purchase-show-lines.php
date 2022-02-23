@@ -236,7 +236,7 @@ while ($aRow = mysqli_fetch_array($rResult)) {
                 $options .= "<option $selected value='$j'> $text </option>";
             }
 
-            $row[] = "<select class='form-control'> $options </select>";
+            $row[] = "<select class='form-control js-submitable-select' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'> $options </select>";
         } elseif ($aColumns[$i] != ' ') {
             /* General output */
             $row[] = $aRow[$i];

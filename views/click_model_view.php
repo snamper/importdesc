@@ -61,11 +61,11 @@
                 <?php endif ?>
 
                 <div class="custom-col">
-                    <button type="submit" name="create_car" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_8'] ?></button>
+                    <button type="submit" name="create_car" class="btn btn-primary">Create Car</button>
                 </div>
 
                 <div class="custom-col">
-                    <button type="submit" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_3'] ?></button>
+                    <button type="submit" name="create_open_car" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_3'] ?></button>
                 </div>
 
             </div>
