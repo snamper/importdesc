@@ -60,7 +60,7 @@
 
 <!-- ================== BEGIN BASE JS ================== -->
 
-
+<script src="assets/js/main.js"></script>
 
 <!-- ================== END BASE JS ================== -->
 
@@ -153,12 +153,31 @@
         }, */
         });
 
+
+    // Purchase Orders 
+
+    const queryString = window.location.search;
+    const parameters = new URLSearchParams(queryString);
+    let pOrderId = parameters.get('order_id');
+
+    if (!pOrderId) {
+        pOrderIdEl = document.querySelector("[name='update_order']");
+        if (pOrderIdEl) {
+            pOrderId = pOrderIdEl.value;
+        }
+    }
+
+    if (!pOrderId) {
+        pOrderId = "";
+    }
+
+
     var oTable401 = $('#poLinesTable')
         .DataTable({
             "bprocessing": true,
             "bserverSide": true,
             "sServerMethod": "POST",
-            "sAjaxSource": "./data/data-purchase-show-cars-lines.php",
+            "sAjaxSource": `./data/data-purchase-show-cars-lines.php`,
             stateSave: true,
             "lengthMenu": [
                 [10, 25, 50, -1],
@@ -175,7 +194,6 @@
                     document.querySelector(`[name='add_purchase_line[]'][value='${line.value}']`).checked = true;
                 }
 
-
             }
 
         });
@@ -185,7 +203,7 @@
             "bprocessing": true,
             "bserverSide": true,
             "sServerMethod": "POST",
-            "sAjaxSource": "./data/data-purchase-show-lines.php",
+            "sAjaxSource": `./data/data-purchase-show-lines.php?order_id=${pOrderId}`,
             stateSave: true,
             "lengthMenu": [
                 [10, 25, 50, -1],
@@ -194,11 +212,20 @@
 
             initComplete: function() {
                 document.querySelector("[type='search']").style = "min-width:150px";
+
+                const elToGetIds = document.querySelectorAll("[data-line-id]");
+
+                for (let el of elToGetIds) {
+                    const elDataId = el.getAttribute("data-line-id");
+                    document.querySelector(`[data-check-line='${elDataId}']`).checked = true;
+                }
+
+                editableTable();
             }
         });
+
 </script>
 <!-- <script src="assets/js/apps.min.js"></script> -->
-<script src="assets/js/main.js"></script>
 
 <script>
     var oTable366 = $('#datatables-makemodel')

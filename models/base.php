@@ -283,11 +283,29 @@ class base
 		return $result;
 	}
 
+	public function changePurchaseTableCol($_post){
+
+		$dbDriver = new db_driver();
+
+		if($_post['col-name'] == "pl_expected_delivery") {
+			$_post['col-value'] = date('Y-m-d', strtotime($_post['col-value']));
+		}
+
+		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
+		$query = "UPDATE purchase_order_lines SET {$_post['col-name']} = ? WHERE pl_id = ?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$_post['col-value'], $_post['row-id']]);		
+		return $stmt->rowCount();		
+
+	}
+
 	public function createNewOrder($_post)
 	{
 		$dbDriver = new db_driver();
 
-		$_post['purch_date'] = date("Y-m-d", strtotime($_post['purch_date']));
+		$_post['po_date'] = date("Y-m-d", strtotime($_post['po_date']));
+		$_post['po_expected_invoice_date'] = date("Y-m-d", strtotime($_post['po_expected_invoice_date']));
+		
 
 
 		$query = "INSERT INTO purchase_order
@@ -329,33 +347,29 @@ class base
 				?,
 				?
             )";
-		// 
-
-		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 
 		$stmt->execute(
 			[
-				$_post['purch_order_number'],
-				$_post['purch_date'],
-				$_post['intermediary_supplier'],
-				$_post['contact_person_supplier'],
-				$_post['source_supplier'],
-				$_post['contact_person_source_supplier'],
-				$_post['purch_entity'],
-				$_post['purch_buyer'],
-				$_post['internal_ref_custom'],
-				$_post['external_order_number'],
+				$_post['po_number'],
+				$_post['po_purch_date'],
+				$_post['po_intermediary_supplier'],
+				$_post['po_contact_person'],
+				$_post['po_source_supplier'],
+				$_post['po_contact_person_source'],
+				$_post['po_purch_entity'],
+				$_post['po_purch_buyer'],
+				$_post['po_internal_reference_custom'],
+				$_post['po_external_order_number'],
 				//$_post['purch_status'],
 				//$_post['number_vehicles'],
 				//$_post['total_purchase_excl_vat'],
 				//$_post['total_purchase_incl_vat'],
-				$_post['payment_terms'],
-				$_post['prepayment_amount'],
-				$_post['expected_invoice_date'],
-				$_post['notes'],
+				$_post['po_payment_terms'],
+				$_post['po_prepayment_amount'],
+				$_post['po_expected_invoice_date'],
+				$_post['po_notes'],
 				$_SESSION['user'][0]['expo_users_ID']
 			]
 		);
@@ -369,6 +383,9 @@ class base
 
 	public function updateOrder($_post)
 	{
+
+		$_post['po_date'] = date("Y-m-d", strtotime($_post['po_date']));
+		$_post['po_expected_invoice_date'] = date("Y-m-d", strtotime($_post['po_expected_invoice_date']));
 
 		$dbDriver = new db_driver();
 		$query = "UPDATE purchase_order
@@ -394,29 +411,33 @@ class base
 			po_updated_by_id =?
 			WHERE po_id = ?";
 
+$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([
-			$_post['purch_order_number'],
-			$_post['purch_date'],
-			$_post['intermediary_supplier'],
-			$_post['contact_person_supplier'],
-			$_post['source_supplier'],
-			$_post['contact_person_source_supplier'],
-			$_post['purch_entity'],
-			$_post['purch_buyer'],
-			$_post['internal_ref_custom'],
-			$_post['external_order_number'],
+			$_post['po_number'],
+			$_post['po_date'],
+			$_post['po_intermediary_supplier'],
+			$_post['po_contact_person'],
+			$_post['po_source_supplier'],
+			$_post['po_contact_person_source'],
+			$_post['po_purchasing_entity'],
+			$_post['po_buyer'],
+			$_post['po_internal_reference_custom'],
+			$_post['po_external_order_number'],
 			//$_post['purch_status'],
 			//$_post['number_vehicles'],
 			//$_post['total_purchase_excl_vat'],
 			//$_post['total_purchase_incl_vat'],
-			$_post['payment_terms'],
-			$_post['prepayment_amount'],
-			$_post['expected_invoice_date'],
-			$_post['notes'],
+			$_post['po_payment_terms'],
+			$_post['po_prepayment_amount'],
+			$_post['po_expected_invoice_date'],
+			$_post['po_remarks'],
 			$_SESSION['user'][0]['expo_users_ID'],
 			$_post['update_order']
 		]);
+
+
 	}
 
 	public function addPoLines($car_info, $purchase_id)
@@ -494,7 +515,7 @@ class base
 		$stmt->execute([$purchase_order_id]);
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-		return $result;
+		return $result[0];
 	}
 
 

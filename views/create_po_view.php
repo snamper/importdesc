@@ -1,13 +1,15 @@
 <?php
-    $data['purch_order'] = $data['purch_order'][0];
+$data['purch_order'] = $data['purch_order'][0];
 ?>
 
 
 <div class="content" id="createPOView">
     <form action="create_po" action="create_po" method="POST" id="createPOForm" class="listing__form">
-    <?php if (!isset($_GET['order_id'])) { 
-        echo "<input type='hidden' name='update_order' value='{$_GET['order_id']}' />";
-    } ?>
+        <?php if (isset($_GET['order_id'])) {
+            echo "<input type='hidden' name='update_order' value='{$_GET['order_id']}' />";
+        } elseif (isset($_POST['update_order'])) {
+            echo "<input type='hidden' name='update_order' value='{$_POST['update_order']}' />";
+        } ?>
         <?php if (!empty($data['purchase_lines'])) {
             foreach ($data['purchase_lines'][0] as $line) {
                 echo "<input name='purchase_lines[]' type='hidden' value='$line' />";
@@ -66,7 +68,8 @@
                             <span>Purchase order number</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" name="purch_order_number" value="<?php echo $data['purch_order']['purch_order_number']; ?>" />
+
+                            <input class="form-control" type="text" name="po_number" value="<?php echo (empty($data['purch_order']['po_number']) ? 0 : $data['purch_order']['po_number']); ?>" />
                         </div>
                     </div>
 
@@ -75,7 +78,7 @@
                             <span>Date*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" id="datepicker2" autocomplete="false" required type="text" name="purch_date" value="<?php echo $data['purch_order']['purch_date']; ?>" />
+                            <input class="form-control" id="datepicker2" autocomplete="false" required type="text" name="po_date" value="<?php echo date('d-m-Y', strtotime($data['purch_order']['po_date'])); ?>" />
                         </div>
                     </div>
 
@@ -84,7 +87,7 @@
                             <span>(Intermediary) supplier*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" required type="text" name="intermediary_supplier" value="<?php echo $data['purch_order']['intermediary_supplier']; ?>" />
+                            <input class="form-control" required type="text" name="po_intermediary_supplier" value="<?php echo $data['purch_order']['po_intermediary_supplier']; ?>" />
                         </div>
                     </div>
 
@@ -93,7 +96,7 @@
                             <span>Contact person supplier*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" required type="text" name="contact_person_supplier" value="<?php echo (isset($_POST['contact_person_supplier']) ? $_POST['contact_person_supplier'] : ''); ?>" />
+                            <input class="form-control" required type="text" name="po_contact_person" value="<?php echo $data['purch_order']['po_contact_person']; ?>" />
                         </div>
                     </div>
 
@@ -102,7 +105,7 @@
                             <span>Source supplier</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" name="source_supplier" value="<?php echo (isset($_POST['source_supplier']) ? $_POST['source_supplier'] : ''); ?>" />
+                            <input class="form-control" type="text" name="po_source_supplier" value="<?php echo $data['purch_order']['po_source_supplier']; ?>" />
                         </div>
                     </div>
 
@@ -111,7 +114,7 @@
                             <span>Contact person source supplier</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" name="contact_person_source_supplier" value="<?php echo (isset($_POST['contact_person_source_supplier']) ? $_POST['contact_person_source_supplier'] : ''); ?>" />
+                            <input class="form-control" type="text" name="po_contact_person_source" value="<?php echo $data['purch_order']['po_contact_person_source']; ?>" />
                         </div>
                     </div>
                     <!-- ./ ROWS  -->
@@ -129,7 +132,7 @@
                             <span>Purchasing entity*</span>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input class="form-control" required type="text" name="purch_entity" value="<?php echo (isset($_POST['purch_entity']) ? $_POST['purch_entity'] : ''); ?>" />
+                            <input class="form-control" required type="text" name="po_purchasing_entity" value="<?php echo $data['purch_order']['po_purchasing_entity']; ?>" />
                         </div>
                     </div>
 
@@ -138,18 +141,18 @@
                             <span>Buyer*</span>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input class="form-control" required type="text" name="purch_buyer" value="<?php echo (isset($_POST['purch_buyer']) ? $_POST['purch_buyer'] : ''); ?>" />
+                            <input class="form-control" required type="text" name="po_buyer" value="<?php echo $data['purch_order']['po_buyer']; ?>" />
                         </div>
                     </div>
 
-                    <?php if (!isset($_POST['show_all_purch_lines'])) : ?>
+                    <?php if (!isset($_REQUEST['show_all_purch_lines'])) : ?>
 
                         <div class="row">
                             <div class="col-12 col-md-4">
                                 <span>Internal reference (custom)</span>
                             </div>
                             <div class="col-12 col-md-6">
-                                <input class="form-control" type="text" name="internal_ref_custom" value="<?php echo (isset($_POST['internal_ref_custom']) ? $_POST['internal_ref_custom'] : ''); ?>" />
+                                <input class="form-control" type="text" name="po_internal_reference_custom" value="<?php echo $data['purch_order']['po_internal_reference_custom']; ?>" />
                             </div>
                         </div>
 
@@ -160,11 +163,11 @@
                             <span>External order number</span>
                         </div>
                         <div class="col-12 col-md-6">
-                            <input class="form-control" type="number" name="external_order_number" value="<?php echo (isset($_POST['external_order_number']) ? $_POST['external_order_number'] : 0); ?>" />
+                            <input class="form-control" type="number" name="po_external_order_number" value="<?php echo (empty($data['purch_order']['po_external_order_number']) ? 0 : $data['purch_order']['po_external_order_number']); ?>" />
                         </div>
                     </div>
 
-                    <?php if (isset($_POST['show_all_purch_lines'])) : ?>
+                    <?php if (isset($_REQUEST['show_all_purch_lines'])) : ?>
 
                         <div class="row mt-3"></div>
                         <div class="row mt-3"></div>
@@ -197,7 +200,7 @@
                             <span class="font-weight-bold">Purchase order lines*</span>
                         </div>
                         <div class="col-12 col-md-4">
-                            <?php if (isset($_POST['show_all_purch_lines'])) : ?>
+                            <?php if (isset($_REQUEST['show_all_purch_lines'])) : ?>
                                 <input type="hidden" name="hide_all_purch_lines" value="" />
                                 <span class="btn btn-primary js-submit-form">Back to standart view</span>
                             <?php else : ?>
@@ -217,7 +220,7 @@
                             <span>3</span>
                         </div>
                     </div>
-                    <?php if (isset($_POST['show_all_purch_lines'])) {
+                    <?php if (isset($_REQUEST['show_all_purch_lines'])) {
                         echo "<span  class='btn btn-primary my-4'  data-toggle='modal' data-target='#poLines'>Add Purchase Order Lines </span>";
                     } ?>
                     <!-- ./ ROWS  -->
@@ -257,7 +260,7 @@
         <hr />
         <!-- Main row 2 -->
 
-        <?php if (!isset($_POST['show_all_purch_lines'])) : ?>
+        <?php if (!isset($_REQUEST['show_all_purch_lines'])) : ?>
 
             <div class="row d-flex align-items-stretch">
 
@@ -275,7 +278,7 @@
                             <span>Payment terms*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <select name="payment_terms" id="paymentTerms" class="form-control">
+                            <select name="po_payment_terms" id="paymentTerms" class="form-control">
                                 <option value="0">Payment before delivery</option>
                                 <option value="1">Payment after delivery</option>
                             </select>
@@ -287,7 +290,7 @@
                             <span>Prepayment amount</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="number" name="prepayment_amount" />
+                            <input class="form-control" type="number" step="0.01" name="po_prepayment_amount" value="<?php echo (empty($data['purch_order']['po_prepayment_amount']) ? 0 : $data['purch_order']['po_prepayment_amount']); ?>" />
                         </div>
                     </div>
 
@@ -296,7 +299,7 @@
                             <span>Expected invoice date</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" name="expected_invoice_date" value="" />
+                            <input class="form-control" id="datepicker3" type="text" name="po_expected_invoice_date" value="<?php echo date('d-m-Y', strtotime($data['purch_order']['po_expected_invoice_date'])); ?>" />
                         </div>
                     </div>
                 </div>
@@ -322,7 +325,7 @@
 
                 <div class="col col-12 col-md-5">
                     <p class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_89'] ?></p>
-                    <textarea placeholder="" rows="7" class="form-control remarks" name="notes" id="notes"><?php echo (isset($data['single_car']['cd_notes']) ? $data['single_car']['cd_notes']  : "") ?></textarea>
+                    <textarea placeholder="" rows="7" class="form-control remarks" name="po_remarks" id="notes"><?php echo (isset($data['purch_order']['po_remarks']) ? $data['purch_order']['po_remarks']  : "") ?></textarea>
                 </div>
                 <div class="col col-12 col-md-7">
                     <p class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_96'] ?></p>
@@ -397,31 +400,44 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <span class="btn btn-primary js-submit-form">Save changes</span>
+                    <button onclick="preventDefault();" name="save_changes_line" class="btn btn-primary js-submit-form">Save changes</button>
                 </div>
             </div>
         </div>
-    </div>  
+    </div>
 
-    <div class="table-responsive">
-    <table id="tableShowPoLines" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
-        <thead>
-            <th class="text-center">PL ID</th>
-            <th class="text-center">Pre-order</th>
-            <th style="white-space: nowrap">Type</th>
-            <th style="white-space: nowrap">Vehicle ID</th>
-            <th style="white-space: nowrap">VAT/Margin</th>
-            <th style="white-space: nowrap">Make</th>
-            <th style="white-space: nowrap">Model</th>
-            <th style="white-space: nowrap">Variant</th>
-            <th style="white-space: nowrap">Engine</th>
-            <th style="white-space: nowrap">Purchase price excl. VAT</th>
-            <th style="white-space: nowrap"></th>               
-        </thead>
-        <tbody></tbody>
-    </table>
-</div>
-    <!-- END table -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="table-responsive">
+                <table id="<?php echo (isset($_GET['order_id']) || isset($_POST['update_order']) ? "tableShowPoLines" : "") ?>" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
+                    <thead>
+                        <th class="text-center">PL ID</th>
+                        <th class="text-center">Pre-order</th>
+                        <th style="white-space: nowrap">Type</th>
+                        <th style="white-space: nowrap">Vehicle ID</th>
+                        <th style="white-space: nowrap">VAT/Margin</th>
+                        <th style="white-space: nowrap">Make</th>
+                        <th style="white-space: nowrap">Model</th>
+                        <th style="white-space: nowrap">Variant</th>
+                        <th style="white-space: nowrap">Engine</th>
+                        <th style="white-space: nowrap">Purchase price excl. VAT</th>
+                        <th style="white-space: nowrap"></th>
+                        <th class="text-center">KM at delivery*</th>
+                        <th style="white-space: nowrap">Expected delivery date*</th>
+                        <th style="white-space: nowrap">Purchase price incl. VAT*</th>
+                        <th style="white-space: nowrap">Accident free</th>
+                        <th style="white-space: nowrap">Expected damage amount</th>
+                        <th style="white-space: nowrap">Extra set of wheels</th>
+                        <th style="white-space: nowrap">VAT deposit</th>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <!-- END table -->
+        </div>
+    </div>
+    </div>
+
 
 
 
