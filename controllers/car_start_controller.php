@@ -153,7 +153,7 @@ class car_start extends view
 			exit;
 		}
 
-		if (isset($_POST['create_car'])) {
+		if (isset($_POST['create_car']) || isset($_POST['create_open_car'])) {
 			$inserted_car_id = $this->base->createCar($_POST);
 
 			if(isset($_POST['car_images'])) {
@@ -170,7 +170,12 @@ class car_start extends view
 				}
 			}
 
-			header("Location: /car_start?car_id=$inserted_car_id");
+			if(isset($_POST['create_open_car'])) {
+				header("Location: /car_start?car_id=$inserted_car_id");
+			}
+			else {
+				header("Location: /show_cars");
+			}
 			exit;
 		}
 

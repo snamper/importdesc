@@ -2410,15 +2410,68 @@ $(window).ready(function () {
 
 function editableTable() {
 
-    const clickableTableTds = document.querySelectorAll("td span.js-clickable-table");
+    const clickableTableTds = document.querySelectorAll("td span.js-clickable-table, .js-submitable-select");
 
     if (!clickableTableTds) {
         return;
     }
 
     for (let tdEl of clickableTableTds) {
-        tdEl.parentElement.addEventListener("dblclick", editTd);
-        tdEl.parentElement.addEventListener("focusout", savetoDb);
+
+        if(tdEl.tagName == "SELECT") {
+            tdEl.addEventListener("focus", focusSelect);
+            tdEl.addEventListener("change", saveSelectDb);
+        }else {
+            tdEl.parentElement.addEventListener("dblclick", editTd);
+            tdEl.parentElement.addEventListener("focusout", saveTdDb);
+        }
+
+
+    }
+
+    function focusSelect(e){
+        const trigger = e.currentTarget;
+        const triggerVal = trigger.value;
+        trigger.setAttribute("data-old-val", triggerVal);
+
+    }    
+
+    function saveSelectDb(e) {
+        const trigger = e.currentTarget;
+        const triggerVal = trigger.value;
+        const oldVal = trigger.getAttribute("data-old-val");
+        const triggerRowId = trigger.getAttribute("data-db-row");
+        const triggerColName = trigger.getAttribute("data-col-name");
+
+        if(triggerVal == oldVal) {
+            return;
+        }
+
+        const fData = new FormData();
+
+        fData.append("clickable-table-post", "");
+        fData.append(`row-id`, triggerRowId);
+        fData.append(`col-name`, triggerColName);
+        fData.append(`col-value`, triggerVal);
+
+
+        fetch(`${location.origin}/create_po`, {
+            method: 'POST',
+            body: fData
+        }).then(function (response) {
+            return response.text().then(function (text) {
+                if (text == 0) {
+                    triggerSpan.innerText = oldText;
+                    alert("Something went wrong. Please check if your datatype is correct");
+                    return;
+                }
+            })
+        }).catch(function (error) {
+            alert("Something went wrong. Please try again");
+        });
+
+
+
     }
 
     function editTd(e) {
@@ -2429,7 +2482,7 @@ function editableTable() {
         e.target.focus();
     }
 
-    function savetoDb(e) {
+    function saveTdDb(e) {
         const trigger = e.currentTarget;
         const triggerSpan = trigger.querySelector("span");     
         const triggerText = trigger.innerText.trim();
@@ -2442,8 +2495,6 @@ function editableTable() {
         }
 
         const fData = new FormData();
-
-        console.log(triggerText);
 
         fData.append("clickable-table-post", "");
         fData.append(`row-id`, triggerRowId);
