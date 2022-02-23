@@ -8,17 +8,19 @@ include("connection.php");
 /* Array of database columns which should be read and sent back to DataTables. Use a space where
  * you want to insert a non-database field (for example a counter or static image)
  */
-$aColumns = array('pl_id', 'pl_pre_order', 'conv1.conversion_name', 'pl_vehicle_id', 'pl_vat_margin', 'cm.cmake_name', 'cmod.cmodel_name', 'conv.conversion_name', 'cmotor.cmotor_name', 'pl_purchase_price_excl_vat', 'pl_id as edit', 'pl_km_delivery', 'pl_expected_delivery', 'pl_purchase_price_incl_vat', 'pl_accident_free', 'pl_expected_damage_amount', 'pl_extra_set_of_wheels', 'pl_deposit');
+$aColumns = array('pl_id', 'car_preorder', 'conv1.conversion_name', 'pl_vehicle_id', 'pl_vat_margin', 'cm.cmake_name', 'cmod.cmodel_name', 'conv.conversion_name', 'cmotor.cmotor_name', 'pl_purchase_price_excl_vat', 'pl_id as edit', 'pl_km_delivery', 'pl_expected_delivery', 'pl_purchase_price_incl_vat', 'pl_accident_free', 'pl_expected_damage_amount', 'pl_extra_set_of_wheels', 'pl_deposit');
 /* Indexed column (used for fast and accurate table cardinality) */
 $sIndexColumn = "c.car_id as number";
 /* DB table to use */
 $sJoin = ' purchase_order';
 $sJoin .= '  INNER JOIN purchase_order_lines on po_id = pl_purchase_id';
-$sJoin .= '  INNER JOIN car_makes cm on pl_make = cm.cmake_id';
-$sJoin .= '  INNER JOIN car_models cmod on pl_model = cmod.cmodel_id ';
-$sJoin .= '  INNER JOIN conversions conv on pl_variant = conv.conversion_id';
-$sJoin .= '  INNER JOIN conversions conv1 on pl_type = conv1.conversion_id';
-$sJoin .= '  INNER JOIN car_motors cmotor on pl_engine = cmotor.cmotor_id';
+$sJoin .= '  INNER JOIN cars on pl_vehicle_id = car_id';
+$sJoin .= '  INNER JOIN car_details on pl_vehicle_id = cd_car_id';
+$sJoin .= '  INNER JOIN car_makes cm on car_make = cm.cmake_id';
+$sJoin .= '  INNER JOIN car_models cmod on car_model = cmod.cmodel_id ';
+$sJoin .= '  INNER JOIN conversions conv on car_variant = conv.conversion_id';
+$sJoin .= '  INNER JOIN conversions conv1 on car_vehicle_type = conv1.conversion_id';
+$sJoin .= '  INNER JOIN car_motors cmotor on cd_motor = cmotor.cmotor_id';
 // $sJoin .= '   INNER JOIN translate tr on bs.conversion_name = tr.label ';
 
 
@@ -130,6 +132,7 @@ $sQuery = "
         $sOrder
         $sLimit
     ";
+    
 
 $rResult = mysqli_query($gaSql['link'], $sQuery, $gaSql['link']) or fatal_error('MySQL Error: ' . mysqli_errno($gaSql['link']));
 mysqli_query($gaSql['link'], "SET character_set_results=utf8", $gaSql['link']);
