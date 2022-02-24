@@ -121,6 +121,17 @@ for ($i = 0; $i < count($aColumns); $i++) {
         $sWhere .= $aColumns[$i] . " LIKE '%" . mysqli_real_escape_string($gaSql['link'], $_GET['sSearch_' . $i]) . "%' ";
     }
 }
+
+if(isset($_GET['order_id'])) {
+    if ($sWhere == "") {
+        $sWhere = "WHERE ";
+    } else {
+        $sWhere .= " AND ";
+    }
+    $sWhere .= "pl_purchase_id = " .mysqli_real_escape_string($gaSql['link'], $_GET['order_id']) ;
+}
+
+
 /*
  * SQL queries
  * Get data to display
@@ -214,7 +225,7 @@ while ($aRow = mysqli_fetch_array($rResult)) {
                 $row[] = '<center style="display:flex;">Margin</center>';
             }
         } elseif ($aColumns[$i] == 'pl_id as edit') {
-            $row[] = '<center style="display:flex;"><a href="car_start?car_id=' . $aRow[$i] . '" class="btn btn-default btn-xs"><i class="ti-brush"></i></a><a href="create_po?delete_line=' . $aRow[$i] . '" class="btn btn-default btn-xs"><i class="ti-trash"></i></a></center>';
+            $row[] = '<center style="display:flex;"><a href="car_start?car_id=' . $aRow[3] . '" class="btn btn-default btn-xs"><i class="ti-brush"></i></a><a href="create_po?delete_line=' . $aRow[$i] . '" class="btn btn-default btn-xs"><i class="ti-trash"></i></a></center>';
         } elseif ($aColumns[$i] == 'pl_vehicle_id') {
             $row[] = '<center data-line-id="' . $aRow[$i] . '" style="display:flex;"><a href="car_start?car_id=' . $aRow[$i] . '">' . sprintf("A%'.07d\n", $aRow[$i]) . '</a></center>';
         } elseif (in_array($aColumns[$i], $clickableTd)) {

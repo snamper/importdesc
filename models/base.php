@@ -283,20 +283,20 @@ class base
 		return $result;
 	}
 
-	public function changePurchaseTableCol($_post){
+	public function changePurchaseTableCol($_post)
+	{
 
 		$dbDriver = new db_driver();
 
-		if($_post['col-name'] == "pl_expected_delivery") {
+		if ($_post['col-name'] == "pl_expected_delivery") {
 			$_post['col-value'] = date('Y-m-d', strtotime($_post['col-value']));
 		}
 
-		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
+		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$query = "UPDATE purchase_order_lines SET {$_post['col-name']} = ? WHERE pl_id = ?";
 		$stmt = $dbDriver->dbCon->prepare($query);
-		$stmt->execute([$_post['col-value'], $_post['row-id']]);		
-		return $stmt->rowCount();		
-
+		$stmt->execute([$_post['col-value'], $_post['row-id']]);
+		return $stmt->rowCount();
 	}
 
 	public function createNewOrder($_post)
@@ -305,7 +305,12 @@ class base
 
 		$_post['po_date'] = date("Y-m-d", strtotime($_post['po_date']));
 		$_post['po_expected_invoice_date'] = date("Y-m-d", strtotime($_post['po_expected_invoice_date']));
-		
+
+
+		// echo '<pre>';
+		// var_dump($_post);
+		// echo '</pre>';
+		// exit;
 
 
 		$query = "INSERT INTO purchase_order
@@ -320,7 +325,7 @@ class base
 			po_buyer,
 			po_internal_reference_custom,
 			po_external_order_number,
-			-- po_status,
+			po_status,
 			-- po_number_vehicles,
 			-- po_total_purchase_excl_vat,
 			-- po_total_purchase_incl_vat,
@@ -345,38 +350,39 @@ class base
 				?,
 				?,
 				?,
+				?,
 				?
             )";
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 
+		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 		$stmt->execute(
 			[
 				$_post['po_number'],
-				$_post['po_purch_date'],
+				$_post['po_date'],
 				$_post['po_intermediary_supplier'],
 				$_post['po_contact_person'],
 				$_post['po_source_supplier'],
 				$_post['po_contact_person_source'],
-				$_post['po_purch_entity'],
-				$_post['po_purch_buyer'],
+				$_post['po_purchasing_entity'],
+				$_post['po_buyer'],
 				$_post['po_internal_reference_custom'],
 				$_post['po_external_order_number'],
-				//$_post['purch_status'],
+				$_post['po_status'],
 				//$_post['number_vehicles'],
 				//$_post['total_purchase_excl_vat'],
 				//$_post['total_purchase_incl_vat'],
 				$_post['po_payment_terms'],
 				$_post['po_prepayment_amount'],
 				$_post['po_expected_invoice_date'],
-				$_post['po_notes'],
+				$_post['po_remarks'],
 				$_SESSION['user'][0]['expo_users_ID']
 			]
 		);
 
 		$inserted_order_id = $dbDriver->dbCon->lastInsertId();
-
-
 
 		return $inserted_order_id;
 	}
@@ -400,7 +406,7 @@ class base
 			po_buyer =?,
 			po_internal_reference_custom =?,
 			po_external_order_number =?,
-			-- po_status,
+			po_status =?,
 			-- po_number_vehicles,
 			-- po_total_purchase_excl_vat,
 			-- po_total_purchase_incl_vat,
@@ -411,7 +417,7 @@ class base
 			po_updated_by_id =?
 			WHERE po_id = ?";
 
-$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([
@@ -425,7 +431,7 @@ $dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$_post['po_buyer'],
 			$_post['po_internal_reference_custom'],
 			$_post['po_external_order_number'],
-			//$_post['purch_status'],
+			$_post['po_status'],
 			//$_post['number_vehicles'],
 			//$_post['total_purchase_excl_vat'],
 			//$_post['total_purchase_incl_vat'],
@@ -437,7 +443,16 @@ $dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$_post['update_order']
 		]);
 
-
+		
+		
+		if(isset($_post['po_documents'])) {
+		
+			foreach($_post['po_documents'] as $key => $doc){
+				$this->insertPODocument($doc, $_post['upload_document'][$key], $_post['update_order']);
+			}
+			
+		}
+		
 	}
 
 	public function addPoLines($car_info, $purchase_id)
@@ -484,17 +499,18 @@ $dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		]);
 	}
 
-	public function deletePoLine($line_id) {
+	public function deletePoLine($line_id)
+	{
 
 		$dbDriver = new db_driver();
 
 		$query = "DELETE FROM purchase_order_lines WHERE pl_id = ?";
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$line_id]);
-
 	}
 
-	public function getPOSums($purchase_id) {
+	public function getPOSums($purchase_id)
+	{
 
 		$dbDriver = new db_driver();
 
@@ -503,7 +519,7 @@ $dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		SUM(REPLACE(REPLACE(c.purchase_price_netto, '€ ', ''), ',', '')) as total_purchase_price_excl_vat,
 		SUM(REPLACE(REPLACE(pl_purchase_price_incl_vat, '€ ', ''), ',', '')) as total_purchase_price_incl_vat
 		FROM purchase_order_lines
-		RIGHT JOIN calculations c on c.calculation_for_car_id = pl_vehicle_id
+		LEFT JOIN calculations c on c.calculation_for_car_id = pl_vehicle_id
 		WHERE pl_purchase_id = ?";
 
 		$stmt = $dbDriver->dbCon->prepare($query);
@@ -537,7 +553,7 @@ $dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbDriver = new db_driver();
 
 		$query = "SELECT * FROM purchase_order
-		INNER JOIN purchase_order_lines on po_id = pl_purchase_id
+		LEFT JOIN purchase_order_lines on po_id = pl_purchase_id
 		 WHERE po_id = ?";
 
 		$stmt = $dbDriver->dbCon->prepare($query);
@@ -556,7 +572,7 @@ $dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
 	}
-	
+
 	function getConditionData($carID)
 	{
 		$dbDriver = new db_driver();
@@ -1695,16 +1711,50 @@ $dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 		$sql = "INSERT INTO car_documents (cd_car_id, cd_filename, cd_path, cd_user_id)
       VALUES (
-         ?,
-         ?,
-          ?,
-         ?
-
+			?,
+			?,
+			?,
+			?
       )";
 
 		$stmt = $dbDriver->dbCon->prepare($sql);
 		$stmt->execute([$inserted_car_id, $file_name, $path, $_SESSION['user'][0]['expo_users_ID']]);
 	}
+
+	public function insertPODocument($path, $name = null, $order_id)
+	{		
+		$dbDriver = new db_driver();
+
+		$sql = "INSERT INTO po_documents (pod_order_id, pod_filename, pod_path, pod_user_id)
+      VALUES (
+			?,
+			?,
+			?,
+			?
+      )";
+
+
+		$stmt = $dbDriver->dbCon->prepare($sql);
+		$stmt->execute([$order_id, $name, $path, $_SESSION['user'][0]['expo_users_ID']]);
+	}
+
+
+	public function getPODocuments($order_id)
+	{
+
+		$dbDriver = new db_driver();
+	
+		$query = "SELECT * FROM po_documents WHERE  pod_order_id = ? ORDER BY pod_id DESC";
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$order_id]);
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		return $result;
+	}
+
+	
+
 
 	public function getCarInfo($car_id)
 	{
