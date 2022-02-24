@@ -188,12 +188,6 @@
 
                 document.querySelector("[type='search']").style = "min-width:150px";
 
-                const purchaseLines = document.querySelectorAll("[name='purchase_lines[]']");
-
-                for (let line of purchaseLines) {
-                    document.querySelector(`[name='add_purchase_line[]'][value='${line.value}']`).checked = true;
-                }
-
             }
 
         });
@@ -217,7 +211,7 @@
 
                 for (let el of elToGetIds) {
                     const elDataId = el.getAttribute("data-line-id");
-                    document.querySelector(`[data-check-line='${elDataId}']`).checked = true;
+                    document.querySelector(`[data-check-line='${elDataId}']`).closest("tr").remove();
                 }
 
                 editableTable();

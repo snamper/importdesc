@@ -1581,7 +1581,7 @@ $('.JSfunc').click(function () {
 
     for (let tab of bootstrapTabs) {
         tab.addEventListener("click", (e) => {
-            const trigger = e.currentTarget; // triger is the li element
+            const trigger = e.currentTarget; // trigger is the li element
             const navLinkHref = trigger.querySelector(".nav-link").getAttribute("href");
             const cookieVal = navLinkHref.replace("#", "");
             document.cookie = `active_tab=${cookieVal}; path=/`;
@@ -1740,6 +1740,8 @@ $(document).ready(function () {
             processData: false,
             success: function (response) {
 
+                console.log(response);
+
                 let type = "";
                 if (allowedFormats.includes("application/pdf")) {
                     type = "files";
@@ -1747,8 +1749,8 @@ $(document).ready(function () {
                     type = "photos";
                 }
 
-
                 displayUploadedFiles(JSON.parse(response), type);
+
             },
         });
 
@@ -1787,6 +1789,7 @@ $(document).ready(function () {
 
     function displayUploadedFiles(response, type) {
         const createEditCarForm = document.querySelector("#createEditCarForm");
+        const createEditPOForm = document.querySelector("#createPOForm");
         if (type == "files") {
 
             const documentsContainer = document.querySelector(".show-documents");
@@ -1801,15 +1804,29 @@ $(document).ready(function () {
                     "innerText": arrLink[arrLink.length - 1]
                 });
 
-                let hiddenInput = Object.assign(
-                    document.createElement("input"), {
-                    "type": "hidden",
-                    "name": "car_documents[]",
-                    "value": response[key].location
-                });
+                
                 documentsContainer.appendChild(documentElement);
                 documentsContainer.appendChild(document.createElement("br"));
-                createEditCarForm.appendChild(hiddenInput);
+                if(createEditCarForm){
+
+                    let hiddenInput = Object.assign(
+                        document.createElement("input"), {
+                        "type": "hidden",
+                        "name": "car_documents[]",
+                        "value": response[key].location
+                    });
+                    createEditCarForm.appendChild(hiddenInput);
+                } else if(createEditPOForm){
+
+                    let hiddenInput = Object.assign(
+                        document.createElement("input"), {
+                        "type": "hidden",
+                        "name": "po_documents[]",
+                        "value": response[key].location
+                    });
+                    createEditPOForm.appendChild(hiddenInput);
+                }
+            
             }
 
 
@@ -2096,19 +2113,6 @@ function saveNewImagePositions(removedPos, moved) {
         return;
     }
 
-    const v = (id) => {
-        return parseFloat($(`#${id}`).val()
-            .replace(",", "") // remove thousand before sum
-            .replace("€ ", "")) // remove euro sign before sum
-            || 0;
-    }
-    const set = (id, num) => {
-        // Add thousand separator
-        const number = num.toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-        // Add Euro sign
-        const val = `€ ${number}`
-        return $(`#${id}`).val(val);
-    }
 
     const calcFromTotal = doc.querySelector(".js-calc-from-total");
     const vatCheckedEl = doc.querySelector("#switchvat");
@@ -2408,6 +2412,20 @@ $(window).ready(function () {
 
 // JS FUNCTIONS 
 
+function v(id) {
+    return parseFloat($(`#${id}`).val()
+        .replace(",", "") // remove thousand before sum
+        .replace("€ ", "")) // remove euro sign before sum
+        || 0;
+}
+function set(id, num) {
+    // Add thousand separator
+    const number = num.toFixed(2).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    // Add Euro sign
+    const val = `€ ${number}`
+    return $(`#${id}`).val(val);
+}
+
 function editableTable() {
 
     const clickableTableTds = document.querySelectorAll("td span.js-clickable-table, .js-submitable-select");
@@ -2418,23 +2436,23 @@ function editableTable() {
 
     for (let tdEl of clickableTableTds) {
 
-        if(tdEl.tagName == "SELECT") {
+        if (tdEl.tagName == "SELECT") {
             tdEl.addEventListener("focus", focusSelect);
             tdEl.addEventListener("change", saveSelectDb);
-        }else {
+        } else {
             tdEl.parentElement.addEventListener("dblclick", editTd);
-            tdEl.parentElement.addEventListener("focusout", saveTdDb);
+            tdEl.addEventListener("focusout", saveTdDb);
         }
 
 
     }
 
-    function focusSelect(e){
+    function focusSelect(e) {
         const trigger = e.currentTarget;
         const triggerVal = trigger.value;
         trigger.setAttribute("data-old-val", triggerVal);
 
-    }    
+    }
 
     function saveSelectDb(e) {
         const trigger = e.currentTarget;
@@ -2443,7 +2461,7 @@ function editableTable() {
         const triggerRowId = trigger.getAttribute("data-db-row");
         const triggerColName = trigger.getAttribute("data-col-name");
 
-        if(triggerVal == oldVal) {
+        if (triggerVal == oldVal) {
             return;
         }
 
@@ -2459,13 +2477,14 @@ function editableTable() {
             method: 'POST',
             body: fData
         }).then(function (response) {
-            return response.text().then(function (text) {
-                if (text == 0) {
-                    triggerSpan.innerText = oldText;
-                    alert("Something went wrong. Please check if your datatype is correct");
-                    return;
-                }
-            })
+            return response.text()
+                .then(function (text) {
+                    if (text == 0) {
+                        triggerSpan.innerText = oldText;
+                        alert("Something went wrong. Please check if your datatype is correct");
+                        return;
+                    }
+                })
         }).catch(function (error) {
             alert("Something went wrong. Please try again");
         });
@@ -2477,20 +2496,26 @@ function editableTable() {
     function editTd(e) {
         const trigger = e.currentTarget;
         const triggerText = trigger.innerText;
-        trigger.contentEditable = true;
+        const innerSpan = trigger.querySelector("span");
+        innerSpan.contentEditable = true;
         trigger.setAttribute("data-old-text", triggerText);
-        e.target.focus();
+
+        if (innerSpan.getAttribute("data-col-name") == "pl_purchase_price_incl_vat") {
+            removeCurrencyFormat(e, innerSpan);
+        }
+
+        innerSpan.focus();
     }
 
     function saveTdDb(e) {
-        const trigger = e.currentTarget;
-        const triggerSpan = trigger.querySelector("span");     
-        const triggerText = trigger.innerText.trim();
+        const triggerSpan = e.currentTarget;
+        const trigger = triggerSpan.closest("td");
+        const triggerText = triggerSpan.innerText.trim();
         const triggerRowId = triggerSpan.getAttribute("data-db-row");
         const triggerColName = triggerSpan.getAttribute("data-col-name");
-        const oldText =  trigger.getAttribute("data-old-text");
-        
-        if(triggerText == oldText) {
+        const oldText = trigger.getAttribute("data-old-text");
+
+        if (triggerText == oldText) {
             return;
         }
 
@@ -2512,8 +2537,14 @@ function editableTable() {
                     alert("Something went wrong. Please check if your datatype is correct");
                     return;
                 }
+
+                if (triggerColName == "pl_purchase_price_incl_vat") {
+                    const innerEl = trigger.querySelector("span");
+                    addCurrencyFormat(e, innerEl);
+                }
             })
         }).catch(function (error) {
+            console.log(error);
             alert("Something went wrong. Please try again");
         });
 
@@ -2550,28 +2581,50 @@ function getTranslations(pageName) {
 }
 
 
-function removeCurrencyFormat(e) {
-    e.currentTarget.value = parseFloat(e.currentTarget.value.replace(",", "") // remove thousand before sum
-        .replace("€ ", "")) // remove euro sign before sum
-        || '';
+function removeCurrencyFormat(e, selector = null) {
+    const trigger = selector || e.currentTarget;
+    if (trigger.tagName == "INPUT") {
+        trigger.value = parseFloat(trigger.value.replace(",", "") // remove thousand before sum
+            .replace("€ ", "")) // remove euro sign before sum
+            || '';
+    } else {
+        trigger.innerText = parseFloat(trigger.innerText.replace(",", "") // remove thousand before sum
+            .replace("€ ", "")) // remove euro sign before sum
+            || '';
+    }
 }
 
-function addCurrencyFormat(e) {
-    const trigger = e.currentTarget;
-    let triggerVal = trigger.value;
+function addCurrencyFormat(e, selector = null) {
+    const trigger = selector || e.currentTarget;
+    let triggerVal = "";
+
+    if (trigger.tagName == "INPUT") {
+        triggerVal = trigger.value;
+    } else {
+        triggerVal = trigger.innerText;
+    }
+
 
     if (triggerVal.length == 0) {
         return;
     }
 
     if (isNaN(triggerVal)) {
-        trigger.value = "";
+        if (trigger.tagName == "INPUT") {
+            trigger.value = "";
+        } else {
+            trigger.innerText = "";
+        }
         return alert("The input data MUST contain only numbers");
     }
 
     triggerVal = parseFloat(triggerVal).toFixed(2).toString(); // Add .00 after the value
 
-    trigger.value = `€ ${triggerVal.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}`;
+    if (trigger.tagName == "INPUT") {
+        trigger.value = `€ ${triggerVal.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}`;
+    } else {
+        trigger.innerText = `€ ${triggerVal.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}`;
+    }
 }
 
 

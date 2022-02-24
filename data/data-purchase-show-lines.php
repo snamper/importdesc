@@ -8,17 +8,20 @@ include("connection.php");
 /* Array of database columns which should be read and sent back to DataTables. Use a space where
  * you want to insert a non-database field (for example a counter or static image)
  */
-$aColumns = array('pl_id', 'pl_pre_order', 'conv1.conversion_name', 'pl_vehicle_id', 'pl_vat_margin', 'cm.cmake_name', 'cmod.cmodel_name', 'conv.conversion_name', 'cmotor.cmotor_name', 'pl_purchase_price_excl_vat', 'pl_id as edit', 'pl_km_delivery', 'pl_expected_delivery', 'pl_purchase_price_incl_vat', 'pl_accident_free', 'pl_expected_damage_amount', 'pl_extra_set_of_wheels', 'pl_deposit');
+$aColumns = array('pl_id', 'car_preorder', 'conv.conversion_name as type', 'pl_vehicle_id', 'car_vat_marge', 'cm.cmake_name', 'cmod.cmodel_name', 'cmu_name', 'cmotor.cmotor_name', 'purchase_price_netto', 'pl_id as edit', 'pl_km_delivery', 'pl_expected_delivery', 'pl_purchase_price_incl_vat', 'pl_accident_free', 'pl_expected_damage_amount', 'pl_extra_set_of_wheels', 'pl_deposit');
 /* Indexed column (used for fast and accurate table cardinality) */
 $sIndexColumn = "c.car_id as number";
 /* DB table to use */
 $sJoin = ' purchase_order';
 $sJoin .= '  INNER JOIN purchase_order_lines on po_id = pl_purchase_id';
-$sJoin .= '  INNER JOIN car_makes cm on pl_make = cm.cmake_id';
-$sJoin .= '  INNER JOIN car_models cmod on pl_model = cmod.cmodel_id ';
-$sJoin .= '  INNER JOIN conversions conv on pl_variant = conv.conversion_id';
-$sJoin .= '  INNER JOIN conversions conv1 on pl_type = conv1.conversion_id';
-$sJoin .= '  INNER JOIN car_motors cmotor on pl_engine = cmotor.cmotor_id';
+$sJoin .= '  INNER JOIN cars on pl_vehicle_id = car_id';
+$sJoin .= '  INNER JOIN car_details on pl_vehicle_id = cd_car_id';
+$sJoin .= '  INNER JOIN conversions as conv on conv.conversion_id = cd_status';
+$sJoin .= '  INNER JOIN car_make_uitvoerings on cmu_id = car_variant';
+$sJoin .= '  INNER JOIN calculations on calculation_for_car_id = car_id';
+$sJoin .= '  INNER JOIN car_makes cm on car_make = cm.cmake_id';
+$sJoin .= '  INNER JOIN car_models cmod on car_model = cmod.cmodel_id ';
+$sJoin .= '  INNER JOIN car_motors cmotor on cd_motor = cmotor.cmotor_id';
 // $sJoin .= '   INNER JOIN translate tr on bs.conversion_name = tr.label ';
 
 
@@ -118,6 +121,17 @@ for ($i = 0; $i < count($aColumns); $i++) {
         $sWhere .= $aColumns[$i] . " LIKE '%" . mysqli_real_escape_string($gaSql['link'], $_GET['sSearch_' . $i]) . "%' ";
     }
 }
+
+if(isset($_GET['order_id'])) {
+    if ($sWhere == "") {
+        $sWhere = "WHERE ";
+    } else {
+        $sWhere .= " AND ";
+    }
+    $sWhere .= "pl_purchase_id = " .mysqli_real_escape_string($gaSql['link'], $_GET['order_id']) ;
+}
+
+
 /*
  * SQL queries
  * Get data to display
@@ -130,6 +144,8 @@ $sQuery = "
         $sOrder
         $sLimit
     ";
+
+    
 
 $rResult = mysqli_query($gaSql['link'], $sQuery, $gaSql['link']) or fatal_error('MySQL Error: ' . mysqli_errno($gaSql['link']));
 mysqli_query($gaSql['link'], "SET character_set_results=utf8", $gaSql['link']);
@@ -194,28 +210,31 @@ while ($aRow = mysqli_fetch_array($rResult)) {
     $j++;
     $row = array();
     for ($i = 0; $i < count($aColumns); $i++) {
-        if ($aColumns[$i] == "conv.conversion_name") {
+        if ($aColumns[$i] == 'conv.conversion_name as type') {
             $row[] = '<center style="display:flex;">' . $_SESSION['lang'][$aRow[$i]] . '</center>';
-        } elseif ($aColumns[$i] == 'conv1.conversion_name') {
-            $row[] = '<center style="display:flex;">' . $_SESSION['lang'][$aRow[$i]] . '</center>';
-        } elseif ($aColumns[$i] == 'pl_pre_order') {
+        } elseif ($aColumns[$i] == 'car_preorder') {
             if ($aRow[$i] == 0) {
                 $row[] = '<center style="display:flex;">NO</center>';
             } else {
                 $row[] = '<center style="display:flex;">YES</center>';
             }
-        } elseif ($aColumns[$i] == 'pl_vat_margin') {
+        } elseif ($aColumns[$i] == 'car_vat_marge') {
             if ($aRow[$i] == 0) {
                 $row[] = '<center style="display:flex;">VAT</center>';
             } else {
                 $row[] = '<center style="display:flex;">Margin</center>';
             }
         } elseif ($aColumns[$i] == 'pl_id as edit') {
-            $row[] = '<center style="display:flex;"><a href="car_start?car_id=' . $aRow[$i] . '" class="btn btn-default btn-xs"><i class="ti-brush"></i></a><a href="show_cars?delete=' . $aRow[$i] . '" class="btn btn-default btn-xs"><i class="ti-trash"></i></a></center>';
+            $row[] = '<center style="display:flex;"><a href="car_start?car_id=' . $aRow[3] . '" class="btn btn-default btn-xs"><i class="ti-brush"></i></a><a href="create_po?delete_line=' . $aRow[$i] . '" class="btn btn-default btn-xs"><i class="ti-trash"></i></a></center>';
         } elseif ($aColumns[$i] == 'pl_vehicle_id') {
             $row[] = '<center data-line-id="' . $aRow[$i] . '" style="display:flex;"><a href="car_start?car_id=' . $aRow[$i] . '">' . sprintf("A%'.07d\n", $aRow[$i]) . '</a></center>';
         } elseif (in_array($aColumns[$i], $clickableTd)) {
-            $row[] = "<span class='js-clickable-table' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'>$aRow[$i]</span>";
+                if($aColumns[$i] == 'pl_purchase_price_incl_vat') {
+                    $row[] = "<span class='js-clickable-table td-span-full-size js-price-col' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'>€ $aRow[$i]</span>";
+                }else {
+                    $row[] = "<span class='js-clickable-table td-span-full-size' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'>$aRow[$i]</span>";
+                }
+           
         } elseif (in_array($aColumns[$i], $selects)) {
 
             // $row[] = "<span class='js-clickable-table' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'>$aRow[$i]</span>";

@@ -8,6 +8,7 @@ class view {
         $data = $this->getData();
         include $page;
         include 'include/footer.php';
+        $_SESSION['last_page'] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     }
 
     public function getData($key = null) {
@@ -24,5 +25,8 @@ class view {
         $this->data[$key][] = $value;
        
     }
+
+
+  
 }
 ?>

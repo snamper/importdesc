@@ -1,5 +1,6 @@
 <?php
 $data['purch_order'] = $data['purch_order'][0];
+$data['poSums'] = $data['poSums'][0];
 ?>
 
 
@@ -78,7 +79,8 @@ $data['purch_order'] = $data['purch_order'][0];
                             <span>Date*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" id="datepicker2" autocomplete="false" required type="text" name="po_date" value="<?php echo date('d-m-Y', strtotime($data['purch_order']['po_date'])); ?>" />
+                            <input class="form-control" id="datepicker2" autocomplete="false" required type="text" name="po_date" value="<?php echo (
+                                empty($data['purch_order']['po_date']) ? date('d-m-Y') : date('d-m-Y', strtotime($data['purch_order']['po_date']))); ?>" />
                         </div>
                     </div>
 
@@ -182,7 +184,10 @@ $data['purch_order'] = $data['purch_order'][0];
                             <span>Status</span>
                         </div>
                         <div class="col-12 col-md-6">
-                            <span>New</span>
+                            <select class="form-control" name="po_status"> 
+                                <option value="0">New</option>
+                                <option <?php echo($data['purch_order']['po_status'] == 1 ? "selected" : "") ?> value="1">Old</option>
+                             </select>
                         </div>
                     </div>
                 </div>
@@ -217,7 +222,7 @@ $data['purch_order'] = $data['purch_order'][0];
                             <span>Number of vehicles</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <span>3</span>
+                            <span><?php echo (isset($_REQUEST['order_id']) ? $data['poSums']['total_lines'] : count($data['purchase_lines'][0]))?></span>
                         </div>
                     </div>
                     <?php if (isset($_REQUEST['show_all_purch_lines'])) {
@@ -239,7 +244,7 @@ $data['purch_order'] = $data['purch_order'][0];
                             <span>Total purchase value (excl. VAT)</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <span>€ 342325325,00</span>
+                            <span><?php echo "€ {$data['poSums']['total_purchase_price_excl_vat']}" ?></span>
                         </div>
                     </div>
                     <div class="row">
@@ -247,7 +252,7 @@ $data['purch_order'] = $data['purch_order'][0];
                             <span>Total purchase value (incl. VAT)</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <span>€ 543535,00</span>
+                            <span><?php echo "€ {$data['poSums']['total_purchase_price_incl_vat']}" ?></span>
                         </div>
                     </div>
                 </div>
@@ -299,7 +304,8 @@ $data['purch_order'] = $data['purch_order'][0];
                             <span>Expected invoice date</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" id="datepicker3" type="text" name="po_expected_invoice_date" value="<?php echo date('d-m-Y', strtotime($data['purch_order']['po_expected_invoice_date'])); ?>" />
+                            <input class="form-control" id="datepicker3" type="text" name="po_expected_invoice_date" value="<?php echo (
+                                empty($data['purch_order']['po_expected_invoice_date']) ? date('d-m-Y') : date('d-m-Y', strtotime($data['purch_order']['po_expected_invoice_date']))); ?>" />
                         </div>
                     </div>
                 </div>
@@ -307,9 +313,9 @@ $data['purch_order'] = $data['purch_order'][0];
                     <p class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_90'] ?></p>
                     <div class="form-control show-documents uploaded-documents-col" name="uploaded_files" id="uploadedFiles">
                         <?php
-                        if (!is_null($data['single_car_documents'][0])) {
-                            foreach ($data['single_car_documents'][0] as $key => $doc) {
-                                echo "<a href='{$doc['cd_path']}'>{$doc['cd_filename']}</a></br>";
+                        if (!is_null($data['po_documents'][0])) {
+                            foreach ($data['po_documents'][0] as $key => $doc) {
+                                echo "<a target='_blank' href='{$doc['pod_path']}'>{$doc['pod_filename']}</a></br>";
                             }
                         }
                         ?></div>
@@ -400,7 +406,7 @@ $data['purch_order'] = $data['purch_order'][0];
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button onclick="preventDefault();" name="save_changes_line" class="btn btn-primary js-submit-form">Save changes</button>
+                    <button name="save_changes_line" class="btn btn-primary js-submit-form">Save changes</button>
                 </div>
             </div>
         </div>
