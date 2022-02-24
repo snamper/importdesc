@@ -484,6 +484,35 @@ $dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		]);
 	}
 
+	public function deletePoLine($line_id) {
+
+		$dbDriver = new db_driver();
+
+		$query = "DELETE FROM purchase_order_lines WHERE pl_id = ?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$line_id]);
+
+	}
+
+	public function getPOSums($purchase_id) {
+
+		$dbDriver = new db_driver();
+
+		$query = "SELECT 
+		count(*) as total_lines,
+		SUM(REPLACE(REPLACE(c.purchase_price_netto, '€ ', ''), ',', '')) as total_purchase_price_excl_vat,
+		SUM(REPLACE(REPLACE(pl_purchase_price_incl_vat, '€ ', ''), ',', '')) as total_purchase_price_incl_vat
+		FROM purchase_order_lines
+		RIGHT JOIN calculations c on c.calculation_for_car_id = pl_vehicle_id
+		WHERE pl_purchase_id = ?";
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$purchase_id]);
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		return $result[0];
+	}
+
 	public function getCarDocuments($car_id)
 	{
 

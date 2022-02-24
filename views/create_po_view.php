@@ -1,5 +1,6 @@
 <?php
 $data['purch_order'] = $data['purch_order'][0];
+$data['poSums'] = $data['poSums'][0];
 ?>
 
 
@@ -217,7 +218,7 @@ $data['purch_order'] = $data['purch_order'][0];
                             <span>Number of vehicles</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <span>3</span>
+                            <span><?php echo $data['poSums']['total_lines'] ?></span>
                         </div>
                     </div>
                     <?php if (isset($_REQUEST['show_all_purch_lines'])) {
@@ -239,7 +240,7 @@ $data['purch_order'] = $data['purch_order'][0];
                             <span>Total purchase value (excl. VAT)</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <span>€ 342325325,00</span>
+                            <span><?php echo "€ {$data['poSums']['total_purchase_price_excl_vat']}" ?></span>
                         </div>
                     </div>
                     <div class="row">
@@ -247,7 +248,7 @@ $data['purch_order'] = $data['purch_order'][0];
                             <span>Total purchase value (incl. VAT)</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <span>€ 543535,00</span>
+                            <span><?php echo "€ {$data['poSums']['total_purchase_price_incl_vat']}" ?></span>
                         </div>
                     </div>
                 </div>

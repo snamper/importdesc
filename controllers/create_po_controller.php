@@ -22,12 +22,37 @@ class create_po extends view
 
 	public function __construct()
 	{
+
+		if (!isset($_SESSION['user'])) {
+			header("Location: /login ");  
+			exit;
+		}
+
 		$this->base = $_SESSION['base'];
+
+		$order_id = 0;
+		if(isset($_GET['order_id'])){
+			$order_id = $_GET['order_id'];
+		}elseif(isset($_POST['update_order'])) { 
+			$order_id = $_POST['update_order'];
+		}
+		
+		$poSums = $this->base->getPOSums($order_id);
+
+		$this->setData("poSums", $poSums);
 
 		if(isset($_POST['clickable-table-post'])) {
 
 			echo $this->base->changePurchaseTableCol($_POST);
 			exit;
+		}
+
+		if(isset($_GET['delete_line'])) {
+			$this->base->deletePoLine($_GET['delete_line']);
+
+			header("Location: $_SESSION[last_page]");  
+			exit;
+
 		}
 
 
