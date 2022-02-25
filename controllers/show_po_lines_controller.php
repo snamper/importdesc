@@ -1,5 +1,6 @@
 <?php
 
+include_once 'views/view.php';
 class show_po_lines extends view
 {
 
@@ -7,8 +8,7 @@ class show_po_lines extends view
 	{
 
 
-        if (isset($_SESSION['user'])) parent::__construct('show_po_lines_view.php');
+		if (isset($_SESSION['user'])) parent::__construct('show_po_lines_view.php');
 		else parent::__construct('login_view.php');
-    }
+	}
 }
-?>

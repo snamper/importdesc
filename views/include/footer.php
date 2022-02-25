@@ -218,6 +218,22 @@
             }
         });
 
+    var oTable404 = $('#tableShowOrderLines')
+        .DataTable({
+            "bprocessing": true,
+            "bserverSide": true,
+            "sServerMethod": "POST",
+            "sAjaxSource": `./data/data-purchase-show-order-lines.php`,
+            stateSave: true,
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+
+            initComplete: function() {
+                document.querySelector("[type='search']").style = "min-width:150px";
+            }
+        });
 </script>
 <!-- <script src="assets/js/apps.min.js"></script> -->
 
