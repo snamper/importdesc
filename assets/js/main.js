@@ -1615,7 +1615,9 @@ $("#languageselect").change(function () {
 
     const pathName = window.location.pathname.replace("/", "");
     const activeLiEl = document.querySelector(`.nav [href="${pathName}"]`);
-    activeLiEl.classList.add("active");
+    if (activeLiEl) {
+        activeLiEl.classList.add("active");
+    }
 
 
 })(window, document);
@@ -1804,10 +1806,10 @@ $(document).ready(function () {
                     "innerText": arrLink[arrLink.length - 1]
                 });
 
-                
+
                 documentsContainer.appendChild(documentElement);
                 documentsContainer.appendChild(document.createElement("br"));
-                if(createEditCarForm){
+                if (createEditCarForm) {
 
                     let hiddenInput = Object.assign(
                         document.createElement("input"), {
@@ -1816,7 +1818,7 @@ $(document).ready(function () {
                         "value": response[key].location
                     });
                     createEditCarForm.appendChild(hiddenInput);
-                } else if(createEditPOForm){
+                } else if (createEditPOForm) {
 
                     let hiddenInput = Object.assign(
                         document.createElement("input"), {
@@ -1826,7 +1828,7 @@ $(document).ready(function () {
                     });
                     createEditPOForm.appendChild(hiddenInput);
                 }
-            
+
             }
 
 
@@ -2517,7 +2519,7 @@ function editableTable() {
         const oldTextCompare = oldText;
         triggerSpan.contentEditable = false;
 
-        if(triggerText == "") {
+        if (triggerText == "") {
             triggerText = "0";
             triggerSpan.innerText = "0";
         }
@@ -2546,7 +2548,7 @@ function editableTable() {
                     return;
                 }
 
-                if (triggerColName == "pl_purchase_price_incl_vat") {  
+                if (triggerColName == "pl_purchase_price_incl_vat") {
                     addCurrencyFormat(e, triggerSpan);
                     calculateTotalPriceInclVat();
                 }
@@ -2563,14 +2565,14 @@ function editableTable() {
         const allPriceInclVatSpans = document.querySelectorAll("[data-col-name='pl_purchase_price_incl_vat']");
         let sum = 0;
 
-        for(let el of allPriceInclVatSpans) {
-           sum += parseFloat(el.innerText.replace(",", "") // remove thousand before sum
-            .replace("€ ", "")) // remove euro sign before sum
-            || 0;
+        for (let el of allPriceInclVatSpans) {
+            sum += parseFloat(el.innerText.replace(",", "") // remove thousand before sum
+                .replace("€ ", "")) // remove euro sign before sum
+                || 0;
         }
 
-        document.querySelector("#totalPOInclVatSpan").innerText = `€ ${sum}` ;
-        document.querySelector("#totalPOInclVatHidden").value = sum; 
+        document.querySelector("#totalPOInclVatSpan").innerText = `€ ${sum}`;
+        document.querySelector("#totalPOInclVatHidden").value = sum;
     }
 
 }
