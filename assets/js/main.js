@@ -2510,12 +2510,20 @@ function editableTable() {
     function saveTdDb(e) {
         const triggerSpan = e.currentTarget;
         const trigger = triggerSpan.closest("td");
-        const triggerText = triggerSpan.innerText.trim();
+        let triggerText = triggerSpan.innerText.trim();
         const triggerRowId = triggerSpan.getAttribute("data-db-row");
         const triggerColName = triggerSpan.getAttribute("data-col-name");
         const oldText = trigger.getAttribute("data-old-text");
+        const oldTextCompare = oldText;
+        triggerSpan.contentEditable = false;
 
-        if (triggerText == oldText) {
+        if(triggerText == "") {
+            triggerText = "0";
+            triggerSpan.innerText = "0";
+        }
+
+        if (triggerText == parseFloat(oldTextCompare.replace("€ ", "").replace(",", "")).toFixed(0)) {
+            addCurrencyFormat(e, triggerSpan);
             return;
         }
 
@@ -2538,9 +2546,9 @@ function editableTable() {
                     return;
                 }
 
-                if (triggerColName == "pl_purchase_price_incl_vat") {
-                    const innerEl = trigger.querySelector("span");
-                    addCurrencyFormat(e, innerEl);
+                if (triggerColName == "pl_purchase_price_incl_vat") {  
+                    addCurrencyFormat(e, triggerSpan);
+                    calculateTotalPriceInclVat();
                 }
             })
         }).catch(function (error) {
@@ -2549,6 +2557,20 @@ function editableTable() {
         });
 
 
+    }
+
+    function calculateTotalPriceInclVat() {
+        const allPriceInclVatSpans = document.querySelectorAll("[data-col-name='pl_purchase_price_incl_vat']");
+        let sum = 0;
+
+        for(let el of allPriceInclVatSpans) {
+           sum += parseFloat(el.innerText.replace(",", "") // remove thousand before sum
+            .replace("€ ", "")) // remove euro sign before sum
+            || 0;
+        }
+
+        document.querySelector("#totalPOInclVatSpan").innerText = `€ ${sum}` ;
+        document.querySelector("#totalPOInclVatHidden").value = sum; 
     }
 
 }

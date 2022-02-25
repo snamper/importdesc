@@ -326,9 +326,9 @@ class base
 			po_internal_reference_custom,
 			po_external_order_number,
 			po_status,
-			-- po_number_vehicles,
-			-- po_total_purchase_excl_vat,
-			-- po_total_purchase_incl_vat,
+			po_number_vehicles,
+			po_total_purchase_excl_vat,
+			po_total_purchase_incl_vat,
 			po_payment_terms,
 			po_prepayment_amount,
 			po_expected_invoice_date,
@@ -336,6 +336,9 @@ class base
 			po_created_by_id
         )
             VALUES (
+				?,
+				?,
+				?,
 				?,
 				?,
 				?,
@@ -370,10 +373,10 @@ class base
 				$_post['po_buyer'],
 				$_post['po_internal_reference_custom'],
 				$_post['po_external_order_number'],
-				$_post['po_status'],
-				//$_post['number_vehicles'],
-				//$_post['total_purchase_excl_vat'],
-				//$_post['total_purchase_incl_vat'],
+				$_post['update_order_submit'],
+				$_post['po_number_vehicles'],
+				$_post['po_total_purchase_excl_vat'],
+				$_post['po_total_purchase_incl_vat'],
 				$_post['po_payment_terms'],
 				$_post['po_prepayment_amount'],
 				$_post['po_expected_invoice_date'],
@@ -407,9 +410,9 @@ class base
 			po_internal_reference_custom =?,
 			po_external_order_number =?,
 			po_status =?,
-			-- po_number_vehicles,
-			-- po_total_purchase_excl_vat,
-			-- po_total_purchase_incl_vat,
+			po_number_vehicles =?,
+			po_total_purchase_excl_vat =?,
+			po_total_purchase_incl_vat =?,
 			po_payment_terms =?,
 			po_prepayment_amount =?,
 			po_expected_invoice_date =?,
@@ -420,6 +423,9 @@ class base
 
 
 		$stmt = $dbDriver->dbCon->prepare($query);
+		$dbDriver->dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
 		$stmt->execute([
 			$_post['po_number'],
 			$_post['po_date'],
@@ -431,10 +437,10 @@ class base
 			$_post['po_buyer'],
 			$_post['po_internal_reference_custom'],
 			$_post['po_external_order_number'],
-			$_post['po_status'],
-			//$_post['number_vehicles'],
-			//$_post['total_purchase_excl_vat'],
-			//$_post['total_purchase_incl_vat'],
+			$_post['update_order_submit'],
+			$_post['po_number_vehicles'],
+			$_post['po_total_purchase_excl_vat'],
+			$_post['po_total_purchase_incl_vat'],
 			$_post['po_payment_terms'],
 			$_post['po_prepayment_amount'],
 			$_post['po_expected_invoice_date'],
@@ -443,16 +449,12 @@ class base
 			$_post['update_order']
 		]);
 
-		
-		
-		if(isset($_post['po_documents'])) {
-		
-			foreach($_post['po_documents'] as $key => $doc){
+		if (isset($_post['po_documents'])) {
+
+			foreach ($_post['po_documents'] as $key => $doc) {
 				$this->insertPODocument($doc, $_post['upload_document'][$key], $_post['update_order']);
 			}
-			
 		}
-		
 	}
 
 	public function addPoLines($car_info, $purchase_id)
@@ -554,7 +556,7 @@ class base
 
 		$query = "SELECT * FROM purchase_order
 		LEFT JOIN purchase_order_lines on po_id = pl_purchase_id
-		 WHERE po_id = ?";
+		WHERE po_id = ?";
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$purchase_order_id]);
@@ -1722,7 +1724,7 @@ class base
 	}
 
 	public function insertPODocument($path, $name = null, $order_id)
-	{		
+	{
 		$dbDriver = new db_driver();
 
 		$sql = "INSERT INTO po_documents (pod_order_id, pod_filename, pod_path, pod_user_id)
@@ -1743,7 +1745,7 @@ class base
 	{
 
 		$dbDriver = new db_driver();
-	
+
 		$query = "SELECT * FROM po_documents WHERE  pod_order_id = ? ORDER BY pod_id DESC";
 
 		$stmt = $dbDriver->dbCon->prepare($query);
@@ -1753,7 +1755,7 @@ class base
 		return $result;
 	}
 
-	
+
 
 
 	public function getCarInfo($car_id)

@@ -192,6 +192,26 @@
 
         });
 
+        var oTable402 = $('#show_po_table')
+        .DataTable({
+            "bprocessing": true,
+            "bserverSide": true,
+            "sServerMethod": "POST",
+            "sAjaxSource": `./data/data-show-po.php`,
+            stateSave: true,
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+
+            initComplete: function() {
+
+                document.querySelector("[type='search']").style = "min-width:150px";
+
+            }
+
+        });
+
     var oTable402 = $('#tableShowPoLines')
         .DataTable({
             "bprocessing": true,
@@ -551,6 +571,7 @@
             },
             // 'order': [[1, 'asc']],
         });
+        
 
 
     var oTable3 = $('#datatable-inside')
