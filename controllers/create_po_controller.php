@@ -24,49 +24,74 @@ class create_po extends view
 	{
 
 		if (!isset($_SESSION['user'])) {
-			header("Location: /login ");  
+			header("Location: /login ");
 			exit;
 		}
 
 		$this->base = $_SESSION['base'];
 
 		$order_id = 0;
-		if(isset($_GET['order_id'])){
+		if (isset($_GET['order_id'])) {
 			$order_id = $_GET['order_id'];
-		}elseif(isset($_POST['update_order'])) { 
+		} elseif (isset($_POST['update_order'])) {
 			$order_id = $_POST['update_order'];
+		}
+
+		if (isset($_POST['update_order_submit'])) {
+
+			if ($order_id > 0) {
+				// IF UPDATE ORDER 
+				if (isset($_POST['update_order'])) {
+					$this->base->updateOrder($_POST);
+					foreach ($_POST['purchase_lines'] as $car_id) {
+						$car_info = $this->base->getSingleCar($car_id);
+						$this->base->addPoLines($car_info, $order_id);
+					}
+					header('location: /create_po?order_id=' . $order_id);
+					exit;
+				}
+			} else {
+				// ELSE IF CREATE ORDER
+				$order_id = $this->base->createNewOrder($_POST);
+
+				foreach ($_POST['purchase_lines'] as $car_id) {
+					$car_info = $this->base->getSingleCar($car_id);
+					$this->base->addPoLines($car_info, $order_id);
+				}
+
+				header('location: /create_po?order_id=' . $order_id);
+				exit;
+			}
 		}
 
 		$po_documents = $this->base->getPODocuments($order_id);
 		$this->setData("po_documents", $po_documents);
-		
+
 		$poSums = $this->base->getPOSums($order_id);
 		$this->setData("poSums", $poSums);
 
-		if(isset($_POST['clickable-table-post'])) {
+		if (isset($_POST['clickable-table-post'])) {
 
 			echo $this->base->changePurchaseTableCol($_POST);
 			exit;
 		}
 
-		if(isset($_GET['delete_line'])) {
+		if (isset($_GET['delete_line'])) {
 			$this->base->deletePoLine($_GET['delete_line']);
 
-			header("Location: $_SESSION[last_page]");  
+			header("Location: $_SESSION[last_page]");
 			exit;
-
 		}
 
-	
-		if(isset($_POST['save_changes_line']) && $order_id > 0) {
+
+		if (isset($_POST['save_changes_line']) && $order_id > 0) {
 
 			foreach ($_POST['add_purchase_line'] as $car_id) {
 				$car_info = $this->base->getSingleCar($car_id);
 				$this->base->addPoLines($car_info, $order_id);
 			}
-			
-			unset($_POST['add_purchase_line']);
 
+			unset($_POST['add_purchase_line']);
 		}
 
 
@@ -84,17 +109,15 @@ class create_po extends view
 
 			$this->setData("purchase_lines", $lines_array);
 
-			if(isset($_REQUEST['show_all_purch_lines'])) {
+			if (isset($_REQUEST['show_all_purch_lines'])) {
 				unset($_POST['hide_all_purch_lines']);
-			}			
-
-
-		}else if(isset($_POST['purchase_lines'])) {
+			}
+		} else if (isset($_POST['purchase_lines'])) {
 			$this->setData("purchase_lines", $_POST['purchase_lines']);
 		}
 
-		
-		
+
+
 		if (isset($_POST['save_order'])) {
 
 			// IF UPDATE ORDER 
@@ -104,7 +127,13 @@ class create_po extends view
 					$car_info = $this->base->getSingleCar($car_id);
 					$this->base->addPoLines($car_info, $order_id);
 				}
-				header('location: /create_po?order_id=' . $order_id);
+
+				if ($_POST['save_order'] == 1) {
+
+					header('location: /create_po?order_id=' . $order_id . "&show_all_purch_lines");
+				} else {
+					header('location: /create_po?order_id=' . $order_id);
+				}
 				exit;
 			}
 
@@ -116,8 +145,11 @@ class create_po extends view
 				$this->base->addPoLines($car_info, $order_id);
 			}
 
-
-			header('location: /create_po?order_id=' . $order_id);
+			if (isset($_REQUEST['show_all_purch_lines'])) {
+				header('location: /create_po?order_id=' . $order_id, "&show_all_purch_lines");
+			} else {
+				header('location: /create_po?order_id=' . $order_id);
+			}
 			exit;
 		}
 
@@ -147,25 +179,22 @@ class create_po extends view
 			unset($_GET['show_all_purch_lines']);
 			unset($_REQUEST['show_all_purch_lines']);
 
-			if(isset($_POST['update_order'])) {
+			if (isset($_POST['update_order'])) {
 				$this->base->updateOrder($_POST);
 				header('location: /create_po?order_id=' . $_POST['update_order']);
 				exit;
 			}
-
 		}
 
-		if (isset($_REQUEST['show_all_purch_lines']) || isset($_REQUEST['hide_all_purch_lines'])) {
-			
+		if (isset($_POST['show_all_purch_lines']) || isset($_POST['hide_all_purch_lines'])) {
+
 			foreach ($arr_items as $item) {
 				$arr[$item] = isset($_POST[$item]) ? $_POST[$item] : '';
 			}
-		
-			if(!isset($_POST['add_purchase_line']) && isset($_POST['update_order'])) {
-				$this->base->updateOrder($_POST);
-			
-			}
 
+			if (!isset($_POST['add_purchase_line']) && isset($_POST['update_order'])) {
+				$this->base->updateOrder($_POST);
+			}
 		} else if ($order_id > 0) {
 			$singleOrder = $this->base->getSinglePurchaseOrder($order_id);
 			foreach ($arr_items as $item) {

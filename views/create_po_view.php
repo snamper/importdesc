@@ -35,21 +35,39 @@ $data['poSums'] = $data['poSums'][0];
             <span class="ti-plus additional-options" id="toggle_nav"></span>
 
             <div class="custom-row" id="create_nav">
-                <div class="custom-col">
-                    <a href="/create_po" class="btn btn-danger" onclick="return confirm('Are you sure?');"><?php echo $_SESSION['lang']['car_start_page_4'] ?></a>
-                </div>
 
-                <div class="custom-col">
-                    <button type="submit" name="save_order" class="btn btn-info"><?php echo $_SESSION['lang']['car_start_page_5'] ?></button>
-                </div>
+                <?php if (!isset($_GET['order_id']) && !isset($_POST['update_order']) && $data['purch_order']['po_status'] < 2) : ?>
+                    <div class="custom-col">
+                        <a href="/create_po" class="btn btn-danger" onclick="return confirm('Are you sure?');"><?php echo $_SESSION['lang']['car_start_page_4'] ?></a>
+                    </div>
+                <?php endif ?>
 
-                <div class="custom-col">
-                    <button type="submit" name="update_order_close" class="btn btn-primary">Save and Close</button>
-                </div>
 
-                <div class="custom-col">
-                    <button type="submit" name="update_order_submit" class="btn btn-primary">Save and Submit</button>
-                </div>
+                <?php if ($data['purch_order']['po_status'] < 2) : ?>
+                    <div class="custom-col">
+                        <button type="submit" name="save_order" class="btn btn-info" value="<?php echo isset($_REQUEST['show_all_purch_lines']) ? '1' : '0'; ?>"><?php echo $_SESSION['lang']['car_start_page_5'] ?></button>
+                    </div>
+
+                    <div class="custom-col">
+                        <button type="submit" name="update_order_close" class="btn btn-primary">Save and Close</button>
+                    </div>
+
+                    <div class="custom-col">
+                        <button type="submit" name="update_order_submit" value="2" class="btn btn-primary">Save and Submit</button>
+                    </div>
+                <?php else : ?>
+                    <div class="custom-col">
+                        <button type="submit" class="btn btn-primary" name="update_order_submit" value="1">Set status new</button>
+                    </div>
+
+                    <div class="custom-col">
+                        <button type="submit" class="btn btn-danger" name="update_order_submit" value="3">Reject</button>
+                    </div>
+
+                    <div class="custom-col">
+                        <button type="submit" class="btn btn-primary" name="update_order_submit" value="4">Approve</button>
+                    </div>
+                <?php endif ?>
 
             </div>
 
@@ -79,8 +97,7 @@ $data['poSums'] = $data['poSums'][0];
                             <span>Date*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" id="datepicker2" autocomplete="false" required type="text" name="po_date" value="<?php echo (
-                                empty($data['purch_order']['po_date']) ? date('d-m-Y') : date('d-m-Y', strtotime($data['purch_order']['po_date']))); ?>" />
+                            <input class="form-control" id="datepicker2" autocomplete="false" required type="text" name="po_date" value="<?php echo (empty($data['purch_order']['po_date']) ? date('d-m-Y') : date('d-m-Y', strtotime($data['purch_order']['po_date']))); ?>" />
                         </div>
                     </div>
 
@@ -184,10 +201,7 @@ $data['poSums'] = $data['poSums'][0];
                             <span>Status</span>
                         </div>
                         <div class="col-12 col-md-6">
-                            <select class="form-control" name="po_status"> 
-                                <option value="0">New</option>
-                                <option <?php echo($data['purch_order']['po_status'] == 1 ? "selected" : "") ?> value="1">Old</option>
-                             </select>
+                            <span> </span>
                         </div>
                     </div>
                 </div>
@@ -222,7 +236,8 @@ $data['poSums'] = $data['poSums'][0];
                             <span>Number of vehicles</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <span><?php echo (isset($_REQUEST['order_id']) ? $data['poSums']['total_lines'] : count($data['purchase_lines'][0]))?></span>
+                            <span><?php echo (isset($_REQUEST['order_id']) ? $data['poSums']['total_lines'] : count($data['purchase_lines'][0])) ?></span>
+                            <input type="hidden" name="po_number_vehicles" value="<?php echo (isset($_REQUEST['order_id']) ? $data['poSums']['total_lines'] : count($data['purchase_lines'][0])) ?>">
                         </div>
                     </div>
                     <?php if (isset($_REQUEST['show_all_purch_lines'])) {
@@ -244,7 +259,8 @@ $data['poSums'] = $data['poSums'][0];
                             <span>Total purchase value (excl. VAT)</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <span><?php echo "€ {$data['poSums']['total_purchase_price_excl_vat']}" ?></span>
+                            <span><?php echo "€ " . number_format($data['poSums']['total_purchase_price_excl_vat'], 2) ?></span>
+                            <input type="hidden" name="po_total_purchase_excl_vat" value="<?php echo (!empty($data['poSums']['total_purchase_price_excl_vat']) ? $data['poSums']['total_purchase_price_excl_vat'] : 0)  ?>">
                         </div>
                     </div>
                     <div class="row">
@@ -252,7 +268,8 @@ $data['poSums'] = $data['poSums'][0];
                             <span>Total purchase value (incl. VAT)</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <span><?php echo "€ {$data['poSums']['total_purchase_price_incl_vat']}" ?></span>
+                            <span id="totalPOInclVatSpan"><?php echo "€ " . number_format($data['poSums']['total_purchase_price_incl_vat'], 2) ?></span>
+                            <input id="totalPOInclVatHidden" type="hidden" name="po_total_purchase_incl_vat" value="<?php echo (!empty($data['poSums']['total_purchase_price_incl_vat']) ? $data['poSums']['total_purchase_price_incl_vat'] : 0) ?>">
                         </div>
                     </div>
                 </div>
@@ -304,8 +321,7 @@ $data['poSums'] = $data['poSums'][0];
                             <span>Expected invoice date</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" id="datepicker3" type="text" name="po_expected_invoice_date" value="<?php echo (
-                                empty($data['purch_order']['po_expected_invoice_date']) ? date('d-m-Y') : date('d-m-Y', strtotime($data['purch_order']['po_expected_invoice_date']))); ?>" />
+                            <input class="form-control" id="datepicker3" type="text" name="po_expected_invoice_date" value="<?php echo (empty($data['purch_order']['po_expected_invoice_date']) ? date('d-m-Y') : date('d-m-Y', strtotime($data['purch_order']['po_expected_invoice_date']))); ?>" />
                         </div>
                     </div>
                 </div>

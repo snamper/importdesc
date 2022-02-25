@@ -230,7 +230,7 @@ while ($aRow = mysqli_fetch_array($rResult)) {
             $row[] = '<center data-line-id="' . $aRow[$i] . '" style="display:flex;"><a href="car_start?car_id=' . $aRow[$i] . '">' . sprintf("A%'.07d\n", $aRow[$i]) . '</a></center>';
         } elseif (in_array($aColumns[$i], $clickableTd)) {
                 if($aColumns[$i] == 'pl_purchase_price_incl_vat') {
-                    $row[] = "<span class='js-clickable-table td-span-full-size js-price-col' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'>€ $aRow[$i]</span>";
+                    $row[] = "<span class='js-clickable-table td-span-full-size js-price-col' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'>€ ".number_format($aRow[$i], 2)."</span>";
                 }else {
                     $row[] = "<span class='js-clickable-table td-span-full-size' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'>$aRow[$i]</span>";
                 }
