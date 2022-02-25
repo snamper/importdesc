@@ -56,8 +56,10 @@
 
 	$route['create_po'] = 'controllers/create_po_controller.php';
 
+	$route['show_po'] = 'controllers/show_po_controller.php';
 
-
+	$route['show_po_lines'] = 'controllers/show_po_lines_controller.php';
+	
 	
 	
 //============================================================================//
