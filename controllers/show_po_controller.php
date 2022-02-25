@@ -9,9 +9,19 @@ class show_po extends view
 	public function __construct()
 	{
 
+		$this->base = $_SESSION['base'];
 
-        if (isset($_SESSION['user'])) parent::__construct('show_po_view.php');
+		if (!isset($_SESSION['user'])) {
+			header("Location: / ");
+			exit;
+		}
+
+		if (isset($_GET['delete_order'])) {
+
+			$this->base->deletePO($_GET['delete_order']);
+		}
+
+		if (isset($_SESSION['user'])) parent::__construct('show_po_view.php');
 		else parent::__construct('login_view.php');
-    }
+	}
 }
-?>

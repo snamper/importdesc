@@ -201,7 +201,7 @@ $data['poSums'] = $data['poSums'][0];
                             <span>Status</span>
                         </div>
                         <div class="col-12 col-md-6">
-                            <span> </span>
+                            <span><?php echo $_SESSION['lang'][$data['purch_order']['status_label']]; ?></span>
                         </div>
                     </div>
                 </div>

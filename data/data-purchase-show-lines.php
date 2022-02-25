@@ -122,13 +122,13 @@ for ($i = 0; $i < count($aColumns); $i++) {
     }
 }
 
-if(isset($_GET['order_id'])) {
+if (isset($_GET['order_id'])) {
     if ($sWhere == "") {
         $sWhere = "WHERE ";
     } else {
         $sWhere .= " AND ";
     }
-    $sWhere .= "pl_purchase_id = " .mysqli_real_escape_string($gaSql['link'], $_GET['order_id']) ;
+    $sWhere .= "pl_purchase_id = " . mysqli_real_escape_string($gaSql['link'], $_GET['order_id']);
 }
 
 
@@ -145,7 +145,7 @@ $sQuery = "
         $sLimit
     ";
 
-    
+
 
 $rResult = mysqli_query($gaSql['link'], $sQuery, $gaSql['link']) or fatal_error('MySQL Error: ' . mysqli_errno($gaSql['link']));
 mysqli_query($gaSql['link'], "SET character_set_results=utf8", $gaSql['link']);
@@ -229,12 +229,11 @@ while ($aRow = mysqli_fetch_array($rResult)) {
         } elseif ($aColumns[$i] == 'pl_vehicle_id') {
             $row[] = '<center data-line-id="' . $aRow[$i] . '" style="display:flex;"><a href="car_start?car_id=' . $aRow[$i] . '">' . sprintf("A%'.07d\n", $aRow[$i]) . '</a></center>';
         } elseif (in_array($aColumns[$i], $clickableTd)) {
-                if($aColumns[$i] == 'pl_purchase_price_incl_vat') {
-                    $row[] = "<span class='js-clickable-table td-span-full-size js-price-col' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'>€ ".number_format($aRow[$i], 2)."</span>";
-                }else {
-                    $row[] = "<span class='js-clickable-table td-span-full-size' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'>$aRow[$i]</span>";
-                }
-           
+            if ($aColumns[$i] == 'pl_purchase_price_incl_vat') {
+                $row[] = "<span class='js-clickable-table td-span-full-size js-price-col' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'>€ " . number_format($aRow[$i], 2) . "</span>";
+            } else {
+                $row[] = "<span class='js-clickable-table td-span-full-size' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'>$aRow[$i]</span>";
+            }
         } elseif (in_array($aColumns[$i], $selects)) {
 
             // $row[] = "<span class='js-clickable-table' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'>$aRow[$i]</span>";

@@ -457,6 +457,19 @@ class base
 		}
 	}
 
+	public function deletePO($po_id)
+	{
+
+		$dbDriver = new db_driver();
+		$query = "DELETE FROM purchase_order WHERE po_id =?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$po_id]);
+
+		$query = "DELETE FROM purchase_order_lines WHERE pl_purchase_id = ?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$po_id]);
+	}
+
 	public function addPoLines($car_info, $purchase_id)
 	{
 

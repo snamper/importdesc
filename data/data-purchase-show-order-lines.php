@@ -231,33 +231,6 @@ while ($aRow = mysqli_fetch_array($rResult)) {
             $row[] = '<center style="display:flex;"><a href="car_start?car_id=' . $aRow[$i] . '">' . $aRow[$i] . '</a></center>';
         } elseif ($aColumns[$i] == 'pl_vehicle_id') {
             $row[] = '<center data-line-id="' . $aRow[$i] . '" style="display:flex;"><a href="car_start?car_id=' . $aRow[$i] . '" title="' . $hover_title . '">' . sprintf("A%'.07d\n", $aRow[$i]) . '</a></center>';
-            /* } elseif (in_array($aColumns[$i], $clickableTd)) {
-            if ($aColumns[$i] == 'pl_purchase_price_incl_vat') {
-                $row[] = "<span class='js-clickable-table td-span-full-size js-price-col' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'>€ $aRow[$i]</span>";
-            } else {
-                $row[] = "<span class='js-clickable-table td-span-full-size' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'>$aRow[$i]</span>";
-            }
-        } elseif (in_array($aColumns[$i], $selects)) {
-
-            // $row[] = "<span class='js-clickable-table' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'>$aRow[$i]</span>";
-
-            $options = '';
-            for ($j = 0; $j < 2; $j++) {
-                if ($aRow[$i] == $j) {
-                    $selected = "selected";
-                } else {
-                    $selected = "";
-                }
-                if ($j == 0) {
-                    $text = "No";
-                } else {
-                    $text = "Yes";
-                }
-
-                $options .= "<option $selected value='$j'> $text </option>";
-            }
-
-            $row[] = "<select class='form-control js-submitable-select' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'> $options </select>"; */
         } elseif ($aColumns[$i] != ' ') {
             /* General output */
             $row[] = $aRow[$i];

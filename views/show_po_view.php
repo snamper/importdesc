@@ -50,6 +50,7 @@
                 <th class="select-filter" class="text-center">Last edited by</th>
                 <th style="white-space: nowrap">Approved on</th>
                 <th style="white-space: nowrap">Approved by</th>
+                <th style="white-space: nowrap"></th>
 
             </thead>
             <tbody>

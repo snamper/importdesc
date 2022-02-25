@@ -8,7 +8,7 @@ include("connection.php");
 /* Array of database columns which should be read and sent back to DataTables. Use a space where
  * you want to insert a non-database field (for example a counter or static image)
  */
-$aColumns = array('po_id', 'po_status', 'po_date', 'po_source_supplier', 'po_number_vehicles', 'po_total_purchase_excl_vat', 'po_total_purchase_incl_vat', 'po_external_order_number', 'po_buyer', 'po_purchasing_entity', 'po_created_at', 'u_creat.expo_users_name', 'po_updated_at', 'u_upd.expo_users_name', 'po_approved_at', 'po_approved_by_id' );
+$aColumns = array('po_id', 'po_status', 'po_date', 'po_source_supplier', 'po_number_vehicles', 'po_total_purchase_excl_vat', 'po_total_purchase_incl_vat', 'po_external_order_number', 'po_buyer', 'po_purchasing_entity', 'po_created_at', 'u_creat.expo_users_name', 'po_updated_at', 'u_upd.expo_users_name', 'po_approved_at', 'po_approved_by_id', 'po_id as edit');
 /* Indexed column (used for fast and accurate table cardinality) */
 $sIndexColumn = "c.car_id as number";
 /* DB table to use */
@@ -202,8 +202,9 @@ while ($aRow = mysqli_fetch_array($rResult)) {
             /* Special output formatting for 'version' column */
             $row[] = ($aRow[$aColumns[$i]] == "0") ? '-' : $aRow[$aColumns[$i]];
         } elseif ($aColumns[$i] == 'po_updated_by_id') {
-            $row[] = '<center>' .$_SESSION['user'][0]['expo_users_ID'] . '</center>';
-        
+            $row[] = '<center>' . $_SESSION['user'][0]['expo_users_ID'] . '</center>';
+        } elseif ($aColumns[$i] == "po_id as edit") {
+            $row[] = '<center style="display:flex;"><a href="create_po?order_id=' . $aRow[$i] . '" class="btn btn-default btn-xs"><i class="ti-brush"></i></a><a href="show_po?delete_order=' . $aRow[$i] . '" class="btn btn-default btn-xs"><i class="ti-trash"></i></a></center>';
         } elseif ($aColumns[$i] != ' ') {
             /* General output */
             $row[] = $aRow[$i];
