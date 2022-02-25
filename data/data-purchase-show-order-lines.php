@@ -206,7 +206,7 @@ $j = 0;
 $selects = ['pl_accident_free', 'pl_extra_set_of_wheels', 'pl_deposit']; */
 
 while ($aRow = mysqli_fetch_array($rResult)) {
-    $hover_title = $aRow['cd_conf_number'] . '&#010;VIN: ' . $aRow['cd_vin'] . '&#010;' . $aRow['cd_komm_number'] . '&#010;' . $aRow['cd_nl_registration_number'];
+    $hover_title = $aRow['cd_conf_number'] . '&#010;VIN: ' . $aRow['cd_vin'] . '&#010;' . $aRow['cd_komm_number'] . '&#010; ' . $aRow['cd_nl_registration_number'];
 
     $j++;
     $row = array();
