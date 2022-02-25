@@ -14,12 +14,22 @@
     <!-- END breadcrumb -->
     <!-- BEGIN page-header -->
     <h1 class="page-header">
-        Cars
+        Purchase orders
     </h1>
     <!-- END page-header -->
 
 
     <!-- BEGIN table sample-table-1-->
+
+    <div class="row my-1">
+        <div class="d-inline-flex mx-1">
+            <a href="/create_po" class="btn btn-primary text-white">Add Purchase Order</a>
+        </div>
+        <div class="d-inline-flex">
+            <a href="/show_po_lines" class="btn btn-primary text-white">Show all order lines</a>
+        </div>
+    </div>
+
 
     <div class="table-responsive">
         <table id="show_po_table" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">

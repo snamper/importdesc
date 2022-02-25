@@ -192,7 +192,7 @@
 
         });
 
-        var oTable402 = $('#show_po_table')
+    var oTable402 = $('#show_po_table')
         .DataTable({
             "bprocessing": true,
             "bserverSide": true,
@@ -208,6 +208,25 @@
 
                 document.querySelector("[type='search']").style = "min-width:150px";
 
+                // ADD FILTERS 
+                this.api().columns('.select-filter').every(function() {
+                    var column = this;
+                    var select = $('<select class="selecter form-control" id="' + column.header().innerText + '"><option value="">' + column.header().innerText + '</option></select>')
+                        .appendTo('.dataTables_length')
+                        .on('change', function() {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+                    column.data().unique().sort().each(function(d, j) {
+                        if (d != null) {
+                            select.append('<option value="' + d + '">' + d + '</option>');
+                        }
+                    });
+                });
             }
 
         });
@@ -587,7 +606,7 @@
             },
             // 'order': [[1, 'asc']],
         });
-        
+
 
 
     var oTable3 = $('#datatable-inside')
