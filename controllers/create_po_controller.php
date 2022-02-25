@@ -57,6 +57,7 @@ class create_po extends view
 
 		}
 
+	
 		if(isset($_POST['save_changes_line']) && $order_id > 0) {
 
 			foreach ($_POST['add_purchase_line'] as $car_id) {
@@ -70,6 +71,7 @@ class create_po extends view
 
 
 		if (isset($_POST['add_purchase_line'])) {
+
 			$lines_array = [];
 			$lines_array = array_merge($lines_array, $_POST['add_purchase_line']);
 
@@ -82,9 +84,10 @@ class create_po extends view
 
 			$this->setData("purchase_lines", $lines_array);
 
-			if(isset($_REQUEST['show_all_purch_lines']) && isset($_POST['save_changes_line'])) {
+			if(isset($_REQUEST['show_all_purch_lines'])) {
 				unset($_POST['hide_all_purch_lines']);
 			}			
+
 
 		}else if(isset($_POST['purchase_lines'])) {
 			$this->setData("purchase_lines", $_POST['purchase_lines']);
