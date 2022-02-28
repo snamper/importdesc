@@ -27,17 +27,17 @@ class car_start extends view
 		$this->base = $_SESSION['base'];
 
 		// Translations 
-		if(!isset($_SESSION['user'])) {
-            
-            echo json_encode($this->base->getLangTranslations(2));
-            return;
-        }
+		if (!isset($_SESSION['user'])) {
 
-        if(isset($_GET['lang_page'])) {
+			echo json_encode($this->base->getLangTranslations(2));
+			return;
+		}
 
-            echo json_encode($this->base->getLangTranslations($_SESSION['user'][0]['langID'], $_GET['lang_page']));
-            return;
-        }
+		if (isset($_GET['lang_page'])) {
+
+			echo json_encode($this->base->getLangTranslations($_SESSION['user'][0]['langID'], $_GET['lang_page']));
+			return;
+		}
 
 
 		/**
@@ -65,7 +65,7 @@ class car_start extends view
 		$users = $this->base->getAllUsers();
 		$this->setData("users", $users);
 
-		if(isset($_POST['move_image'])) {
+		if (isset($_POST['move_image'])) {
 			$this->base->switchImages($_POST, $_POST['car_id']);
 			exit;
 		}
@@ -73,24 +73,24 @@ class car_start extends view
 		if (isset($_POST['update_car'])) {
 			if (isset($_POST['car_id'])) {
 				$inserted_car_id = $_POST['car_id'];
-                $this->base->updateCar($_POST, $_POST['car_id']);
+				$this->base->updateCar($_POST, $_POST['car_id']);
 				$this->base->updateCalculation($_POST, $_POST['car_id']);
 
-                if(isset($_POST['car_images'])) {
-                    foreach($_POST['car_images'] as $image_data) {
+				if (isset($_POST['car_images'])) {
+					foreach ($_POST['car_images'] as $image_data) {
 						/* $last_pos = $this->base->getPhotoLastPos($inserted_car_id);
 						$last_pos++; */
 						list($img_path, $img_pos) = explode('|', $image_data);
-                        $this->base->insertCarPhoto($img_path, $inserted_car_id, $img_pos);
-                    }
-                }
+						$this->base->insertCarPhoto($img_path, $inserted_car_id, $img_pos);
+					}
+				}
 
-                if(isset($_POST['car_documents'])) {
+				if (isset($_POST['car_documents'])) {
 
-                    foreach($_POST['car_documents'] as $doc_path) {
-                        $this->base->insertCarDocument($doc_path, $inserted_car_id);
-                    }
-                }
+					foreach ($_POST['car_documents'] as $doc_path) {
+						$this->base->insertCarDocument($doc_path, $inserted_car_id);
+					}
+				}
 
 				header("Location: /car_start?car_id={$_POST['car_id']}");
 			} else {
@@ -111,17 +111,17 @@ class car_start extends view
 				$filename = $file['name'];
 				$fileType = pathinfo($filename, PATHINFO_EXTENSION);
 				$randomid = uniqid('doc-');
-                $location = "";
+				$location = "";
 				if ($_POST['allowed'] == "image") {
 					$location = "uploads/images/" . $randomid . "." . $fileType;
-				} else {					
+					move_uploaded_file($file['tmp_name'], $location);
+					array_push($paths, ['location' => $location, 'pos' => $imagepos]);
+					$imagepos++;
+				} else {
 					$location = "uploads/documents/" . $randomid . "." . $fileType;
+					move_uploaded_file($file['tmp_name'], $location);
+					array_push($paths, ['name' => $filename, 'location' => $location]);
 				}
-
-				move_uploaded_file($file['tmp_name'], $location);
-
-				array_push($paths, [ 'location' => $location, 'pos' => $imagepos ]);
-				$imagepos++;
 			}
 			echo json_encode($paths);
 			exit;
@@ -132,22 +132,26 @@ class car_start extends view
 			exit;
 		}
 
+		if (isset($_GET['delete_car_document'])) {
+			$this->base->deleteCarDocument($_GET['delete_car_document']);
+			exit;
+		}
+
 		if (isset($_POST['duplicate_car'])) {
 			$car_id = isset($_POST['car_id']) ? $_POST['car_id'] : 0;
-			if($car_id) {
+			if ($car_id) {
 				$num_copies = isset($_POST['duplicate_number']) ? $_POST['duplicate_number'] : 0;
-				if($num_copies) {
+				if ($num_copies) {
 					$photos = $this->base->getCarImages($car_id);
-					for($i = 0; $i < $num_copies; $i++) {
+					for ($i = 0; $i < $num_copies; $i++) {
 						$inserted_car_id = $this->base->createCar($_POST);
-						$this->base->createDuplicateEntry($car_id, ('B_'.sprintf("A%'.07d", $car_id).'_'.($i+1)), $inserted_car_id);
-						foreach($photos as $photo) {
+						$this->base->createDuplicateEntry($car_id, ('B_' . sprintf("A%'.07d", $car_id) . '_' . ($i + 1)), $inserted_car_id);
+						foreach ($photos as $photo) {
 							$this->base->insertCarPhoto($photo['cp_path'], $inserted_car_id, intval($photo['cp_imagepos']));
 						}
 					}
 					header("Location: /show_cars");
-				}
-				else
+				} else
 					header("Location: /car_start?car_id=$car_id&duplicate");
 			}
 			exit;
@@ -156,24 +160,23 @@ class car_start extends view
 		if (isset($_POST['create_car']) || isset($_POST['create_open_car'])) {
 			$inserted_car_id = $this->base->createCar($_POST);
 
-			if(isset($_POST['car_images'])) {
-				foreach($_POST['car_images'] as $image_data) {
+			if (isset($_POST['car_images'])) {
+				foreach ($_POST['car_images'] as $image_data) {
 					list($img_path, $img_pos) = explode('|', $image_data);
 					$this->base->insertCarPhoto($img_path, $inserted_car_id, intval($img_pos));
 				}
 			}
 
-			if(isset($_POST['car_documents'])) {
-			
-				foreach($_POST['car_documents'] as $doc_path) {
-					$this->base->insertCarDocument($doc_path, $inserted_car_id);
+			if (isset($_POST['car_documents'])) {
+
+				foreach ($_POST['car_documents'] as $doc_info) {
+					$this->base->insertCarDocument($doc_info, $inserted_car_id);
 				}
 			}
 
-			if(isset($_POST['create_open_car'])) {
+			if (isset($_POST['create_open_car'])) {
 				header("Location: /car_start?car_id=$inserted_car_id");
-			}
-			else {
+			} else {
 				header("Location: /show_cars");
 			}
 			exit;
@@ -187,109 +190,60 @@ class car_start extends view
 			exit;
 		}
 
-		if(isset($_GET['make_id_get_motors'])) {
-            $motors = $this->base->getMotorsByMake($_GET['make_id_get_motors']);
-        
-            echo json_encode($motors, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
-            exit;
-        }
+		if (isset($_GET['make_id_get_motors'])) {
+			$motors = $this->base->getMotorsByMake($_GET['make_id_get_motors']);
 
-        if(isset($_GET['make_id_get_uitvoering'])) {
-            $uitvoerings = $this->base->getUitvoeringsByMake($_GET['make_id_get_uitvoering']);
-        
-            echo json_encode($uitvoerings, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
-            exit;
-        }
+			echo json_encode($motors, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
+			exit;
+		}
 
-        if(isset($_GET['make_id_get_fuels'])) {
-            $fuels = $this->base->getFuelByMake($_GET['make_id_get_fuels']);
-            echo json_encode($fuels, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
-            exit;
-        }
+		if (isset($_GET['make_id_get_uitvoering'])) {
+			$uitvoerings = $this->base->getUitvoeringsByMake($_GET['make_id_get_uitvoering']);
 
-        if(isset($_GET['get_all_fuels'])) {
-            $fuels = $this->base->getFuelAllFuelTypes();
-            echo json_encode($fuels, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
-            exit;
-        }
+			echo json_encode($uitvoerings, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
+			exit;
+		}
 
-        if(isset($_GET['fuel_id_get_motors'])) {
-            $motors = $this->base->getMotorsByFuel($_GET['fuel_id_get_motors'], $_GET['car_make_id']);
-            echo json_encode($motors, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
-            exit;
-        }
+		if (isset($_GET['make_id_get_fuels'])) {
+			$fuels = $this->base->getFuelByMake($_GET['make_id_get_fuels']);
+			echo json_encode($fuels, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
+			exit;
+		}
 
-        if(isset($_GET['get_fuel_by_make'])) {
-            $motors = $this->base->getFuelByMake($_GET['get_fuel_by_make'], $_GET['car_make_id']);
-            echo json_encode($motors, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
-            exit;
-        }
+		if (isset($_GET['get_all_fuels'])) {
+			$fuels = $this->base->getFuelAllFuelTypes();
+			echo json_encode($fuels, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
+			exit;
+		}
 
-        if(isset($_GET['get_fuel_by_motor'])) {
-            $motors = $this->base->getFuelByMotor($_GET['get_fuel_by_motor']);
-            echo json_encode($motors, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
-            exit;
-        }
+		if (isset($_GET['fuel_id_get_motors'])) {
+			$motors = $this->base->getMotorsByFuel($_GET['fuel_id_get_motors'], $_GET['car_make_id']);
+			echo json_encode($motors, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
+			exit;
+		}
 
-        if(isset($_GET['make_id_get_models'])) {
-            $motors = $this->base->getModelsByMake($_GET['make_id_get_models']);
-            echo json_encode($motors, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
-            exit;
-        }
+		if (isset($_GET['get_fuel_by_make'])) {
+			$motors = $this->base->getFuelByMake($_GET['get_fuel_by_make'], $_GET['car_make_id']);
+			echo json_encode($motors, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
+			exit;
+		}
+
+		if (isset($_GET['get_fuel_by_motor'])) {
+			$motors = $this->base->getFuelByMotor($_GET['get_fuel_by_motor']);
+			echo json_encode($motors, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
+			exit;
+		}
+
+		if (isset($_GET['make_id_get_models'])) {
+			$motors = $this->base->getModelsByMake($_GET['make_id_get_models']);
+			echo json_encode($motors, JSON_UNESCAPED_SLASHES, JSON_HEX_APOS);
+			exit;
+		}
 
 
 
 		if (isset($_SESSION['user'])) parent::__construct('click_model_view.php');
 		else parent::__construct('login_view.php');
-	}
-
-	public function createCarUploads($files, $inserted_car_id, $directory)
-	{
-
-
-		$total_files = count($files['name']);
-		for ($i = 0; $i < $total_files; $i++) {
-
-			$target_dir = dirname(__DIR__) . "/$directory";
-			$target_file = $target_dir . basename($files["name"][$i]);
-			$uploadOk = 1;
-			$imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-			$new_file_name = "$inserted_car_id" . time() . "." . $imageFileType;
-			$new_file_path = "$target_dir/$new_file_name";
-
-			// Check file size
-			if ($files["size"][$i] > 5 * 1048576) { // 5 MB
-				$_SESSION['error_msg'][] = 'The file You are trying to upload is too large';
-				$uploadOk = 0;
-			}
-
-
-
-
-			// Allow certain file formats        
-			if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" && $imageFileType != "txt"  && $imageFileType != "docx" && $imageFileType != "pdf") {
-				// echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-				if (move_uploaded_file($files["tmp_name"][$i], $new_file_path)) {
-					$uploadOk == 1;
-				}
-			} else {
-				// Check if $uploadOk is set to 0 by an error
-				if ($uploadOk == 0) {
-					$_SESSION['error_msg'][] = 'There was error uploading a file, please try again';
-				} else { // if everything is ok, try to upload file
-
-					move_uploaded_file($files["tmp_name"][$i], $new_file_path);
-					if ($directory == "uploads/images") {
-
-						$this->base->insertCarPhoto("$directory/$new_file_name", $inserted_car_id, $files['name'][$i]);
-					} else {
-
-						$this->base->insertCarDocument("$directory/$new_file_name", $inserted_car_id, $files['name'][$i]);
-					}
-				}
-				sleep(1);
-			}
-		}
 	}
 
 	function checkUploadFolder()

@@ -1775,9 +1775,6 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             success: function (response) {
-
-                console.log(response);
-
                 let type = "";
                 if (allowedFormats.includes("application/pdf")) {
                     type = "files";
@@ -1831,25 +1828,34 @@ $(document).ready(function () {
             const documentsContainer = document.querySelector(".show-documents");
 
             for (let key in response) {
-                let arrLink = response[key].location.split('/');
-
-
-                let documentElement = Object.assign(
+                let a = Object.assign(
                     document.createElement("a"), {
                     "href": response[key].location,
-                    "innerText": arrLink[arrLink.length - 1]
+                    "innerText": response[key].name
+                });
+                let trash = Object.assign(
+                    document.createElement("span"), {
+                    "className": 'ti-trash'
+                });
+                let div = Object.assign(
+                    document.createElement("div"), {
+                    "className": 'document'
                 });
 
+                div.appendChild(a);
+                div.appendChild(trash);
 
-                documentsContainer.appendChild(documentElement);
-                documentsContainer.appendChild(document.createElement("br"));
+                div.setAttribute('data-doc-id', response[key].id)
+
+                documentsContainer.prepend(div);
                 if (createEditCarForm) {
+                    trash.addEventListener('click', carDocumentTrashBtnClick);
 
                     let hiddenInput = Object.assign(
                         document.createElement("input"), {
                         "type": "hidden",
                         "name": "car_documents[]",
-                        "value": response[key].location
+                        "value": response[key].name + '|' + response[key].location
                     });
                     createEditCarForm.appendChild(hiddenInput);
                 } else if (createEditPOForm) {
@@ -1858,7 +1864,7 @@ $(document).ready(function () {
                         document.createElement("input"), {
                         "type": "hidden",
                         "name": "po_documents[]",
-                        "value": response[key].location
+                        "value": response[key].name + '|' + response[key].location
                     });
                     createEditPOForm.appendChild(hiddenInput);
                 }
@@ -2756,3 +2762,34 @@ function restBpmCalc() {
         }
     });
 }
+
+function carDocumentTrashBtnClick(e) {
+    const div = e.currentTarget.parentElement;
+    const docId = div.getAttribute('data-doc-id');
+    if(docId) {
+        const queryString = window.location.search;
+        const parameters = new URLSearchParams(queryString);
+        const car_id = parameters.get('car_id');
+        $.ajax({
+            url: car_id ? `${location.origin}/car_start?delete_car_document=${docId}` : `${location.origin}/create_po?delete_po_document=${docId}`,
+            type: 'post',
+            contentType: false,
+            processData: false,
+            success: function () {
+                div.remove();
+            },
+        });
+    }
+    else {
+        div.remove();
+    }
+}
+
+window.addEventListener('DOMContentLoaded', (event) => {
+    const carDocTrashBtns = document.querySelectorAll('#uploadedFiles .document .ti-trash');
+    if(carDocTrashBtns.length > 0) {
+        carDocTrashBtns.forEach(trash => {
+            trash.addEventListener('click', carDocumentTrashBtnClick);
+        });
+    }
+});

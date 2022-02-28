@@ -333,7 +333,9 @@ $data['poSums'] = $data['poSums'][0];
                         <?php
                         if (!is_null($data['po_documents'][0])) {
                             foreach ($data['po_documents'][0] as $key => $doc) {
-                                echo "<a target='_blank' href='{$doc['pod_path']}'>{$doc['pod_filename']}</a></br>";
+                                echo "<div class='document' data-doc-id='{$doc['pod_id']}'>
+                                    <a href='{$doc['pod_path']}' about='_blank'>{$doc['pod_filename']}</a><span class='ti-trash'></span>
+                                </div>";
                             }
                         }
                         ?></div>
