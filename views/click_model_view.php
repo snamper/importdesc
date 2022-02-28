@@ -1,37 +1,39 @@
-<?php 
-    $data['single_car'] = $data['single_car'][0];
-    if(!empty($data['car_images'][0]))
-        usort($data['car_images'][0], function($a, $b) {return (intval($a['cp_imagepos']) < intval($b['cp_imagepos'])) ? -1 : 1;});
+<?php
+$data['single_car'] = $data['single_car'][0];
+if (!empty($data['car_images'][0]))
+    usort($data['car_images'][0], function ($a, $b) {
+        return (intval($a['cp_imagepos']) < intval($b['cp_imagepos'])) ? -1 : 1;
+    });
 ?>
 <div class="content js-fill-in-container" id="createEditCarPage">
     <div class="ref-container">
-            <span data-ref="carMake">
-                <?php echo isset($data['single_car']['cmake_name']) ? substr($data['single_car']['cmake_name'],0,3) : ""; ?>
-            </span>
-            <span data-ref="carModel">
-                <?php echo isset($data['single_car']['cmodel_name']) ? $data['single_car']['cmodel_name'] : ""; ?>
-            </span>
-            <span data-ref="vin">
-                <?php echo isset($data['single_car']['cd_meldcode']) ? $data['single_car']['cd_meldcode'] : ""; ?>
-            </span>
-            <span data-ref="sourceSupplier">
-                <?php echo isset($data['single_car']['cd_source_supplier']) ? $data['single_car']['cd_source_supplier'] : ""; ?>
-            </span>
+        <span data-ref="carMake">
+            <?php echo isset($data['single_car']['cmake_name']) ? substr($data['single_car']['cmake_name'], 0, 3) : ""; ?>
+        </span>
+        <span data-ref="carModel">
+            <?php echo isset($data['single_car']['cmodel_name']) ? $data['single_car']['cmodel_name'] : ""; ?>
+        </span>
+        <span data-ref="vin">
+            <?php echo isset($data['single_car']['cd_meldcode']) ? $data['single_car']['cd_meldcode'] : ""; ?>
+        </span>
+        <span data-ref="sourceSupplier">
+            <?php echo isset($data['single_car']['cd_source_supplier']) ? $data['single_car']['cd_source_supplier'] : ""; ?>
+        </span>
     </div>
     <form action="car_start" action="car_start" method="POST" id="createEditCarForm" class="listing__form">
-    <div class="col-xs-12 table-list">
-        <div class="row my-4 align-items-start">
-            <div class="col-12 col-md-5">
-                <div class="upload-file js-upload"><?php echo $_SESSION['lang']['car_start_page_1'] ?>
-                    <input type="file" name="upload_photo[]" multiple id="uploadCarImage">
+        <div class="col-xs-12 table-list">
+            <div class="row my-4 align-items-start">
+                <div class="col-12 col-md-5">
+                    <div class="upload-file js-upload"><?php echo $_SESSION['lang']['car_start_page_1'] ?>
+                        <input type="file" name="upload_photo[]" multiple id="uploadCarImage">
+                    </div>
+                </div>
+                <div class="col-12 col-md-6" style="padding-right: 2%;">
+                    <div class="upload-file js-upload"><?php echo $_SESSION['lang']['car_start_page_2'] ?>
+                        <input type="file" name="upload_document[]" multiple id="uploadCarDocument">
+                    </div>
                 </div>
             </div>
-            <div class="col-12 col-md-6" style="padding-right: 2%;">
-                <div class="upload-file js-upload"><?php echo $_SESSION['lang']['car_start_page_2'] ?>
-                    <input type="file" name="upload_document[]" multiple id="uploadCarDocument">
-                </div>
-            </div>
-        </div>
 
             <?php
             if (isset($_GET['car_id'])) {
@@ -46,18 +48,18 @@
                     <a href="/car_start" class="btn btn-danger" onclick="return confirm('Are you sure?');"><?php echo $_SESSION['lang']['car_start_page_4'] ?></a>
                 </div>
 
-                <?php if(isset($_GET['car_id'])): ?>
-                <div class="custom-col">
-                    <button type="submit" name="update_car" class="btn btn-info"><?php echo $_SESSION['lang']['car_start_page_5'] ?></button>
-                </div>
+                <?php if (isset($_GET['car_id'])) : ?>
+                    <div class="custom-col">
+                        <button type="submit" name="update_car" class="btn btn-info"><?php echo $_SESSION['lang']['car_start_page_5'] ?></button>
+                    </div>
 
-                <div class="custom-col">
-                    <button type="submit" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_6'] ?></button>
-                </div>
+                    <div class="custom-col">
+                        <button type="submit" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_6'] ?></button>
+                    </div>
 
-                <div class="custom-col">
-                    <button type="submit" name="duplicate_car" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_9'] ?></button>
-                </div>
+                    <div class="custom-col">
+                        <button type="submit" name="duplicate_car" class="btn btn-primary"><?php echo $_SESSION['lang']['car_start_page_9'] ?></button>
+                    </div>
                 <?php endif ?>
 
                 <div class="custom-col">
@@ -70,45 +72,45 @@
 
             </div>
 
-            <?php if(isset($_GET['duplicate'])): ?>
+            <?php if (isset($_GET['duplicate'])) : ?>
 
-            <hr />
+                <hr />
 
-            <div class="row">
-                <div class="col-12">
-                    <span class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_10'] ?></span>
+                <div class="row">
+                    <div class="col-12">
+                        <span class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_10'] ?></span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row align-items-start">
-                <!-- Left col  -->
-                <div class="col-12 col-md-5">
+                <div class="row align-items-start">
+                    <!-- Left col  -->
+                    <div class="col-12 col-md-5">
 
-                    <div class="row" style="height: 40px;">
-                        <div class="col-12 col-md-4">
-                            <span><?php echo $_SESSION['lang']['car_start_page_11'] ?></span>
-                        </div>
-                        <div class="col-12 col-md-8">
-                            <?php
-                                if(isset($_GET['car_id'])) {
+                        <div class="row" style="height: 40px;">
+                            <div class="col-12 col-md-4">
+                                <span><?php echo $_SESSION['lang']['car_start_page_11'] ?></span>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <?php
+                                if (isset($_GET['car_id'])) {
                                     echo sprintf("A%'.07d\n", $_GET['car_id']);
                                 }
-                            ?>
+                                ?>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12 col-md-7">
+                    <div class="col-12 col-md-7">
 
-                    <div class="row">
-                        <div class="col-12 col-md-4">
-                            <span><?php echo $_SESSION['lang']['car_start_page_12'] ?></span>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <input class="form-control" id="duplicateNumber" type="number" name="duplicate_number" value="1" placeholder="" required />
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <span><?php echo $_SESSION['lang']['car_start_page_12'] ?></span>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <input class="form-control" id="duplicateNumber" type="number" name="duplicate_number" value="1" placeholder="" required />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
             <?php endif ?>
 
@@ -125,8 +127,8 @@
                         <div class="col-12 col-md-4 spacer"></div>
                         <div class="col-12 col-md-8">
                             <span><?php echo $_SESSION['lang']['car_start_page_14'] ?></span>
-                        <input type="checkbox" name="preorder" id="preorder" <?php echo (isset($data['single_car']['car_preorder']) && $data['single_car']['car_preorder'] == '1') ? 'checked' : ''; ?>>
-                    </div>
+                            <input type="checkbox" name="preorder" id="preorder" <?php echo (isset($data['single_car']['car_preorder']) && $data['single_car']['car_preorder'] == '1') ? 'checked' : ''; ?>>
+                        </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-5">
@@ -178,7 +180,7 @@
                             <span><?php echo $_SESSION['lang']['car_start_page_18'] ?></span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control js-fill-refer" type="text" name="vin" id="vin" value="<?php echo (isset($data['single_car']['cd_vin']) ? $data['single_car']['cd_vin']  : "") ?>" placeholder="" <?php echo (isset($data['single_car']['car_preorder']) && $data['single_car']['car_preorder'] == '1') ? 'disabled' : ''; ?>/>
+                            <input class="form-control js-fill-refer" type="text" name="vin" id="vin" value="<?php echo (isset($data['single_car']['cd_vin']) ? $data['single_car']['cd_vin']  : "") ?>" placeholder="" <?php echo (isset($data['single_car']['car_preorder']) && $data['single_car']['car_preorder'] == '1') ? 'disabled' : ''; ?> />
                         </div>
                     </div>
 
@@ -267,7 +269,7 @@
                             <span><?php echo $_SESSION['lang']['car_start_page_25'] ?></span>
                         </div>
                         <div class="col-12 col-md-6">
-                             <input class="form-control" type="number" name="conf_number" value="<?php echo (isset($data['single_car']['cd_conf_number']) ? $data['single_car']['cd_conf_number']  : "") ?>" />
+                            <input class="form-control" type="number" name="conf_number" value="<?php echo (isset($data['single_car']['cd_conf_number']) ? $data['single_car']['cd_conf_number']  : "") ?>" />
                         </div>
                     </div>
                 </div>
@@ -283,7 +285,7 @@
                             <span class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_26'] ?></span>
                         </div>
                     </div>
-                    
+
                     <!-- Rows  -->
                     <div class="row">
                         <div class="col-12 col-md-4">
@@ -292,8 +294,8 @@
                         <div class="col-12 col-md-8">
                             <select name="car_vehicle_type" id="SoortVoertuig" class="form-control">
                                 <!-- <option value="0">-</option> -->
-                                <?php 
-                                    $selectedVhclType = (!is_null($data['single_car']['car_vehicle_type'])) ? intval($data['single_car']['car_vehicle_type']) : -1;
+                                <?php
+                                $selectedVhclType = (!is_null($data['single_car']['car_vehicle_type'])) ? intval($data['single_car']['car_vehicle_type']) : -1;
                                 ?>
                                 <option <?php echo ($selectedVhclType == 1 || $selectedVhclType == -1) ? "selected" : ""; ?> value="1">Passenger car</option>
                                 <option <?php echo $selectedVhclType == 2  ? "selected" : ""; ?> value="2">Company car max. 3500kg</option>
@@ -506,7 +508,7 @@
                             <?php echo $_SESSION['lang']['car_start_page_40'] ?>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input type="checkbox" name="paint_type"  <?php echo (isset($data['single_car']['cd_paint_type']) && $data['single_car']['cd_paint_type'] == '1' ? "checked" : "") ?>/>
+                            <input type="checkbox" name="paint_type" <?php echo (isset($data['single_car']['cd_paint_type']) && $data['single_car']['cd_paint_type'] == '1' ? "checked" : "") ?> />
                         </div>
                     </div>
 
@@ -586,8 +588,8 @@
                 </div>
                 <!-- ./ Left col  -->
 
-               <!-- Rigth col  -->
-               <div class="col-12 col-md-7">
+                <!-- Rigth col  -->
+                <div class="col-12 col-md-7">
                     <div class="container" id="calculationContainer" style="margin-left: 0!important;padding-left: 0!important;">
                         <div class="row align-items-start" style="gap: 1%;">
                             <div class="col-6 col-md-8 calculation-col">
@@ -595,47 +597,46 @@
 
                                     <div class="col-6 col-md-6">
                                         <span><?php echo $_SESSION['lang']['car_start_page_45'] ?></span>
-                                        <input type="checkbox" name="switchvat" id="switchvat" <?php 
-                                            if(isset($data['single_car']['car_vat_marge'])) {
-                                                echo ($data['single_car']['car_vat_marge'] == '0') ? "checked" : "";
-                                            }
-                                            else {
-                                                echo 'checked';
-                                            }
-                                        ?>>
+                                        <input type="checkbox" name="switchvat" id="switchvat" <?php
+                                                                                                if (isset($data['single_car']['car_vat_marge'])) {
+                                                                                                    echo ($data['single_car']['car_vat_marge'] == '0') ? "checked" : "";
+                                                                                                } else {
+                                                                                                    echo 'checked';
+                                                                                                }
+                                                                                                ?>>
                                         <span><?php echo $_SESSION['lang']['car_start_page_44'] ?></span>
                                         <input type="checkbox" name="switchmargin" id="switchmargin" <?php
-                                            echo ((isset($data['single_car']['car_vat_marge']) && $data['single_car']['car_vat_marge'] == '1') ? "checked" : "")
-                                        ?>>
+                                                                                                        echo ((isset($data['single_car']['car_vat_marge']) && $data['single_car']['car_vat_marge'] == '1') ? "checked" : "")
+                                                                                                        ?>>
                                     </div>
                                     <div class="col-6 col-md-3" style="padding-left: 3%; white-space: nowrap;">
                                         <label for="lockSalesPriceCh" class="font-weight-normal">Lock sales price</label>
-                                        <input type="checkbox" name="lock_sales_price" id="lockSalesPriceCh" <?php echo (isset($data['single_car']['calculation_lock_sales_price']) && $data['single_car']['calculation_lock_sales_price'] == '1') ? "checked" : "" ?>/>
+                                        <input type="checkbox" name="lock_sales_price" id="lockSalesPriceCh" <?php echo (isset($data['single_car']['calculation_lock_sales_price']) && $data['single_car']['calculation_lock_sales_price'] == '1') ? "checked" : "" ?> />
                                     </div>
                                     <div class="col-6 col-md-1 text-right">
                                         <span>VAT</span>
                                     </div>
                                     <div class="col-6 col-md-2">
                                         <select name="vat_percentage" id="vatPercentage" class="form-control">
-                                            <?php  
-                                            $percentage = isset($data['single_car']['calculation_vat_percentage']) ? $data['single_car']['calculation_vat_percentage'] : 21;  
-                                                                                    
-                                                for($i = 17; $i <= 27; $i++) {
-                                                    if($percentage == $i) {
-                                                        $selected = "selected";
-                                                    }else {
-                                                        $selected = "";
-                                                    }
+                                            <?php
+                                            $percentage = isset($data['single_car']['calculation_vat_percentage']) ? $data['single_car']['calculation_vat_percentage'] : 21;
 
-                                                    echo "<option $selected value='$i'>$i%</option>";
+                                            for ($i = 17; $i <= 27; $i++) {
+                                                if ($percentage == $i) {
+                                                    $selected = "selected";
+                                                } else {
+                                                    $selected = "";
                                                 }
+
+                                                echo "<option $selected value='$i'>$i%</option>";
+                                            }
                                             ?>
                                         </select>
                                     </div>
                                 </div>
 
                                 <!-- Current date  -->
-                                <input type="hidden" autocomplete="off"  class="form-control" name="huidigedatumbpm" id="datepicker2" value="<?php echo date('d-m-Y') ?>">
+                                <input type="hidden" autocomplete="off" class="form-control" name="huidigedatumbpm" id="datepicker2" value="<?php echo date('d-m-Y') ?>">
 
                                 <div class="row str">
                                     <div class="col-12 col-md-6" id="priceNetoText">
@@ -651,7 +652,7 @@
                                         <?php echo $_SESSION['lang']['car_start_page_47'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input type="text" class="form-control js-calc-input" id="addAfleverkosten" value="<?php echo (isset($data['single_car']['fee_intermediate_supplier']) ?  $data['single_car']['fee_intermediate_supplier'] : '') ?> "  name="fee_intermediate_supplier" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" id="addAfleverkosten" value="<?php echo (isset($data['single_car']['fee_intermediate_supplier']) ?  $data['single_car']['fee_intermediate_supplier'] : '') ?> " name="fee_intermediate_supplier" placeholder="">
                                     </div>
                                 </div>
 
@@ -667,7 +668,7 @@
                                 <div class="row str">
                                     <div class="col-12 col-md-6">
                                         <?php echo $_SESSION['lang']['car_start_page_49'] ?>
-                                        </div>
+                                    </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['costs_damage_and_repair']) ?  $data['single_car']['costs_damage_and_repair'] : '') ?> " id="addOpknapkosten" name="costs_damage_and_repair" placeholder="">
                                     </div>
@@ -716,7 +717,7 @@
                                         <?php echo $_SESSION['lang']['car_start_page_53'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input type="text" <?php echo (isset($data['single_car']['calculation_lock_sales_price']) && $data['single_car']['calculation_lock_sales_price'] == 0 || !isset($data['single_car']['calculation_lock_sales_price'])  ? "" : "readonly" ) ?> class="form-control js-calc-input" id="addFee" value="<?php echo (isset($data['single_car']['fee_gwi']) ?  $data['single_car']['fee_gwi'] : '') ?> " name="fee_gwi" placeholder="">
+                                        <input type="text" <?php echo (isset($data['single_car']['calculation_lock_sales_price']) && $data['single_car']['calculation_lock_sales_price'] == 0 || !isset($data['single_car']['calculation_lock_sales_price'])  ? "" : "readonly") ?> class="form-control js-calc-input" id="addFee" value="<?php echo (isset($data['single_car']['fee_gwi']) ?  $data['single_car']['fee_gwi'] : '') ?> " name="fee_gwi" placeholder="">
 
                                     </div>
                                 </div>
@@ -733,7 +734,7 @@
                                         <?php echo $_SESSION['lang']['car_start_page_55'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input readonly class="form-control" type="text" value="<?php echo (isset($data['single_car']['sales_price_netto']) ?  $data['single_car']['sales_price_netto'] : '') ?> "  name="sales_price_netto" id="totalPriceFee">
+                                        <input readonly class="form-control" type="text" value="<?php echo (isset($data['single_car']['sales_price_netto']) ?  $data['single_car']['sales_price_netto'] : '') ?> " name="sales_price_netto" id="totalPriceFee">
                                     </div>
                                 </div>
 
@@ -752,7 +753,7 @@
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input readonly type="text" class="form-control" id="addVerkoopprijs_Marge_incl" value="<?php echo (isset($data['single_car']['sales_price_incl_vat_btw']) ?  $data['single_car']['sales_price_incl_vat_btw'] : '') ?> " name="sales_price_incl_vat_btw" placeholder="">
                                     </div>
-                                </div>      
+                                </div>
                                 <div class="row str">
                                     <div class="col-12 col-md-6">
                                         <?php echo $_SESSION['lang']['car_start_page_58'] ?>
@@ -767,7 +768,7 @@
                                         <?php echo $_SESSION['lang']['car_start_page_59'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['fees']) ?  $data['single_car']['fees'] : '€ 91.80') ?> "  id="addLeges" name="fees" placeholder="">
+                                        <input type="text" class="form-control js-calc-input" value="<?php echo (isset($data['single_car']['fees']) ?  $data['single_car']['fees'] : '€ 91.80') ?> " id="addLeges" name="fees" placeholder="">
                                     </div>
                                 </div>
                                 <div class="row str">
@@ -775,12 +776,12 @@
                                         <?php echo $_SESSION['lang']['car_start_page_60'] ?>
                                     </div>
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
-                                        <input class="form-control js-calc-from-total" <?php echo (isset($data['single_car']['calculation_lock_sales_price']) && $data['single_car']['calculation_lock_sales_price'] == 0 || !isset($data['single_car']['calculation_lock_sales_price'])  ? "readonly" : "" ) ?> value="<?php echo (isset($data['single_car']['sales_price_total']) ?  $data['single_car']['sales_price_total'] : '') ?> " type="text" name="sales_price_total" id="totalAll">
+                                        <input class="form-control js-calc-from-total" <?php echo (isset($data['single_car']['calculation_lock_sales_price']) && $data['single_car']['calculation_lock_sales_price'] == 0 || !isset($data['single_car']['calculation_lock_sales_price'])  ? "readonly" : "") ?> value="<?php echo (isset($data['single_car']['sales_price_total']) ?  $data['single_car']['sales_price_total'] : '') ?> " type="text" name="sales_price_total" id="totalAll">
                                     </div>
-                                </div>                                
+                                </div>
                                 <div class="row mt-4"></div>
-                                
-                                <div class="row str">                                
+
+                                <div class="row str">
                                     <div class="col-12 col-md-6">
                                         Bruto BPM (indication)
                                     </div>
@@ -796,9 +797,9 @@
                                     <div class="col-12 col-md-6" style="padding-left: 3%;">
                                         <input type="text" class="form-control js-percantege-change-calc" id="percentage" value="<?php echo (isset($data['single_car']['percentage']) ?  $data['single_car']['percentage'] : '') ?>" name="percentage" placeholder="">
                                     </div>
-                                </div>  
+                                </div>
 
-                                <div class="row str">                                
+                                <div class="row str">
                                     <div class="col-12 col-md-6">
                                         Rest BPM (indication)
                                     </div>
@@ -822,12 +823,11 @@
                                                     <img src='/assets/images/no-image.gif' data-recent-imagepos='0' data-noimage='true' />
                                                 </div>";
                                             }
-                                        }
-                                        else {
+                                        } else {
                                             $imagesCount = count($data['car_images'][0]);
-                                            for($i = $imagesCount-1; $i >= 0; $i--) {
+                                            for ($i = $imagesCount - 1; $i >= 0; $i--) {
 
-                                                if ($i < $imagesCount-5) {
+                                                if ($i < $imagesCount - 5) {
                                                     break;
                                                 }
                                                 echo "<div class='car-image'>
@@ -845,7 +845,7 @@
                                             }
                                         }
                                         ?>
-                                    </div>  
+                                    </div>
                                 </div>
                             </div>
 
@@ -853,555 +853,557 @@
                     </div>
                 </div> <!-- Rigth col -->
             </div> <!-- Subrow  -->
-    </div>
-    <!-- ./ Main row 2 -->
-    <hr />
-
-
-    <div class="row justify-content-center align-items-start">
-        <!-- Left col  -->
-        <div class="col-12 col-md-5">
-            <!-- Rows  -->
-            <div class="row">
-                <div class="col-12 col-md-4">
-                    <span><?php echo $_SESSION['lang']['car_start_page_62'] ?></span>
-                </div>
-                <div class="col-12 col-md-8">
-                    <input type="text" autocomplete="off" class="form-control" value="<?php echo (isset($data['single_car']['cd_first_nl_registration']) ? date("d-m-Y", strtotime($data['single_car']['cd_first_nl_registration']))   : "") ?>" name="first_nl_registration" id="datepicker3" <?php echo (isset($data['single_car']['car_preorder']) && $data['single_car']['car_preorder'] == '1') ? 'disabled' : ''; ?>>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-md-4">
-                    <span><?php echo $_SESSION['lang']['car_start_page_63'] ?></span>
-                </div>
-                <div class="col-12 col-md-8">
-                    <input class="form-control" autocomplete="off" type="text" name="first_name_nl_registration" value="<?php echo (isset($data['single_car']['cd_first_name_nl_registration']) ? date("d-m-Y", strtotime($data['single_car']['cd_first_name_nl_registration']))  : "") ?>" id="datepicker10" placeholder="" <?php echo (isset($data['single_car']['car_preorder']) && $data['single_car']['car_preorder'] == '1') ? 'disabled' : ''; ?>/>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-md-4">
-                    <span><?php echo $_SESSION['lang']['car_start_page_64'] ?></span>
-                </div>
-                <div class="col-12 col-md-8">
-                    <input class="form-control" autocomplete="off" type="text" name="last_name_registration" id="datepicker11" value="<?php echo (isset($data['single_car']['cd_last_name_registration']) ? date("d-m-Y", strtotime($data['single_car']['cd_last_name_registration']))  : "") ?>" <?php echo (isset($data['single_car']['car_preorder']) && $data['single_car']['car_preorder'] == '1') ? 'disabled' : ''; ?>/>
-                </div>
-            </div>
-            <!-- ./ ROWS  -->
         </div>
-        <!-- ./ Left col  -->
+        <!-- ./ Main row 2 -->
+        <hr />
 
-        <!-- Rigth col  -->
-        <div class="col-12 col-md-7">
-            <!-- Rows  -->
-            <div class="row">
-                <div class="col-12 col-md-4">
-                    <span><?php echo $_SESSION['lang']['car_start_page_65'] ?></span>
+
+        <div class="row justify-content-center align-items-start">
+            <!-- Left col  -->
+            <div class="col-12 col-md-5">
+                <!-- Rows  -->
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <span><?php echo $_SESSION['lang']['car_start_page_62'] ?></span>
+                    </div>
+                    <div class="col-12 col-md-8">
+                        <input type="text" autocomplete="off" class="form-control" value="<?php echo (isset($data['single_car']['cd_first_nl_registration']) ? date("d-m-Y", strtotime($data['single_car']['cd_first_nl_registration']))   : "") ?>" name="first_nl_registration" id="datepicker3" <?php echo (isset($data['single_car']['car_preorder']) && $data['single_car']['car_preorder'] == '1') ? 'disabled' : ''; ?>>
+                    </div>
                 </div>
-                <div class="col-12 col-md-6">
-                    <input class="form-control" type="text" name="nl_registration_number" id="nlRegNumber" value="<?php echo (isset($data['single_car']['cd_nl_registration_number']) ? $data['single_car']['cd_nl_registration_number']  : "") ?>" placeholder="" <?php echo (isset($data['single_car']['car_preorder']) && $data['single_car']['car_preorder'] == '1') ? 'disabled' : ''; ?>/>
+
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <span><?php echo $_SESSION['lang']['car_start_page_63'] ?></span>
+                    </div>
+                    <div class="col-12 col-md-8">
+                        <input class="form-control" autocomplete="off" type="text" name="first_name_nl_registration" value="<?php echo (isset($data['single_car']['cd_first_name_nl_registration']) ? date("d-m-Y", strtotime($data['single_car']['cd_first_name_nl_registration']))  : "") ?>" id="datepicker10" placeholder="" <?php echo (isset($data['single_car']['car_preorder']) && $data['single_car']['car_preorder'] == '1') ? 'disabled' : ''; ?> />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <span><?php echo $_SESSION['lang']['car_start_page_64'] ?></span>
+                    </div>
+                    <div class="col-12 col-md-8">
+                        <input class="form-control" autocomplete="off" type="text" name="last_name_registration" id="datepicker11" value="<?php echo (isset($data['single_car']['cd_last_name_registration']) ? date("d-m-Y", strtotime($data['single_car']['cd_last_name_registration']))  : "") ?>" <?php echo (isset($data['single_car']['car_preorder']) && $data['single_car']['car_preorder'] == '1') ? 'disabled' : ''; ?> />
+                    </div>
+                </div>
+                <!-- ./ ROWS  -->
+            </div>
+            <!-- ./ Left col  -->
+
+            <!-- Rigth col  -->
+            <div class="col-12 col-md-7">
+                <!-- Rows  -->
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <span><?php echo $_SESSION['lang']['car_start_page_65'] ?></span>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <input class="form-control" type="text" name="nl_registration_number" id="nlRegNumber" value="<?php echo (isset($data['single_car']['cd_nl_registration_number']) ? $data['single_car']['cd_nl_registration_number']  : "") ?>" placeholder="" <?php echo (isset($data['single_car']['car_preorder']) && $data['single_car']['car_preorder'] == '1') ? 'disabled' : ''; ?> />
+                    </div>
+                </div>
+
+
+                <div class="row my-1">
+                    <div class="col-12 col-md-4">
+                        <span><?php echo $_SESSION['lang']['car_start_page_66'] ?></span>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <input type="text" class="form-control" name="meldcode" id="melcode" value="<?php echo (isset($data['single_car']['cd_meldcode']) ? $data['single_car']['cd_meldcode']  : "") ?>">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <span><?php echo $_SESSION['lang']['car_start_page_67'] ?></span>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <input class="form-control" type="text" name="apk_valid" id="datepicker13" value="<?php echo (isset($data['single_car']['cd_apk_valid']) ? date("d-m-Y", strtotime($data['single_car']['cd_apk_valid']))  : "") ?>" />
+                    </div>
                 </div>
             </div>
-
-
-            <div class="row my-1">
-                <div class="col-12 col-md-4">
-                    <span><?php echo $_SESSION['lang']['car_start_page_66'] ?></span>
-                </div>
-                <div class="col-12 col-md-6">
-                    <input type="text" class="form-control" name="meldcode" id="melcode" value="<?php echo (isset($data['single_car']['cd_meldcode']) ? $data['single_car']['cd_meldcode']  : "") ?>">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-md-4">
-                    <span><?php echo $_SESSION['lang']['car_start_page_67'] ?></span>
-                </div>
-                <div class="col-12 col-md-6">
-                    <input class="form-control" type="text" name="apk_valid" id="datepicker13" value="<?php echo (isset($data['single_car']['cd_apk_valid']) ? date("d-m-Y", strtotime($data['single_car']['cd_apk_valid']))  : "") ?>" />
-                </div>
-            </div>
-        </div>
-    </div> <!-- Rigth col -->
-    <!-- ./ ROW  -->
-    <!-- .ROW  -->
-    <br />
-    <hr />
-    <p><?php echo $_SESSION['lang']['car_start_page_68'] ?></p>
-    <div class="row">
-        <div class="col-12 col-md-5">
-            <div class="row">
-                <div class="col-12 col-md-6">
-                    <label for="navigation"><?php echo $_SESSION['lang']['car_start_page_69'] ?></label>
-                    <select name="navigation" id="navigation" class="form-control">
-                        <option value="0">-</option>
-                        <?php
-                        foreach ($data['navigation'] as $opt_value) {
-                            if (isset($data['single_car']['cd_navigation']) && $data['single_car']['cd_navigation'] == $opt_value["conversion_id"]) {
-                                $selected = "selected";
-                            } else {
-                                $selected = "";
-                            }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-12 col-md-6">
-                    <label for="keylessEntry"><?php echo $_SESSION['lang']['car_start_page_70'] ?></label>
-                    <select name="keyless_entry" id="keylessEntry" class="form-control">
-                        <option value="0">-</option>
-                        <?php
-                        foreach ($data['keyless_entry'] as $opt_value) {
-                            if (isset($data['single_car']['cd_keyless_entry']) && $data['single_car']['cd_keyless_entry'] == $opt_value["conversion_id"]) {
-                                $selected = "selected";
-                            } else {
-                                $selected = "";
-                            }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-md-6">
-                    <label for="appConnect"><?php echo $_SESSION['lang']['car_start_page_71'] ?></label>
-                    <select name="app_connect" id="appConnect" class="form-control">
-                        <option value="0">-</option>
-                        <?php
-                        foreach ($data['app_connect'] as $opt_value) {
-                            if (isset($data['single_car']['cd_app_connect']) && $data['single_car']['cd_app_connect'] == $opt_value["conversion_id"]) {
-                                $selected = "selected";
-                            } else {
-                                $selected = "";
-                            }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-12 col-md-6">
-                    <label for="airco"><?php echo $_SESSION['lang']['car_start_page_72'] ?></label>
-                    <select name="airco" id="airco" class="form-control">
-                        <option value="0">-</option>
-                        <?php
-                        foreach ($data['airco'] as $opt_value) {
-                            if (isset($data['single_car']['cd_airco']) && $data['single_car']['cd_airco'] == $opt_value["conversion_id"]) {
-                                $selected = "selected";
-                            } else {
-                                $selected = "";
-                            }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-md-6">
-                    <label for="roof"><?php echo $_SESSION['lang']['car_start_page_73'] ?></label>
-                    <select name="roof" id="roof" class="form-control">
-                        <option value="0">-</option>
-                        <?php
-                        foreach ($data['roof'] as $opt_value) {
-                            if (isset($data['single_car']['cd_roof']) && $data['single_car']['cd_roof'] == $opt_value["conversion_id"]) {
-                                $selected = "selected";
-                            } else {
-                                $selected = "";
-                            }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-12 col-md-6">
-                    <label for="wheels"><?php echo $_SESSION['lang']['car_start_page_74'] ?></label>
-                    <select name="wheels" id="wheels" class="form-control">
-                        <option value="0">-</option>
-                        <?php
-                        foreach ($data['wheels'] as $opt_value) {
-                            if (isset($data['single_car']['cd_wheels']) && $data['single_car']['cd_wheels'] == $opt_value["conversion_id"]) {
-                                $selected = "selected";
-                            } else {
-                                $selected = "";
-                            }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-md-6">
-                    <label for="headlights"><?php echo $_SESSION['lang']['car_start_page_75'] ?></label>
-                    <select name="headlights" id="headlights" class="form-control">
-                        <option value="0">-</option>
-                        <?php
-                        foreach ($data['headlights'] as $opt_value) {
-                            if (isset($data['single_car']['cd_headlights']) && $data['single_car']['cd_headlights'] == $opt_value["conversion_id"]) {
-                                $selected = "selected";
-                            } else {
-                                $selected = "";
-                            }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-12 col-md-6">
-                    <label for="pdc"><?php echo $_SESSION['lang']['car_start_page_76'] ?></label>
-                    <select name="pdc" id="pdc" class="form-control">
-                        <option value="0">-</option>
-                        <?php
-                        foreach ($data['pdc'] as $opt_value) {
-                            if (isset($data['single_car']['cd_pdc']) && $data['single_car']['cd_pdc'] == $opt_value["conversion_id"]) {
-                                $selected = "selected";
-                            } else {
-                                $selected = "";
-                            }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-md-6">
-                    <label for="cockpit"><?php echo $_SESSION['lang']['car_start_page_77'] ?></label>
-                    <select name="cockpit" id="cockpit" class="form-control">
-                        <option value="0">-</option>
-                        <?php
-                        foreach ($data['cockpit'] as $opt_value) {
-                            if (isset($data['single_car']['cd_cockpit']) && $data['single_car']['cd_cockpit'] == $opt_value["conversion_id"]) {
-                                $selected = "selected";
-                            } else {
-                                $selected = "";
-                            }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-12 col-md-6">
-                    <label for="camera"><?php echo $_SESSION['lang']['car_start_page_78'] ?></label>
-                    <select name="camera" id="camera" class="form-control">
-                        <option value="0">-</option>
-                        <?php
-                        foreach ($data['camera'] as $opt_value) {
-                            if (isset($data['single_car']['cd_camera']) && $data['single_car']['cd_camera'] == $opt_value["conversion_id"]) {
-                                $selected = "selected";
-                            } else {
-                                $selected = "";
-                            }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-md-6">
-                    <label for="cruise"><?php echo $_SESSION['lang']['car_start_page_79'] ?></label>
-                    <select name="cruise_control" id="cruise" class="form-control">
-                        <option value="0">-</option>
-                        <?php
-                        foreach ($data['cruise_control'] as $opt_value) {
-                            if (isset($data['single_car']['cd_cruise_control']) && $data['single_car']['cd_cruise_control'] == $opt_value["conversion_id"]) {
-                                $selected = "selected";
-                            } else {
-                                $selected  = "";
-                            }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-12 col-md-6">
-                    <label for="tow"><?php echo $_SESSION['lang']['car_start_page_80'] ?></label>
-                    <select name="tow_bar" id="tow" class="form-control">
-                        <option value="0">-</option>
-                        <?php
-                        foreach ($data['tow_bar'] as $opt_value) {
-                            if (isset($data['single_car']['cd_tow_bar']) && $data['single_car']['cd_tow_bar'] == $opt_value["conversion_id"]) {
-                                $selected = "selected";
-                            } else {
-                                $selected  = "";
-                            }
-                            echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-            </div>
-
-        </div> <!-- ./ .col-5  -->
-
-        <div class="col-12 col-md-7">
-
-            <div class="row">
-                <div class="col-12 col-md-5">
-                    <label for="sportSeats"><?php echo $_SESSION['lang']['car_start_page_81'] ?></label>
-                    <select name="sport_seats" id="sportSeats" class="form-control">
-                        <option value="0">-</option>
-                        <?php
-                        foreach ($data['sport_seats'] as $opt_value) {
-                            if (isset($data['single_car']['cd_sport_seats']) && $data['single_car']['cd_sport_seats'] == $opt_value["conversion_id"]) {
-                                $selected = "selected";
-                            } else {
-                                $selected  = "";
-                            }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-12 col-md-5">
-                    <label for="sportPackage"><?php echo $_SESSION['lang']['car_start_page_82'] ?></label>
-                    <select name="sport_package" id="sportPackage" class="form-control">
-                        <option value="0">-</option>
-                        <?php
-                        foreach ($data['sport_package'] as $opt_value) {
-                            if (isset($data['single_car']['cd_sport_package']) && $data['single_car']['cd_sport_package'] == $opt_value["conversion_id"]) {
-                                $selected = "selected";
-                            } else {
-                                $selected  = "";
-                            }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-md-5">
-                    <label for="seatsElectric"><?php echo $_SESSION['lang']['car_start_page_83'] ?></label>
-                    <select name="seats_electric" id="seatsElectric" class="form-control">
-                        <option value="0">-</option>
-                        <?php
-                        foreach ($data['seats_electric'] as $opt_value) {
-                            if (isset($data['single_car']['cd_seats_electric']) && $data['single_car']['cd_seats_electric'] == $opt_value["conversion_id"]) {
-                                $selected = "selected";
-                            } else {
-                                $selected  = "";
-                            }
-                            echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-12 col-md-6"></div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-md-5">
-                    <label for="heating"><?php echo $_SESSION['lang']['car_start_page_84'] ?></label>
-                    <select name="seat_heating" id="heating" class="form-control">
-                        <option value="0">-</option>
-                        <?php
-                        foreach ($data['seat_heating'] as $opt_value) {
-                            if (isset($data['single_car']['cd_seat_heating']) && $data['single_car']['cd_seat_heating'] == $opt_value["conversion_id"]) {
-                                $selected = "selected";
-                            } else {
-                                $selected  = "";
-                            }
-                            echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-12 col-md-6"></div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-md-5">
-                    <label for="seatMassage"><?php echo $_SESSION['lang']['car_start_page_85'] ?></label>
-                    <select name="seat_massage" id="seatMassage" class="form-control">
-                        <option value="0">-</option>
-                        <?php
-                        foreach ($data['seat_massage'] as $opt_value) {
-                            if (isset($data['single_car']['cd_seat_massage']) && $data['single_car']['cd_seat_massage'] == $opt_value["conversion_id"]) {
-                                $selected = "selected";
-                            } else {
-                                $selected  = "";
-                            }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-12 col-md-6"></div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-md-5">
-                    <label for="optics"><?php echo $_SESSION['lang']['car_start_page_86'] ?></label>
-                    <select name="optics" id="optics" class="form-control">
-                        <option value="0">-</option>
-                        <?php
-                        foreach ($data['optics'] as $opt_value) {
-                            if (isset($data['single_car']['cd_optics']) && $data['single_car']['cd_optics'] == $opt_value["conversion_id"]) {
-                                $selected = "selected";
-                            } else {
-                                $selected  = "";
-                            }
-                            echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-12 col-md-6"></div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-md-5">
-                    <label for="tindedWindows"><?php echo $_SESSION['lang']['car_start_page_87'] ?></label>
-                    <select name="tinted_windows" id="tindedWindows" class="form-control">
-                        <option value="0">-</option>
-                        <?php
-                        foreach ($data['tinted_windows'] as $opt_value) {
-                            if (isset($data['single_car']['cd_tinted_windows']) && $data['single_car']['cd_tinted_windows'] == $opt_value["conversion_id"]) {
-                                $selected = "selected";
-                            } else {
-                                $selected  = "";
-                            }
-                            echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-12 col-md-6"></div>
-            </div>
-        </div> <!-- /. .col-7 -->
-    </div> <!-- ./ .row Section Factory Options / Highlights -->
-
-
-    <hr />
-
-    <p><?php echo $_SESSION['lang']['car_start_page_88'] ?></p>
-    <div class="row d-flex align-items-stretch">
-        <div class="col col-11">
-            <textarea placeholder="" rows="7" style="resize: none;" class="w-150 form-control" name="options" id="options"><?php echo (isset($data['single_car']['cd_options']) ? $data['single_car']['cd_options']  : "") ?></textarea>
-        </div>
-    </div>
-    <!-- ./ ROW  -->
-    <!-- .ROW  -->
-    <hr />
-
-
-    <div class="row d-flex align-items-stretch">
-
-        <div class="col col-5">
-            <p><?php echo $_SESSION['lang']['car_start_page_89'] ?></p>
-            <textarea placeholder="" rows="7" class="form-control remarks" name="notes" id="notes"><?php echo (isset($data['single_car']['cd_notes']) ? $data['single_car']['cd_notes']  : "") ?></textarea>
-        </div>
-        <div class="col col-12 col-md-6">
-            <p><?php echo $_SESSION['lang']['car_start_page_90'] ?></p>
-            <div class="form-control show-documents uploaded-documents-col" name="uploaded_files" id="uploadedFiles">
-                <?php
-                if (!is_null($data['single_car_documents'][0])) {
-                    foreach ($data['single_car_documents'][0] as $key => $doc) {
-                        echo "<a href='{$doc['cd_path']}'>{$doc['cd_filename']}</a></br>";
-                    }
-                }
-                ?></div>
-        </div>
-    </div>
-    <!-- ./ ROW  -->
-
-    <!-- .ROW  -->
-    <!-- .ROW  -->
-    <hr />
-
-
-    <div class="row d-flex align-items-stretch">
-
-        <div class="col col-12 col-md-5">
-            <p><?php echo $_SESSION['lang']['car_start_page_91'] ?></p>
-            <div class="row d-flex flex-nowrap align-items-stretch form-control show-documents text-muted connected-modules">
-                <div class="col-3">
-                    <?php echo $_SESSION['lang']['car_start_page_92'] ?>
-                </div>
-                <div class="col-3"><?php echo $_SESSION['lang']['car_start_page_93'] ?>
-                </div>
-                <div class="col-3"><?php echo $_SESSION['lang']['car_start_page_94'] ?>
-                </div>
-                <div class="col-3"><?php echo $_SESSION['lang']['car_start_page_95'] ?>
-                </div>
-            </div>
-        </div>
-        <div class="col col-12 col-md-7">
-            <p><?php echo $_SESSION['lang']['car_start_page_96'] ?></p>
-            <div class="row d-flex flex-nowrap">
-                <div class="col-5 show-documents text-muted" style="white-space: nowrap; overflow: hidden;">
-                    <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_97'] ?></div>
-                    <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_98'] ?></div>
-                    <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_99'] ?></div>
-                    <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_100'] ?></div>
-                    <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_101'] ?></div>
-                    <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_102'] ?></div>
-                    <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_103'] ?></div>
-                </div>
-                <div class="col-5 show-documents internal-information" style="white-space: nowrap; background-color: white; overflow: hidden; border-radius: 3px; border: 1px solid #DCDCDC;">
-                    <div class="row ml-1 mt-2"><input type="checkbox" name="source" id="sourceByCh" <?php echo (isset($data['single_car']['car_source']) && $data['single_car']['car_source'] == '1') ? "checked" : "" ?>/></div>
-                    <div class="row ml-1 mt-2"><span>
-                        <select name="source_id" id="sourceBy" class="form-control" <?php echo (isset($data['single_car']['car_source']) && $data['single_car']['car_source'] == '1') ? "disabled" : "" ?>>
+        </div> <!-- Rigth col -->
+        <!-- ./ ROW  -->
+        <!-- .ROW  -->
+        <br />
+        <hr />
+        <p><?php echo $_SESSION['lang']['car_start_page_68'] ?></p>
+        <div class="row">
+            <div class="col-12 col-md-5">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <label for="navigation"><?php echo $_SESSION['lang']['car_start_page_69'] ?></label>
+                        <select name="navigation" id="navigation" class="form-control">
                             <option value="0">-</option>
                             <?php
-                                foreach ($data['users'][0] as $user) {
-                                    if (isset($data['single_car']['car_source_id']) && $data['single_car']['car_source_id'] == $user["expo_users_ID"]) {
-                                        $selected = "selected";
-                                    } else {
-                                        $selected = "";
-                                    }
-                                    echo "<option $selected value='{$user["expo_users_ID"]}'>{$user["expo_users_name"]} </option>";
+                            foreach ($data['navigation'] as $opt_value) {
+                                if (isset($data['single_car']['cd_navigation']) && $data['single_car']['cd_navigation'] == $opt_value["conversion_id"]) {
+                                    $selected = "selected";
+                                } else {
+                                    $selected = "";
                                 }
+                                echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
+                            }
                             ?>
                         </select>
-                    </span></div>
-                    <div class="row ml-1 mt-2"><span><?php
-                        echo (isset($data['single_car']['created_by']) ? $data['single_car']['created_by']  : "__")
-                    ?></span></div>
-                    <div class="row ml-1 mt-2"><span><?php
-                        echo (isset($data['single_car']['created_at']) ? $data['single_car']['created_at']  : "__")
-                    ?></span></div>
-                    <div class="row ml-1 mt-2"><span><?php
-                        echo (isset($data['single_car']['last_edited_by']) ? $data['single_car']['last_edited_by']  : "__")
-                    ?></span></div>
-                    <div class="row ml-1 mt-2"><span><?php
-                        echo (isset($data['single_car']['updated_at']) ? $data['single_car']['updated_at']  : "__")
-                    ?></span></div>
-                    <div class="row ml-1 mt-2"><span>Dealer call name</span></div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label for="keylessEntry"><?php echo $_SESSION['lang']['car_start_page_70'] ?></label>
+                        <select name="keyless_entry" id="keylessEntry" class="form-control">
+                            <option value="0">-</option>
+                            <?php
+                            foreach ($data['keyless_entry'] as $opt_value) {
+                                if (isset($data['single_car']['cd_keyless_entry']) && $data['single_car']['cd_keyless_entry'] == $opt_value["conversion_id"]) {
+                                    $selected = "selected";
+                                } else {
+                                    $selected = "";
+                                }
+                                echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <label for="appConnect"><?php echo $_SESSION['lang']['car_start_page_71'] ?></label>
+                        <select name="app_connect" id="appConnect" class="form-control">
+                            <option value="0">-</option>
+                            <?php
+                            foreach ($data['app_connect'] as $opt_value) {
+                                if (isset($data['single_car']['cd_app_connect']) && $data['single_car']['cd_app_connect'] == $opt_value["conversion_id"]) {
+                                    $selected = "selected";
+                                } else {
+                                    $selected = "";
+                                }
+                                echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label for="airco"><?php echo $_SESSION['lang']['car_start_page_72'] ?></label>
+                        <select name="airco" id="airco" class="form-control">
+                            <option value="0">-</option>
+                            <?php
+                            foreach ($data['airco'] as $opt_value) {
+                                if (isset($data['single_car']['cd_airco']) && $data['single_car']['cd_airco'] == $opt_value["conversion_id"]) {
+                                    $selected = "selected";
+                                } else {
+                                    $selected = "";
+                                }
+                                echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <label for="roof"><?php echo $_SESSION['lang']['car_start_page_73'] ?></label>
+                        <select name="roof" id="roof" class="form-control">
+                            <option value="0">-</option>
+                            <?php
+                            foreach ($data['roof'] as $opt_value) {
+                                if (isset($data['single_car']['cd_roof']) && $data['single_car']['cd_roof'] == $opt_value["conversion_id"]) {
+                                    $selected = "selected";
+                                } else {
+                                    $selected = "";
+                                }
+                                echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label for="wheels"><?php echo $_SESSION['lang']['car_start_page_74'] ?></label>
+                        <select name="wheels" id="wheels" class="form-control">
+                            <option value="0">-</option>
+                            <?php
+                            foreach ($data['wheels'] as $opt_value) {
+                                if (isset($data['single_car']['cd_wheels']) && $data['single_car']['cd_wheels'] == $opt_value["conversion_id"]) {
+                                    $selected = "selected";
+                                } else {
+                                    $selected = "";
+                                }
+                                echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <label for="headlights"><?php echo $_SESSION['lang']['car_start_page_75'] ?></label>
+                        <select name="headlights" id="headlights" class="form-control">
+                            <option value="0">-</option>
+                            <?php
+                            foreach ($data['headlights'] as $opt_value) {
+                                if (isset($data['single_car']['cd_headlights']) && $data['single_car']['cd_headlights'] == $opt_value["conversion_id"]) {
+                                    $selected = "selected";
+                                } else {
+                                    $selected = "";
+                                }
+                                echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label for="pdc"><?php echo $_SESSION['lang']['car_start_page_76'] ?></label>
+                        <select name="pdc" id="pdc" class="form-control">
+                            <option value="0">-</option>
+                            <?php
+                            foreach ($data['pdc'] as $opt_value) {
+                                if (isset($data['single_car']['cd_pdc']) && $data['single_car']['cd_pdc'] == $opt_value["conversion_id"]) {
+                                    $selected = "selected";
+                                } else {
+                                    $selected = "";
+                                }
+                                echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <label for="cockpit"><?php echo $_SESSION['lang']['car_start_page_77'] ?></label>
+                        <select name="cockpit" id="cockpit" class="form-control">
+                            <option value="0">-</option>
+                            <?php
+                            foreach ($data['cockpit'] as $opt_value) {
+                                if (isset($data['single_car']['cd_cockpit']) && $data['single_car']['cd_cockpit'] == $opt_value["conversion_id"]) {
+                                    $selected = "selected";
+                                } else {
+                                    $selected = "";
+                                }
+                                echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label for="camera"><?php echo $_SESSION['lang']['car_start_page_78'] ?></label>
+                        <select name="camera" id="camera" class="form-control">
+                            <option value="0">-</option>
+                            <?php
+                            foreach ($data['camera'] as $opt_value) {
+                                if (isset($data['single_car']['cd_camera']) && $data['single_car']['cd_camera'] == $opt_value["conversion_id"]) {
+                                    $selected = "selected";
+                                } else {
+                                    $selected = "";
+                                }
+                                echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <label for="cruise"><?php echo $_SESSION['lang']['car_start_page_79'] ?></label>
+                        <select name="cruise_control" id="cruise" class="form-control">
+                            <option value="0">-</option>
+                            <?php
+                            foreach ($data['cruise_control'] as $opt_value) {
+                                if (isset($data['single_car']['cd_cruise_control']) && $data['single_car']['cd_cruise_control'] == $opt_value["conversion_id"]) {
+                                    $selected = "selected";
+                                } else {
+                                    $selected  = "";
+                                }
+                                echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label for="tow"><?php echo $_SESSION['lang']['car_start_page_80'] ?></label>
+                        <select name="tow_bar" id="tow" class="form-control">
+                            <option value="0">-</option>
+                            <?php
+                            foreach ($data['tow_bar'] as $opt_value) {
+                                if (isset($data['single_car']['cd_tow_bar']) && $data['single_car']['cd_tow_bar'] == $opt_value["conversion_id"]) {
+                                    $selected = "selected";
+                                } else {
+                                    $selected  = "";
+                                }
+                                echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+            </div> <!-- ./ .col-5  -->
+
+            <div class="col-12 col-md-7">
+
+                <div class="row">
+                    <div class="col-12 col-md-5">
+                        <label for="sportSeats"><?php echo $_SESSION['lang']['car_start_page_81'] ?></label>
+                        <select name="sport_seats" id="sportSeats" class="form-control">
+                            <option value="0">-</option>
+                            <?php
+                            foreach ($data['sport_seats'] as $opt_value) {
+                                if (isset($data['single_car']['cd_sport_seats']) && $data['single_car']['cd_sport_seats'] == $opt_value["conversion_id"]) {
+                                    $selected = "selected";
+                                } else {
+                                    $selected  = "";
+                                }
+                                echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-5">
+                        <label for="sportPackage"><?php echo $_SESSION['lang']['car_start_page_82'] ?></label>
+                        <select name="sport_package" id="sportPackage" class="form-control">
+                            <option value="0">-</option>
+                            <?php
+                            foreach ($data['sport_package'] as $opt_value) {
+                                if (isset($data['single_car']['cd_sport_package']) && $data['single_car']['cd_sport_package'] == $opt_value["conversion_id"]) {
+                                    $selected = "selected";
+                                } else {
+                                    $selected  = "";
+                                }
+                                echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-5">
+                        <label for="seatsElectric"><?php echo $_SESSION['lang']['car_start_page_83'] ?></label>
+                        <select name="seats_electric" id="seatsElectric" class="form-control">
+                            <option value="0">-</option>
+                            <?php
+                            foreach ($data['seats_electric'] as $opt_value) {
+                                if (isset($data['single_car']['cd_seats_electric']) && $data['single_car']['cd_seats_electric'] == $opt_value["conversion_id"]) {
+                                    $selected = "selected";
+                                } else {
+                                    $selected  = "";
+                                }
+                                echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-5">
+                        <label for="heating"><?php echo $_SESSION['lang']['car_start_page_84'] ?></label>
+                        <select name="seat_heating" id="heating" class="form-control">
+                            <option value="0">-</option>
+                            <?php
+                            foreach ($data['seat_heating'] as $opt_value) {
+                                if (isset($data['single_car']['cd_seat_heating']) && $data['single_car']['cd_seat_heating'] == $opt_value["conversion_id"]) {
+                                    $selected = "selected";
+                                } else {
+                                    $selected  = "";
+                                }
+                                echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-5">
+                        <label for="seatMassage"><?php echo $_SESSION['lang']['car_start_page_85'] ?></label>
+                        <select name="seat_massage" id="seatMassage" class="form-control">
+                            <option value="0">-</option>
+                            <?php
+                            foreach ($data['seat_massage'] as $opt_value) {
+                                if (isset($data['single_car']['cd_seat_massage']) && $data['single_car']['cd_seat_massage'] == $opt_value["conversion_id"]) {
+                                    $selected = "selected";
+                                } else {
+                                    $selected  = "";
+                                }
+                                echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-5">
+                        <label for="optics"><?php echo $_SESSION['lang']['car_start_page_86'] ?></label>
+                        <select name="optics" id="optics" class="form-control">
+                            <option value="0">-</option>
+                            <?php
+                            foreach ($data['optics'] as $opt_value) {
+                                if (isset($data['single_car']['cd_optics']) && $data['single_car']['cd_optics'] == $opt_value["conversion_id"]) {
+                                    $selected = "selected";
+                                } else {
+                                    $selected  = "";
+                                }
+                                echo "<option $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-5">
+                        <label for="tindedWindows"><?php echo $_SESSION['lang']['car_start_page_87'] ?></label>
+                        <select name="tinted_windows" id="tindedWindows" class="form-control">
+                            <option value="0">-</option>
+                            <?php
+                            foreach ($data['tinted_windows'] as $opt_value) {
+                                if (isset($data['single_car']['cd_tinted_windows']) && $data['single_car']['cd_tinted_windows'] == $opt_value["conversion_id"]) {
+                                    $selected = "selected";
+                                } else {
+                                    $selected  = "";
+                                }
+                                echo "<option  $selected value='{$opt_value["conversion_id"]}'>{$_SESSION['lang'][$opt_value['conversion_name']]} </option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6"></div>
+                </div>
+            </div> <!-- /. .col-7 -->
+        </div> <!-- ./ .row Section Factory Options / Highlights -->
+
+
+        <hr />
+
+        <p><?php echo $_SESSION['lang']['car_start_page_88'] ?></p>
+        <div class="row d-flex align-items-stretch">
+            <div class="col col-11">
+                <textarea placeholder="" rows="7" style="resize: none;" class="w-150 form-control" name="options" id="options"><?php echo (isset($data['single_car']['cd_options']) ? $data['single_car']['cd_options']  : "") ?></textarea>
+            </div>
+        </div>
+        <!-- ./ ROW  -->
+        <!-- .ROW  -->
+        <hr />
+
+
+        <div class="row d-flex align-items-stretch">
+
+            <div class="col col-5">
+                <p><?php echo $_SESSION['lang']['car_start_page_89'] ?></p>
+                <textarea placeholder="" rows="7" class="form-control remarks" name="notes" id="notes"><?php echo (isset($data['single_car']['cd_notes']) ? $data['single_car']['cd_notes']  : "") ?></textarea>
+            </div>
+            <div class="col col-12 col-md-6">
+                <p><?php echo $_SESSION['lang']['car_start_page_90'] ?></p>
+                <div class="form-control show-documents uploaded-documents-col" name="uploaded_files" id="uploadedFiles">
+                    <?php
+                    if (!is_null($data['single_car_documents'][0])) {
+                        foreach ($data['single_car_documents'][0] as $key => $doc) {
+                            echo "<div class='document' data-doc-id='{$doc['cd_id']}'>
+                                <a href='{$doc['cd_path']}' about='_blank'>{$doc['cd_filename']}</a><span class='ti-trash'></span>
+                            </div>";
+                        }
+                    }
+                    ?></div>
+            </div>
+        </div>
+        <!-- ./ ROW  -->
+
+        <!-- .ROW  -->
+        <!-- .ROW  -->
+        <hr />
+
+
+        <div class="row d-flex align-items-stretch">
+
+            <div class="col col-12 col-md-5">
+                <p><?php echo $_SESSION['lang']['car_start_page_91'] ?></p>
+                <div class="row d-flex flex-nowrap align-items-stretch form-control show-documents text-muted connected-modules">
+                    <div class="col-3">
+                        <?php echo $_SESSION['lang']['car_start_page_92'] ?>
+                    </div>
+                    <div class="col-3"><?php echo $_SESSION['lang']['car_start_page_93'] ?>
+                    </div>
+                    <div class="col-3"><?php echo $_SESSION['lang']['car_start_page_94'] ?>
+                    </div>
+                    <div class="col-3"><?php echo $_SESSION['lang']['car_start_page_95'] ?>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-12 col-md-7">
+                <p><?php echo $_SESSION['lang']['car_start_page_96'] ?></p>
+                <div class="row d-flex flex-nowrap">
+                    <div class="col-5 show-documents text-muted" style="white-space: nowrap; overflow: hidden;">
+                        <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_97'] ?></div>
+                        <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_98'] ?></div>
+                        <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_99'] ?></div>
+                        <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_100'] ?></div>
+                        <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_101'] ?></div>
+                        <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_102'] ?></div>
+                        <div class="row ml-1 mt-2"><?php echo $_SESSION['lang']['car_start_page_103'] ?></div>
+                    </div>
+                    <div class="col-5 show-documents internal-information" style="white-space: nowrap; background-color: white; overflow: hidden; border-radius: 3px; border: 1px solid #DCDCDC;">
+                        <div class="row ml-1 mt-2"><input type="checkbox" name="source" id="sourceByCh" <?php echo (isset($data['single_car']['car_source']) && $data['single_car']['car_source'] == '1') ? "checked" : "" ?> /></div>
+                        <div class="row ml-1 mt-2"><span>
+                                <select name="source_id" id="sourceBy" class="form-control" <?php echo (isset($data['single_car']['car_source']) && $data['single_car']['car_source'] == '1') ? "disabled" : "" ?>>
+                                    <option value="0">-</option>
+                                    <?php
+                                    foreach ($data['users'][0] as $user) {
+                                        if (isset($data['single_car']['car_source_id']) && $data['single_car']['car_source_id'] == $user["expo_users_ID"]) {
+                                            $selected = "selected";
+                                        } else {
+                                            $selected = "";
+                                        }
+                                        echo "<option $selected value='{$user["expo_users_ID"]}'>{$user["expo_users_name"]} </option>";
+                                    }
+                                    ?>
+                                </select>
+                            </span></div>
+                        <div class="row ml-1 mt-2"><span><?php
+                                                            echo (isset($data['single_car']['created_by']) ? $data['single_car']['created_by']  : "__")
+                                                            ?></span></div>
+                        <div class="row ml-1 mt-2"><span><?php
+                                                            echo (isset($data['single_car']['created_at']) ? $data['single_car']['created_at']  : "__")
+                                                            ?></span></div>
+                        <div class="row ml-1 mt-2"><span><?php
+                                                            echo (isset($data['single_car']['last_edited_by']) ? $data['single_car']['last_edited_by']  : "__")
+                                                            ?></span></div>
+                        <div class="row ml-1 mt-2"><span><?php
+                                                            echo (isset($data['single_car']['updated_at']) ? $data['single_car']['updated_at']  : "__")
+                                                            ?></span></div>
+                        <div class="row ml-1 mt-2"><span>Dealer call name</span></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- ./ ROW  -->
+        <!-- ./ ROW  -->
 
-    <hr />
+        <hr />
 
-    <!-- Main row 3 -->
-    <p><?php echo $_SESSION['lang']['car_start_page_104'] ?></p>
-    <div class="row car-images-row" data-extra-images='true'>
-        <?php
-        $imagesNumber = count($data['car_images'][0]);
-        for ($i = $imagesNumber - 1; $i >= 0; $i--) {
-            echo "<div class='col-12 col-md-3 car-image-col'>
+        <!-- Main row 3 -->
+        <p><?php echo $_SESSION['lang']['car_start_page_104'] ?></p>
+        <div class="row car-images-row" data-extra-images='true'>
+            <?php
+            $imagesNumber = count($data['car_images'][0]);
+            for ($i = $imagesNumber - 1; $i >= 0; $i--) {
+                echo "<div class='col-12 col-md-3 car-image-col'>
                     <div class='car-image'>
                         <span class='ti-trash'></span>
                         <img src='{$data['car_images'][0][$i]['cp_path']}' draggable='true' ondragstart='onImageDrag(event)' ondragover='allowDrop(event)' ondrop='onImageDrop(event)' data-imagepos='{$data['car_images'][0][$i]['cp_imagepos']}' />
                     </div>
                 </div>";
-        }
+            }
 
-        ?>
-    </div>
+            ?>
+        </div>
 
 </div><!-- ./ ROW  -->
 

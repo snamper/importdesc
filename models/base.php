@@ -390,6 +390,22 @@ class base
 		return $inserted_order_id;
 	}
 
+	public function deleteCarDocument($docId)
+	{
+		$dbDriver = new db_driver();
+		$query = "DELETE FROM car_documents WHERE cd_id =?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$docId]);
+	}
+
+	public function deletePoDocument($docId)
+	{
+		$dbDriver = new db_driver();
+		$query = "DELETE FROM po_documents WHERE pod_id =?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$docId]);
+	}
+
 	public function updateOrder($_post)
 	{
 
@@ -452,7 +468,7 @@ class base
 		if (isset($_post['po_documents'])) {
 
 			foreach ($_post['po_documents'] as $key => $doc) {
-				$this->insertPODocument($doc, $_post['upload_document'][$key], $_post['update_order']);
+				$this->insertPODocument($doc, $_post['update_order']);
 			}
 		}
 	}
@@ -1718,9 +1734,9 @@ class base
 		$result = $stmt->execute([$inserted_car_id, $arrFile[count($arrFile) - 1], $path, $_SESSION['user'][0]['expo_users_ID'], $imagepos]);
 	}
 
-	public function insertCarDocument($path, $inserted_car_id)
+	public function insertCarDocument($doc_info, $inserted_car_id)
 	{
-		$file_name = end(explode("/", $path));
+		[$file_name, $path] = explode("|", $doc_info);
 
 		$dbDriver = new db_driver();
 
@@ -1736,9 +1752,10 @@ class base
 		$stmt->execute([$inserted_car_id, $file_name, $path, $_SESSION['user'][0]['expo_users_ID']]);
 	}
 
-	public function insertPODocument($path, $name = null, $order_id)
+	public function insertPODocument($doc_info, $order_id)
 	{
 		$dbDriver = new db_driver();
+		[$file_name, $path] = explode("|", $doc_info);
 
 		$sql = "INSERT INTO po_documents (pod_order_id, pod_filename, pod_path, pod_user_id)
       VALUES (
@@ -1750,7 +1767,7 @@ class base
 
 
 		$stmt = $dbDriver->dbCon->prepare($sql);
-		$stmt->execute([$order_id, $name, $path, $_SESSION['user'][0]['expo_users_ID']]);
+		$stmt->execute([$order_id, $file_name, $path, $_SESSION['user'][0]['expo_users_ID']]);
 	}
 
 

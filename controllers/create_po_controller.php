@@ -37,6 +37,11 @@ class create_po extends view
 			$order_id = $_POST['update_order'];
 		}
 
+		if (isset($_GET['delete_po_document'])) {
+			$this->base->deletePoDocument($_GET['delete_po_document']);
+			exit;
+		}
+
 		if (isset($_POST['update_order_submit'])) {
 
 			if ($order_id > 0) {
