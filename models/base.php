@@ -567,8 +567,8 @@ class base
 
 		$dbDriver = new db_driver();
 
-		$query = "SELECT * FROM purchase_order
-		LEFT JOIN purchase_order_lines on po_id = pl_purchase_id
+		$query = "SELECT purchase_order.*, conversion_name as status_label FROM purchase_order
+		LEFT JOIN conversions on conversion_type = 'po_status' AND conversion_sort = purchase_order.po_status
 		WHERE po_id = ?";
 
 		$stmt = $dbDriver->dbCon->prepare($query);

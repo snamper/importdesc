@@ -61,12 +61,13 @@ $data['poSums'] = $data['poSums'][0];
                     </div>
 
                     <div class="custom-col">
-                        <button type="submit" class="btn btn-danger" name="update_order_submit" value="3">Reject</button>
+                        <button type="submit" class="btn btn-primary" name="update_order_submit" value="3">Approve</button>
                     </div>
 
                     <div class="custom-col">
-                        <button type="submit" class="btn btn-primary" name="update_order_submit" value="4">Approve</button>
+                        <button type="submit" class="btn btn-danger" name="update_order_submit" value="4">Reject</button>
                     </div>
+
                 <?php endif ?>
 
             </div>
@@ -201,7 +202,8 @@ $data['poSums'] = $data['poSums'][0];
                             <span>Status</span>
                         </div>
                         <div class="col-12 col-md-6">
-                            <span><?php echo $_SESSION['lang'][$data['purch_order']['status_label']]; ?></span>
+
+                            <span><?php echo ($data['purch_order']['status_label'] == '') ? 'New' : $_SESSION['lang'][$data['purch_order']['status_label']]; ?></span>
                         </div>
                     </div>
                 </div>

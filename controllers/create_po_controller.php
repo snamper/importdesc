@@ -170,7 +170,8 @@ class create_po extends view
 			'po_expected_invoice_date',
 			'po_remarks',
 			'po_created_by_id',
-			'po_status'
+			'po_status',
+			'status_label'
 		];
 		$arr = [];
 
