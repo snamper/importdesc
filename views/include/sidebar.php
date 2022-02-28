@@ -37,7 +37,6 @@
                             <li><a href="btw"><i class="ti-plus"></i><span>Prijs berekening BTW</span></a></li>
                             <li><a href="nedc"><i class="ti-plus"></i><span>BPM calculator NEDC</span></a></li>
                             <li><a href="wltp"><i class="ti-plus"></i><span>BPM calculator WLTP</span></a></li>-->
-                <li><a href="create_make_new"><i class="ti-plus"></i><span><?php echo $_SESSION['lang']['sidebar_menu_17'] ?></span></a></li>
                 <li><a href="create_make"><i class="ti-plus"></i><span><?php echo $_SESSION['lang']['sidebar_menu_18'] ?></span></a></li>
                 <li><a href="create_po"><i class="ti-plus"></i><span>Create Purchase Order (PO)</span></a></li>
                 <li><a href="show_po"><i class="ti-plus"></i><span>Show PO</span></a></li>

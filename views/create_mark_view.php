@@ -1,4 +1,64 @@
 <div id="createMake" class="content">
+    <div class="form-auto">
+        <div class="col-xs-12 table-list">
+            <form action="create_make" method="POST" class="listing__form" id="carMarkForm">
+                <div class="dashboardPageTitle text-center">
+                    <h2 style="opacity: 0;">Placeholder</h2>
+                </div>
+                <div class="dashboardBoxBg mb30">
+                    <div class="row">
+                        <div class="col-sm-12 table-list js-fill-in-container">
+                            <div class="row str">
+                                <div class="col-sm-2"><label for="carMake">Select Make</label></div>
+                                <div class="col-sm-4">
+                                    <select required class="form-control js-car-make" id="carMake" name="car_make">
+                                        <option value="0">-</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2"><label for="carModel">Select Model</label></div>
+                                <div class="col-sm-4">
+                                    <select required class="form-control js-car-model" name="car_model" id="carModel">
+                                        <option value="0"> - </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row str">
+                                <div class="col-sm-2"><label for="carMotor">Motor</label></div>
+                                <div class="col-sm-4">
+                                    <select required class="form-control js-car-motor" name="motor" id="carMotor">
+                                        <option value="0">-</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2"><label for="carFuel">Fuel</label></div>
+                                <div class="col-sm-4">
+                                    <select required class="form-control js-car-fuel" name="car_fuel" id="BPMbrandstof">
+                                        <option value="">-</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row str">
+                                <div class="col-sm-2"><label for="carUitvoering">Uitvoering</label></div>
+                                <div class="col-sm-4">
+                                    <select class="form-control js-car-variant" name="car_variant" id="carUitvoering">
+                                        <option value="0">-</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- <div class="row str">
+                                <div class="col-sm-4">
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- BEGIN breadcrumb -->
     <ul class="breadcrumb pt-4">
         <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -18,17 +78,17 @@
         </p>
         <!-- BEGIN nav-tabs -->
         <ul class="nav nav-tabs" id="nav-tabs">
-            <li class="nav-item"><a href="#tab1" class="nav-link <?php echo (!isset($_COOKIE['active_tab']) || $_COOKIE['active_tab'] == "tab1" ? "active in" : "" )?>" data-toggle="tab">Make</a></li>
-            <li class="nav-item"><a href="#tab2" class="nav-link <?php echo (isset($_COOKIE['active_tab']) && $_COOKIE['active_tab'] == "tab2" ? "active in" : "" )?>" data-toggle="tab">Models</a></li>
-            <li class="nav-item"><a href="#tab3" class="nav-link <?php echo (isset($_COOKIE['active_tab']) && $_COOKIE['active_tab'] == "tab3" ? "active in" : "" )?>" data-toggle="tab">Motors</a></li>
-            <li class="nav-item"><a href="#tab4" class="nav-link  <?php echo (isset($_COOKIE['active_tab']) && $_COOKIE['active_tab'] == "tab4" ? "active in" : "" )?>" data-toggle="tab">Uitvoering</a></li>
+            <li class="nav-item"><a href="#tab1" class="nav-link <?php echo (!isset($_COOKIE['active_tab']) || $_COOKIE['active_tab'] == "tab1" ? "active in" : "") ?>" data-toggle="tab">Make</a></li>
+            <li class="nav-item"><a href="#tab2" class="nav-link <?php echo (isset($_COOKIE['active_tab']) && $_COOKIE['active_tab'] == "tab2" ? "active in" : "") ?>" data-toggle="tab">Models</a></li>
+            <li class="nav-item"><a href="#tab3" class="nav-link <?php echo (isset($_COOKIE['active_tab']) && $_COOKIE['active_tab'] == "tab3" ? "active in" : "") ?>" data-toggle="tab">Motors</a></li>
+            <li class="nav-item"><a href="#tab4" class="nav-link  <?php echo (isset($_COOKIE['active_tab']) && $_COOKIE['active_tab'] == "tab4" ? "active in" : "") ?>" data-toggle="tab">Uitvoering</a></li>
         </ul>
 
         <!-- END nav-tabs -->
         <!-- BEGIN tab-content -->
         <div class="tab-content tab-content-bordered">
             <!-- BEGIN tab-pane -->
-            <div class="tab-pane fade <?php echo (!isset($_COOKIE['active_tab']) || $_COOKIE['active_tab'] == "tab1" ? "active in" : "" )?>" id="tab1">
+            <div class="tab-pane fade <?php echo (!isset($_COOKIE['active_tab']) || $_COOKIE['active_tab'] == "tab1" ? "active in" : "") ?>" id="tab1">
                 <div class="table-responsive">
                     <table id="datatables-makemodel" class="table table-striped table-condensed table-bordered bg-white vacations datatables-makemodel">
                         <thead>
@@ -56,7 +116,7 @@
             <!-- END tab-pane -->
 
             <!-- BEGIN tab-pane -->
-            <div class="tab-pane fade <?php echo (isset($_COOKIE['active_tab']) && $_COOKIE['active_tab'] == "tab2" ? "active in" : "" )?>" id="tab2">
+            <div class="tab-pane fade <?php echo (isset($_COOKIE['active_tab']) && $_COOKIE['active_tab'] == "tab2" ? "active in" : "") ?>" id="tab2">
 
                 <div class="table-responsive">
                     <table id="datatables-makemodel-models" class="table table-striped table-condensed table-bordered bg-white vacations datatables-makemodel">
@@ -85,7 +145,7 @@
             <!-- END tab-content -->
 
             <!-- BEGIN tab-pane -->
-            <div class="tab-pane fade <?php echo (isset($_COOKIE['active_tab']) && $_COOKIE['active_tab'] == "tab3" ? "active in" : "" )?>" id="tab3">
+            <div class="tab-pane fade <?php echo (isset($_COOKIE['active_tab']) && $_COOKIE['active_tab'] == "tab3" ? "active in" : "") ?>" id="tab3">
 
                 <div class="table-responsive">
                     <table id="datatables-makemodel-motors" class="table table-striped table-condensed table-bordered bg-white vacations datatables-makemodel">
@@ -114,7 +174,7 @@
             <!-- END table -->
 
             <!-- BEGIN tab-pane -->
-            <div class="tab-pane fade <?php echo (isset($_COOKIE['active_tab']) && $_COOKIE['active_tab'] == "tab4" ? "active in" : "" )?>" id="tab4">
+            <div class="tab-pane fade <?php echo (isset($_COOKIE['active_tab']) && $_COOKIE['active_tab'] == "tab4" ? "active in" : "") ?>" id="tab4">
 
                 <div class="table-responsive">
                     <table id="datatables-makemodel-uitvoering" class="table table-striped table-condensed table-bordered bg-white vacations datatables-makemodel">
@@ -161,7 +221,6 @@
 
 </div>
 
-
 <div class="modal fade" id="create-mark">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -169,7 +228,7 @@
                 <h4 class="modal-title">Create Mark</h4>
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body js-fill-in-container">
                 <?php include './views/create_mark_m_view.php' ?>
             </div>
         </div>
@@ -182,7 +241,7 @@
                 <h4 class="modal-title">Create Model</h4>
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body js-fill-in-container">
                 <?php include './views/create_model_view.php' ?>
             </div>
         </div>
@@ -195,7 +254,7 @@
                 <h4 class="modal-title">Edit Mark</h4>
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body js-fill-in-container">
                 <?php include './views/edit_mark_view.php' ?>
             </div>
         </div>
@@ -208,7 +267,7 @@
                 <h4 class="modal-title">Edit Model</h4>
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></bdutton>
             </div>
-            <div class="modal-body">
+            <div class="modal-body js-fill-in-container">
                 <?php include './views/edit_model_view.php' ?>
             </div>
         </div>
@@ -221,7 +280,7 @@
                 <h4 class="modal-title">Create Motor</h4>
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></bdutton>
             </div>
-            <div class="modal-body">
+            <div class="modal-body js-fill-in-container">
                 <?php include './views/create_motor.php' ?>
             </div>
         </div>
@@ -234,7 +293,7 @@
                 <h4 class="modal-title">Connect Fuel</h4>
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></bdutton>
             </div>
-            <div class="modal-body">
+            <div class="modal-body js-fill-in-container">
                 <?php include './views/add_fuel.php' ?>
             </div>
         </div>
@@ -247,7 +306,7 @@
                 <h4 class="modal-title">Add Uitvoering</h4>
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></bdutton>
             </div>
-            <div class="modal-body">
+            <div class="modal-body js-fill-in-container">
                 <?php include './views/uitvoering_add.php' ?>
             </div>
         </div>

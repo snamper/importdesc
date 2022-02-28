@@ -1434,9 +1434,9 @@ $('.JSfunc').click(function () {
 
 ; (function (window, doc) {
 
-    const carMake = document.querySelector('#carMake');
+    const carMakes = document.querySelectorAll('.js-car-make');
 
-    if (!carMake)
+    if (carMakes.length < 1)
         return;
 
     const queryString = window.location.search;
@@ -1445,80 +1445,116 @@ $('.JSfunc').click(function () {
 
     if (!car_id) {
         window.addEventListener('DOMContentLoaded', (event) => {
-            carMake.value = 0;
-            carMake.dispatchEvent(new Event('change'));
+            carMakes.forEach(make => {
+                make.value = 0;
+                make.dispatchEvent(new Event('change'));
+            });
         });
     }
     else {
         window.addEventListener('DOMContentLoaded', (event) => {
-            carMake.dispatchEvent(new Event('change'));
+            carMakes.forEach(make => {
+                make.dispatchEvent(new Event('change'));
+            });
         });
     }
 
-    const carFuel = document.getElementById('BPMbrandstof');
-    const carMotor = document.getElementById('carMotor');
+    const carFuels = document.querySelectorAll('.js-car-fuel');
+    const carMotors = document.querySelectorAll('.js-car-motor');
 
-    carMake.addEventListener("change", (e) => {
-        const trigger = e.currentTarget;
+    carMakes.forEach(make => {
+        make.addEventListener("change", (e) => {
+            const trigger = e.currentTarget;
+            const container = trigger.closest('.js-fill-in-container');
+            const fuel = container.querySelector('.js-car-fuel');
+            const motor = container.querySelector('.js-car-motor');
+            const make = container.querySelector('.js-car-make');
+            const model = container.querySelector('.js-car-model');
+            const variant = container.querySelector('.js-car-variant');
 
-        fetchCarItems(`${location.origin}/car_start?all_car_makes=0`, "#carMake", "cmake_name", "cmake_id");
+            if(make)
+                fetchCarItems(`${location.origin}/car_start?all_car_makes=0`, make, "cmake_name", "cmake_id");
 
-        // FETCH Uitvoering
-        fetchCarItems(`${location.origin}/car_start?make_id_get_uitvoering=${trigger.value}`, "#carUitvoering", "cmu_name", "cmu_id");
-        // FETCH Models
-        fetchCarItems(`${location.origin}/car_start?make_id_get_models=${trigger.value}`, "#carModel", "cmodel_name", "cmodel_id");
-
-        //FETCH MOTORS 
-        fetchCarItems(`${location.origin}/car_start?make_id_get_motors=${trigger.value}`, "#carMotor", "cmotor_name", "cmotor_id");
-
-        if (trigger.value !== 0) {
-            carFuel.dispatchEvent(new Event('change'));
-            carMotor.dispatchEvent(new Event('change'));
-        }
-        else {
-            resetSelectElement(carFuel);
-            resetSelectElement(carMotor);
-        }
-    });
-
-    carFuel.addEventListener("change", (e) => {
-        if (carMake.value == 0) {
-            resetSelectElement(e.currentTarget);
-            return;
-        }
-        if (e.currentTarget.value == 0) {
-            // FETCH All Fuel
-            fetchCarItems(`${location.origin}/car_start?get_all_fuels`, "#BPMbrandstof", "description", "conversion_id");
+            // FETCH Uitvoering
+            if(variant)
+                fetchCarItems(`${location.origin}/car_start?make_id_get_uitvoering=${trigger.value}`, variant, "cmu_name", "cmu_id");
+            // FETCH Models
+            if(model)
+                fetchCarItems(`${location.origin}/car_start?make_id_get_models=${trigger.value}`, model, "cmodel_name", "cmodel_id");
 
             //FETCH MOTORS 
-            fetchCarItems(`${location.origin}/car_start?make_id_get_motors=${carMake.value}`, "#carMotor", "cmotor_name", "cmotor_id");
-        }
-        else {
-            fetchCarItems(`${location.origin}/car_start?fuel_id_get_motors=${e.currentTarget.value}&car_make_id=${carMake.value}`, "#carMotor", "cmotor_name", "cmotor_id");
-        }
+            if(motor)
+                fetchCarItems(`${location.origin}/car_start?make_id_get_motors=${trigger.value}`, motor, "cmotor_name", "cmotor_id");
+
+            if (trigger.value !== 0) {
+                if(fuel)
+                    fuel.dispatchEvent(new Event('change'));
+                if(motor)
+                    motor.dispatchEvent(new Event('change'));
+            }
+            else {
+                if(fuel)
+                    resetSelectElement(fuel);
+                if(motor)
+                    resetSelectElement(motor);
+            }
+        });
     });
 
-    carMotor.addEventListener("change", (e) => {
-        if (carMake.value == 0) {
-            resetSelectElement(e.currentTarget);
-            return;
-        }
-        if (e.currentTarget.value == 0) {
-            // FETCH All Fuel
-            fetchCarItems(`${location.origin}/car_start?get_all_fuels`, "#BPMbrandstof", "description", "conversion_id");
-        }
-        else {
-            fetchCarItems(`${location.origin}/car_start?get_fuel_by_motor=${e.currentTarget.value}`, "#BPMbrandstof", "description", "cmotor_fuel_id");
-        }
+    carFuels.forEach(fuel => {
+        fuel.addEventListener("change", (e) => {
+            const trigger = e.currentTarget;
+            const container = trigger.closest('.js-fill-in-container');
+            const make = container.querySelector('.js-car-make');
+            if(!make) {
+                fetchCarItems(`${location.origin}/car_start?get_all_fuels`, trigger, "description", "conversion_id");
+                return;
+            }
+            if(make.value == 0) {
+                resetSelectElement(trigger);
+                return;
+            }
+            const motor = container.querySelector('.js-car-motor');
+            if (trigger.value == 0) {
+                // FETCH All Fuel
+                fetchCarItems(`${location.origin}/car_start?get_all_fuels`, trigger, "description", "conversion_id");
+
+                //FETCH MOTORS 
+                if(make && motor)
+                    fetchCarItems(`${location.origin}/car_start?make_id_get_motors=${make.value}`, motor, "cmotor_name", "cmotor_id");
+            }
+            else {
+                if(make && motor)
+                    fetchCarItems(`${location.origin}/car_start?fuel_id_get_motors=${trigger.value}&car_make_id=${make.value}`, motor, "cmotor_name", "cmotor_id");
+            }
+        });
     });
 
-    function fetchCarItems(url, fill_id, opt_text, opt_val) {
+    carMotors.forEach(motor => {
+        motor.addEventListener("change", (e) => {
+            const trigger = e.currentTarget;
+            const container = trigger.closest('.js-fill-in-container');
+            if (container.querySelector('.js-car-make').value == 0) {
+                resetSelectElement(trigger);
+                return;
+            }
+            if (trigger.value == 0) {
+                // FETCH All Fuel
+                fetchCarItems(`${location.origin}/car_start?get_all_fuels`, container.querySelector('.js-car-fuel'), "description", "conversion_id");
+            }
+            else {
+                fetchCarItems(`${location.origin}/car_start?get_fuel_by_motor=${trigger.value}`, container.querySelector('.js-car-fuel'), "description", "cmotor_fuel_id");
+            }
+        });
+    });
+
+    function fetchCarItems(url, fillElement, opt_text, opt_val) {
         fetch(url)
             .then(function (response) {
                 return response.json();
             })
             .then(function (response) {
-                fillSelectFromJson(fill_id, response, opt_text, opt_val);
+                fillSelectFromJson(fillElement, response, opt_text, opt_val);
             })
             .catch((error) => {
                 console.log(error);
@@ -1536,7 +1572,7 @@ $('.JSfunc').click(function () {
         }));
     }
 
-    function fillSelectFromJson(selector, jsonData, selectTextProp, selectValProp, changeInnerHTML = false) {
+    function fillSelectFromJson(fillElement, jsonData, selectTextProp, selectValProp, changeInnerHTML = false) {
 
         let emptyOption = Object.assign(
             document.createElement("option"), {
@@ -1544,12 +1580,10 @@ $('.JSfunc').click(function () {
             "value": "0"
         });
 
-        const selectEl = document.querySelector(`${selector}`);
+        const selectedOption = fillElement.value;
 
-        const selectedOption = selectEl.value;
-
-        selectEl.innerHTML = "";
-        selectEl.appendChild(emptyOption);
+        fillElement.innerHTML = "";
+        fillElement.appendChild(emptyOption);
 
         for (let key in jsonData) {
             if (!jsonData.hasOwnProperty(key)) {
@@ -1564,7 +1598,7 @@ $('.JSfunc').click(function () {
             if (selectedOption && option.value == selectedOption)
                 option.selected = true;
 
-            selectEl.appendChild(option)
+                fillElement.appendChild(option)
         }
     }
 
@@ -2712,7 +2746,7 @@ function restBpmCalc() {
                 document.querySelector('#addRest_BPMReadOnly').value = json[0].bpmprice;
                 const bruto = (json[0].bpmprice / (percentage / 100));
                 console.log(bruto);
-                document.querySelector('#BPMBruto').value = isNaN(bruto) ? '' : bruto.toFixed(0);
+                document.querySelector('#BPMBruto').value = isNaN(bruto) ? 0 : bruto.toFixed(0);
             } catch (e) {
                 return "A required field for BPM is not filled";
             }

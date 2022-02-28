@@ -3,7 +3,7 @@
     if(!empty($data['car_images'][0]))
         usort($data['car_images'][0], function($a, $b) {return (intval($a['cp_imagepos']) < intval($b['cp_imagepos'])) ? -1 : 1;});
 ?>
-<div class="content" id="createEditCarPage">
+<div class="content js-fill-in-container" id="createEditCarPage">
     <div class="ref-container">
             <span data-ref="carMake">
                 <?php echo isset($data['single_car']['cmake_name']) ? substr($data['single_car']['cmake_name'],0,3) : ""; ?>
@@ -308,7 +308,7 @@
                         </div>
 
                         <div class="col-12 col-md-8">
-                            <select required class="form-control js-fill-refer" id="carMake" name="car_make">
+                            <select required class="form-control js-car-make js-fill-refer" id="carMake" name="car_make">
                                 <option value="0">-</option>
                                 <?php
                                 if (isset($_GET['car_id'])) {
@@ -324,7 +324,7 @@
                         <div class="col-12 col-md-8">
                             <div class="row">
                                 <div class="col-6 pr-0">
-                                    <select required class="form-control js-fill-refer" name="car_model" id="carModel">
+                                    <select required class="form-control js-car-model js-fill-refer" name="car_model" id="carModel">
                                         <option value="0"> - </option>
                                         <?php
                                         if (isset($_GET['car_id'])) {
@@ -349,7 +349,7 @@
                             <div class="row">
                                 <div class="col-6 pr-0">
 
-                                    <select class="form-control" name="car_variant" id="carUitvoering">
+                                    <select class="form-control js-car-variant" name="car_variant" id="carUitvoering">
                                         <option value="0">-</option>
                                         <?php
                                         if (isset($_GET['car_id'])) {
