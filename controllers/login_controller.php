@@ -69,6 +69,8 @@ class login extends view
 				header("Location: dashboard");
 			}
 		}
+		else
+			$_SESSION['lang'] = $this->base->getLangTranslations(2);
 
 
 

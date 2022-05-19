@@ -13,6 +13,8 @@ class home extends view{
 			$_SESSION['user'][0]['langID']=$_POST['changes'];
 			$_SESSION['lang'] = $this->base->getLangTranslations($_POST['changes']);
 		}
+		else
+			$_SESSION['lang'] = $this->base->getLangTranslations($_SESSION['user'][0]['langID']);
 //		$_SESSION['langs'] = $this->getLangs();
 //		$_SESSION['lang'] = isset($_SESSION['user'])?$_SESSION['user'][0]['langID']:26;
 //		$_SESSION['translate'] = $this->getTranslate($_SESSION['lang']);

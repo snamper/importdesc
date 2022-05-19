@@ -1,6 +1,5 @@
 <?php
 include_once "engine/db_driver.php";
-include_once "engine/db_driver1.php";
 
 function GetLanguageData($extras)
 {
@@ -857,7 +856,7 @@ function AgendaDataViewB()
 
             $query = "SELECT * FROM `car_make` WHERE `id_car_make` = '$varA'";
 
-            $dbDriver = new db_driver1();
+            $dbDriver = new db_driver();
             $dbDriver->querySelects($query);
             $result =  $dbDriver->fetchAssoc();
             foreach ($result as $v) {
@@ -871,7 +870,7 @@ function AgendaDataViewB()
         {
 
             $query = "SELECT * FROM `car_model` WHERE `id_car_model` = '$varB'";
-            $dbDriver = new db_driver1();
+            $dbDriver = new db_driver();
             $dbDriver->querySelects($query);
             $result =  $dbDriver->fetchAssoc();
 

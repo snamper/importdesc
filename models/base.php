@@ -1,6 +1,5 @@
 <?php
 include_once "engine/db_driver.php";
-include_once "engine/db_driver1.php";
 
 class base
 {
@@ -44,7 +43,7 @@ class base
 
 	function getCarTypes()
 	{
-		$dbDriver = new db_driver1();
+		$dbDriver = new db_driver();
 		$sql = "SELECT * FROM `car_type`";
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
@@ -165,28 +164,28 @@ class base
 	}
 	function getCarGeneration($generationID)
 	{
-		$dbDriver = new db_driver1();
+		$dbDriver = new db_driver();
 		$sql = "SELECT * FROM `car_generation` WHERE `id_car_model` = '$generationID'";
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
 	}
 	function getCarSerie($serieID)
 	{
-		$dbDriver = new db_driver1();
+		$dbDriver = new db_driver();
 		$sql = "SELECT * FROM `car_serie` WHERE `id_car_generation` = '$serieID'";
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
 	}
 	function getCarTrim($trimID)
 	{
-		$dbDriver = new db_driver1();
+		$dbDriver = new db_driver();
 		$sql = "SELECT * FROM `car_trim` WHERE `id_car_serie` = '$trimID'";
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
 	}
 	function getCarMotor($modelID)
 	{
-		$dbDriver = new db_driver1();
+		$dbDriver = new db_driver();
 		$sql = "SELECT * FROM `car_trim` WHERE `id_car_model` = '$modelID'";
 		$dbDriver->querySelects($sql);
 
@@ -217,7 +216,7 @@ class base
 	}
 	function getCarEquipment($equipmentID)
 	{
-		$dbDriver = new db_driver1();
+		$dbDriver = new db_driver();
 		$sql = "SELECT * FROM `car_equipment` WHERE `id_car_trim` = '$equipmentID'";
 		$dbDriver->querySelects($sql);
 		return $dbDriver->fetchAssoc();
