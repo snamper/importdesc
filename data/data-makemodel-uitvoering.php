@@ -3,7 +3,7 @@ session_start();
 //error_reporting(0);
 ini_set('memory_limit', '-1');
 ini_set ( 'max_execution_time', -1); //unlimit
-include("connection.php");
+$config = include("../config.php");
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Easy set variables
  */
@@ -29,21 +29,20 @@ function fatal_error ( $sErrorMessage = '' )
 //    header( $_SERVER['SERVER_PROTOCOL'] .' 500 Internal Server Error' );
 //    die( $sErrorMessage );
 }
-$gaSql['charset']  = 'utf8';
 /*
  * MySQL connection
  */
 //$_POST['24conn'] = new mysqli($gaSql['server'], $gaSql['user'], $gaSql['password'], $gaSql['db']);
-if ( ! $gaSql['link'] = new mysqli($gaSql['server'], $gaSql['user'], $gaSql['password'], $gaSql['db'] ) )
+if ( ! $conn = new mysqli($config['hostName'], $config['userName'], $config['passWord'], $config['dbName'] ) )
 {
     fatal_error( 'Could not open connection to server' );
 }
-if ( ! mysqli_select_db($gaSql['link'], $gaSql['db']))
+if ( ! mysqli_select_db($conn, $config['dbName']))
 {
     fatal_error( 'Could not select database ' );
 }
-if (!$gaSql['link']->set_charset($gaSql['charset'])) {
-    die( 'Error loading character set "'.$gaSql['charset'].'": '.$db->error );
+if (!$conn->set_charset($config['charSet'])) {
+    die( 'Error loading character set "'.$config['charSet'].'": '.$db->error );
 }
 /*
  * Paging
@@ -110,7 +109,7 @@ if ( $_GET['sSearch'] != "" )
             $sWhere .= "( ";
             for ( $i=0 ; $i<count($aColumns) ; $i++ )
             {
-                $sWhere .= $aColumns[$i]." LIKE '%".mysqli_real_escape_string($gaSql['link'], $aWords[$j] )."%' OR ";
+                $sWhere .= $aColumns[$i]." LIKE '%".mysqli_real_escape_string($conn, $aWords[$j] )."%' OR ";
             }
             $sWhere = substr_replace( $sWhere, "", -3 );
             $sWhere .= ") AND ";
@@ -132,7 +131,7 @@ for ( $i=0 ; $i<count($aColumns) ; $i++ )
         {
             $sWhere .= " AND ";
         }
-        $sWhere .= $aColumns[$i]." LIKE '%".mysqli_real_escape_string($gaSql['link'], $_GET['sSearch_'.$i])."%' ";
+        $sWhere .= $aColumns[$i]." LIKE '%".mysqli_real_escape_string($conn, $_GET['sSearch_'.$i])."%' ";
     }
 }
 /*
@@ -148,14 +147,14 @@ $sQuery = "
         $sLimit
     ";
 
-$rResult = mysqli_query($gaSql['link'], $sQuery, $gaSql['link'] ) or fatal_error( 'MySQL Error: ' . mysqli_errno($gaSql['link']) );
-mysqli_query($gaSql['link'], "SET character_set_results=utf8", $gaSql['link']);
-$rResult = mysqli_query($gaSql['link'], $sQuery ) or die(mysql_error());
+$rResult = mysqli_query($conn, $sQuery) or fatal_error( 'MySQL Error: ' . mysqli_errno($conn) );
+mysqli_query($conn, "SET character_set_results=utf8");
+$rResult = mysqli_query($conn, $sQuery ) or die(mysqli_error($conn));
 /* Data set length after filtering */
 $sQuery = "
         SELECT FOUND_ROWS()
     ";
-$rResultFilterTotal =  mysqli_query($gaSql['link'], $sQuery, $gaSql['link'] ) or fatal_error( 'MySQL Error: ' . mysqli_errno($gaSql['link']) );
+$rResultFilterTotal =  mysqli_query($conn, $sQuery) or fatal_error( 'MySQL Error: ' . mysqli_errno($conn) );
 $aResultFilterTotal = mysqli_fetch_array($rResultFilterTotal);
 $iFilteredTotal = $aResultFilterTotal[0];
 /* Total data set length */
@@ -163,7 +162,7 @@ $sQuery = "
         SELECT COUNT(".$sIndexColumn.")
         FROM   $sTable
     ";
-$rResultTotal = mysqli_query($gaSql['link'], $sQuery, $gaSql['link'] ) or fatal_error( 'MySQL Error: ' . mysqli_errno($gaSql['link']) );
+$rResultTotal = mysqli_query($conn, $sQuery) or fatal_error( 'MySQL Error: ' . mysqli_errno($conn) );
 $aResultTotal = mysqli_fetch_array($rResultTotal);
 $iTotal = $aResultTotal[0];
 /*

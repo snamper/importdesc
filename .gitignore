@@ -1,7 +1,6 @@
 .idea
 .htaccess
 config.php
-data/connection.php
 bpm/connn.php
 uploads/images/*
 uploads/documents/*
