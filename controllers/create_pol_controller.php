@@ -27,8 +27,68 @@ class create_pol extends view
 			header("Location: /login ");
 			exit;
 		}
-
+		
 		$this->base = $_SESSION['base'];
+
+		if(isset($_POST['convert_to_eur'])) {
+			echo $this->base->getEurConversion($_POST['convert_to_eur']);
+			exit;
+		}
+
+		if(!isset($_REQUEST['po']) || !isset($_REQUEST['line'])) {
+			header("Location: /login ");
+			exit;
+		}
+
+		$po = $_REQUEST['po'];
+		$line = $_REQUEST['line'];
+		
+		if(isset($_POST['save_pol'])) {
+			$this->base->updatePoLine($_POST['save_pol']);
+		}
+
+		$poData = $this->base->getSinglePurchaseOrder($po);
+		$this->setData('po_data', $poData);
+
+		$poLines = $this->base->getPOLines($po);
+
+		if(empty($poLines)) {
+			var_dump('No po lines found. redirect from here.');exit;
+			// $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/create_po?order_id=$po";
+			// header("Location: $url");
+			// exit;
+		}
+
+		// echo '<pre>';
+		// var_dump($poLines);
+		// echo '</pre>';
+		// exit;
+
+		$current_line_num = null;
+		$pol_count = count($poLines);
+		for($i = 0; $i < $pol_count; $i++) {
+			if($poLines[$i]['pl_id'] == $line)
+				$current_line_num = $i;
+		}
+		if($current_line_num === null) {
+			$this->setData('current_pol_num', 1);
+			$this->setData('pol_data', $poLines[0]);
+		}
+		else {
+			$this->setData('current_pol_num', $current_line_num+1);
+			$this->setData('pol_data', $poLines[$current_line_num]);
+		}
+		$this->setData('count_pol', $pol_count);
+		$this->setData('prev_pol_id', ($current_line_num-1 < 0) ? null : $poLines[$current_line_num-1]['pl_id']);
+		$this->setData('next_pol_id', ($current_line_num+1 >= $pol_count) ? null : $poLines[$current_line_num+1]['pl_id']);
+
+		$currency = $this->base->getEurConversion($poData['po_currency']);
+		$this->setData('converted_values', [
+			'purchase_value_eur' => round($poLines[$current_line_num]['pl_purchase_value'] * $currency, 2),
+			'fee_intermediate_supplier_eur' => round($poLines[$current_line_num]['pl_fee_intermediate_supplier'] * $currency, 2),
+			'transport_cost_eur' => round($poLines[$current_line_num]['pl_transport_cost'] * $currency, 2)
+		]);
+		$this->setData('documents', $this->base->getDocuments('line', $poLines[$current_line_num]['pl_id']));
 
 		if (isset($_SESSION['user'])) parent::__construct('create_pol_view.php');
 		else parent::__construct('login_view.php');

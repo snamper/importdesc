@@ -11001,3 +11001,16 @@ input::-webkit-input-placeholder {
     width: 11px;
 
 }
+
+.documents_container {
+	background: #fff;
+	border: 1px solid #C8C7CC;
+	min-height: 100px;
+	border-radius: 0.25rem;
+	padding: 5px;
+	overflow-y: scroll;
+}
+.documents_container p {
+	line-height: 20px;
+	margin: 0px;
+}

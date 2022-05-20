@@ -8,7 +8,7 @@ $config = include("../config.php");
 /* Array of database columns which should be read and sent back to DataTables. Use a space where
  * you want to insert a non-database field (for example a counter or static image)
  */
-$aColumns = array('pl_id', 'car_preorder', 'conv.conversion_name as type', 'pl_vehicle_id', 'car_vat_marge', 'cm.cmake_name', 'cmod.cmodel_name', 'cmu_name', 'cmotor.cmotor_name', 'purchase_price_netto', 'pl_id as edit', 'pl_km_delivery', 'pl_expected_delivery', 'pl_purchase_price_incl_vat', 'pl_accident_free', 'pl_expected_damage_amount', 'pl_extra_set_of_wheels', 'pl_deposit');
+$aColumns = array('pl_id', 'car_preorder', 'conv.conversion_name as type', 'pl_vehicle_id', 'car_vat_marge', 'cm.cmake_name', 'cmod.cmodel_name', 'cmu_name', 'cmotor.cmotor_name', 'purchase_price_netto', 'pl_id as edit', 'pl_km_delivery', 'pl_expected_delivery', 'pl_purchase_price_incl_vat', 'pl_accident_free', 'pl_expected_damage_amount', 'pl_extra_set_of_wheels', 'pl_deposit', 'pl_purchase_id');
 /* Indexed column (used for fast and accurate table cardinality) */
 $sIndexColumn = "c.car_id as number";
 /* DB table to use */
@@ -224,7 +224,7 @@ while ($aRow = mysqli_fetch_array($rResult)) {
                 $row[] = '<center style="display:flex;">Margin</center>';
             }
         } elseif ($aColumns[$i] == 'pl_id as edit') {
-            $row[] = '<center style="display:flex;"><a href="car_start?car_id=' . $aRow[3] . '" class="btn btn-default btn-xs"><i class="ti-brush"></i></a><a href="create_po?delete_line=' . $aRow[$i] . '" class="btn btn-default btn-xs"><i class="ti-trash"></i></a></center>';
+            $row[] = '<center style="display:flex;"><a href="create_pol?po=' . $aRow[1] . '&line=' . $aRow[$i] . '" class="btn btn-default btn-xs"><i class="ti-brush"></i></a><a href="create_po?delete_line=' . $aRow[$i] . '" class="btn btn-default btn-xs"><i class="ti-trash"></i></a></center>';
         } elseif ($aColumns[$i] == 'pl_vehicle_id') {
             $row[] = '<center data-line-id="' . $aRow[$i] . '" style="display:flex;"><a href="car_start?car_id=' . $aRow[$i] . '">' . sprintf("A%'.07d\n", $aRow[$i]) . '</a></center>';
         } elseif (in_array($aColumns[$i], $clickableTd)) {

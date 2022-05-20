@@ -2793,3 +2793,173 @@ window.addEventListener('DOMContentLoaded', (event) => {
         });
     }
 });
+
+// Upload Files Function
+window.addEventListener('DOMContentLoaded', (event) => {
+    $('#uploadFiles').on('change', uploadFiles);
+    $('#uploadFiles').on('dragenter', highlightUploadFile);
+    $('#uploadFiles').on('drop', stopHighlightUploadFile);
+    $('#uploadFiles').on('dragleave', stopHighlightUploadFile);
+
+    const columns = [ 'line', 'order', 'car' ];
+    const types = [ 'doc', 'img' ];
+    const allowedFormats = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"];
+    const allowedSizeMb = 10;
+    const allowedSizeBytes = allowedSizeMb * 1048576;
+    
+    function uploadFiles(e) {
+        const trigger = e.currentTarget;
+        const sort = $(trigger).attr('data-for');
+        if(!columns.includes(sort)) return;
+        const type = $(trigger).attr('data-type');
+        if(!types.includes(type)) return;
+        const target = $(trigger).attr('data-target');
+
+        const formData = new FormData();
+        formData.append("sort", sort);
+        formData.append("type", type);
+        formData.append("target", target);
+
+        for (let file of trigger.files) {
+            //Check allowed size 
+            if (file.size > allowedSizeBytes) {
+                alert(`There is a file that is bigger then allowed ${allowedSizeMb}MB`);
+                trigger.value = "";
+                return;
+            }
+            //Check allowed format 
+            if (!allowedFormats.includes(file.type)) {
+                alert(`There is a file type that is not allowed ${allowedFormats.join()}`);
+                trigger.value = "";
+                return;
+            }
+
+            formData.append(file.name, file);
+        }
+
+        $.ajax({
+            url: `${location.origin}/upload_files`,
+            type: 'post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if(type == 'doc') displayUploadedFiles(JSON.parse(response), sort);
+                //else displayUploadedImages(JSON.parse(response), sort);
+            },
+        });
+    }
+    function highlightUploadFile(e) {
+        $(e.currentTarget).parent().addClass('highlighted');
+    }
+    function stopHighlightUploadFile(e) {
+        $(e.currentTarget).parent().removeClass('highlighted');
+    }
+
+    function displayUploadedFiles(files, sort) {
+        const documentsContainer = document.querySelector("#documentsContainer");
+        const formId = (sort == 'line') ? '#createPOLForm' : '';
+        const form = document.querySelector(formId);
+    
+        let p, a, trash, hiddenInput;
+        for (let key in files) {
+            a = document.createElement("a");
+            a.href = files[key].location;
+            a.innerText = files[key].name;
+            
+            trash = document.createElement("span");
+            trash.className = 'ti-trash';
+            trash.addEventListener('click', documentTrashBtnClick);
+
+            p = document.createElement("p");
+            p.setAttribute('data-doc-id', files[key].id);
+
+            p.appendChild(a);
+            p.appendChild(trash);
+
+
+            console.log(p);
+
+            documentsContainer.prepend(p);
+            hiddenInput = document.createElement("input");
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'documents[]';
+            hiddenInput.value = files[key].name + '|' + files[key].location;
+            form.appendChild(hiddenInput);
+        }
+    }
+
+    function documentTrashBtnClick(e) {
+        const p = e.currentTarget.parentElement;
+        const docId = p.getAttribute('data-doc-id');
+        if(docId) {
+            const formData = new FormData();
+            formData.append("delete_doc", 'true');
+            formData.append("doc_id", docId);
+
+            $.ajax({
+                url: `${location.origin}/upload_files`,
+                type: 'post',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function () {
+                    p.remove();
+                },
+            });
+        }
+        else
+            p.remove();
+    }
+});
+
+// create_pol page functions
+window.addEventListener('DOMContentLoaded', (event) => {
+    $('#togglePolExtraInfo').click((e) => $('#polExtraInfo').slideToggle(100));
+
+    $('#expectedProdDate').datepicker({
+        dateFormat: 'yyyy-mm-dd',
+        autoclose: true,
+        weekStart: 1
+    });
+    $('#expectedDeliveryDate').datepicker({
+        dateFormat: 'yyyy-mm-dd',
+        autoclose: true,
+        weekStart: 1
+    });
+
+    const currency = $('#poCurrency').val();
+
+    const arrFields = ['#purchaseValue', '#feeIntermediateSupplier', '#transportCost'];
+    arrFields.forEach(field => $(field).change((e) => setCurrencyAmount(e.currentTarget)));
+    
+    async function setCurrencyAmount(selector) {
+        const value = $(selector).val();
+        if(!value || isNaN(value))  return;
+        $(`#${$(selector).attr('data-target')}`).val((value * Number(await getCurrencyConversion(currency))).toFixed(2));
+        calcFields();
+    }
+
+    function calcFields() {
+        let sum = 0;
+        arrFields.forEach(field => sum += (parseFloat($(`#${$(field).attr('data-target')}`).val()) || 0));
+        $('#purchasePriceExclVat').val(sum.toFixed(2));
+        $('#purchasePriceInclVat').val((sum + parseFloat($('#vatMargin').val())).toFixed(2));
+    }
+    calcFields();
+});
+
+async function getCurrencyConversion(currency) {
+    const fd = new FormData();
+    fd.append('convert_to_eur', currency);
+
+    const response = await $.ajax({
+        url: 'create_pol',
+        type: 'post',
+        data: fd,
+        contentType: false,
+        processData: false
+    });
+
+    return response ? JSON.parse(response) : 0;
+}

@@ -12,7 +12,7 @@
     <link href="../assets/plugins/bootstrap/bootstrap4/css/bootstrap.min.css" id="styleBoostrap" rel="stylesheet" />
     <link href="../assets/plugins/icon/themify-icons/themify-icons.css" rel="stylesheet" />
     <link href="../assets/css/animate.min.css" rel="stylesheet" />
-    <link href="../assets/css/style.min.css" id="styleMinCss" rel="stylesheet" />
+    <link href="../assets/css/style.css" id="styleMinCss" rel="stylesheet" />
     <link href="../assets/css/flag-icon.css" rel="stylesheet" />
     <link href="../assets/css/custom.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
