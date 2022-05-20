@@ -592,6 +592,20 @@ class base
 		]);
 	}
 
+	public function getPOLines($po_id) {
+		$dbDriver = new db_driver();
+		$query = "SELECT * FROM purchase_order_lines as pol
+		INNER JOIN cars as c ON c.car_id = pol.pl_vehicle_id
+		INNER JOIN car_details cd on c.car_id = cd.cd_car_id
+		INNER JOIN car_makes as cm on c.car_make = cm.cmake_id
+		INNER JOIN car_models as cmod on c.car_model = cmod.cmodel_id
+		INNER JOIN car_motors as cmotor on cd.cd_motor = cmotor.cmotor_id
+		WHERE pol.pl_purchase_id = ?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$po_id]);
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
 	public function deletePoLine($line_id)
 	{
 
@@ -620,6 +634,79 @@ class base
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		return $result[0];
+	}
+
+	public function updatePoLine($line_id)
+	{
+		$_POST['pl_expected_prod_date'] = date("Y-m-d", strtotime($_POST['pl_expected_prod_date']));
+		$_POST['pl_expected_delivery'] = date("Y-m-d", strtotime($_POST['pl_expected_delivery']));
+
+		$dbDriver = new db_driver();
+
+		$query = "UPDATE purchase_order_lines SET
+		pl_km_delivery = ?,
+		pl_transport_by_supplier = ?,
+		pl_pickup_point = ?,
+		pl_expected_prod_date = ?,
+		pl_expected_lead_time = ?,
+		pl_expected_reg_duration = ?,
+		pl_expected_delivery = ?,
+		pl_accident_free = ?,
+		pl_repaired_damage = ?,
+		pl_repaired_damage_amount = ?,
+		pl_technical_state = ?,
+		pl_currently_damaged = ?,
+		pl_expected_damage_amount = ?,
+		pl_extra_set_of_wheels = ?,
+		pl_purchase_value = ?,
+		pl_fee_intermediate_supplier = ?,
+		pl_transport_cost = ?,
+		pl_purchase_price_excl_vat = ?,
+		pl_vat_margin = ?,
+		pl_purchase_price_incl_vat = ?
+		WHERE pl_id = ?";
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([
+			$_POST['pl_km_delivery'],
+			$_POST['pl_transport_by_supplier'],
+			$_POST['pl_pickup_point'],
+			$_POST['pl_expected_prod_date'],
+			$_POST['pl_expected_lead_time'],
+			$_POST['pl_expected_reg_duration'],
+			$_POST['pl_expected_delivery'],
+			$_POST['pl_accident_free'],
+			$_POST['pl_repaired_damage'],
+			$_POST['pl_repaired_damage_amount'],
+			$_POST['pl_technical_state'],
+			$_POST['pl_currently_damaged'],
+			$_POST['pl_expected_damage_amount'],
+			$_POST['pl_extra_set_of_wheels'],
+			$_POST['pl_purchase_value'],
+			$_POST['pl_fee_intermediate_supplier'],
+			$_POST['pl_transport_cost'],
+			$_POST['pl_purchase_price_excl_vat'],
+			$_POST['pl_vat_margin'],
+			$_POST['pl_purchase_price_incl_vat'],
+			$line_id
+		]);
+	}
+
+	public function getEurConversion($code)
+	{
+		$req_url = "https://api.exchangerate.host/convert?from=$code&to=EUR";
+    	$response_json = file_get_contents($req_url);
+		if(false !== $response_json) {
+			try {
+				$response = json_decode($response_json);
+				if($response->success === true) {
+					//var_dump($response);
+					return $response->result;
+				}
+			} catch(Exception $e) {
+				// Handle JSON parse error...
+			}
+		}
 	}
 
 	public function getCarDocuments($car_id)
@@ -651,9 +738,8 @@ class base
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$purchase_order_id]);
-		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-		return $result[0];
+		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
 
@@ -2169,7 +2255,6 @@ class base
 		return $result;
 	}
 
-
 	public function getCurrencies()
 	{
 		$dbDriver = new db_driver();
@@ -2178,7 +2263,62 @@ class base
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([]);
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+}
 
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	public function uploadFiles($type, $sort, $target_id, $_files)
+	{
+		$arrReturn = [];
+		$path = ($type == 'doc') ? 'uploads/documents/' : 'uploads/images/';
+		$prefix = ($type == 'doc') ? 'doc-' : 'img-';
+		$pos = 0;
+		foreach ($_files as $file) {
+			$filename = $file['name'];
+			$randomid = uniqid($prefix);
+			$fileType = pathinfo($filename, PATHINFO_EXTENSION);
+			$location = $path . $randomid . "." . $fileType;
+			move_uploaded_file($file['tmp_name'], $location);
+			array_push($arrReturn, ['name' => $filename, 'location' => $location, 'pos' => $pos]);
+			$pos++;
+		}
+
+		if($target_id > 0) {
+			$dbDriver = new db_driver();
+			$query = "INSERT INTO documents (
+				doc_sort,
+				doc_target_id,
+				doc_filename,
+				doc_path,
+				doc_user_id
+			) VALUES ";
+			$params = [];
+			$first = true;
+			foreach ($arrReturn as $file) {
+				$query .= (($first ? "" : ", ") . "(?, ?, ?, ?, ?)");
+				$params = array_merge($params, [ $sort, $target_id, $file['name'], $file['location'], $_SESSION['user'][0]['expo_users_ID'] ]);
+				$first = false;
+			}
+			$stmt = $dbDriver->dbCon->prepare($query);
+			$stmt->execute($params);
+		}
+		return $arrReturn;
+	}
+
+	public function deleteDocument($file_id)
+	{
+		$dbDriver = new db_driver();
+		$query = "DELETE FROM documents WHERE doc_id = ?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$file_id]);
+	}
+
+	public function getDocuments($sort, $target_id)
+	{
+		$dbDriver = new db_driver();
+		$query = "SELECT * FROM documents WHERE doc_sort = ? AND doc_target_id = ?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$sort, $target_id]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 }
