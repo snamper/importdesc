@@ -2794,6 +2794,49 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 });
 
+window.addEventListener('DOMContentLoaded', (event) => {
+
+    $('#vat_deposit').change(function(){ // 
+        console.log("here");
+    
+        if ($(this).val() == '2') { 
+            $("#disable").prop('disabled', true);
+        } else {
+            $("#disable").prop('disabled', false);
+        }
+    });
+
+
+});
+
+
+window.addEventListener('DOMContentLoaded', (event) => {
+    $('#down_payment').change(function(){ // 
+        console.log("here");
+    
+        if ($(this).val() == '2') { 
+            $("#disable_down").prop('disabled', true);
+        } else {
+            $("#disable_down").prop('disabled', false);
+        }
+    });
+
+});
+
+
+window.addEventListener('DOMContentLoaded', (event) => {
+    $('#po_exchange').change(function(){ // 
+        console.log("here");
+    
+        if ($(this).val() == '2') { 
+            $("#disable_exchange").prop('disabled', true);
+        } else {
+            $("#disable_exchange").prop('disabled', false);
+        }
+    });
+
+});
+
 // Upload Files Function
 window.addEventListener('DOMContentLoaded', (event) => {
     $('#uploadFiles').on('change', uploadFiles);

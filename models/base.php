@@ -315,6 +315,8 @@ class base
 		$query = "INSERT INTO purchase_order
         (
 			po_number,
+			po_reference,
+			po_supplier,
 			po_date,
 			po_intermediary_supplier,
 			po_contact_person,
@@ -322,6 +324,15 @@ class base
 			po_contact_person_source,
 			po_purchasing_entity,
 			po_buyer,
+			po_currency,
+			po_vat_deposit,
+			po_vat_percentage,
+			po_down_payment,
+			po_down_payment_amount,
+			po_exchange,
+			po_invoice,
+			po_currency_rate,
+			po_purchase_type,
 			po_internal_reference_custom,
 			po_external_order_number,
 			po_status,
@@ -353,7 +364,19 @@ class base
 				?,
 				?,
 				?,
+				?,
+				?,
+				?,
+				?,
+				?,
+				?,
+				?,
+				?,
+				?,
+				?,
+				?,
 				?
+
             )";
 
 		$stmt = $dbDriver->dbCon->prepare($query);
@@ -363,6 +386,8 @@ class base
 		$stmt->execute(
 			[
 				$_post['po_number'],
+				$_post['po_reference'],
+				$_post['po_supplier'],
 				$_post['po_date'],
 				$_post['po_intermediary_supplier'],
 				$_post['po_contact_person'],
@@ -370,6 +395,15 @@ class base
 				$_post['po_contact_person_source'],
 				$_post['po_purchasing_entity'],
 				$_post['po_buyer'],
+				$_post['po_currency'],
+				$_post['po_vat_deposit'],
+				$_post['po_vat_percentage'],
+				$_post['po_down_payment'],
+				$_post['po_down_payment_amount'],
+				$_post['po_exchange'],
+				$_post['po_invoice'],
+				$_post['po_currency_rate'],
+				$_post['po_purchase_type'],
 				$_post['po_internal_reference_custom'],
 				$_post['po_external_order_number'],
 				$_post['update_order_submit'],
@@ -383,6 +417,13 @@ class base
 				$_SESSION['user'][0]['expo_users_ID']
 			]
 		);
+
+		if (isset($_post['po_documents'])) {
+
+			foreach ($_post['po_documents'] as $key => $doc) {
+				$this->insertPODocument($doc, $_post['update_order']);
+			}
+		}
 
 		$inserted_order_id = $dbDriver->dbCon->lastInsertId();
 
@@ -415,6 +456,8 @@ class base
 		$query = "UPDATE purchase_order
 		SET 
 			po_number = ?,
+			po_reference = ?,
+			po_supplier = ?,
 			po_date = ?,
 			po_intermediary_supplier =?,
 			po_contact_person =?,
@@ -422,6 +465,15 @@ class base
 			po_contact_person_source =?,
 			po_purchasing_entity =?,
 			po_buyer =?,
+			po_currency=?,
+			po_vat_deposit=?,
+			po_vat_percentage=?,
+			po_down_payment=?,
+			po_down_payment_amount=?,
+			po_exchange=?,
+			po_invoice=?,
+			po_currency_rate=?,
+			po_purchase_type=?,
 			po_internal_reference_custom =?,
 			po_external_order_number =?,
 			po_status =?,
@@ -443,6 +495,8 @@ class base
 
 		$stmt->execute([
 			$_post['po_number'],
+			$_post['po_reference'],
+			$_post['po_supplier'],
 			$_post['po_date'],
 			$_post['po_intermediary_supplier'],
 			$_post['po_contact_person'],
@@ -450,6 +504,15 @@ class base
 			$_post['po_contact_person_source'],
 			$_post['po_purchasing_entity'],
 			$_post['po_buyer'],
+			$_post['po_currency'],
+			$_post['po_vat_deposit'],
+			$_post['po_vat_percentage'],
+			$_post['po_down_payment'],
+			$_post['po_down_payment_amount'],
+			$_post['po_exchange'],
+			$_post['po_invoice'],
+			$_post['po_currency_rate'],
+			$_post['po_purchase_type'],
 			$_post['po_internal_reference_custom'],
 			$_post['po_external_order_number'],
 			$_post['update_order_submit'],
@@ -2192,6 +2255,18 @@ class base
 		return $result;
 	}
 
+	public function getCurrencies()
+	{
+		$dbDriver = new db_driver();
+
+		$query = "SELECT * FROM currency";
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([]);
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+}
+
 	public function uploadFiles($type, $sort, $target_id, $_files)
 	{
 		$arrReturn = [];
@@ -2244,6 +2319,6 @@ class base
 		$query = "SELECT * FROM documents WHERE doc_sort = ? AND doc_target_id = ?";
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$sort, $target_id]);
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 }
