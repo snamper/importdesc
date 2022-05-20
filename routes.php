@@ -61,6 +61,8 @@
 	$route['show_po_lines'] = 'controllers/show_po_lines_controller.php';
 
 	$route['create_pol'] = 'controllers/create_pol_controller.php';
+
+	$route['upload_files'] = 'controllers/upload_files_controller.php';
 	
 	
 	
