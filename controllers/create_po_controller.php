@@ -1,6 +1,6 @@
 <?php
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include_once 'views/view.php';
 class element
 {
@@ -161,6 +161,8 @@ class create_po extends view
 
 		$arr_items = [
 			'po_number',
+			'po_reference',
+			'po_supplier',
 			'po_date',
 			'po_intermediary_supplier',
 			'po_contact_person',
@@ -168,6 +170,15 @@ class create_po extends view
 			'po_contact_person_source',
 			'po_purchasing_entity',
 			'po_buyer',
+			'po_currency',
+			'po_vat_deposit',
+			'po_vat_percentage',
+			'po_down_payment',
+			'po_down_payment_amount',
+			'po_exchange',
+			'po_invoice',
+			'po_currency_rate',
+			'po_purchase_type',
 			'po_internal_reference_custom',
 			'po_external_order_number',
 			'po_payment_terms',

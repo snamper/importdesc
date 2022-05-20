@@ -1,6 +1,8 @@
 <?php
 $data['purch_order'] = $data['purch_order'][0];
 $data['poSums'] = $data['poSums'][0];
+
+var_dump($_SESSION);
 ?>
 
 
@@ -89,27 +91,40 @@ $data['poSums'] = $data['poSums'][0];
                         </div>
                         <div class="col-12 col-md-8">
 
-                            <input class="form-control" type="text" name="po_number" value="<?php echo (empty($data['purch_order']['po_number']) ? 0 : $data['purch_order']['po_number']); ?>" />
+                            <input disabled class="form-control" type="text" name="po_number" value="<?php echo (empty($data['purch_order']['po_number']) ? 0 : $data['purch_order']['po_number']); ?>" />
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Date*</span>
+                            <span>Custom PO Reference</span>
+                        </div>
+                        <div class="col-12 col-md-8">
+
+                            <input class="form-control" type="text" name="po_reference" value="<?php echo $data['purch_order']['po_reference']; ?>" />
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <span>Date Final Contract</span>
                         </div>
                         <div class="col-12 col-md-8">
                             <input class="form-control" id="datepicker2" autocomplete="false" required type="text" name="po_date" value="<?php echo (empty($data['purch_order']['po_date']) ? date('d-m-Y') : date('d-m-Y', strtotime($data['purch_order']['po_date']))); ?>" />
                         </div>
                     </div>
 
+
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>(Intermediary) supplier*</span>
+                            <span>Supplier</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" required type="text" name="po_intermediary_supplier" value="<?php echo $data['purch_order']['po_intermediary_supplier']; ?>" />
+                            <input class="form-control" required type="text" name="po_supplier" value="<?php echo $data['purch_order']['po_supplier']; ?>" />
                         </div>
                     </div>
+
 
                     <div class="row">
                         <div class="col-12 col-md-4">
@@ -122,99 +137,354 @@ $data['poSums'] = $data['poSums'][0];
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Source supplier</span>
+                            <span>Intermediary</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" name="po_source_supplier" value="<?php echo $data['purch_order']['po_source_supplier']; ?>" />
+                            <input class="form-control" required type="text" name="po_intermediary_supplier" value="<?php echo $data['purch_order']['po_intermediary_supplier']; ?>" />
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Contact person source supplier</span>
+                            <span>Contact person Intermediary*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" name="po_contact_person_source" value="<?php echo $data['purch_order']['po_contact_person_source']; ?>" />
+                            <input class="form-control" required type="text" name="po_contact_person" value="<?php echo $data['purch_order']['po_contact_person']; ?>" />
                         </div>
                     </div>
-                    <!-- ./ ROWS  -->
-                </div>
-                <!-- ./ Left col  -->
 
-                <!-- Rigth col  -->
-                <div class="col-12 col-md-7">
-                    <div class="row mt-3"></div>
-                    <div class="row mt-4"></div>
-
-                    <!-- Rows  -->
                     <div class="row">
                         <div class="col-12 col-md-4">
                             <span>Purchasing entity*</span>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-8">
                             <input class="form-control" required type="text" name="po_purchasing_entity" value="<?php echo $data['purch_order']['po_purchasing_entity']; ?>" />
                         </div>
                     </div>
+
 
                     <div class="row">
                         <div class="col-12 col-md-4">
                             <span>Buyer*</span>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-8">
                             <input class="form-control" required type="text" name="po_buyer" value="<?php echo $data['purch_order']['po_buyer']; ?>" />
                         </div>
                     </div>
 
-                    <?php if (!isset($_REQUEST['show_all_purch_lines'])) : ?>
-
-                        <div class="row">
-                            <div class="col-12 col-md-4">
-                                <span>Internal reference (custom)</span>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <input class="form-control" type="text" name="po_internal_reference_custom" value="<?php echo $data['purch_order']['po_internal_reference_custom']; ?>" />
-                            </div>
-                        </div>
-
-                    <?php endif ?>
 
                     <div class="row">
                         <div class="col-12 col-md-4">
                             <span>External order number</span>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-8">
                             <input class="form-control" type="number" name="po_external_order_number" value="<?php echo (empty($data['purch_order']['po_external_order_number']) ? 0 : $data['purch_order']['po_external_order_number']); ?>" />
                         </div>
                     </div>
 
-                    <?php if (isset($_REQUEST['show_all_purch_lines'])) : ?>
-
-                        <div class="row mt-3"></div>
-                        <div class="row mt-3"></div>
-
-                    <?php endif ?>
-
-                    <div class="row mt-3"></div>
-                    <div class="row mt-4"></div>
+                    <div class="row" style="height: 50px;">
+                        <div class="col-12 col-md-4">
+                            <span class="font-weight-bold">Internal Information</span>
+                        </div>
+                    </div>
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Status</span>
+                            <div class="row ml-1 mt-2">Created by</div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-8">
+                            <div class="row ml-1 mt-2">Joël Pinna (10-3-2022 11:55)</div>
+                        </div>
+                    </div>
 
-                            <span><?php echo ($data['purch_order']['status_label'] == '') ? 'New' : $_SESSION['lang'][$data['purch_order']['status_label']]; ?></span>
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <div class="row ml-1 mt-2">Last edited by</div>
                         </div>
+                        <div class="col-12 col-md-8">
+                            <div class="row ml-1 mt-2">Joël Pinna (10-3-2022 11:55)</div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <div class="row ml-1 mt-2">Last Submitted by</div>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <div class="row ml-1 mt-2">-</div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <div class="row ml-1 mt-2">Approved by</div>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <div class="row ml-1 mt-2">-</div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <div class="row ml-1 mt-2">Rejected By</div>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <div class="row ml-1 mt-2">-</div>
+                        </div>
+                    </div>
+
+
+                    <br/>
+
+                    <div class="row">
+                    <div class="col col-12 col-md-12">
+                    <p class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_90'] ?></p>
+                    <div class="form-control show-documents uploaded-documents-col" name="uploaded_files" id="uploadedFiles">
+                        <?php
+                        if (!is_null($data['po_documents'][0])) {
+                            foreach ($data['po_documents'][0] as $key => $doc) {
+                                echo "<div class='document' data-doc-id='{$doc['pod_id']}'>
+                                    <a href='{$doc['pod_path']}' about='_blank'>{$doc['pod_filename']}</a><span class='ti-trash'></span>
+                                </div>";
+                            }
+                        }
+                        ?></div>
+                </div>
+                </div>
+
+
+                <div class="row">
+                <div class="col col-12 col-md-12">
+                    <p class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_89'] ?></p>
+                    <textarea placeholder="" rows="7" class="form-control remarks" name="po_remarks" id="notes"><?php echo (isset($data['purch_order']['po_remarks']) ? $data['purch_order']['po_remarks']  : "") ?></textarea>
+                </div>
+                </div>
+
+                </div>
+
+                <!-- ./ Left col  -->
+
+                <!-- Rigth col  -->
+                
+ <div class="col-12 col-md-7">
+                    <div class="col-12 col-md-8">
+                        <div class="row" style="height: 50px;">
+                            <div class="col-12 col-md-4">
+                                <span class="font-weight-bold">Payment Terms</span>
+                            </div>
+                        </div>
+                        <!-- Rows  -->
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <span>Invoice, from (suppl. - interm.)</span>
+                            </div>
+                            <div class="col-12 col-md-8">
+
+                            <select class="form-control" name="po_invoice" id="po_invoice" class="col-12 col-md-12">
+                                <option value="1" <?php echo $data['purch_order']['po_invoice'] == 1 ? 'selected' : '' ?>>Supplier</option>
+                                <option value="2" <?php echo $data['purch_order']['po_invoice'] == 2 ? 'selected' : '' ?>>Intermediary</option>
+                            </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <span>Payment in Currency*</span>
+                            </div>
+                            <div class="col-12 col-md-8">
+
+                                <input class="form-control" type="text" name="po_currency" value="<?php echo $data['purch_order']['po_currency']; ?>" />
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <span>Purchase Type*</span>
+                            </div>
+                            <div class="col-12 col-md-8">
+                            <select class="form-control" name="po_purchase_type" id="po_purchase_type" class="col-12 col-md-12">
+                                <option value="1" <?php echo $data['purch_order']['po_purchase_type'] == 1 ? 'selected' : '' ?>>EU</option>
+                                <option value="2" <?php echo $data['purch_order']['po_purchase_type'] == 2 ? 'selected' : '' ?>>DOM</option>
+                                <option value="3" <?php echo $data['purch_order']['po_purchase_type'] == 3 ? 'selected' : '' ?>>ROW</option>
+                            </select>
+                            </div>
+                        </div>
+
+
+                        <div class="row" style="height: 50px;">
+                            <div class="col-12 col-md-4">
+                                <span class="font-weight-bold">VAT Deposit</span>
+                            </div>
+                        </div>
+                        <!-- Rows  -->
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <span>VAT Deposit</span>
+                            </div>
+                            <div class="col-12 col-md-8">                                
+                            <select class="form-control" name="po_vat_deposit" id="vat_deposit" class="col-12 col-md-12">
+                                <option value="1" <?php echo $data['purch_order']['po_vat_deposit'] == 1 ? 'selected' : '' ?>>Yes</option>
+                                <option value="2" <?php echo $data['purch_order']['po_vat_deposit'] == 2 ? 'selected' : '' ?>>No</option>
+                            </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <span>VAT Percentage</span>
+                            </div>
+                            <div class="col-12 col-md-8">
+                            <select class="form-control" name="po_vat_percentage" id="disable" class="col-12 col-md-12">
+                                <?php
+                                    $percentage = isset($data['purch_order']['po_vat_percentage']) ? $data['purch_order']['po_vat_percentage'] : 21;
+
+                                    for ($i = 17; $i <= 27; $i++) {
+                                        if ($percentage == $i) {
+                                            $selected = "selected";
+                                        } else {
+                                            $selected = "";
+                                        }
+
+                                        echo "<option $selected value='$i'>$i%</option>";
+                                    }
+                                    ?>
+                            </select>
+
+                            </div>
+                        </div>
+
+                        <div class="row" style="height: 50px;">
+                            <div class="col-12 col-md-4">
+                                <span class="font-weight-bold">Downpayment</span>
+                            </div>
+                        </div>
+                        <!-- Rows  -->
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <span>Down payment</span>
+                            </div>
+                            <div class="col-12 col-md-8">
+
+                            <select class="form-control" name="po_down_payment" id="down_payment" class="col-12 col-md-12">
+                                <option value="1" <?php echo $data['purch_order']['po_down_payment'] == 1 ? 'selected' : '' ?>>Yes</option>
+                                <option value="2" <?php echo $data['purch_order']['po_down_payment'] == 1 ? 'selected' : '' ?>>No</option>
+                            </select>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <span>Down payment amount</span>
+                            </div>
+                            <div class="col-12 col-md-8">
+                            <input class="form-control" type="text" id="disable_down" name="po_down_payment_amount" value="<?php echo $data['purch_order']['po_down_payment_amount']; ?>" />
+                            </div>
+                        </div>
+
+                    
+
+                        <div class="row" style="height: 50px;">
+                            <div class="col-12 col-md-4">
+                                <span class="font-weight-bold">PO Financial</span>
+                            </div>
+                        </div>
+                        <!-- Rows  -->
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <span>Fixed / Live Exchange</span>
+                            </div>
+                            <div class="col-12 col-md-8">
+
+                                
+                            <select class="form-control" name="po_exchange" id="po_exchange" class="col-12 col-md-12">
+                                <option value="1" <?php echo  $data['purch_order']['po_exchange'] == 1 ? 'selected' : '' ?>>Fixed</option>
+                                <option value="2" <?php echo  $data['purch_order']['po_exchange'] == 2 ? 'selected' : '' ?>>Live</option>
+                            </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <span>Currency Rate</span>
+                            </div>
+                            <div class="col-12 col-md-8">
+
+                                <input class="form-control" type="text" id="disable_exchange" name="po_currency_rate" value="<?php echo $data['purch_order']['po_currency_rate']; ?>" />
+                            </div>
+                        </div>
+                        </br>
+
+                        <div class="row">
+                        <div class="col-12 col-md-8">
+                        <table style="width: 100%;">
+                        <style>
+                            td, th {
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                            }
+                        </style>
+                            <tr>
+                                <th></th>
+                                <th>EUR</th>
+                                <th>USD</th>
+                            </tr>
+                            <tr>
+                                <th>Total Purchase Amount</th>
+                                <td>123</td>
+                                <td>1223</td>
+                            </tr>
+                            <tr>
+                                <th>Total Fee Intermediate Supplier</th>
+                                <td>5666</td>
+                                <td>232321</td>
+                            </tr>
+                            <tr>
+                                <th>Total Transport Costs</th>
+                                <td>55543l</td>
+                                <td>77776</td>
+                            </tr>
+                            <tr>
+                                <th>Total Purchase Price excl. VAT</th>
+                                <td>75757</td>
+                                <td>767</td>
+                            </tr>
+                            <tr>
+                                <th>Total VAT</th>
+                                <td>12332</td>
+                                <td>434324</td>
+                            </tr>
+                            <tr>
+                                <th>Total Purchase Price incl. VAT</th>
+                                <td>453455</td>
+                                <td>4324</td>
+                            </tr>
+                            <tr>
+                                <th>Total Downpayment amount</th>
+                                <td>6456</td>
+                                <td>343243</td>
+                            </tr>
+                            <tr>
+                                <th>Total VAT Deposit</th>
+                                <td>4343243</td>
+                                <td>65654</td>
+                            </tr>
+                            </table>
+                </div>
+
+                        </div>
+
                     </div>
                 </div>
             </div> <!-- Rigth col -->
             <!-- ./ Main row 1 -->
 
             <!-- .ROW  -->
-            <hr />
 
-            <div class="row justify-content-center align-items-start">
-                <!-- Left col  -->
+           <!-- <div class="row justify-content-center align-items-start">
                 <div class="col-12 col-md-5">
                     <div class="row">
                         <div class="col-12 col-md-4">
@@ -232,7 +502,8 @@ $data['poSums'] = $data['poSums'][0];
                         </div>
                     </div>
                     <div class="row mt-3"></div>
-                    <!-- Rows  -->
+
+                    
                     <div class="row">
                         <div class="col-12 col-md-4">
                             <span>Number of vehicles</span>
@@ -245,17 +516,14 @@ $data['poSums'] = $data['poSums'][0];
                     <?php if (isset($_REQUEST['show_all_purch_lines'])) {
                         echo "<span  class='btn btn-primary my-4'  data-toggle='modal' data-target='#poLines'>Add Purchase Order Lines </span>";
                     } ?>
-                    <!-- ./ ROWS  -->
                 </div>
-                <!-- ./ Left col  -->
 
-                <!-- Rigth col  -->
+
                 <div class="col-12 col-md-7">
                     <div class="row mt-3"></div>
                     <div class="row mt-3"></div>
                     <div class="row mt-4"></div>
 
-                    <!-- Rows  -->
                     <div class="row">
                         <div class="col-12 col-md-4">
                             <span>Total purchase value (excl. VAT)</span>
@@ -275,16 +543,16 @@ $data['poSums'] = $data['poSums'][0];
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="row mt-4"></div>
 
         </div><!-- ./ ROW  -->
 
-        <hr />
         <!-- Main row 2 -->
+        
 
-        <?php if (!isset($_REQUEST['show_all_purch_lines'])) : ?>
+       <!-- <?php if (!isset($_REQUEST['show_all_purch_lines'])) : ?>
 
             <div class="row d-flex align-items-stretch">
 
@@ -296,7 +564,6 @@ $data['poSums'] = $data['poSums'][0];
                     </div>
 
                     <div class="row mt-3"></div>
-                    <!-- Rows  -->
                     <div class="row">
                         <div class="col-12 col-md-4">
                             <span>Payment terms*</span>
@@ -327,20 +594,7 @@ $data['poSums'] = $data['poSums'][0];
                         </div>
                     </div>
                 </div>
-                <div class="col col-12 col-md-6">
-                    <p class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_90'] ?></p>
-                    <div class="form-control show-documents uploaded-documents-col" name="uploaded_files" id="uploadedFiles">
-                        <?php
-                        if (!is_null($data['po_documents'][0])) {
-                            foreach ($data['po_documents'][0] as $key => $doc) {
-                                echo "<div class='document' data-doc-id='{$doc['pod_id']}'>
-                                    <a href='{$doc['pod_path']}' about='_blank'>{$doc['pod_filename']}</a><span class='ti-trash'></span>
-                                </div>";
-                            }
-                        }
-                        ?></div>
-                </div>
-            </div>
+            </div> -->
             <!-- ./ ROW  -->
 
             <!-- .ROW  -->
@@ -349,31 +603,6 @@ $data['poSums'] = $data['poSums'][0];
 
             <div class="row d-flex align-items-stretch">
 
-                <div class="col col-12 col-md-5">
-                    <p class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_89'] ?></p>
-                    <textarea placeholder="" rows="7" class="form-control remarks" name="po_remarks" id="notes"><?php echo (isset($data['purch_order']['po_remarks']) ? $data['purch_order']['po_remarks']  : "") ?></textarea>
-                </div>
-                <div class="col col-12 col-md-7">
-                    <p class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_96'] ?></p>
-                    <div class="row d-flex flex-nowrap">
-                        <div class="col-5 show-documents text-muted" style="white-space: nowrap; overflow: hidden;">
-                            <div class="row ml-1 mt-2">Created by</div>
-                            <div class="row ml-1 mt-2">Created on</div>
-                            <div class="row ml-1 mt-2">Last edited by</div>
-                            <div class="row ml-1 mt-2">Last edited on</div>
-                            <div class="row ml-1 mt-2">Approved by</div>
-                            <div class="row ml-1 mt-2">Approved on</div>
-                        </div>
-                        <div class="col-5 show-documents internal-information" style="white-space: nowrap; background-color: white; overflow: hidden; border-radius: 3px; border: 1px solid #DCDCDC;">
-                            <div class="row ml-1 mt-2">Joël Pinna</div>
-                            <div class="row ml-1 mt-2">5.02.22 0:00</div>
-                            <div class="row ml-1 mt-2">Marnix Benink</div>
-                            <div class="row ml-1 mt-2">22.1.2022 16:05:00</div>
-                            <div class="row ml-1 mt-2">Marnix Benink</div>
-                            <div class="row ml-1 mt-2">12.2.2022 0:00:00</div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="row mt-4"></div>
@@ -474,6 +703,14 @@ $data['poSums'] = $data['poSums'][0];
 </div>
 </div>
 </div>
+
+
+
+<!-- Script -->
+
+
+
+
 <script>
     function toggle(source) {
         checkboxes = document.getElementsByClassName('foo');
