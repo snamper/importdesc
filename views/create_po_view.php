@@ -116,10 +116,10 @@ $data['poSums'] = $data['poSums'][0];
 
                     <div class="row">
                         <div class="col-12 col-md-4">
-                            <span>Supplier</span>
+                            <span>Supplier*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" required type="text" name="po_supplier" value="<?php echo $data['purch_order']['po_supplier']; ?>" />
+                            <input required class="form-control" required type="text" name="po_supplier" value="<?php echo $data['purch_order']['po_supplier']; ?>" />
                         </div>
                     </div>
 
@@ -156,7 +156,7 @@ $data['poSums'] = $data['poSums'][0];
                             <span>Purchasing entity*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" required type="text" name="po_purchasing_entity" value="<?php echo $data['purch_order']['po_purchasing_entity']; ?>" />
+                            <input required class="form-control" required type="text" name="po_purchasing_entity" value="<?php echo $data['purch_order']['po_purchasing_entity']; ?>" />
                         </div>
                     </div>
 
@@ -166,7 +166,7 @@ $data['poSums'] = $data['poSums'][0];
                             <span>Buyer*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" required type="text" name="po_buyer" value="<?php echo $data['purch_order']['po_buyer']; ?>" />
+                            <input required class="form-control" required type="text" name="po_buyer" value="<?php echo $data['purch_order']['po_buyer']; ?>" />
                         </div>
                     </div>
 
@@ -259,6 +259,42 @@ $data['poSums'] = $data['poSums'][0];
                 </div>
                 </div>
 
+                <br/>
+                <div class="row">
+                <div class="col-12 col-md-5">
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <span class="font-weight-bold">Purchase order lines*</span>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <?php if (isset($_REQUEST['show_all_purch_lines'])) : ?>
+                                <input type="hidden" name="hide_all_purch_lines" value="" />
+                                <span class="btn btn-primary js-submit-form">Back to standart view</span>
+                            <?php else : ?>
+                                <input type="hidden" name="show_all_purch_lines" value="" />
+                                <span class="btn btn-primary js-submit-form">Show all Purchase Order Lines</span>
+
+                            <?php endif ?>
+                        </div>
+                    </div>
+                    <div class="row mt-3"></div>
+
+                    
+                    <div class="row">
+                       <!-- <div class="col-12 col-md-4">
+                            <span>Number of vehicles</span>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <span><?php echo (isset($_REQUEST['order_id']) ? $data['poSums']['total_lines'] : count($data['purchase_lines'][0])) ?></span>
+                            <input type="hidden" name="po_number_vehicles" value="<?php echo (isset($_REQUEST['order_id']) ? $data['poSums']['total_lines'] : count($data['purchase_lines'][0])) ?>">
+                        </div> -->
+                    </div>
+                    <?php if (isset($_REQUEST['show_all_purch_lines'])) {
+                        echo "<span  class='btn btn-primary my-4'  data-toggle='modal' data-target='#poLines'>Add Purchase Order Lines </span>";
+                    } ?>
+                </div>
+                </div>
+
                 </div>
 
                 <!-- ./ Left col  -->
@@ -292,7 +328,7 @@ $data['poSums'] = $data['poSums'][0];
                             </div>
                             <div class="col-12 col-md-8">
 
-                                <input class="form-control" type="text" name="po_currency" value="<?php echo $data['purch_order']['po_currency']; ?>" />
+                                <input required class="form-control" type="text" name="po_currency" value="<?php echo $data['purch_order']['po_currency']; ?>" />
                             </div>
                         </div>
 
@@ -302,7 +338,7 @@ $data['poSums'] = $data['poSums'][0];
                                 <span>Purchase Type*</span>
                             </div>
                             <div class="col-12 col-md-8">
-                            <select class="form-control" name="po_purchase_type" id="po_purchase_type" class="col-12 col-md-12">
+                            <select required class="form-control" name="po_purchase_type" id="po_purchase_type" class="col-12 col-md-12">
                                 <option value="1" <?php echo $data['purch_order']['po_purchase_type'] == 1 ? 'selected' : '' ?>>EU</option>
                                 <option value="2" <?php echo $data['purch_order']['po_purchase_type'] == 2 ? 'selected' : '' ?>>DOM</option>
                                 <option value="3" <?php echo $data['purch_order']['po_purchase_type'] == 3 ? 'selected' : '' ?>>ROW</option>
@@ -334,7 +370,7 @@ $data['poSums'] = $data['poSums'][0];
                                 <span>VAT Percentage</span>
                             </div>
                             <div class="col-12 col-md-8">
-                            <select class="form-control" name="po_vat_percentage" id="disable" class="col-12 col-md-12">
+                            <select class="form-control" name="po_vat_percentage" id="disable" class="col-12 col-md-12" <?php if($data['purch_order']['po_vat_deposit'] == 2 ) { echo "disabled='true'"; } ?>>
                                 <?php
                                     $percentage = isset($data['purch_order']['po_vat_percentage']) ? $data['purch_order']['po_vat_percentage'] : 21;
 
@@ -367,7 +403,7 @@ $data['poSums'] = $data['poSums'][0];
 
                             <select class="form-control" name="po_down_payment" id="down_payment" class="col-12 col-md-12">
                                 <option value="1" <?php echo $data['purch_order']['po_down_payment'] == 1 ? 'selected' : '' ?>>Yes</option>
-                                <option value="2" <?php echo $data['purch_order']['po_down_payment'] == 1 ? 'selected' : '' ?>>No</option>
+                                <option value="2" <?php echo $data['purch_order']['po_down_payment'] == 2 ? 'selected' : '' ?>>No</option>
                             </select>
                             </div>
                         </div>
@@ -378,7 +414,7 @@ $data['poSums'] = $data['poSums'][0];
                                 <span>Down payment amount</span>
                             </div>
                             <div class="col-12 col-md-8">
-                            <input class="form-control" type="text" id="disable_down" name="po_down_payment_amount" value="<?php echo $data['purch_order']['po_down_payment_amount']; ?>" />
+                            <input class="form-control" <?php if($data['purch_order']['po_down_payment'] == 2 ) { echo "disabled='true'"; } ?> type="text" id="disable_down" name="po_down_payment_amount" value="<?php echo $data['purch_order']['po_down_payment_amount']; ?>" />
                             </div>
                         </div>
 
@@ -410,7 +446,7 @@ $data['poSums'] = $data['poSums'][0];
                             </div>
                             <div class="col-12 col-md-8">
 
-                                <input class="form-control" type="text" id="disable_exchange" name="po_currency_rate" value="<?php echo $data['purch_order']['po_currency_rate']; ?>" />
+                                <input class="form-control"  <?php if($data['purch_order']['po_exchange'] == 2 ) { echo "disabled='true'"; } ?> type="text" id="disable_exchange" name="po_currency_rate" value="<?php echo $data['purch_order']['po_currency_rate']; ?>" />
                             </div>
                         </div>
                         </br>
@@ -482,42 +518,11 @@ $data['poSums'] = $data['poSums'][0];
 
             <!-- .ROW  -->
 
-           <!-- <div class="row justify-content-center align-items-start">
-                <div class="col-12 col-md-5">
-                    <div class="row">
-                        <div class="col-12 col-md-4">
-                            <span class="font-weight-bold">Purchase order lines*</span>
-                        </div>
-                        <div class="col-12 col-md-4">
-                            <?php if (isset($_REQUEST['show_all_purch_lines'])) : ?>
-                                <input type="hidden" name="hide_all_purch_lines" value="" />
-                                <span class="btn btn-primary js-submit-form">Back to standart view</span>
-                            <?php else : ?>
-                                <input type="hidden" name="show_all_purch_lines" value="" />
-                                <span class="btn btn-primary js-submit-form">Show all Purchase Order Lines</span>
-
-                            <?php endif ?>
-                        </div>
-                    </div>
-                    <div class="row mt-3"></div>
-
-                    
-                    <div class="row">
-                        <div class="col-12 col-md-4">
-                            <span>Number of vehicles</span>
-                        </div>
-                        <div class="col-12 col-md-8">
-                            <span><?php echo (isset($_REQUEST['order_id']) ? $data['poSums']['total_lines'] : count($data['purchase_lines'][0])) ?></span>
-                            <input type="hidden" name="po_number_vehicles" value="<?php echo (isset($_REQUEST['order_id']) ? $data['poSums']['total_lines'] : count($data['purchase_lines'][0])) ?>">
-                        </div>
-                    </div>
-                    <?php if (isset($_REQUEST['show_all_purch_lines'])) {
-                        echo "<span  class='btn btn-primary my-4'  data-toggle='modal' data-target='#poLines'>Add Purchase Order Lines </span>";
-                    } ?>
-                </div>
+           <!-- <div class="row justify-content-center align-items-start"> -->
 
 
-                <div class="col-12 col-md-7">
+
+                <!--<div class="col-12 col-md-7">
                     <div class="row mt-3"></div>
                     <div class="row mt-3"></div>
                     <div class="row mt-4"></div>
