@@ -624,14 +624,13 @@ class base
 
 		$query = "SELECT 
 		count(*) as total_lines,
-		SUM(REPLACE(REPLACE(c.purchase_price_netto, '€ ', ''), ',', '')) as total_purchase_price_excl_vat,
-		SUM(REPLACE(REPLACE(pl_purchase_price_incl_vat, '€ ', ''), ',', '')) as total_purchase_price_incl_vat
-		SUM(REPLACE(REPLACE(pl_transport_cost, '€ ', ''), ',', '')) as total_transport_cost
-		SUM(REPLACE(REPLACE(pl_fee_intermediate_supplier, '€ ', ''), ',', '')) as total_intermediate_supplier_fee
+		SUM(REPLACE(REPLACE(pl.pl_purchase_value, '€ ', ''), ',', '')) as total_purchase_value,
+		SUM(REPLACE(REPLACE(pl.pl_fee_intermediate_supplier, '€ ', ''), ',', '')) as total_fee_intermediate_supplier,
+		SUM(REPLACE(REPLACE(pl.pl_transport_cost, '€ ', ''), ',', '')) as total_transport_cost,
 		SUM(REPLACE(REPLACE(c.rest_bpm, '€ ', ''), ',', '')) as total_vehicle_bpm
-		FROM purchase_order_lines
-		LEFT JOIN calculations c on c.calculation_for_car_id = pl_vehicle_id
-		WHERE pl_purchase_id = ?";
+		FROM purchase_order_lines as pl
+		LEFT JOIN calculations c on c.calculation_for_car_id = pl.pl_vehicle_id
+		WHERE pl.pl_purchase_id = ?";
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$purchase_id]);
