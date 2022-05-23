@@ -10,7 +10,22 @@ $pol_data = $data['pol_data'][0];
 
 <div class="content" id="createPOView">
     <form action="" method="POST" id="createPOLForm" class="listing__form">
+
+        <!-- po_exchange == 1 => get fixed rate from table -->
+        <?php if($data['po_data'][0]['po_exchange'] == 1): ?>
+        <input type="hidden" id="poCurrencyRate" value="<?php echo $data['po_data'][0]['po_currency_rate']; ?>" disabled>
+        <?php else: ?>
         <input type="hidden" id="poCurrency" value="<?php echo $data['po_data'][0]['po_currency']; ?>" disabled>
+        <?php endif; ?>
+        <input type="hidden" id="poVatPercentage" value="<?php echo $data['po_data'][0]['po_vat_percentage']; ?>" disabled>
+
+        <input type="hidden" id="carVehicleType" value="<?php echo $pol_data['car_vehicle_type']; ?>" disabled>
+        <input type="hidden" id="carFuel" value="<?php echo $pol_data['car_fuel']; ?>" disabled>
+        <input type="hidden" id="firstRegistrationDate" value="<?php echo $pol_data['cd_first_registration_date']; ?>" disabled>
+        <input type="hidden" id="firstNameNLRegistration" value="<?php echo $pol_data['cd_first_name_nl_registration']; ?>" disabled>
+        <input type="hidden" id="co2WLTP" value="<?php echo $pol_data['cd_co_wltp']; ?>" disabled>
+        <input type="hidden" id="bpmPercentage" value="<?php echo $pol_data['percentage']; ?>" disabled>
+        <input type="hidden" id="datumBPM" value="<?php echo $pol_data['huidigedatumbpm']; ?>" disabled>
 
 
         <div class="col-xs-12 table-list">
@@ -42,7 +57,7 @@ $pol_data = $data['pol_data'][0];
                             <span class="font-weight-bold">Purchase Order Line - Details</span>
                         </div>
                         <div class="col-12 col-md-7">
-                            <button type="button" name="" class="btn btn-primary">Add Purchase Order Line</button>
+                            <button type="button" data-toggle='modal' data-target='#poLines' class="btn btn-primary" style="cursor: pointer;">Add Purchase Order Line</button>
                         </div>
                     </div>
                     <!-- Rows  -->
@@ -135,7 +150,7 @@ $pol_data = $data['pol_data'][0];
                             <span>Additional Information</span>
                         </div>
                         <div class="col-12 col-md-7 text-center">
-                            <button type="button" id="togglePolExtraInfo" class="btn btn-primary">Expand / Hide Additional Information</button>
+                            <button type="button" id="togglePolExtraInfo" class="btn btn-primary" style="cursor: pointer;">Expand / Hide Additional Information</button>
                         </div>
                     </div>
 
@@ -166,7 +181,7 @@ $pol_data = $data['pol_data'][0];
                                 <span>Expected production date</span>
                             </div>
                             <div class="col-12 col-md-7">
-                                <input class="form-control" autocomplete="off" type="text" name="pl_expected_prod_date" id="expectedProdDate" value="<?php echo $pol_data['pl_expected_prod_date'] ? date('d-m-Y', strtotime($pol_data['pl_expected_prod_date'])) : date('d-m-Y'); ?>" />
+                                <input class="form-control" style="cursor: pointer;" type="text" name="pl_expected_prod_date" id="expectedProdDate" value="<?php echo $pol_data['pl_expected_prod_date'] ? date('d-m-Y', strtotime($pol_data['pl_expected_prod_date'])) : date('d-m-Y'); ?>" />
                             </div>
                         </div>
 
@@ -175,7 +190,7 @@ $pol_data = $data['pol_data'][0];
                                 <span>Expected lead time first registration in weeks</span>
                             </div>
                             <div class="col-12 col-md-7">
-                                <input class="form-control" type="number" name="pl_expected_lead_time" value="<?php echo $pol_data['pl_expected_lead_time']; ?>" />
+                                <input class="form-control" type="number" name="pl_expected_lead_time" id="expectedLeadTimeFirstReg" value="<?php echo $pol_data['pl_expected_lead_time']; ?>" />
                             </div>
                         </div>
 
@@ -184,7 +199,7 @@ $pol_data = $data['pol_data'][0];
                                 <span>Expected registered duration in weeks</span>
                             </div>
                             <div class="col-12 col-md-7">
-                                <input class="form-control" type="number" name="pl_expected_reg_duration" value="<?php echo $pol_data['pl_expected_reg_duration']; ?>" />
+                                <input class="form-control" type="number" name="pl_expected_reg_duration" id="expectedRegDuration" value="<?php echo $pol_data['pl_expected_reg_duration']; ?>" />
                             </div>
                         </div>
 
@@ -193,7 +208,7 @@ $pol_data = $data['pol_data'][0];
                                 <span>Expected delivery date*</span>
                             </div>
                             <div class="col-12 col-md-7">
-                                <input class="form-control" autocomplete="off" type="text" name="pl_expected_delivery" id="expectedDeliveryDate" value="<?php echo $pol_data['pl_expected_delivery'] ? date('d-m-Y', strtotime($pol_data['pl_expected_delivery'])) : date('d-m-Y'); ?>" required />
+                                <input class="form-control" autocomplete="off" type="text" name="pl_expected_delivery" id="expectedDeliveryDate" value="<?php echo $pol_data['pl_expected_delivery'] ? date('d-m-Y', strtotime($pol_data['pl_expected_delivery'])) : date('d-m-Y'); ?>" readonly />
                             </div>
                         </div>
 
@@ -214,7 +229,7 @@ $pol_data = $data['pol_data'][0];
                                 <span>Repaired damage</span>
                             </div>
                             <div class="col-12 col-md-7">
-                                <select name="pl_repaired_damage" class="form-control">
+                                <select name="pl_repaired_damage" id="repairedDamage" class="form-control">
                                     <option value="1" <?php echo ($pol_data['pl_repaired_damage'] == 1) ? "selected" : ""; ?>>Yes</option>
                                     <option value="0" <?php echo ($pol_data['pl_repaired_damage'] == 0) ? "selected" : ""; ?>>No</option>
                                 </select>
@@ -226,7 +241,7 @@ $pol_data = $data['pol_data'][0];
                                 <span>Repaired damage amount</span>
                             </div>
                             <div class="col-12 col-md-7">
-                                <input class="form-control" type="text" name="pl_repaired_damage_amount" value="<?php echo $pol_data['pl_repaired_damage_amount']; ?>" />
+                                <input class="form-control" type="text" name="pl_repaired_damage_amount" id="repairedDamageAmount" data-toggle-currency="true" value="<?php echo $pol_data['pl_repaired_damage_amount']; ?>" <?php echo ($pol_data['pl_repaired_damage'] == 0 ? "readonly" : ""); ?>/>
                             </div>
                         </div>
 
@@ -256,7 +271,7 @@ $pol_data = $data['pol_data'][0];
                                 <span>Expected damage amount</span>
                             </div>
                             <div class="col-12 col-md-7">
-                                <input class="form-control" type="text" name="pl_expected_damage_amount" value="<?php echo $pol_data['pl_expected_damage_amount']; ?>" />
+                                <input class="form-control" type="text" name="pl_expected_damage_amount" data-toggle-currency="true" value="<?php echo $pol_data['pl_expected_damage_amount']; ?>" />
                             </div>
                         </div>
 
@@ -276,9 +291,10 @@ $pol_data = $data['pol_data'][0];
                     <div class="row" style="padding: 0 0.35rem;">
                         <div class="col-12 col-md-12 mt-4 documents_container" id="documentsContainer">
                             <?php
-                            if(count($data['documents'][0]) > 0) {
-                                foreach($data['documents'][0] as $doc) {
-                                    echo "<p data-doc-id='{$doc['doc_id']}'><a href='{$doc['doc_path']}'>{$doc['doc_filename']}</a><span class='ti-trash'></span></p>";
+                            $doc_count = count($data['documents'][0]);
+                            if($doc_count > 0) {
+                                for($i = $doc_count - 1; $i >= 0; $i--) {
+                                    echo "<p data-doc-id='{$data['documents'][0][$i]['doc_id']}'><a href='{$data['documents'][0][$i]['doc_path']}'>{$data['documents'][0][$i]['doc_filename']}</a><span class='ti-trash'></span></p>";
                                 }
                             }
                             ?>
@@ -286,9 +302,8 @@ $pol_data = $data['pol_data'][0];
                     </div>
 
                     <div class="row" style="padding: 0 0.35rem;">
-                        <div class="col-12 col-md-12 mt-4" style="background: #fff; border: 1px solid #C8C7CC; min-height: 100px; border-radius: 0.25rem;">
-                            <p>Internal Notes (POL)</p>
-                            <p>Car has damage to rear bumper. In addition, defective window control at the rear right. Damage is calculated on 5-2-2022 at 5,000 euros (Toni).</p>
+                        <div class="col-12 col-md-12 mt-4 notes_container">
+                            <?php echo nl2br($pol_data['pl_internal_notes']); ?>
                         </div>
                     </div>
 
@@ -395,7 +410,7 @@ $pol_data = $data['pol_data'][0];
                             <span>Vehicle tax/BPM</span>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="number" name="" value="<?php echo 0; ?>" readonly>
+                            <input class="form-control" type="number" id="vehicleTaxBPM" value="<?php echo 0; ?>" readonly>
                         </div>
                         <div class="col-12 col-md-2">
                             -
@@ -407,7 +422,7 @@ $pol_data = $data['pol_data'][0];
                             <span>Purchase value incl VAT/tax</span>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="number" name="pl_purchase_incl_vat_tax" value="<?php echo $pol_data['pl_purchase_incl_vat_tax'] ?? 0; ?>" readonly>
+                            <input class="form-control" type="number" name="pl_purchase_incl_vat_tax" id="purchaseValueInclVatTax" value="<?php echo $pol_data['pl_purchase_incl_vat_tax'] ?? 0; ?>" readonly>
                         </div>
                         <div class="col-12 col-md-2">
                             -
@@ -421,8 +436,59 @@ $pol_data = $data['pol_data'][0];
 
 
     </form>
+    <br/>
 
 </div>
+
+<div class="modal fade" id="poLines" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form method="POST">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalCenterTitle">Add Purchase Order Lines</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+
+                        <table id="poLinesTable" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
+                            <thead>
+                                <th class="text-center">Choice</th>
+                                <th class="text-center">#</th>
+                                <th class="text-center">Vehicle ID*</th>
+                                <th style="white-space: nowrap">Car reference (custom)</th>
+                                <th style="white-space: nowrap">Duplication Batch ID</th>
+                                <th style="white-space: nowrap">Pre-order</th>
+                                <th style="white-space: nowrap">VIN</th>
+                                <th style="white-space: nowrap">Configuration Number</th>
+                                <th style="white-space: nowrap">NL Registration Number</th>
+                                <th class="select-filter" style="white-space: nowrap">Make</th>
+                                <th class="select-filter" style="white-space: nowrap">Model</th>
+                                <th style="white-space: nowrap">Variant</th>
+                                <th class="select-filter" style="white-space: nowrap">Engine</th>
+                                <th style="white-space: nowrap">Body Style</th>
+                                <th class="select-filter" style="white-space: nowrap">Created By</th>
+                                <th class="select-filter" class="text-center">Created On</th>
+                            </thead>
+                            <tbody>
+                            </tbody>
+
+                        </table>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button name="add_order_lines" type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
     function toggle(source) {
         checkboxes = document.getElementsByClassName('foo');

@@ -11005,7 +11005,7 @@ input::-webkit-input-placeholder {
 .documents_container {
 	background: #fff;
 	border: 1px solid #C8C7CC;
-	min-height: 100px;
+	height: 150px;
 	border-radius: 0.25rem;
 	padding: 5px;
 	overflow-y: scroll;
@@ -11013,4 +11013,17 @@ input::-webkit-input-placeholder {
 .documents_container p {
 	line-height: 20px;
 	margin: 0px;
+}
+.documents_container span.ti-trash {
+	margin-left: 3px;
+	cursor: pointer;
+}
+
+.notes_container {
+	background: #fff;
+	border: 1px solid #C8C7CC;
+	height: 150px;
+	border-radius: 0.25rem;
+	padding: 5px;
+	overflow-y: scroll;
 }
