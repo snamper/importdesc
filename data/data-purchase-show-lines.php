@@ -8,7 +8,7 @@ $config = include("../config.php");
 /* Array of database columns which should be read and sent back to DataTables. Use a space where
  * you want to insert a non-database field (for example a counter or static image)
  */
-$aColumns = array('pl_id', 'car_preorder', 'conv.conversion_name as type', 'pl_vehicle_id', 'car_vat_marge', 'cm.cmake_name', 'cmod.cmodel_name', 'cmu_name', 'cmotor.cmotor_name', 'purchase_price_netto', 'pl_id as edit', 'pl_km_delivery', 'pl_expected_delivery', 'pl_purchase_price_incl_vat', 'pl_accident_free', 'pl_expected_damage_amount', 'pl_extra_set_of_wheels', 'pl_deposit', 'pl_purchase_id');
+$aColumns = array('pl_id', 'car_preorder', 'pl_vehicle_id', 'cm.cmake_name', 'cmod.cmodel_name', 'cmu_name', 'cmotor.cmotor_name', 'car_vat_marge', 'pl_expected_delivery', 'po_vat_deposit', 'pl_km_delivery', 'pl_transport_by_supplier', 'pl_purchase_value', 'pl_fee_intermediate_supplier', 'pl_transport_cost', 'po_vat_percentage', 'rest_bpm', 'po_down_payment_amount');
 /* Indexed column (used for fast and accurate table cardinality) */
 $sIndexColumn = "c.car_id as number";
 /* DB table to use */
@@ -202,37 +202,33 @@ $output = array(
 // die;
 $j = 0;
 
-$clickableTd = ['pl_km_delivery', 'pl_expected_delivery', 'pl_purchase_price_incl_vat', 'pl_expected_damage_amount'];
-$selects = ['pl_accident_free', 'pl_extra_set_of_wheels', 'pl_deposit'];
+// $clickableTd = ['pl_km_delivery', 'pl_expected_delivery', 'pl_expected_damage_amount'];
+// $selects = ['pl_accident_free', 'pl_extra_set_of_wheels', 'pl_deposit'];
+$clickableTd = ['', '', ''];
+$selects = ['', '', ''];
 
 while ($aRow = mysqli_fetch_array($rResult)) {
     $j++;
     $row = array();
     for ($i = 0; $i < count($aColumns); $i++) {
-        if ($aColumns[$i] == 'conv.conversion_name as type') {
-            $row[] = '<center style="display:flex;">' . $_SESSION['lang'][$aRow[$i]] . '</center>';
-        } elseif ($aColumns[$i] == 'car_preorder') {
+        if ($aColumns[$i] == 'pl_id') {
+            $row[] = '<center style="display:flex;">' . sprintf("PL%'.07d\n", $aRow[$i]) . '</center>';
+        } elseif ($aColumns[$i] == 'car_preorder' || $aColumns[$i] == 'po_vat_deposit' || $aColumns[$i] == 'pl_transport_by_supplier') {
             if ($aRow[$i] == 0) {
                 $row[] = '<center style="display:flex;">NO</center>';
             } else {
                 $row[] = '<center style="display:flex;">YES</center>';
             }
+        } elseif ($aColumns[$i] == 'pl_vehicle_id') {
+            $row[] = '<center data-line-id="' . $aRow[$i] . '" style="display:flex;"><a href="car_start?car_id=' . $aRow[$i] . '">' . sprintf("A%'.07d\n", $aRow[$i]) . '</a></center>';
         } elseif ($aColumns[$i] == 'car_vat_marge') {
             if ($aRow[$i] == 0) {
                 $row[] = '<center style="display:flex;">VAT</center>';
             } else {
                 $row[] = '<center style="display:flex;">Margin</center>';
             }
-        } elseif ($aColumns[$i] == 'pl_id as edit') {
-            $row[] = '<center style="display:flex;"><a href="create_pol?po=' . $aRow[1] . '&line=' . $aRow[$i] . '" class="btn btn-default btn-xs"><i class="ti-brush"></i></a><a href="create_po?delete_line=' . $aRow[$i] . '" class="btn btn-default btn-xs"><i class="ti-trash"></i></a></center>';
-        } elseif ($aColumns[$i] == 'pl_vehicle_id') {
-            $row[] = '<center data-line-id="' . $aRow[$i] . '" style="display:flex;"><a href="car_start?car_id=' . $aRow[$i] . '">' . sprintf("A%'.07d\n", $aRow[$i]) . '</a></center>';
         } elseif (in_array($aColumns[$i], $clickableTd)) {
-            if ($aColumns[$i] == 'pl_purchase_price_incl_vat') {
-                $row[] = "<span class='js-clickable-table td-span-full-size js-price-col' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'>€ " . number_format($aRow[$i], 2) . "</span>";
-            } else {
-                $row[] = "<span class='js-clickable-table td-span-full-size' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'>$aRow[$i]</span>";
-            }
+            $row[] = "<span class='js-clickable-table td-span-full-size' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'>$aRow[$i]</span>";
         } elseif (in_array($aColumns[$i], $selects)) {
 
             // $row[] = "<span class='js-clickable-table' data-db-row='$aRow[pl_id]' data-col-name='$aColumns[$i]'>$aRow[$i]</span>";
