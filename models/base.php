@@ -739,6 +739,18 @@ class base
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
+	public function getAllCurrencies()
+	{
+
+		$dbDriver = new db_driver();
+
+		$query = "SELECT code FROM currency";
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([]);
+
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
 
 	function getCarData($carID)
 	{

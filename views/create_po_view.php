@@ -1,8 +1,6 @@
 <?php
 $data['purch_order'] = $data['purch_order'][0];
 $data['poSums'] = $data['poSums'][0];
-
-var_dump($data);
 ?>
 
 
@@ -40,40 +38,38 @@ var_dump($data);
             <div class="custom-row" id="create_nav">
 
                 <?php if (!isset($_GET['order_id']) && !isset($_POST['update_order']) && $data['purch_order']['po_status'] < 2) : ?>
-                <div class="custom-col">
-                    <a href="/create_po" class="btn btn-danger"
-                        onclick="return confirm('Are you sure?');"><?php echo $_SESSION['lang']['car_start_page_4'] ?></a>
-                </div>
+                    <div class="custom-col">
+                        <a href="/create_po" class="btn btn-danger" onclick="return confirm('Are you sure?');"><?php echo $_SESSION['lang']['car_start_page_4'] ?></a>
+                    </div>
                 <?php endif ?>
 
 
                 <?php if ($data['purch_order']['po_status'] < 2) : ?>
-                <div class="custom-col">
-                    <button type="submit" name="save_order" class="btn btn-info"
-                        value="<?php echo isset($_REQUEST['show_all_purch_lines']) ? '1' : '0'; ?>"><?php echo $_SESSION['lang']['car_start_page_5'] ?></button>
-                </div>
+                    <div class="custom-col">
+                        <button type="submit" name="save_order" class="btn btn-info" value="<?php echo isset($_REQUEST['show_all_purch_lines']) ? '1' : '0'; ?>"><?php echo $_SESSION['lang']['car_start_page_5'] ?></button>
+                    </div>
 
-                <div class="custom-col">
-                    <button type="submit" name="update_order_close" class="btn btn-primary">Save and Close</button>
-                </div>
+                    <div class="custom-col">
+                        <button type="submit" name="update_order_close" class="btn btn-primary">Save and Close</button>
+                    </div>
 
-                <div class="custom-col">
-                    <button type="submit" name="update_order_submit" value="2" class="btn btn-primary">Save and
-                        Submit</button>
-                </div>
+                    <div class="custom-col">
+                        <button type="submit" name="update_order_submit" value="2" class="btn btn-primary">Save and
+                            Submit</button>
+                    </div>
                 <?php else : ?>
-                <div class="custom-col">
-                    <button type="submit" class="btn btn-primary" name="update_order_submit" value="1">Set status
-                        new</button>
-                </div>
+                    <div class="custom-col">
+                        <button type="submit" class="btn btn-primary" name="update_order_submit" value="1">Set status
+                            new</button>
+                    </div>
 
-                <div class="custom-col">
-                    <button type="submit" class="btn btn-primary" name="update_order_submit" value="3">Approve</button>
-                </div>
+                    <div class="custom-col">
+                        <button type="submit" class="btn btn-primary" name="update_order_submit" value="3">Approve</button>
+                    </div>
 
-                <div class="custom-col">
-                    <button type="submit" class="btn btn-danger" name="update_order_submit" value="4">Reject</button>
-                </div>
+                    <div class="custom-col">
+                        <button type="submit" class="btn btn-danger" name="update_order_submit" value="4">Reject</button>
+                    </div>
 
                 <?php endif ?>
 
@@ -96,8 +92,7 @@ var_dump($data);
                         </div>
                         <div class="col-12 col-md-8">
 
-                            <input disabled class="form-control" type="text" name="po_number"
-                                value="<?php echo (empty($data['purch_order']['po_number']) ? 0 : $data['purch_order']['po_number']); ?>" />
+                            <input disabled class="form-control" type="text" name="po_number" value="<?php echo (empty($data['purch_order']['po_number']) ? 0 : $data['purch_order']['po_number']); ?>" />
                         </div>
                     </div>
 
@@ -107,8 +102,7 @@ var_dump($data);
                         </div>
                         <div class="col-12 col-md-8">
 
-                            <input class="form-control" type="text" name="po_reference"
-                                value="<?php echo $data['purch_order']['po_reference']; ?>" />
+                            <input class="form-control" type="text" name="po_reference" value="<?php echo $data['purch_order']['po_reference']; ?>" />
                         </div>
                     </div>
 
@@ -118,9 +112,7 @@ var_dump($data);
                             <span>Date Final Contract</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" id="datepicker2" autocomplete="false" required type="text"
-                                name="po_date"
-                                value="<?php echo (empty($data['purch_order']['po_date']) ? date('d-m-Y') : date('d-m-Y', strtotime($data['purch_order']['po_date']))); ?>" />
+                            <input class="form-control" id="datepicker2" autocomplete="false" required type="text" name="po_date" value="<?php echo (empty($data['purch_order']['po_date']) ? date('d-m-Y') : date('d-m-Y', strtotime($data['purch_order']['po_date']))); ?>" />
                         </div>
                     </div>
 
@@ -130,8 +122,7 @@ var_dump($data);
                             <span>Supplier*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input required class="form-control" required type="text" name="po_supplier"
-                                value="<?php echo $data['purch_order']['po_supplier']; ?>" />
+                            <input required class="form-control" required type="text" name="po_supplier" value="<?php echo $data['purch_order']['po_supplier']; ?>" />
                         </div>
                     </div>
 
@@ -141,8 +132,7 @@ var_dump($data);
                             <span>Contact person supplier*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" required type="text" name="po_contact_person"
-                                value="<?php echo $data['purch_order']['po_contact_person']; ?>" />
+                            <input class="form-control" required type="text" name="po_contact_person" value="<?php echo $data['purch_order']['po_contact_person']; ?>" />
                         </div>
                     </div>
 
@@ -151,8 +141,7 @@ var_dump($data);
                             <span>Intermediary</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" required type="text" name="po_intermediary_supplier"
-                                value="<?php echo $data['purch_order']['po_intermediary_supplier']; ?>" />
+                            <input class="form-control" required type="text" name="po_intermediary_supplier" value="<?php echo $data['purch_order']['po_intermediary_supplier']; ?>" />
                         </div>
                     </div>
 
@@ -161,8 +150,7 @@ var_dump($data);
                             <span>Contact person Intermediary*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" required type="text" name="po_contact_person"
-                                value="<?php echo $data['purch_order']['po_contact_person']; ?>" />
+                            <input class="form-control" required type="text" name="po_contact_person" value="<?php echo $data['purch_order']['po_contact_person']; ?>" />
                         </div>
                     </div>
 
@@ -171,8 +159,7 @@ var_dump($data);
                             <span>Purchasing entity*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input required class="form-control" required type="text" name="po_purchasing_entity"
-                                value="<?php echo $data['purch_order']['po_purchasing_entity']; ?>" />
+                            <input required class="form-control" required type="text" name="po_purchasing_entity" value="<?php echo $data['purch_order']['po_purchasing_entity']; ?>" />
                         </div>
                     </div>
 
@@ -182,8 +169,7 @@ var_dump($data);
                             <span>Buyer*</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input required class="form-control" required type="text" name="po_buyer"
-                                value="<?php echo $data['purch_order']['po_buyer']; ?>" />
+                            <input required class="form-control" required type="text" name="po_buyer" value="<?php echo $data['purch_order']['po_buyer']; ?>" />
                         </div>
                     </div>
 
@@ -193,8 +179,7 @@ var_dump($data);
                             <span>External order number</span>
                         </div>
                         <div class="col-12 col-md-8">
-                            <input class="form-control" type="number" name="po_external_order_number"
-                                value="<?php echo (empty($data['purch_order']['po_external_order_number']) ? 0 : $data['purch_order']['po_external_order_number']); ?>" />
+                            <input class="form-control" type="number" name="po_external_order_number" value="<?php echo (empty($data['purch_order']['po_external_order_number']) ? 0 : $data['purch_order']['po_external_order_number']); ?>" />
                         </div>
                     </div>
 
@@ -256,8 +241,7 @@ var_dump($data);
                     <div class="row">
                         <div class="col col-12 col-md-12">
                             <p class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_90'] ?></p>
-                            <div class="form-control show-documents uploaded-documents-col" name="uploaded_files"
-                                id="uploadedFiles">
+                            <div class="form-control show-documents uploaded-documents-col" name="uploaded_files" id="uploadedFiles">
                                 <?php
                                 if (!is_null($data['po_documents'][0])) {
                                     foreach ($data['po_documents'][0] as $key => $doc) {
@@ -274,8 +258,7 @@ var_dump($data);
                     <div class="row">
                         <div class="col col-12 col-md-12">
                             <p class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_89'] ?></p>
-                            <textarea placeholder="" rows="7" class="form-control remarks" name="po_remarks"
-                                id="notes"><?php echo (isset($data['purch_order']['po_remarks']) ? $data['purch_order']['po_remarks']  : "") ?></textarea>
+                            <textarea placeholder="" rows="7" class="form-control remarks" name="po_remarks" id="notes"><?php echo (isset($data['purch_order']['po_remarks']) ? $data['purch_order']['po_remarks']  : "") ?></textarea>
                         </div>
                     </div>
 
@@ -321,11 +304,9 @@ var_dump($data);
                             <div class="col-12 col-md-8">
 
                                 <select class="form-control" name="po_invoice" id="po_invoice" class="col-12 col-md-12">
-                                    <option value="1"
-                                        <?php echo $data['purch_order']['po_invoice'] == 1 ? 'selected' : '' ?>>Supplier
+                                    <option value="1" <?php echo $data['purch_order']['po_invoice'] == 1 ? 'selected' : '' ?>>Supplier
                                     </option>
-                                    <option value="2"
-                                        <?php echo $data['purch_order']['po_invoice'] == 2 ? 'selected' : '' ?>>
+                                    <option value="2" <?php echo $data['purch_order']['po_invoice'] == 2 ? 'selected' : '' ?>>
                                         Intermediary</option>
                                 </select>
                             </div>
@@ -336,14 +317,10 @@ var_dump($data);
                                 <span>Payment in Currency*</span>
                             </div>
                             <div class="col-12 col-md-8">
-                                <select required class="form-control" name="po_currency" id="po_currency"
-                                    class="col-12 col-md-12">
-                                    <option value="1"
-                                        <?php echo $data['purch_order']['po_currency'] == 1 ? 'selected' : '' ?>>USD
-                                    </option>
-                                    <option value="2"
-                                        <?php echo $data['purch_order']['po_currency'] == 2 ? 'selected' : '' ?>>EUR
-                                    </option>
+                                <select required class="form-control" name="po_currency" id="po_currency" class="col-12 col-md-12">
+                                    <?php foreach($data['all_currencies'][0]as $curr): ?>
+                                        <option value="<?php echo $curr['code']; ?>" <?php echo $data['purch_order']['po_currency'] == $curr['code'] ? 'selected' : '' ?>><?php echo $curr['code']; ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
@@ -354,16 +331,12 @@ var_dump($data);
                                 <span>Purchase Type*</span>
                             </div>
                             <div class="col-12 col-md-8">
-                                <select required class="form-control" name="po_purchase_type" id="po_purchase_type"
-                                    class="col-12 col-md-12">
-                                    <option value="1"
-                                        <?php echo $data['purch_order']['po_purchase_type'] == 1 ? 'selected' : '' ?>>EU
+                                <select required class="form-control" name="po_purchase_type" id="po_purchase_type" class="col-12 col-md-12">
+                                    <option value="1" <?php echo $data['purch_order']['po_purchase_type'] == 1 ? 'selected' : '' ?>>EU
                                     </option>
-                                    <option value="2"
-                                        <?php echo $data['purch_order']['po_purchase_type'] == 2 ? 'selected' : '' ?>>
+                                    <option value="2" <?php echo $data['purch_order']['po_purchase_type'] == 2 ? 'selected' : '' ?>>
                                         DOM</option>
-                                    <option value="3"
-                                        <?php echo $data['purch_order']['po_purchase_type'] == 3 ? 'selected' : '' ?>>
+                                    <option value="3" <?php echo $data['purch_order']['po_purchase_type'] == 3 ? 'selected' : '' ?>>
                                         ROW</option>
                                 </select>
                             </div>
@@ -381,13 +354,10 @@ var_dump($data);
                                 <span>VAT Deposit</span>
                             </div>
                             <div class="col-12 col-md-8">
-                                <select class="form-control" name="po_vat_deposit" id="vat_deposit"
-                                    class="col-12 col-md-12">
-                                    <option value="1"
-                                        <?php echo $data['purch_order']['po_vat_deposit'] == 1 ? 'selected' : '' ?>>Yes
+                                <select class="form-control" name="po_vat_deposit" id="vat_deposit" class="col-12 col-md-12">
+                                    <option value="1" <?php echo $data['purch_order']['po_vat_deposit'] == 1 ? 'selected' : '' ?>>Yes
                                     </option>
-                                    <option value="2"
-                                        <?php echo $data['purch_order']['po_vat_deposit'] == 2 ? 'selected' : '' ?>>No
+                                    <option value="2" <?php echo $data['purch_order']['po_vat_deposit'] == 2 ? 'selected' : '' ?>>No
                                     </option>
                                 </select>
                             </div>
@@ -398,11 +368,9 @@ var_dump($data);
                                 <span>VAT Percentage</span>
                             </div>
                             <div class="col-12 col-md-8">
-                                <select class="form-control" name="po_vat_percentage" id="disable"
-                                    class="col-12 col-md-12"
-                                    <?php if ($data['purch_order']['po_vat_deposit'] == 2) {
-                                                                                                                                echo "disabled='true'";
-                                                                                                                            } ?>>
+                                <select class="form-control" name="po_vat_percentage" id="vatPercentage" class="col-12 col-md-12" <?php if ($data['purch_order']['po_vat_deposit'] == 2) {
+                                                                                                                                        echo "disabled='true'";
+                                                                                                                                    } ?>>
                                     <?php
                                     $percentage = isset($data['purch_order']['po_vat_percentage']) ? $data['purch_order']['po_vat_percentage'] : 21;
 
@@ -433,13 +401,10 @@ var_dump($data);
                             </div>
                             <div class="col-12 col-md-8">
 
-                                <select class="form-control" name="po_down_payment" id="down_payment"
-                                    class="col-12 col-md-12">
-                                    <option value="1"
-                                        <?php echo $data['purch_order']['po_down_payment'] == 1 ? 'selected' : '' ?>>Yes
+                                <select class="form-control" name="po_down_payment" id="down_payment" class="col-12 col-md-12">
+                                    <option value="1" <?php echo $data['purch_order']['po_down_payment'] == 1 ? 'selected' : '' ?>>Yes
                                     </option>
-                                    <option value="2"
-                                        <?php echo $data['purch_order']['po_down_payment'] == 2 ? 'selected' : '' ?>>No
+                                    <option value="2" <?php echo $data['purch_order']['po_down_payment'] == 2 ? 'selected' : '' ?>>No
                                     </option>
                                 </select>
                             </div>
@@ -453,9 +418,7 @@ var_dump($data);
                             <div class="col-12 col-md-8">
                                 <input class="form-control" <?php if ($data['purch_order']['po_down_payment'] == 2) {
                                                                 echo "disabled='true'";
-                                                            } ?> type="text" id="disable_down"
-                                    name="po_down_payment_amount"
-                                    value="<?php echo $data['purch_order']['po_down_payment_amount']; ?>" />
+                                                            } ?> type="text" id="downPaymentAmount" name="po_down_payment_amount" value="<?php echo $data['purch_order']['po_down_payment_amount']; ?>" />
                             </div>
                         </div>
 
@@ -474,13 +437,10 @@ var_dump($data);
                             <div class="col-12 col-md-8">
 
 
-                                <select class="form-control" name="po_exchange" id="po_exchange"
-                                    class="col-12 col-md-12">
-                                    <option value="1"
-                                        <?php echo  $data['purch_order']['po_exchange'] == 1 ? 'selected' : '' ?>>Fixed
+                                <select class="form-control" name="po_exchange" id="po_exchange" class="col-12 col-md-12">
+                                    <option value="1" <?php echo  $data['purch_order']['po_exchange'] == 1 ? 'selected' : '' ?>>Fixed
                                     </option>
-                                    <option value="2"
-                                        <?php echo  $data['purch_order']['po_exchange'] == 2 ? 'selected' : '' ?>>Live
+                                    <option value="2" <?php echo  $data['purch_order']['po_exchange'] == 2 ? 'selected' : '' ?>>Live
                                     </option>
                                 </select>
                             </div>
@@ -492,11 +452,7 @@ var_dump($data);
                             </div>
                             <div class="col-12 col-md-8">
 
-                                <input class="form-control" <?php if ($data['purch_order']['po_exchange'] == 2) {
-                                                                echo "disabled='true'";
-                                                            } ?> type="text" id="disable_exchange"
-                                    name="po_currency_rate"
-                                    value="<?php echo $data['purch_order']['po_currency_rate']; ?>" />
+                                <input class="form-control" <?php echo ($data['purch_order']['po_exchange'] == 2) ? "disabled='true'" : ""; ?> type="text" id="poExchange" name="po_currency_rate" value="<?php echo $data['purch_order']['po_currency_rate']; ?>" />
                             </div>
                         </div>
                         </br>
@@ -510,7 +466,7 @@ var_dump($data);
                             <div class="col-12 col-md-2 text-center">
                                 EUR
                             </div>
-                            <div class="col-12 col-md-2 text-center">
+                            <div class="col-12 col-md-2 text-center" id="currencyText">
                                 <?php echo $data['purch_order']['po_currency']; ?>
                             </div>
                         </div>
@@ -520,14 +476,10 @@ var_dump($data);
                                 <span>Total Purchase Amount</span>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="text" id="totalPurchaseValueEur"
-                                    value="<?php echo $data['converted_values'][0]['total_purchase_value_eur']; ?>"
-                                    readonly>
+                                <input class="form-control" type="text" id="totalPurchaseValueEur" value="<?php echo $data['converted_values'][0]['total_purchase_value_eur']; ?>" readonly>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="text" name="total_purchase_value"
-                                    id="totalPurchaseValue" data-target="totalPurchaseValueEur"
-                                    value="<?php echo ($data['poSums']['total_purchase_value'] ? str_replace('€ ', '', $data['poSums']['total_purchase_value']) : 0); ?>">
+                                <input class="form-control" type="text" name="total_purchase_value" id="totalPurchaseValue" data-target="totalPurchaseValueEur" value="<?php echo ($data['poSums']['total_purchase_value'] ? str_replace('€ ', '', $data['poSums']['total_purchase_value']) : 0); ?>">
                             </div>
                         </div>
 
@@ -538,14 +490,10 @@ var_dump($data);
                                 <span>Total fee intermediate supplier</span>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="text" id="totalFeeIntermediateSupplierEur"
-                                    value="<?php echo $data['converted_values'][0]['total_fee_intermediate_supplier_eur']; ?>"
-                                    readonly>
+                                <input class="form-control" type="text" id="totalFeeIntermediateSupplierEur" value="<?php echo $data['converted_values'][0]['total_fee_intermediate_supplier_eur']; ?>" readonly>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="text" name="total_fee_intermediate_supplier"
-                                    id="totalFeeIntermediateSupplier" data-target="totalFeeIntermediateSupplierEur"
-                                    value="<?php echo ($data['poSums']['total_fee_intermediate_supplier'] ? str_replace('€ ', '', $data['poSums']['total_fee_intermediate_supplier']) : 0); ?>">
+                                <input class="form-control" type="text" name="total_fee_intermediate_supplier" id="totalFeeIntermediateSupplier" data-target="totalFeeIntermediateSupplierEur" value="<?php echo ($data['poSums']['total_fee_intermediate_supplier'] ? str_replace('€ ', '', $data['poSums']['total_fee_intermediate_supplier']) : 0); ?>">
                             </div>
                         </div>
 
@@ -554,14 +502,10 @@ var_dump($data);
                                 <span>Total transport costs</span>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="text" id="transportCostEur"
-                                    value="<?php echo $data['converted_values'][0]['total_transport_cost_eur']; ?>"
-                                    readonly>
+                                <input class="form-control" type="text" id="transportCostEur" value="<?php echo $data['converted_values'][0]['total_transport_cost_eur']; ?>" readonly>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="text" name="total_transport_cost"
-                                    id="totalTransportCost" data-target="transportCostEur"
-                                    value="<?php echo ($data['poSums']['total_transport_cost'] ? str_replace('€ ', '', $data['poSums']['total_transport_cost']) : 0); ?>">
+                                <input class="form-control" type="text" name="total_transport_cost" id="totalTransportCost" data-target="transportCostEur" value="<?php echo ($data['poSums']['total_transport_cost'] ? str_replace('€ ', '', $data['poSums']['total_transport_cost']) : 0); ?>">
                             </div>
                         </div>
 
@@ -570,8 +514,7 @@ var_dump($data);
                                 <span>Total purchase price excl. VAT</span>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="text" name="pl_purchase_price_excl_vat"
-                                    id="totalPurchasePriceExclVat" value="0.00" readonly>
+                                <input class="form-control" type="text" name="pl_purchase_price_excl_vat" id="totalPurchasePriceExclVat" value="0.00" readonly>
                             </div>
                             <div class="col-12 col-md-2">
                                 -
@@ -583,8 +526,7 @@ var_dump($data);
                                 <span>Total VAT</span>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="text" name="pl_vat_margin" id="purchaseVatMargin" value="0.00"
-                                    readonly>
+                                <input class="form-control" type="text" name="pl_vat_margin" id="purchaseVatMargin" value="0.00" readonly>
                             </div>
                             <div class="col-12 col-md-2">
                                 -
@@ -596,8 +538,7 @@ var_dump($data);
                                 <span>Total Purchase price incl. VAT</span>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="number" name="pl_purchase_price_incl_vat"
-                                    id="totalPurchasePriceInclVat" value="0.00" readonly>
+                                <input class="form-control" type="number" name="pl_purchase_price_incl_vat" id="totalPurchasePriceInclVat" value="0.00" readonly>
                             </div>
                             <div class="col-12 col-md-2">
                                 -
@@ -609,8 +550,7 @@ var_dump($data);
                                 <span>Total Vehicle tax/BPM</span>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="number" id="PurchaseVehicleTaxBPM"
-                                    value="<?php echo $rest_bpm_float; ?>" readonly>
+                                <input class="form-control" type="number" id="PurchaseVehicleTaxBPM" value="<?php echo $data['converted_values'][0]['total_vehicle_bpm_eur']; ?>" readonly>
                             </div>
                             <div class="col-12 col-md-2">
                                 -
@@ -622,8 +562,7 @@ var_dump($data);
                                 <span>Total Purchase value incl VAT/tax</span>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="number" name="pl_purchase_incl_vat_tax"
-                                    id="totalPurchaseValueInclVatTax" value="0.00" readonly>
+                                <input class="form-control" type="number" name="pl_purchase_incl_vat_tax" id="totalPurchaseValueInclVatTax" value="0.00" readonly>
                             </div>
                             <div class="col-12 col-md-2">
                                 -
@@ -635,8 +574,7 @@ var_dump($data);
                                 <span>Total Down Payement Amount</span>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="number" name="pl_purchase_incl_vat_tax"
-                                    id="purchaseValueInclVatTax" value="0.00" readonly>
+                                <input class="form-control" type="number" name="pl_purchase_incl_vat_tax" id="purchaseValueInclVatTax" value="0.00" readonly>
                             </div>
                             <div class="col-12 col-md-2">
                                 -
@@ -648,8 +586,7 @@ var_dump($data);
                                 <span>Total VAT Deposit</span>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="number" name="pl_purchase_incl_vat_tax"
-                                    id="purchaseValueInclVatTax" value="0.00" readonly>
+                                <input class="form-control" type="number" name="pl_purchase_incl_vat_tax" id="purchaseValueInclVatTax" value="0.00" readonly>
                             </div>
                             <div class="col-12 col-md-2">
                                 -
@@ -671,9 +608,7 @@ var_dump($data);
         <div class="container-fluid">
             <div class="row">
                 <div class="table-responsive">
-                    <table
-                        id="<?php echo (isset($_GET['order_id']) || isset($_POST['update_order']) ? "tableShowPoLines" : "") ?>"
-                        class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
+                    <table id="<?php echo (isset($_GET['order_id']) || isset($_POST['update_order']) ? "tableShowPoLines" : "") ?>" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
                         <thead>
                             <th class="text-center">PL ID</th>
                             <th class="text-center">Pre-order</th>
@@ -696,7 +631,7 @@ var_dump($data);
 
 
 
-                            
+
                             <!-- <th class="text-center">PL ID</th>
                             <th class="text-center">Pre-order</th>
                             <th style="white-space: nowrap">Type</th>
@@ -738,8 +673,7 @@ var_dump($data);
                     <div class="modal-body">
                         <div class="table-responsive">
 
-                            <table id="poLinesTable"
-                                class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
+                            <table id="poLinesTable" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
                                 <thead>
                                     <th class="text-center">Choice</th>
                                     <th class="text-center">#</th>
@@ -795,10 +729,10 @@ var_dump($data);
 
 
 <script>
-function toggle(source) {
-    checkboxes = document.getElementsByClassName('foo');
-    for (var i = 0, n = checkboxes.length; i < n; i++) {
-        checkboxes[i].checked = source.checked;
+    function toggle(source) {
+        checkboxes = document.getElementsByClassName('foo');
+        for (var i = 0, n = checkboxes.length; i < n; i++) {
+            checkboxes[i].checked = source.checked;
+        }
     }
-}
 </script>

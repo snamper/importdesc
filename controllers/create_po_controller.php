@@ -206,7 +206,7 @@ class create_po extends view
 				$arr[$item] = '';
 			}
 		}
-
+		$this->setData('all_currencies', $this->base->getAllCurrencies());
 		$this->setData('purch_order', $arr);
 
 

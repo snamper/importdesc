@@ -8,7 +8,7 @@ $config = include("../config.php");
 /* Array of database columns which should be read and sent back to DataTables. Use a space where
  * you want to insert a non-database field (for example a counter or static image)
  */
-$aColumns = array('pl_id', 'car_preorder', 'pl_vehicle_id', 'cm.cmake_name', 'cmod.cmodel_name', 'cmu_name', 'cmotor.cmotor_name', 'car_vat_marge', 'pl_expected_delivery', 'po_vat_deposit', 'pl_km_delivery', 'pl_transport_by_supplier', 'pl_purchase_value', 'pl_fee_intermediate_supplier', 'pl_transport_cost', 'po_vat_percentage', 'rest_bpm', 'po_down_payment_amount');
+$aColumns = array('pl_id', 'car_preorder', 'pl_vehicle_id', 'cm.cmake_name', 'cmod.cmodel_name', 'cmu_name', 'cmotor.cmotor_name', 'car_vat_marge', 'pl_expected_delivery', 'po_vat_deposit', 'pl_km_delivery', 'pl_transport_by_supplier', 'pl_purchase_value', 'pl_fee_intermediate_supplier', 'pl_transport_cost', 'po_vat_percentage', 'rest_bpm', 'po_down_payment_amount', 'po_id');
 /* Indexed column (used for fast and accurate table cardinality) */
 $sIndexColumn = "c.car_id as number";
 /* DB table to use */
@@ -212,7 +212,7 @@ while ($aRow = mysqli_fetch_array($rResult)) {
     $row = array();
     for ($i = 0; $i < count($aColumns); $i++) {
         if ($aColumns[$i] == 'pl_id') {
-            $row[] = '<center style="display:flex;">' . sprintf("PL%'.07d\n", $aRow[$i]) . '</center>';
+            $row[] = '<center style="display:flex;"><a href="create_pol?po='.$aRow[18].'&line='.$aRow[$i].'">' . sprintf("PL%'.07d\n", $aRow[$i]) . '</a></center>';
         } elseif ($aColumns[$i] == 'car_preorder' || $aColumns[$i] == 'po_vat_deposit' || $aColumns[$i] == 'pl_transport_by_supplier') {
             if ($aRow[$i] == 0) {
                 $row[] = '<center style="display:flex;">NO</center>';
