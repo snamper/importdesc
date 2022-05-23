@@ -11027,3 +11027,7 @@ input::-webkit-input-placeholder {
 	padding: 5px;
 	overflow-y: scroll;
 }
+
+p.container_header {
+	font-size: 0.6rem;
+}

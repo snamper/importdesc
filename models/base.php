@@ -661,10 +661,7 @@ class base
 		pl_extra_set_of_wheels = ?,
 		pl_purchase_value = ?,
 		pl_fee_intermediate_supplier = ?,
-		pl_transport_cost = ?,
-		pl_purchase_price_excl_vat = ?,
-		pl_vat_margin = ?,
-		pl_purchase_price_incl_vat = ?
+		pl_transport_cost = ?
 		WHERE pl_id = ?";
 
 		$stmt = $dbDriver->dbCon->prepare($query);
@@ -686,9 +683,6 @@ class base
 			$_POST['pl_purchase_value'],
 			$_POST['pl_fee_intermediate_supplier'],
 			$_POST['pl_transport_cost'],
-			$_POST['pl_purchase_price_excl_vat'],
-			$_POST['pl_vat_margin'],
-			$_POST['pl_purchase_price_incl_vat'],
 			$line_id
 		]);
 	}

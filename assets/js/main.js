@@ -2854,17 +2854,23 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     const columns = [ 'line', 'order', 'car' ];
     const types = [ 'doc', 'img' ];
-    const allowedFormats = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"];
+    const allowedFormats = {
+        'doc': ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"],
+        'img': ['image/jpeg', 'image/png']
+    };
     const allowedSizeMb = 10;
     const allowedSizeBytes = allowedSizeMb * 1048576;
     
     function uploadFiles(e) {
         const trigger = e.currentTarget;
+        
         const sort = $(trigger).attr('data-for');
         if(!columns.includes(sort)) return;
+
         const type = $(trigger).attr('data-type');
         if(!types.includes(type)) return;
-        const target = $(trigger).attr('data-target');
+
+        const target = $(trigger).attr('data-target') || 0;
 
         const formData = new FormData();
         formData.append("sort", sort);
@@ -2875,13 +2881,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
             //Check allowed size 
             if (file.size > allowedSizeBytes) {
                 alert(`There is a file that is bigger then allowed ${allowedSizeMb}MB`);
-                trigger.value = "";
                 return;
             }
             //Check allowed format 
-            if (!allowedFormats.includes(file.type)) {
-                alert(`There is a file type that is not allowed ${allowedFormats.join()}`);
-                trigger.value = "";
+            if (!allowedFormats[type].includes(file.type)) {
+                alert(`There is a file type that is not allowed ${allowedFormats[type].join()}`);
                 return;
             }
 
@@ -2899,6 +2903,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 //else displayUploadedImages(JSON.parse(response), sort);
             },
         });
+        $('#fileUploadForm').trigger('reset');
     }
     function highlightUploadFile(e) {
         $(e.currentTarget).parent().addClass('highlighted');
@@ -2908,9 +2913,21 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function displayUploadedFiles(files, sort) {
-        const documentsContainer = $('#documentsContainer');
-        const formId = (sort == 'line') ? '#createPOLForm' : '';
-        const form = $(formId);
+        let formId = '';
+        switch(sort) {
+            case 'line': {
+                formId = '#createPOLForm';
+                break;
+            }
+            case 'order': {
+                formId = '#createPOForm';
+                break;
+            }
+            case 'car': {
+                formId = '#createCarForm';
+                break;
+            }
+        }
     
         let p, a, trash, hiddenInput;
         for (let key in files) {
@@ -2928,12 +2945,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
             p.appendChild(a);
             p.appendChild(trash);
 
-            documentsContainer.prepend(p);
+            $("#documentsContainer p:first-child").after(p);
             hiddenInput = document.createElement("input");
             hiddenInput.type = 'hidden';
             hiddenInput.name = 'documents[]';
             hiddenInput.value = files[key].name + '|' + files[key].location;
-            form.appendChild(hiddenInput);
+            $(formId).append(hiddenInput);
         }
     }
 
@@ -2959,7 +2976,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
         else
             p.remove();
     }
-
     $('#documentsContainer p span.ti-trash').click(documentTrashBtnClick);
 });
 
@@ -3023,21 +3039,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
         let sum = 0;
         arrConversionFields.forEach(field => sum += (parseFloat($(`#${$(field).attr('data-target')}`).val()) || 0));
         const vatAmount = sum * (vatPercentage/100);
-        const restBPM = await calcRestBPM(
-            $('#carVehicleType').val(),
-            $('#carFuel').val(),
-            $('#firstRegistrationDate').val(),
-            $('#firstNameNLRegistration').val(),
-            $('#datumBPM').val(),
-            $('#co2WLTP').val(),
-            $('#bpmPercentage').val()
-        );
         const priceInclVat = sum + vatAmount;
         $('#purchasePriceExclVat').val(sum.toFixed(2));
         $('#vatMargin').val((vatAmount).toFixed(2));
         $('#purchasePriceInclVat').val(priceInclVat.toFixed(2));
-        $('#vehicleTaxBPM').val(restBPM.toFixed(2));
-        $('#purchaseValueInclVatTax').val((priceInclVat + restBPM).toFixed(2));
+        $('#purchaseValueInclVatTax').val((priceInclVat + (parseFloat($('#vehicleTaxBPM').val()) || 0)).toFixed(2));
     }
     calcFields();
 
@@ -3062,33 +3068,4 @@ async function getCurrencyConversion(currency) {
     });
 
     return response ? JSON.parse(response) : 0;
-}
-
-async function calcRestBPM(voertuig, brandstof, productiedatum, tenaamstellingNL, vaiabeledatum, bpmco2wltp, percentage) {
-    if(typeof(percentage) == 'string')  percentage = percentage.replace('%', '');
-    const response = await $.ajax({
-        type: "POST",
-        url: '../bpm/BPMUpdateTest.php',
-        data: {
-            "SoortVoertuig": voertuig,
-            "BPMbrandstof": brandstof,
-            "BPMproductiedatum": productiedatum,
-            "BPMtenaamstellingNL": tenaamstellingNL,
-            "variabeledatumbpm": vaiabeledatum,
-            "BPMCO2WLTP": bpmco2wltp,
-            "percentage": percentage,
-        },
-        error: function (request, status, error) {
-            console.log(request.responseText);
-        }
-    });
-    
-    if(response) {
-        try {
-            const json = JSON.parse(response);
-            return json[0].bpmprice || 0;
-        } catch (e) {
-            return "A required field for BPM is not filled";
-        }
-    }
 }
