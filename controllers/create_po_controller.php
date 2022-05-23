@@ -113,10 +113,6 @@ class create_po extends view
 			$lines_array = array_unique($lines_array);
 
 			$this->setData("purchase_lines", $lines_array);
-
-			if (isset($_REQUEST['show_all_purch_lines'])) {
-				unset($_POST['hide_all_purch_lines']);
-			}
 		} else if (isset($_POST['purchase_lines'])) {
 			$this->setData("purchase_lines", $_POST['purchase_lines']);
 		}
@@ -133,12 +129,7 @@ class create_po extends view
 					$this->base->addPoLines($car_info, $order_id);
 				}
 
-				if ($_POST['save_order'] == 1) {
-
-					header('location: /create_po?order_id=' . $order_id . "&show_all_purch_lines");
-				} else {
-					header('location: /create_po?order_id=' . $order_id);
-				}
+				header('location: /create_po?order_id=' . $order_id);
 				exit;
 			}
 
@@ -150,11 +141,7 @@ class create_po extends view
 				$this->base->addPoLines($car_info, $order_id);
 			}
 
-			if (isset($_REQUEST['show_all_purch_lines'])) {
-				header('location: /create_po?order_id=' . $order_id, "&show_all_purch_lines");
-			} else {
-				header('location: /create_po?order_id=' . $order_id);
-			}
+			header('location: /create_po?order_id=' . $order_id);
 			exit;
 		}
 
@@ -191,37 +178,35 @@ class create_po extends view
 		];
 		$arr = [];
 
-		if (isset($_POST['hide_all_purch_lines'])) {
-			unset($_POST['show_all_purch_lines']);
-			unset($_GET['show_all_purch_lines']);
-			unset($_REQUEST['show_all_purch_lines']);
-
-			if (isset($_POST['update_order'])) {
-				$this->base->updateOrder($_POST);
-				header('location: /create_po?order_id=' . $_POST['update_order']);
-				exit;
-			}
-		}
-
-		if (isset($_POST['show_all_purch_lines']) || isset($_POST['hide_all_purch_lines'])) {
-
-			foreach ($arr_items as $item) {
-				$arr[$item] = isset($_POST[$item]) ? $_POST[$item] : '';
-			}
-
-			if (!isset($_POST['add_purchase_line']) && isset($_POST['update_order'])) {
-				$this->base->updateOrder($_POST);
-			}
-		} else if ($order_id > 0) {
+		if ($order_id > 0) {
 			$singleOrder = $this->base->getSinglePurchaseOrder($order_id);
 			foreach ($arr_items as $item) {
 				$arr[$item] = isset($singleOrder[$item]) ? $singleOrder[$item] : '';
+			}
+			if($singleOrder['po_exchange'] == 1) {
+				$currencyFixedRate = $singleOrder['po_currency_rate'];
+				$this->setData('converted_values', [
+					'total_purchase_value_eur' => round($poSums['total_purchase_value'] * $currencyFixedRate, 2),
+					'total_fee_intermediate_supplier_eur' => round($poSums['total_fee_intermediate_supplier'] * $currencyFixedRate, 2),
+					'total_transport_cost_eur' => round($poSums['total_transport_cost'] * $currencyFixedRate, 2),
+					'total_vehicle_bpm_eur' => round($poSums['total_vehicle_bpm'] * $currencyFixedRate, 2)
+				]);
+			}
+			else {
+				$currencyLiveRate = $this->base->getEurConversion($singleOrder['po_currency']);
+				$this->setData('converted_values', [
+					'total_purchase_value_eur' => round($poSums['total_purchase_value'] * $currencyLiveRate, 2),
+					'total_fee_intermediate_supplier_eur' => round($poSums['total_fee_intermediate_supplier'] * $currencyLiveRate, 2),
+					'total_transport_cost_eur' => round($poSums['total_transport_cost'] * $currencyLiveRate, 2),
+					'total_vehicle_bpm_eur' => round($poSums['total_vehicle_bpm'] * $currencyLiveRate, 2)
+				]);
 			}
 		} else {
 			foreach ($arr_items as $item) {
 				$arr[$item] = '';
 			}
 		}
+
 		$this->setData('purch_order', $arr);
 
 

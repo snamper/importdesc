@@ -3060,3 +3060,53 @@ async function getCurrencyConversion(currency) {
 
     return response ? JSON.parse(response) : 0;
 }
+
+// create_po page functions
+window.addEventListener('DOMContentLoaded', (event) => {
+
+    const currency = $('#poCurrency').val();
+
+    const arrConversionFields = ['#', '#', '#'];
+    arrConversionFields.forEach(field => $(field).change((e) => setCurrencyAmount(e.currentTarget)));
+
+    // Making a cache obj so we call the rate exchange api no more than once every 5 seconds.
+    let rateCache = {
+        time: new Date().getTime(),
+        rate: 0
+    }
+    async function getRate() {
+        const time = new Date().getTime();
+        if(rateCache.time > time + 5000)    return rateCache.rate;
+        rateCache.rate = currency ? Number(await getCurrencyConversion(currency)) : Number($('#poCurrencyRate').val());
+        return rateCache.rate;
+    }
+    
+    async function setCurrencyAmount(selector) {
+        const rate = await getRate();
+        const value = $(selector).val();
+        if(!value || isNaN(value))  return;
+        $(`#${$(selector).attr('data-target')}`).val((value * rate).toFixed(2));
+        calcFields();
+    }
+
+
+    async function calcFields() {
+        const vatPercentage = $('#poVatPercentage').val();
+        let sum = 0;
+        arrConversionFields.forEach(field => sum += (parseFloat($(`#${$(field).attr('data-target')}`).val()) || 0));
+        const vatAmount = sum * (vatPercentage/100);
+        const priceInclVat = sum + vatAmount;
+        $('#totalPurchasePriceExclVat').val(sum.toFixed(2));
+        $('#purchaseVatMargin').val((vatAmount).toFixed(2));
+        $('#totalPurchasePriceInclVat').val(priceInclVat.toFixed(2));
+        $('#totalPurchaseValueInclVatTax').val((priceInclVat + (parseFloat($('#PurchaseVehicleTaxBPM').val()) || 0)).toFixed(2));
+    }
+    calcFields();
+
+    $('[data-toggle-currency="true"]:not([readonly])').on('focusin', removeCurrencyFormat);
+    $('[data-toggle-currency="true"]:not([readonly])').on('focusout', addCurrencyFormat);
+
+    $('#repairedDamage').change((e) => {
+        $('#repairedDamageAmount').prop('readonly', ($(e.currentTarget).val() == 0));
+    });
+});
