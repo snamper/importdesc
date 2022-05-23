@@ -616,6 +616,28 @@ $data['poSums'] = $data['poSums'][0];
                         <thead>
                             <th class="text-center">PL ID</th>
                             <th class="text-center">Pre-order</th>
+                            <th style="white-space: nowrap">Vehicle ID</th>
+                            <th style="white-space: nowrap">Make</th>
+                            <th style="white-space: nowrap">Model</th>
+                            <th style="white-space: nowrap">Variant</th>
+                            <th style="white-space: nowrap">Engine</th>
+                            <th style="white-space: nowrap">VAT/Margin</th>
+                            <th style="white-space: nowrap">Expected delivery date*</th>
+                            <th style="white-space: nowrap">VAT deposit</th>
+                            <th class="text-center">KM at delivery*</th>
+                            <th style="white-space: nowrap">Transport by supplier</th>
+                            <th style="white-space: nowrap">Purchase value</th>
+                            <th style="white-space: nowrap">Fee int. Supplier</th>
+                            <th style="white-space: nowrap">Transport Costs</th>
+                            <th style="white-space: nowrap">VAT</th>
+                            <th style="white-space: nowrap">Vehicle tax/bpm</th>
+                            <th style="white-space: nowrap">Down payment amount</th>
+
+
+
+                            
+                            <!-- <th class="text-center">PL ID</th>
+                            <th class="text-center">Pre-order</th>
                             <th style="white-space: nowrap">Type</th>
                             <th style="white-space: nowrap">Vehicle ID</th>
                             <th style="white-space: nowrap">VAT/Margin</th>
@@ -631,7 +653,7 @@ $data['poSums'] = $data['poSums'][0];
                             <th style="white-space: nowrap">Accident free</th>
                             <th style="white-space: nowrap">Expected damage amount</th>
                             <th style="white-space: nowrap">Extra set of wheels</th>
-                            <th style="white-space: nowrap">VAT deposit</th>
+                            <th style="white-space: nowrap">VAT deposit</th> -->
                         </thead>
                         <tbody></tbody>
                     </table>
