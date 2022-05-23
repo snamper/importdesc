@@ -2821,6 +2821,16 @@ window.addEventListener('DOMContentLoaded', (event) => {
         }
     });
 
+    $('#down_payment').onSubmit(function(){ 
+
+        if ($(this).val() == '2') { 
+            $("#disable_down").prop('disabled', true);
+        } else {
+            $("#disable_down").prop('disabled', false);
+        }
+
+    });
+
 });
 
 
