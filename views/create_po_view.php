@@ -571,7 +571,7 @@ var_dump($data);
                             </div>
                             <div class="col-12 col-md-2">
                                 <input class="form-control" type="text" name="pl_purchase_price_excl_vat"
-                                    id="purchasePriceExclVat" value="0.00" readonly>
+                                    id="totalPurchasePriceExclVat" value="0.00" readonly>
                             </div>
                             <div class="col-12 col-md-2">
                                 -
@@ -583,7 +583,7 @@ var_dump($data);
                                 <span>Total VAT</span>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="text" name="pl_vat_margin" id="vatMargin" value="0.00"
+                                <input class="form-control" type="text" name="pl_vat_margin" id="purchaseVatMargin" value="0.00"
                                     readonly>
                             </div>
                             <div class="col-12 col-md-2">
@@ -597,7 +597,7 @@ var_dump($data);
                             </div>
                             <div class="col-12 col-md-2">
                                 <input class="form-control" type="number" name="pl_purchase_price_incl_vat"
-                                    id="purchasePriceInclVat" value="0.00" readonly>
+                                    id="totalPurchasePriceInclVat" value="0.00" readonly>
                             </div>
                             <div class="col-12 col-md-2">
                                 -
@@ -609,7 +609,7 @@ var_dump($data);
                                 <span>Total Vehicle tax/BPM</span>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="number" id="vehicleTaxBPM"
+                                <input class="form-control" type="number" id="PurchaseVehicleTaxBPM"
                                     value="<?php echo $rest_bpm_float; ?>" readonly>
                             </div>
                             <div class="col-12 col-md-2">
@@ -623,7 +623,7 @@ var_dump($data);
                             </div>
                             <div class="col-12 col-md-2">
                                 <input class="form-control" type="number" name="pl_purchase_incl_vat_tax"
-                                    id="purchaseValueInclVatTax" value="0.00" readonly>
+                                    id="totalPurchaseValueInclVatTax" value="0.00" readonly>
                             </div>
                             <div class="col-12 col-md-2">
                                 -
