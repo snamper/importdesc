@@ -1,5 +1,6 @@
 <?php
 $pol_data = $data['pol_data'][0];
+$rest_bpm_float = floatval(str_replace(' ', '', str_replace(',', '', str_replace('€ ', '', $pol_data['rest_bpm']))));
 
 // echo '<pre>';
 // var_dump($pol_data);
@@ -9,6 +10,7 @@ $pol_data = $data['pol_data'][0];
 
 
 <div class="content" id="createPOView">
+    <form id="fileUploadForm"></form>
     <form action="" method="POST" id="createPOLForm" class="listing__form">
 
         <!-- po_exchange == 1 => get fixed rate from table -->
@@ -32,7 +34,7 @@ $pol_data = $data['pol_data'][0];
             <div class="row my-4 align-items-start">
                 <div class="col-12 col-md-6" style="padding-right: 2%;">
                     <div class="upload-file"><?php echo $_SESSION['lang']['car_start_page_2'] ?>
-                        <input type="file" name="upload_document[]" multiple data-for="line" data-type="doc" data-target="<?php echo $pol_data['pl_id']; ?>" id="uploadFiles">
+                        <input form="fileUploadForm" type="file" name="upload_document[]" multiple data-for="line" data-type="doc" data-target="<?php echo $pol_data['pl_id']; ?>" id="uploadFiles">
                     </div>
                 </div>
             </div>
@@ -290,6 +292,7 @@ $pol_data = $data['pol_data'][0];
 
                     <div class="row" style="padding: 0 0.35rem;">
                         <div class="col-12 col-md-12 mt-4 documents_container" id="documentsContainer">
+                            <p class="container_header">Uploaded documents (POL):</p>
                             <?php
                             $doc_count = count($data['documents'][0]);
                             if($doc_count > 0) {
@@ -303,6 +306,7 @@ $pol_data = $data['pol_data'][0];
 
                     <div class="row" style="padding: 0 0.35rem;">
                         <div class="col-12 col-md-12 mt-4 notes_container">
+                            <p class="container_header">Internal Notes (POL):</p>
                             <?php echo nl2br($pol_data['pl_internal_notes']); ?>
                         </div>
                     </div>
@@ -374,7 +378,7 @@ $pol_data = $data['pol_data'][0];
                             <span>Purchase price excl. VAT</span>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="text" name="pl_purchase_price_excl_vat" id="purchasePriceExclVat" value="0" readonly>
+                            <input class="form-control" type="text" name="pl_purchase_price_excl_vat" id="purchasePriceExclVat" value="0.00" readonly>
                         </div>
                         <div class="col-12 col-md-2">
                             -
@@ -386,7 +390,7 @@ $pol_data = $data['pol_data'][0];
                             <span>VAT</span>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="text" name="pl_vat_margin" id="vatMargin" value="<?php echo $pol_data['pl_vat_margin'] ?? 0; ?>" readonly>
+                            <input class="form-control" type="text" name="pl_vat_margin" id="vatMargin" value="0.00" readonly>
                         </div>
                         <div class="col-12 col-md-2">
                             -
@@ -398,7 +402,7 @@ $pol_data = $data['pol_data'][0];
                             <span>Purchase price incl. VAT</span>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="number" name="pl_purchase_price_incl_vat" id="purchasePriceInclVat" value="<?php echo $pol_data['pl_purchase_price_incl_vat'] ?? 0; ?>" readonly>
+                            <input class="form-control" type="number" name="pl_purchase_price_incl_vat" id="purchasePriceInclVat" value="0.00" readonly>
                         </div>
                         <div class="col-12 col-md-2">
                             -
@@ -410,7 +414,7 @@ $pol_data = $data['pol_data'][0];
                             <span>Vehicle tax/BPM</span>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="number" id="vehicleTaxBPM" value="<?php echo 0; ?>" readonly>
+                            <input class="form-control" type="number" id="vehicleTaxBPM" value="<?php echo $rest_bpm_float ? $rest_bpm_float : '0.00'; ?>" readonly>
                         </div>
                         <div class="col-12 col-md-2">
                             -
@@ -422,7 +426,7 @@ $pol_data = $data['pol_data'][0];
                             <span>Purchase value incl VAT/tax</span>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="number" name="pl_purchase_incl_vat_tax" id="purchaseValueInclVatTax" value="<?php echo $pol_data['pl_purchase_incl_vat_tax'] ?? 0; ?>" readonly>
+                            <input class="form-control" type="number" name="pl_purchase_incl_vat_tax" id="purchaseValueInclVatTax" value="0.00" readonly>
                         </div>
                         <div class="col-12 col-md-2">
                             -
