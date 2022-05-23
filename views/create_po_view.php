@@ -1,8 +1,6 @@
 <?php
 $data['purch_order'] = $data['purch_order'][0];
 $data['poSums'] = $data['poSums'][0];
-
-var_dump($_SESSION);
 ?>
 
 

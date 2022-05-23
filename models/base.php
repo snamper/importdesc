@@ -2263,9 +2263,8 @@ class base
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([]);
-  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
-}
 
 	public function uploadFiles($type, $sort, $target_id, $_files)
 	{
