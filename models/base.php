@@ -600,6 +600,7 @@ class base
 		INNER JOIN car_makes as cm on c.car_make = cm.cmake_id
 		INNER JOIN car_models as cmod on c.car_model = cmod.cmodel_id
 		INNER JOIN car_motors as cmotor on cd.cd_motor = cmotor.cmotor_id
+		INNER JOIN calculations as calc on c.car_id = calc.calculation_for_car_id
 		WHERE pol.pl_purchase_id = ?";
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$po_id]);

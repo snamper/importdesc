@@ -2812,7 +2812,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 window.addEventListener('DOMContentLoaded', (event) => {
     $('#down_payment').change(function(){ // 
-        console.log("here");
     
         if ($(this).val() == '2') { 
             $("#disable_down").prop('disabled', true);
@@ -2826,7 +2825,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 window.addEventListener('DOMContentLoaded', (event) => {
     $('#po_exchange').change(function(){ // 
-        console.log("here");
     
         if ($(this).val() == '2') { 
             $("#disable_exchange").prop('disabled', true);
@@ -2900,9 +2898,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function displayUploadedFiles(files, sort) {
-        const documentsContainer = document.querySelector("#documentsContainer");
+        const documentsContainer = $('#documentsContainer');
         const formId = (sort == 'line') ? '#createPOLForm' : '';
-        const form = document.querySelector(formId);
+        const form = $(formId);
     
         let p, a, trash, hiddenInput;
         for (let key in files) {
@@ -2919,9 +2917,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
             p.appendChild(a);
             p.appendChild(trash);
-
-
-            console.log(p);
 
             documentsContainer.prepend(p);
             hiddenInput = document.createElement("input");
@@ -2954,6 +2949,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
         else
             p.remove();
     }
+
+    $('#documentsContainer p span.ti-trash').click(documentTrashBtnClick);
 });
 
 // create_pol page functions
@@ -2965,31 +2962,81 @@ window.addEventListener('DOMContentLoaded', (event) => {
         autoclose: true,
         weekStart: 1
     });
-    $('#expectedDeliveryDate').datepicker({
-        dateFormat: 'yyyy-mm-dd',
-        autoclose: true,
-        weekStart: 1
-    });
+
+    $('#expectedProdDate').change(calculateExpectedDeliveryDate);
+    $('#expectedLeadTimeFirstReg').change(calculateExpectedDeliveryDate);
+    $('#expectedRegDuration').change(calculateExpectedDeliveryDate);
+
+    function calculateExpectedDeliveryDate(e) {
+        const dateStr = $('#expectedProdDate').val();
+        if(dateStr.length <= 0) return;
+        const [ day, month, year ] = dateStr.split('-');
+        const expectedLeadTimeFirstReg = (Number($('#expectedLeadTimeFirstReg').val()) || 0) * 7;
+        const expectedRegDuration = (Number($('#expectedRegDuration').val()) || 0) * 7;
+        const date = new Date();
+        date.setTime(0);
+        date.setFullYear(year, month, day);
+        date.setDate(date.getDate() + expectedLeadTimeFirstReg + expectedRegDuration);
+        const expectedDate = [ '' + date.getDate(), '' + date.getMonth(), '' + date.getFullYear() ];
+        if(expectedDate[0].length < 2)  expectedDate[0] = '0' + expectedDate[0];
+        if(expectedDate[1].length < 2)  expectedDate[1] = '0' + expectedDate[1];
+        $('#expectedDeliveryDate').val(expectedDate.join('-'));
+    }
 
     const currency = $('#poCurrency').val();
 
-    const arrFields = ['#purchaseValue', '#feeIntermediateSupplier', '#transportCost'];
-    arrFields.forEach(field => $(field).change((e) => setCurrencyAmount(e.currentTarget)));
+    const arrConversionFields = ['#purchaseValue', '#feeIntermediateSupplier', '#transportCost'];
+    arrConversionFields.forEach(field => $(field).change((e) => setCurrencyAmount(e.currentTarget)));
+
+    // Making a cache obj so we call the rate exchange api no more than once every 5 seconds.
+    let rateCache = {
+        time: new Date().getTime(),
+        rate: 0
+    }
+    async function getRate() {
+        const time = new Date().getTime();
+        if(rateCache.time > time + 5000)    return rateCache.rate;
+        rateCache.rate = currency ? Number(await getCurrencyConversion(currency)) : Number($('#poCurrencyRate').val());
+        return rateCache.rate;
+    }
     
     async function setCurrencyAmount(selector) {
+        const rate = await getRate();
         const value = $(selector).val();
         if(!value || isNaN(value))  return;
-        $(`#${$(selector).attr('data-target')}`).val((value * Number(await getCurrencyConversion(currency))).toFixed(2));
+        $(`#${$(selector).attr('data-target')}`).val((value * rate).toFixed(2));
         calcFields();
     }
 
-    function calcFields() {
+    async function calcFields() {
+        const vatPercentage = $('#poVatPercentage').val();
         let sum = 0;
-        arrFields.forEach(field => sum += (parseFloat($(`#${$(field).attr('data-target')}`).val()) || 0));
+        arrConversionFields.forEach(field => sum += (parseFloat($(`#${$(field).attr('data-target')}`).val()) || 0));
+        const vatAmount = sum * (vatPercentage/100);
+        const restBPM = await calcRestBPM(
+            $('#carVehicleType').val(),
+            $('#carFuel').val(),
+            $('#firstRegistrationDate').val(),
+            $('#firstNameNLRegistration').val(),
+            $('#datumBPM').val(),
+            $('#co2WLTP').val(),
+            $('#bpmPercentage').val()
+        );
+        const priceInclVat = sum + vatAmount;
         $('#purchasePriceExclVat').val(sum.toFixed(2));
-        $('#purchasePriceInclVat').val((sum + parseFloat($('#vatMargin').val())).toFixed(2));
+        $('#vatMargin').val((vatAmount).toFixed(2));
+        $('#purchasePriceInclVat').val(priceInclVat.toFixed(2));
+        $('#vehicleTaxBPM').val(restBPM.toFixed(2));
+        $('#purchaseValueInclVatTax').val((priceInclVat + restBPM).toFixed(2));
     }
     calcFields();
+
+    $('[data-toggle-currency="true"]:not([readonly])').on('focusin', removeCurrencyFormat);
+    $('[data-toggle-currency="true"]:not([readonly])').on('focusout', addCurrencyFormat);
+
+    $('#repairedDamage').change((e) => {
+        $('#repairedDamageAmount').prop('readonly', ($(e.currentTarget).val() == 0));
+    });
 });
 
 async function getCurrencyConversion(currency) {
@@ -3005,4 +3052,33 @@ async function getCurrencyConversion(currency) {
     });
 
     return response ? JSON.parse(response) : 0;
+}
+
+async function calcRestBPM(voertuig, brandstof, productiedatum, tenaamstellingNL, vaiabeledatum, bpmco2wltp, percentage) {
+    if(typeof(percentage) == 'string')  percentage = percentage.replace('%', '');
+    const response = await $.ajax({
+        type: "POST",
+        url: '../bpm/BPMUpdateTest.php',
+        data: {
+            "SoortVoertuig": voertuig,
+            "BPMbrandstof": brandstof,
+            "BPMproductiedatum": productiedatum,
+            "BPMtenaamstellingNL": tenaamstellingNL,
+            "variabeledatumbpm": vaiabeledatum,
+            "BPMCO2WLTP": bpmco2wltp,
+            "percentage": percentage,
+        },
+        error: function (request, status, error) {
+            console.log(request.responseText);
+        }
+    });
+    
+    if(response) {
+        try {
+            const json = JSON.parse(response);
+            return json[0].bpmprice || 0;
+        } catch (e) {
+            return "A required field for BPM is not filled";
+        }
+    }
 }

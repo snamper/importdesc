@@ -41,6 +41,14 @@ class create_pol extends view
 		}
 
 		$po = $_REQUEST['po'];
+
+		if(isset($_POST['add_order_lines'])) {
+			foreach ($_POST['add_purchase_line'] as $car_id) {
+				$car_info = $this->base->getSingleCar($car_id);
+				$this->base->addPoLines($car_info, $po);
+			}
+		}
+
 		$line = $_REQUEST['line'];
 		
 		if(isset($_POST['save_pol'])) {
@@ -82,12 +90,22 @@ class create_pol extends view
 		$this->setData('prev_pol_id', ($current_line_num-1 < 0) ? null : $poLines[$current_line_num-1]['pl_id']);
 		$this->setData('next_pol_id', ($current_line_num+1 >= $pol_count) ? null : $poLines[$current_line_num+1]['pl_id']);
 
-		$currency = $this->base->getEurConversion($poData['po_currency']);
-		$this->setData('converted_values', [
-			'purchase_value_eur' => round($poLines[$current_line_num]['pl_purchase_value'] * $currency, 2),
-			'fee_intermediate_supplier_eur' => round($poLines[$current_line_num]['pl_fee_intermediate_supplier'] * $currency, 2),
-			'transport_cost_eur' => round($poLines[$current_line_num]['pl_transport_cost'] * $currency, 2)
-		]);
+		if($poData['po_exchange'] == 1) {
+			$currencyFixedRate = $poData['po_currency_rate'];
+			$this->setData('converted_values', [
+				'purchase_value_eur' => round($poLines[$current_line_num]['pl_purchase_value'] * $currencyFixedRate, 2),
+				'fee_intermediate_supplier_eur' => round($poLines[$current_line_num]['pl_fee_intermediate_supplier'] * $currencyFixedRate, 2),
+				'transport_cost_eur' => round($poLines[$current_line_num]['pl_transport_cost'] * $currencyFixedRate, 2)
+			]);
+		}
+		else {
+			$currencyLiveRate = $this->base->getEurConversion($poData['po_currency']);
+			$this->setData('converted_values', [
+				'purchase_value_eur' => round($poLines[$current_line_num]['pl_purchase_value'] * $currencyLiveRate, 2),
+				'fee_intermediate_supplier_eur' => round($poLines[$current_line_num]['pl_fee_intermediate_supplier'] * $currencyLiveRate, 2),
+				'transport_cost_eur' => round($poLines[$current_line_num]['pl_transport_cost'] * $currencyLiveRate, 2)
+			]);
+		}
 		$this->setData('documents', $this->base->getDocuments('line', $poLines[$current_line_num]['pl_id']));
 
 		if (isset($_SESSION['user'])) parent::__construct('create_pol_view.php');
