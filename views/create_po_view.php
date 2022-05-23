@@ -4,6 +4,7 @@ $data['poSums'] = $data['poSums'][0];
 ?>
 
 
+
 <div class="content" id="createPOView">
     <form action="create_po" action="create_po" method="POST" id="createPOForm" class="listing__form">
         <?php if (isset($_GET['order_id'])) {
@@ -233,35 +234,35 @@ $data['poSums'] = $data['poSums'][0];
                     </div>
 
 
-                    <br/>
+                    <br />
 
                     <div class="row">
-                    <div class="col col-12 col-md-12">
-                    <p class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_90'] ?></p>
-                    <div class="form-control show-documents uploaded-documents-col" name="uploaded_files" id="uploadedFiles">
-                        <?php
-                        if (!is_null($data['po_documents'][0])) {
-                            foreach ($data['po_documents'][0] as $key => $doc) {
-                                echo "<div class='document' data-doc-id='{$doc['pod_id']}'>
+                        <div class="col col-12 col-md-12">
+                            <p class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_90'] ?></p>
+                            <div class="form-control show-documents uploaded-documents-col" name="uploaded_files" id="uploadedFiles">
+                                <?php
+                                if (!is_null($data['po_documents'][0])) {
+                                    foreach ($data['po_documents'][0] as $key => $doc) {
+                                        echo "<div class='document' data-doc-id='{$doc['pod_id']}'>
                                     <a href='{$doc['pod_path']}' about='_blank'>{$doc['pod_filename']}</a><span class='ti-trash'></span>
                                 </div>";
-                            }
-                        }
-                        ?></div>
-                </div>
-                </div>
+                                    }
+                                }
+                                ?></div>
+                        </div>
+                    </div>
 
 
-                <div class="row">
-                <div class="col col-12 col-md-12">
-                    <p class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_89'] ?></p>
-                    <textarea placeholder="" rows="7" class="form-control remarks" name="po_remarks" id="notes"><?php echo (isset($data['purch_order']['po_remarks']) ? $data['purch_order']['po_remarks']  : "") ?></textarea>
-                </div>
-                </div>
+                    <div class="row">
+                        <div class="col col-12 col-md-12">
+                            <p class="font-weight-bold"><?php echo $_SESSION['lang']['car_start_page_89'] ?></p>
+                            <textarea placeholder="" rows="7" class="form-control remarks" name="po_remarks" id="notes"><?php echo (isset($data['purch_order']['po_remarks']) ? $data['purch_order']['po_remarks']  : "") ?></textarea>
+                        </div>
+                    </div>
 
-                <br/>
-                <div class="row">
-                <div class="col-12 col-md-5">
+                    <br />
+                    <div class="row">
+                        <!--<div class="col-12 col-md-5">
                     <div class="row">
                         <div class="col-12 col-md-4">
                             <span class="font-weight-bold">Purchase order lines*</span>
@@ -281,27 +282,27 @@ $data['poSums'] = $data['poSums'][0];
 
                     
                     <div class="row">
-                       <!-- <div class="col-12 col-md-4">
+                       <div class="col-12 col-md-4">
                             <span>Number of vehicles</span>
                         </div>
                         <div class="col-12 col-md-8">
                             <span><?php echo (isset($_REQUEST['order_id']) ? $data['poSums']['total_lines'] : count($data['purchase_lines'][0])) ?></span>
                             <input type="hidden" name="po_number_vehicles" value="<?php echo (isset($_REQUEST['order_id']) ? $data['poSums']['total_lines'] : count($data['purchase_lines'][0])) ?>">
-                        </div> -->
+                        </div> 
                     </div>
                     <?php if (isset($_REQUEST['show_all_purch_lines'])) {
                         echo "<span  class='btn btn-primary my-4'  data-toggle='modal' data-target='#poLines'>Add Purchase Order Lines </span>";
                     } ?>
-                </div>
-                </div>
+                </div> -->
+                    </div>
 
                 </div>
 
                 <!-- ./ Left col  -->
 
                 <!-- Rigth col  -->
-                
- <div class="col-12 col-md-7">
+
+                <div class="col-12 col-md-7">
                     <div class="col-12 col-md-8">
                         <div class="row" style="height: 50px;">
                             <div class="col-12 col-md-4">
@@ -315,10 +316,10 @@ $data['poSums'] = $data['poSums'][0];
                             </div>
                             <div class="col-12 col-md-8">
 
-                            <select class="form-control" name="po_invoice" id="po_invoice" class="col-12 col-md-12">
-                                <option value="1" <?php echo $data['purch_order']['po_invoice'] == 1 ? 'selected' : '' ?>>Supplier</option>
-                                <option value="2" <?php echo $data['purch_order']['po_invoice'] == 2 ? 'selected' : '' ?>>Intermediary</option>
-                            </select>
+                                <select class="form-control" name="po_invoice" id="po_invoice" class="col-12 col-md-12">
+                                    <option value="1" <?php echo $data['purch_order']['po_invoice'] == 1 ? 'selected' : '' ?>>Supplier</option>
+                                    <option value="2" <?php echo $data['purch_order']['po_invoice'] == 2 ? 'selected' : '' ?>>Intermediary</option>
+                                </select>
                             </div>
                         </div>
 
@@ -327,8 +328,10 @@ $data['poSums'] = $data['poSums'][0];
                                 <span>Payment in Currency*</span>
                             </div>
                             <div class="col-12 col-md-8">
-
-                                <input required class="form-control" type="text" name="po_currency" value="<?php echo $data['purch_order']['po_currency']; ?>" />
+                                <select required class="form-control" name="po_currency" id="po_currency" class="col-12 col-md-12">
+                                    <option value="1" <?php echo $data['purch_order']['po_currency'] == 1 ? 'selected' : '' ?>>USD</option>
+                                    <option value="2" <?php echo $data['purch_order']['po_currency'] == 2 ? 'selected' : '' ?>>EUR</option>
+                                </select>
                             </div>
                         </div>
 
@@ -338,11 +341,11 @@ $data['poSums'] = $data['poSums'][0];
                                 <span>Purchase Type*</span>
                             </div>
                             <div class="col-12 col-md-8">
-                            <select required class="form-control" name="po_purchase_type" id="po_purchase_type" class="col-12 col-md-12">
-                                <option value="1" <?php echo $data['purch_order']['po_purchase_type'] == 1 ? 'selected' : '' ?>>EU</option>
-                                <option value="2" <?php echo $data['purch_order']['po_purchase_type'] == 2 ? 'selected' : '' ?>>DOM</option>
-                                <option value="3" <?php echo $data['purch_order']['po_purchase_type'] == 3 ? 'selected' : '' ?>>ROW</option>
-                            </select>
+                                <select required class="form-control" name="po_purchase_type" id="po_purchase_type" class="col-12 col-md-12">
+                                    <option value="1" <?php echo $data['purch_order']['po_purchase_type'] == 1 ? 'selected' : '' ?>>EU</option>
+                                    <option value="2" <?php echo $data['purch_order']['po_purchase_type'] == 2 ? 'selected' : '' ?>>DOM</option>
+                                    <option value="3" <?php echo $data['purch_order']['po_purchase_type'] == 3 ? 'selected' : '' ?>>ROW</option>
+                                </select>
                             </div>
                         </div>
 
@@ -357,11 +360,11 @@ $data['poSums'] = $data['poSums'][0];
                             <div class="col-12 col-md-4">
                                 <span>VAT Deposit</span>
                             </div>
-                            <div class="col-12 col-md-8">                                
-                            <select class="form-control" name="po_vat_deposit" id="vat_deposit" class="col-12 col-md-12">
-                                <option value="1" <?php echo $data['purch_order']['po_vat_deposit'] == 1 ? 'selected' : '' ?>>Yes</option>
-                                <option value="2" <?php echo $data['purch_order']['po_vat_deposit'] == 2 ? 'selected' : '' ?>>No</option>
-                            </select>
+                            <div class="col-12 col-md-8">
+                                <select class="form-control" name="po_vat_deposit" id="vat_deposit" class="col-12 col-md-12">
+                                    <option value="1" <?php echo $data['purch_order']['po_vat_deposit'] == 1 ? 'selected' : '' ?>>Yes</option>
+                                    <option value="2" <?php echo $data['purch_order']['po_vat_deposit'] == 2 ? 'selected' : '' ?>>No</option>
+                                </select>
                             </div>
                         </div>
 
@@ -370,8 +373,10 @@ $data['poSums'] = $data['poSums'][0];
                                 <span>VAT Percentage</span>
                             </div>
                             <div class="col-12 col-md-8">
-                            <select class="form-control" name="po_vat_percentage" id="disable" class="col-12 col-md-12" <?php if($data['purch_order']['po_vat_deposit'] == 2 ) { echo "disabled='true'"; } ?>>
-                                <?php
+                                <select class="form-control" name="po_vat_percentage" id="disable" class="col-12 col-md-12" <?php if ($data['purch_order']['po_vat_deposit'] == 2) {
+                                                                                                                                echo "disabled='true'";
+                                                                                                                            } ?>>
+                                    <?php
                                     $percentage = isset($data['purch_order']['po_vat_percentage']) ? $data['purch_order']['po_vat_percentage'] : 21;
 
                                     for ($i = 17; $i <= 27; $i++) {
@@ -384,7 +389,7 @@ $data['poSums'] = $data['poSums'][0];
                                         echo "<option $selected value='$i'>$i%</option>";
                                     }
                                     ?>
-                            </select>
+                                </select>
 
                             </div>
                         </div>
@@ -401,10 +406,10 @@ $data['poSums'] = $data['poSums'][0];
                             </div>
                             <div class="col-12 col-md-8">
 
-                            <select class="form-control" name="po_down_payment" id="down_payment" class="col-12 col-md-12">
-                                <option value="1" <?php echo $data['purch_order']['po_down_payment'] == 1 ? 'selected' : '' ?>>Yes</option>
-                                <option value="2" <?php echo $data['purch_order']['po_down_payment'] == 2 ? 'selected' : '' ?>>No</option>
-                            </select>
+                                <select class="form-control" name="po_down_payment" id="down_payment" class="col-12 col-md-12">
+                                    <option value="1" <?php echo $data['purch_order']['po_down_payment'] == 1 ? 'selected' : '' ?>>Yes</option>
+                                    <option value="2" <?php echo $data['purch_order']['po_down_payment'] == 2 ? 'selected' : '' ?>>No</option>
+                                </select>
                             </div>
                         </div>
 
@@ -414,11 +419,13 @@ $data['poSums'] = $data['poSums'][0];
                                 <span>Down payment amount</span>
                             </div>
                             <div class="col-12 col-md-8">
-                            <input class="form-control" <?php if($data['purch_order']['po_down_payment'] == 2 ) { echo "disabled='true'"; } ?> type="text" id="disable_down" name="po_down_payment_amount" value="<?php echo $data['purch_order']['po_down_payment_amount']; ?>" />
+                                <input class="form-control" <?php if ($data['purch_order']['po_down_payment'] == 2) {
+                                                                echo "disabled='true'";
+                                                            } ?> type="text" id="disable_down" name="po_down_payment_amount" value="<?php echo $data['purch_order']['po_down_payment_amount']; ?>" />
                             </div>
                         </div>
 
-                    
+
 
                         <div class="row" style="height: 50px;">
                             <div class="col-12 col-md-4">
@@ -432,11 +439,11 @@ $data['poSums'] = $data['poSums'][0];
                             </div>
                             <div class="col-12 col-md-8">
 
-                                
-                            <select class="form-control" name="po_exchange" id="po_exchange" class="col-12 col-md-12">
-                                <option value="1" <?php echo  $data['purch_order']['po_exchange'] == 1 ? 'selected' : '' ?>>Fixed</option>
-                                <option value="2" <?php echo  $data['purch_order']['po_exchange'] == 2 ? 'selected' : '' ?>>Live</option>
-                            </select>
+
+                                <select class="form-control" name="po_exchange" id="po_exchange" class="col-12 col-md-12">
+                                    <option value="1" <?php echo  $data['purch_order']['po_exchange'] == 1 ? 'selected' : '' ?>>Fixed</option>
+                                    <option value="2" <?php echo  $data['purch_order']['po_exchange'] == 2 ? 'selected' : '' ?>>Live</option>
+                                </select>
                             </div>
                         </div>
 
@@ -446,70 +453,118 @@ $data['poSums'] = $data['poSums'][0];
                             </div>
                             <div class="col-12 col-md-8">
 
-                                <input class="form-control"  <?php if($data['purch_order']['po_exchange'] == 2 ) { echo "disabled='true'"; } ?> type="text" id="disable_exchange" name="po_currency_rate" value="<?php echo $data['purch_order']['po_currency_rate']; ?>" />
+                                <input class="form-control" <?php if ($data['purch_order']['po_exchange'] == 2) {
+                                                                echo "disabled='true'";
+                                                            } ?> type="text" id="disable_exchange" name="po_currency_rate" value="<?php echo $data['purch_order']['po_currency_rate']; ?>" />
                             </div>
                         </div>
                         </br>
+                        <br />
 
                         <div class="row">
-                        <div class="col-12 col-md-8">
-                        <table style="width: 100%;">
-                        <style>
-                            td, th {
-                            border: 1px solid #dddddd;
-                            text-align: left;
-                            padding: 8px;
-                            }
-                        </style>
-                            <tr>
-                                <th></th>
-                                <th>EUR</th>
-                                <th>USD</th>
-                            </tr>
-                            <tr>
-                                <th>Total Purchase Amount</th>
-                                <td>123</td>
-                                <td>1223</td>
-                            </tr>
-                            <tr>
-                                <th>Total Fee Intermediate Supplier</th>
-                                <td>5666</td>
-                                <td>232321</td>
-                            </tr>
-                            <tr>
-                                <th>Total Transport Costs</th>
-                                <td>55543l</td>
-                                <td>77776</td>
-                            </tr>
-                            <tr>
-                                <th>Total Purchase Price excl. VAT</th>
-                                <td>75757</td>
-                                <td>767</td>
-                            </tr>
-                            <tr>
-                                <th>Total VAT</th>
-                                <td>12332</td>
-                                <td>434324</td>
-                            </tr>
-                            <tr>
-                                <th>Total Purchase Price incl. VAT</th>
-                                <td>453455</td>
-                                <td>4324</td>
-                            </tr>
-                            <tr>
-                                <th>Total Downpayment amount</th>
-                                <td>6456</td>
-                                <td>343243</td>
-                            </tr>
-                            <tr>
-                                <th>Total VAT Deposit</th>
-                                <td>4343243</td>
-                                <td>65654</td>
-                            </tr>
-                            </table>
-                </div>
+                            <div class="col">
+                                <h3>-</h3>
+                                <p>Total Purchase Amount</p>
+                                <p>Total Fee Intermediate Supplier</p>
+                                <p>Total Transport Costs</p>
+                                <p>Total Purchase Price excl. VAT</p>
+                                <p>Total VAT</p>
+                                <p>Total Purchase Price incl. VAT</p>
+                                <p>Total Vehicle tax/BPM</p>
+                                <p>Total Purchase value incl. VAT/Tax</p>
+                                <p>Total Downpayment amount</p>
+                                <p>Total VAT Deposit</p>
+                            </div>
 
+
+                            <div class="col">
+                                <h3>EUR</h3>
+                                <p>esdf</p>
+                                <p><?php  echo "€ " . (!empty($data['poSums']['total_intermediate_supplier_fee']) ? $data['poSums']['total_intermediate_supplier_fee'] : 0)?></p>
+                                <p><?php  echo "€ " . (!empty($data['poSums']['total_transport_cost']) ? $data['poSums']['total_transport_cost'] : 0)?></p>
+                                <p><?php  echo "€ " . (!empty($data['poSums']['total_purchase_price_excl_vat']) ? $data['poSums']['total_purchase_price_excl_vat'] : 0)?></p>
+                                <p>esdf</p>
+                                <p><?php  echo "€ " . (!empty($data['poSums']['total_purchase_price_incl_vat']) ? $data['poSums']['total_purchase_price_excl_vat'] : 0)?></p>
+                                <p><?php  echo "€ " . (!empty($data['poSums']['total_vehicle_bpm']) ? $data['poSums']['total_vehicle_bpm'] : 0)?></p>
+                                <p>df</p>
+                                <p><?php  echo "€ " . (!empty ($data['purch_order']['po_down_payment_amount']) ?  $data['purch_order']['po_down_payment_amount'] : 0)?></p>
+                                <p>esdf</p>
+                            </div>
+                            <div class="col">
+                                <h3>USD</h3>
+                                <p>esdf</p>
+                                <p>esdf</p>
+                                <p>esdf</p>
+                                <p>esdf</p>
+                                <p>esdf</p>
+                                <p>esdf</p>
+                                <p>esdf</p>
+                                <p>esdf</p>
+                                <p>dfsdf</p>
+                                <p>dfsdf</p>
+                            </div>
                         </div>
+
+                        <!-- <div class="row">
+                            <div class="col-12 col-md-8">
+                                <table style="width: 100%;">
+                                    <style>
+                                        td,
+                                        th {
+                                            border: 1px solid #dddddd;
+                                            text-align: left;
+                                            padding: 8px;
+                                        }
+                                    </style>
+                                    <tr>
+                                        <th></th>
+                                        <th>EUR</th>
+                                        <th>USD</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Purchase Amount</th>
+                                        <td>123</td>
+                                        <td>1223</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Fee Intermediate Supplier</th>
+                                        <td>5666</td>
+                                        <td>232321</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Transport Costs</th>
+                                        <td>55543l</td>
+                                        <td>77776</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Purchase Price excl. VAT</th>
+                                        <td>75757</td>
+                                        <td>767</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total VAT</th>
+                                        <td>12332</td>
+                                        <td>434324</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Purchase Price incl. VAT</th>
+                                        <td>453455</td>
+                                        <td>4324</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Downpayment amount</th>
+                                        <td>6456</td>
+                                        <td>343243</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total VAT Deposit</th>
+                                        <td>4343243</td>
+                                        <td>65654</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div> -->
 
                     </div>
                 </div>
@@ -518,11 +573,11 @@ $data['poSums'] = $data['poSums'][0];
 
             <!-- .ROW  -->
 
-           <!-- <div class="row justify-content-center align-items-start"> -->
+            <!-- <div class="row justify-content-center align-items-start"> -->
 
 
 
-                <!--<div class="col-12 col-md-7">
+            <!--<div class="col-12 col-md-7">
                     <div class="row mt-3"></div>
                     <div class="row mt-3"></div>
                     <div class="row mt-4"></div>
@@ -553,9 +608,40 @@ $data['poSums'] = $data['poSums'][0];
         </div><!-- ./ ROW  -->
 
         <!-- Main row 2 -->
-        
 
-       <!-- <?php if (!isset($_REQUEST['show_all_purch_lines'])) : ?>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="table-responsive">
+                    <table id="<?php echo (isset($_GET['order_id']) || isset($_POST['update_order']) ? "tableShowPoLines" : "") ?>" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
+                        <thead>
+                            <th class="text-center">PL ID</th>
+                            <th class="text-center">Pre-order</th>
+                            <th style="white-space: nowrap">Type</th>
+                            <th style="white-space: nowrap">Vehicle ID</th>
+                            <th style="white-space: nowrap">VAT/Margin</th>
+                            <th style="white-space: nowrap">Make</th>
+                            <th style="white-space: nowrap">Model</th>
+                            <th style="white-space: nowrap">Variant</th>
+                            <th style="white-space: nowrap">Engine</th>
+                            <th style="white-space: nowrap">Purchase price excl. VAT</th>
+                            <th style="white-space: nowrap"></th>
+                            <th class="text-center">KM at delivery*</th>
+                            <th style="white-space: nowrap">Expected delivery date*</th>
+                            <th style="white-space: nowrap">Purchase price incl. VAT*</th>
+                            <th style="white-space: nowrap">Accident free</th>
+                            <th style="white-space: nowrap">Expected damage amount</th>
+                            <th style="white-space: nowrap">Extra set of wheels</th>
+                            <th style="white-space: nowrap">VAT deposit</th>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <!-- END table -->
+            </div>
+        </div>
+
+
+        <!-- <?php if (!isset($_REQUEST['show_all_purch_lines'])) : ?>
 
             <div class="row d-flex align-items-stretch">
 
@@ -598,17 +684,17 @@ $data['poSums'] = $data['poSums'][0];
                     </div>
                 </div>
             </div> -->
-            <!-- ./ ROW  -->
+        <!-- ./ ROW  -->
 
-            <!-- .ROW  -->
-            <hr />
+        <!-- .ROW  -->
+        <hr />
 
 
-            <div class="row d-flex align-items-stretch">
+        <div class="row d-flex align-items-stretch">
 
-            </div>
+        </div>
 
-            <div class="row mt-4"></div>
+        <div class="row mt-4"></div>
 
 </div><!-- ./ ROW  -->
 
@@ -616,7 +702,7 @@ $data['poSums'] = $data['poSums'][0];
 <?php else : ?>
 
     <!-- Modal -->
-    <input type="hidden" name="show_all_purch_lines" value="" />
+    <!--<input type="hidden" name="show_all_purch_lines" value="" />
     <div class="modal fade" id="poLines" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -664,42 +750,16 @@ $data['poSums'] = $data['poSums'][0];
         </div>
     </div>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="table-responsive">
-                <table id="<?php echo (isset($_GET['order_id']) || isset($_POST['update_order']) ? "tableShowPoLines" : "") ?>" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
-                    <thead>
-                        <th class="text-center">PL ID</th>
-                        <th class="text-center">Pre-order</th>
-                        <th style="white-space: nowrap">Type</th>
-                        <th style="white-space: nowrap">Vehicle ID</th>
-                        <th style="white-space: nowrap">VAT/Margin</th>
-                        <th style="white-space: nowrap">Make</th>
-                        <th style="white-space: nowrap">Model</th>
-                        <th style="white-space: nowrap">Variant</th>
-                        <th style="white-space: nowrap">Engine</th>
-                        <th style="white-space: nowrap">Purchase price excl. VAT</th>
-                        <th style="white-space: nowrap"></th>
-                        <th class="text-center">KM at delivery*</th>
-                        <th style="white-space: nowrap">Expected delivery date*</th>
-                        <th style="white-space: nowrap">Purchase price incl. VAT*</th>
-                        <th style="white-space: nowrap">Accident free</th>
-                        <th style="white-space: nowrap">Expected damage amount</th>
-                        <th style="white-space: nowrap">Extra set of wheels</th>
-                        <th style="white-space: nowrap">VAT deposit</th>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-            <!-- END table -->
-        </div>
-    </div>
-    </div>
+ 
+    </div> -->
 
 
 
 
 <?php endif ?>
+
+
+
 
 </form>
 
