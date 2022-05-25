@@ -2794,48 +2794,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 });
 
-window.addEventListener('DOMContentLoaded', (event) => {
-
-    $('#vat_deposit').change(function(){ // 
-        console.log("here");
-    
-        if ($(this).val() == '2') { 
-            $("#disable").prop('disabled', true);
-        } else {
-            $("#disable").prop('disabled', false);
-        }
-    });
-
-
-});
-
-
-window.addEventListener('DOMContentLoaded', (event) => {
-    $('#down_payment').change(function(){ // 
-    
-        if ($(this).val() == '2') { 
-            $("#downPaymentAmount").prop('disabled', true);
-        } else {
-            $("#downPaymentAmount").prop('disabled', false);
-        }
-    });
-
-
-});
-
-
-window.addEventListener('DOMContentLoaded', (event) => {
-    $('#po_exchange').change(function(){ // 
-    
-        if ($(this).val() == '2') { 
-            $("#poExchange").prop('disabled', true);
-        } else {
-            $("#poExchange").prop('disabled', false);
-        }
-    });
-
-});
-
 // Upload Files Function
 window.addEventListener('DOMContentLoaded', (event) => {
     $('#uploadFiles').on('change', uploadFiles);
@@ -3089,7 +3047,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         const vatAmount = sum * (vatPercentage/100);
         const priceInclVat = sum + vatAmount;
         const totalPurchaseValueInclVatTax = priceInclVat + (parseFloat($('#PurchaseVehicleTaxBPM').val()) || 0);
-        const downPayment = $('#down_payment').val() == 1 ? parseFloat($('#downPaymentAmount').val()) : 0.00;
+        const downPayment = $('#down_payment').val() == 1 ? parseFloat($('#downPaymentAmount').val() || 0) : 0.00;
         $('#totalPurchasePriceExclVat').val(sum.toFixed(2));
         $('#purchaseVatMargin').val((vatAmount).toFixed(2));
         $('#totalPurchasePriceInclVat').val(priceInclVat.toFixed(2));
@@ -3099,7 +3057,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
     calcFields();
 
-    $('#po_currency').change((e) => {
-        $('#currencyText').html(e.currentTarget.value);
-    });
+    $('#po_currency').change((e) => $('#currencyText').html(e.currentTarget.value));
+
+    $('#vat_deposit').change(() => $("#vatPercentage").prop('disabled', ($('#vat_deposit').val() == 2)));
+    $('#down_payment').change(() => $("#downPaymentAmount").prop('disabled', ($('#down_payment').val() == 2)));
+    $('#po_exchange').change(() => $("#poExchange").prop('disabled', ($('#po_exchange').val() == 2)));
 });

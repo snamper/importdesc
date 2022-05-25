@@ -539,13 +539,22 @@ class base
 	{
 
 		$dbDriver = new db_driver();
-		$query = "DELETE FROM purchase_order WHERE po_id =?";
+		$query = "DELETE FROM purchase_order WHERE po_id = ?";
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$po_id]);
 
 		$query = "DELETE FROM purchase_order_lines WHERE pl_purchase_id = ?";
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$po_id]);
+	}
+
+	public function checkCarInPOLine($car_id)
+	{
+		$dbDriver = new db_driver();
+		$query = "SELECT * FROM purchase_order_lines WHERE pl_vehicle_id = ?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$car_id]);
+		return $stmt->rowCount() > 0 ? true : false;
 	}
 
 	public function addPoLines($car_info, $purchase_id)
@@ -557,13 +566,11 @@ class base
 			pl_pre_order,
 			pl_type,
 			pl_vehicle_id,
-			pl_vat_margin,
 			pl_make,
 			pl_model,
 			pl_variant,
-			pl_engine,
-			pl_purchase_price_excl_vat
-			) VALUES (			
+			pl_engine
+		) VALUES (
 			?,
 			?,
 			?,
@@ -571,9 +578,7 @@ class base
 			?,
 			?,
 			?,
-			?,
-			?,
-			?			
+			?
 		)";
 
 		$stmt1 = $dbDriver->dbCon->prepare($query);
@@ -583,12 +588,10 @@ class base
 			$car_info['car_preorder'],
 			$car_info['car_vehicle_type'],
 			$car_info['car_id'],
-			$car_info['car_vat_marge'],
 			$car_info['cmake_id'],
 			$car_info['car_model'],
 			$car_info['car_variant'],
-			$car_info['cd_motor'],
-			$car_info['purchase_price_netto']
+			$car_info['cd_motor']
 		]);
 	}
 
@@ -2277,38 +2280,41 @@ class base
 
 	public function uploadFiles($type, $sort, $target_id, $_files)
 	{
+		$dbDriver = new db_driver();
 		$arrReturn = [];
 		$path = ($type == 'doc') ? 'uploads/documents/' : 'uploads/images/';
 		$prefix = ($type == 'doc') ? 'doc-' : 'img-';
 		$pos = 0;
+		$id = 0;
 		foreach ($_files as $file) {
 			$filename = $file['name'];
 			$randomid = uniqid($prefix);
 			$fileType = pathinfo($filename, PATHINFO_EXTENSION);
 			$location = $path . $randomid . "." . $fileType;
 			move_uploaded_file($file['tmp_name'], $location);
-			array_push($arrReturn, ['name' => $filename, 'location' => $location, 'pos' => $pos]);
-			$pos++;
-		}
 
-		if($target_id > 0) {
-			$dbDriver = new db_driver();
-			$query = "INSERT INTO documents (
-				doc_sort,
-				doc_target_id,
-				doc_filename,
-				doc_path,
-				doc_user_id
-			) VALUES ";
-			$params = [];
-			$first = true;
-			foreach ($arrReturn as $file) {
-				$query .= (($first ? "" : ", ") . "(?, ?, ?, ?, ?)");
-				$params = array_merge($params, [ $sort, $target_id, $file['name'], $file['location'], $_SESSION['user'][0]['expo_users_ID'] ]);
-				$first = false;
+			if($target_id > 0) {
+				$query = "INSERT INTO documents (
+					doc_sort,
+					doc_target_id,
+					doc_filename,
+					doc_path,
+					doc_user_id
+				) VALUES (
+					?,
+					?,
+					?,
+					?,
+					?
+				)";
+				
+				$stmt = $dbDriver->dbCon->prepare($query);
+				$stmt->execute([ $sort, $target_id, $filename, $location, $_SESSION['user'][0]['expo_users_ID'] ]);
+				$id = $dbDriver->dbCon->lastInsertId();
 			}
-			$stmt = $dbDriver->dbCon->prepare($query);
-			$stmt->execute($params);
+
+			array_push($arrReturn, ['id' => $id,'name' => $filename, 'location' => $location, 'pos' => $pos]);
+			$pos++;
 		}
 		return $arrReturn;
 	}

@@ -476,10 +476,10 @@ $data['poSums'] = $data['poSums'][0];
                                 <span>Total Purchase Amount</span>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="text" id="totalPurchaseValueEur" value="<?php echo $data['converted_values'][0]['total_purchase_value_eur']; ?>" readonly>
+                                <input class="form-control" type="text" id="totalPurchaseValueEur" value="<?php echo number_format($data['converted_values'][0]['total_purchase_value_eur'], 2); ?>" readonly>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="text" name="total_purchase_value" id="totalPurchaseValue" data-target="totalPurchaseValueEur" value="<?php echo ($data['poSums']['total_purchase_value'] ? str_replace('€ ', '', $data['poSums']['total_purchase_value']) : 0); ?>">
+                                <input class="form-control" type="text" name="total_purchase_value" id="totalPurchaseValue" data-target="totalPurchaseValueEur" value="<?php echo ($data['poSums']['total_purchase_value'] ? str_replace('€ ', '', $data['poSums']['total_purchase_value']) : '0.00'); ?>" readonly>
                             </div>
                         </div>
 
@@ -490,10 +490,10 @@ $data['poSums'] = $data['poSums'][0];
                                 <span>Total fee intermediate supplier</span>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="text" id="totalFeeIntermediateSupplierEur" value="<?php echo $data['converted_values'][0]['total_fee_intermediate_supplier_eur']; ?>" readonly>
+                                <input class="form-control" type="text" id="totalFeeIntermediateSupplierEur" value="<?php echo number_format($data['converted_values'][0]['total_fee_intermediate_supplier_eur'], 2); ?>" readonly>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="text" name="total_fee_intermediate_supplier" id="totalFeeIntermediateSupplier" data-target="totalFeeIntermediateSupplierEur" value="<?php echo ($data['poSums']['total_fee_intermediate_supplier'] ? str_replace('€ ', '', $data['poSums']['total_fee_intermediate_supplier']) : 0); ?>">
+                                <input class="form-control" type="text" name="total_fee_intermediate_supplier" id="totalFeeIntermediateSupplier" data-target="totalFeeIntermediateSupplierEur" value="<?php echo ($data['poSums']['total_fee_intermediate_supplier'] ? str_replace('€ ', '', $data['poSums']['total_fee_intermediate_supplier']) : '0.00'); ?>" readonly>
                             </div>
                         </div>
 
@@ -502,10 +502,10 @@ $data['poSums'] = $data['poSums'][0];
                                 <span>Total transport costs</span>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="text" id="transportCostEur" value="<?php echo $data['converted_values'][0]['total_transport_cost_eur']; ?>" readonly>
+                                <input class="form-control" type="text" id="transportCostEur" value="<?php echo number_format($data['converted_values'][0]['total_transport_cost_eur'], 2); ?>" readonly>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="text" name="total_transport_cost" id="totalTransportCost" data-target="transportCostEur" value="<?php echo ($data['poSums']['total_transport_cost'] ? str_replace('€ ', '', $data['poSums']['total_transport_cost']) : 0); ?>">
+                                <input class="form-control" type="text" name="total_transport_cost" id="totalTransportCost" data-target="transportCostEur" value="<?php echo ($data['poSums']['total_transport_cost'] ? str_replace('€ ', '', $data['poSums']['total_transport_cost']) : '0.00'); ?>" readonly>
                             </div>
                         </div>
 
@@ -550,7 +550,7 @@ $data['poSums'] = $data['poSums'][0];
                                 <span>Total Vehicle tax/BPM</span>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="number" id="PurchaseVehicleTaxBPM" value="<?php echo $data['converted_values'][0]['total_vehicle_bpm_eur']; ?>" readonly>
+                                <input class="form-control" type="number" id="PurchaseVehicleTaxBPM" value="<?php echo number_format($data['converted_values'][0]['total_vehicle_bpm_eur'], 2); ?>" readonly>
                             </div>
                             <div class="col-12 col-md-2">
                                 -
@@ -628,33 +628,10 @@ $data['poSums'] = $data['poSums'][0];
                             <th style="white-space: nowrap">VAT</th>
                             <th style="white-space: nowrap">Vehicle tax/bpm</th>
                             <th style="white-space: nowrap">Down payment amount</th>
-
-
-
-
-                            <!-- <th class="text-center">PL ID</th>
-                            <th class="text-center">Pre-order</th>
-                            <th style="white-space: nowrap">Type</th>
-                            <th style="white-space: nowrap">Vehicle ID</th>
-                            <th style="white-space: nowrap">VAT/Margin</th>
-                            <th style="white-space: nowrap">Make</th>
-                            <th style="white-space: nowrap">Model</th>
-                            <th style="white-space: nowrap">Variant</th>
-                            <th style="white-space: nowrap">Engine</th>
-                            <th style="white-space: nowrap">Purchase price excl. VAT</th>
-                            <th style="white-space: nowrap"></th>
-                            <th class="text-center">KM at delivery*</th>
-                            <th style="white-space: nowrap">Expected delivery date*</th>
-                            <th style="white-space: nowrap">Purchase price incl. VAT*</th>
-                            <th style="white-space: nowrap">Accident free</th>
-                            <th style="white-space: nowrap">Expected damage amount</th>
-                            <th style="white-space: nowrap">Extra set of wheels</th>
-                            <th style="white-space: nowrap">VAT deposit</th> -->
                         </thead>
                         <tbody></tbody>
                     </table>
                 </div>
-                <!-- END table -->
             </div>
         </div>
 
