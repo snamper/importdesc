@@ -343,9 +343,17 @@ class base
 			po_prepayment_amount,
 			po_expected_invoice_date,
 			po_remarks,
-			po_created_by_id
+			po_created_by_id,
+			po_updated_by_id,
+			po_last_submitted,
+			po_approved_by,
+			po_rejected_by
         )
             VALUES (
+				?,
+				?,
+				?,
+				?,
 				?,
 				?,
 				?,
@@ -414,6 +422,10 @@ class base
 				$_post['po_prepayment_amount'],
 				$_post['po_expected_invoice_date'],
 				$_post['po_remarks'],
+				$_SESSION['user'][0]['expo_users_ID'],
+				$_SESSION['user'][0]['expo_users_ID'],
+				$_SESSION['user'][0]['expo_users_ID'],
+				$_SESSION['user'][0]['expo_users_ID'],
 				$_SESSION['user'][0]['expo_users_ID']
 			]
 		);
@@ -484,7 +496,10 @@ class base
 			po_prepayment_amount =?,
 			po_expected_invoice_date =?,
 			po_remarks =?,
-			po_updated_by_id =?
+			po_updated_by_id =?,
+			po_last_submitted=?,
+			po_approved_by =?,
+			po_rejected_by =?
 			WHERE po_id = ?";
 
 
@@ -523,6 +538,9 @@ class base
 			$_post['po_prepayment_amount'],
 			$_post['po_expected_invoice_date'],
 			$_post['po_remarks'],
+			$_SESSION['user'][0]['expo_users_ID'],
+			$_SESSION['user'][0]['expo_users_ID'],
+			$_SESSION['user'][0]['expo_users_ID'],
 			$_SESSION['user'][0]['expo_users_ID'],
 			$_post['update_order']
 		]);
@@ -732,7 +750,15 @@ class base
 
 		$dbDriver = new db_driver();
 
-		$query = "SELECT purchase_order.*, conversion_name as status_label FROM purchase_order
+		$query = "SELECT purchase_order.*, conversion_name as status_label, eu.expo_users_name as created_by_name, eu_update.expo_users_name as updated_by_username, eu_last.expo_users_name as last_submitted_by,
+		eu_approved.expo_users_name as approved_by, eu_rejected.expo_users_name as rejected_by
+		FROM purchase_order
+
+		LEFT JOIN expo_users as eu on eu.expo_users_ID = po_created_by_id 
+		LEFT JOIN expo_users as eu_update on eu_update.expo_users_ID = po_updated_by_id 
+		LEFT JOIN expo_users as eu_last on eu_last.expo_users_ID = po_last_submitted   
+		LEFT JOIN expo_users as eu_approved on eu_approved.expo_users_ID = po_approved_by   
+		LEFT JOIN expo_users as eu_rejected on eu_rejected.expo_users_ID = po_rejected_by   
 		LEFT JOIN conversions on conversion_type = 'po_status' AND conversion_sort = purchase_order.po_status
 		WHERE po_id = ?";
 
@@ -2335,4 +2361,5 @@ class base
 		$stmt->execute([$sort, $target_id]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
+
 }
