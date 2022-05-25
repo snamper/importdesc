@@ -562,7 +562,7 @@ $data['poSums'] = $data['poSums'][0];
                                 <span>Total Purchase value incl VAT/tax</span>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="number" name="pl_purchase_incl_vat_tax" id="totalPurchaseValueInclVatTax" value="0.00" readonly>
+                                <input class="form-control" type="number" id="totalPurchaseValueInclVatTax" value="0.00" readonly>
                             </div>
                             <div class="col-12 col-md-2">
                                 -
@@ -571,10 +571,10 @@ $data['poSums'] = $data['poSums'][0];
 
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <span>Total Down Payement Amount</span>
+                                <span>Total Down Payment Amount</span>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="number" name="pl_purchase_incl_vat_tax" id="purchaseValueInclVatTax" value="0.00" readonly>
+                                <input class="form-control" type="number" id="totalDownPaymentAmount" value="0.00" readonly>
                             </div>
                             <div class="col-12 col-md-2">
                                 -
@@ -586,7 +586,7 @@ $data['poSums'] = $data['poSums'][0];
                                 <span>Total VAT Deposit</span>
                             </div>
                             <div class="col-12 col-md-2">
-                                <input class="form-control" type="number" name="pl_purchase_incl_vat_tax" id="purchaseValueInclVatTax" value="0.00" readonly>
+                                <input class="form-control" type="number" id="totalVatDeposit" value="0.00" readonly>
                             </div>
                             <div class="col-12 col-md-2">
                                 -
