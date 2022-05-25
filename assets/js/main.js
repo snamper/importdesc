@@ -3075,7 +3075,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
     
     async function setCurrencyAmount(selector) {
         const rate = await getRate();
-        console.log(`rate: ${rate}`)
         const value = $(selector).val();
         if(!value || isNaN(value))  return;
         $(`#${$(selector).attr('data-target')}`).val((value * rate).toFixed(2));
@@ -3089,11 +3088,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
         arrConversionFields.forEach(field => sum += (parseFloat($(`#${$(field).attr('data-target')}`).val()) || 0));
         const vatAmount = sum * (vatPercentage/100);
         const priceInclVat = sum + vatAmount;
+        const totalPurchaseValueInclVatTax = priceInclVat + (parseFloat($('#PurchaseVehicleTaxBPM').val()) || 0);
+        const downPayment = $('#down_payment').val() == 1 ? parseFloat($('#downPaymentAmount').val()) : 0.00;
         $('#totalPurchasePriceExclVat').val(sum.toFixed(2));
         $('#purchaseVatMargin').val((vatAmount).toFixed(2));
         $('#totalPurchasePriceInclVat').val(priceInclVat.toFixed(2));
-        $('#totalPurchaseValueInclVatTax').val((priceInclVat + (parseFloat($('#PurchaseVehicleTaxBPM').val()) || 0)).toFixed(2));
-        $('#purchaseValueInclVatTax').val($('#down_payment').val() == 1 ? $('#downPaymentAmount').val() : '0.00');
+        $('#totalPurchaseValueInclVatTax').val((totalPurchaseValueInclVatTax).toFixed(2));
+        $('#totalDownPaymentAmount').val(downPayment.toFixed(2));
+        $('#totalVatDeposit').val((totalPurchaseValueInclVatTax + downPayment).toFixed(2));
     }
     calcFields();
 
