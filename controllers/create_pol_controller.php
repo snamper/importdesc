@@ -56,15 +56,20 @@ class create_pol extends view
 		}
 
 		$poData = $this->base->getSinglePurchaseOrder($po);
+		if(!$poData) {
+			$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/create_po";
+			header("Location: $url");
+			exit;
+		}
+
 		$this->setData('po_data', $poData);
 
 		$poLines = $this->base->getPOLines($po);
 
 		if(empty($poLines)) {
-			var_dump('No po lines found. redirect from here.');exit;
-			// $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/create_po?order_id=$po";
-			// header("Location: $url");
-			// exit;
+			$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/create_po?order_id=$po";
+			header("Location: $url");
+			exit;
 		}
 
 		// echo '<pre>';
@@ -79,13 +84,13 @@ class create_pol extends view
 				$current_line_num = $i;
 		}
 		if($current_line_num === null) {
-			$this->setData('current_pol_num', 1);
-			$this->setData('pol_data', $poLines[0]);
+			$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/create_pol?po=$po&line={$poLines[0]['pl_id']}";
+			header("Location: $url");
+			exit;
 		}
-		else {
-			$this->setData('current_pol_num', $current_line_num+1);
-			$this->setData('pol_data', $poLines[$current_line_num]);
-		}
+		
+		$this->setData('current_pol_num', $current_line_num+1);
+		$this->setData('pol_data', $poLines[$current_line_num]);
 		$this->setData('count_pol', $pol_count);
 		$this->setData('prev_pol_id', ($current_line_num-1 < 0) ? null : $poLines[$current_line_num-1]['pl_id']);
 		$this->setData('next_pol_id', ($current_line_num+1 >= $pol_count) ? null : $poLines[$current_line_num+1]['pl_id']);
