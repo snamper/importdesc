@@ -212,7 +212,7 @@ while ($aRow = mysqli_fetch_array($rResult)) {
     $row = array();
     for ($i = 0; $i < count($aColumns); $i++) {
         if ($aColumns[$i] == 'pl_id') {
-            $row[] = '<center style="display:flex;"><a href="create_pol?po='.$aRow[18].'&line='.$aRow[$i].'">' . sprintf("PL%'.07d\n", $aRow[$i]) . '</a></center>';
+            $row[] = '<center style="display:flex;"><a href="create_pol?order_id='.$aRow[18].'&line='.$aRow[$i].'">' . sprintf("PL%'.07d\n", $aRow[$i]) . '</a></center>';
         } elseif ($aColumns[$i] == 'car_preorder' || $aColumns[$i] == 'po_vat_deposit' || $aColumns[$i] == 'pl_transport_by_supplier') {
             if ($aRow[$i] == 0) {
                 $row[] = '<center style="display:flex;">NO</center>';

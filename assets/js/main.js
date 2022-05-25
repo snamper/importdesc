@@ -2980,21 +2980,40 @@ window.addEventListener('DOMContentLoaded', (event) => {
         const value = $(selector).val();
         if(!value || isNaN(value))  return;
         $(`#${$(selector).attr('data-target')}`).val((value * rate).toFixed(2));
-        calcFields();
+        calcFields(rate);
     }
 
-    async function calcFields() {
+    async function calcFields(rate) {
+        const vatPercentage = $('#poVatPercentage').val();
+        let sum = 0;
+        arrConversionFields.forEach(field => sum += (parseFloat($(field).val()) || 0));
+        const vatAmount = sum * (vatPercentage/100);
+        const priceInclVat = sum + vatAmount;
+        const bpm = (parseFloat($('#vehicleTaxBPMEur').val()) || 0) / rate;
+        $('#purchasePriceExclVat').val(sum.toFixed(2));
+        $('#vatMargin').val((vatAmount).toFixed(2));
+        $('#purchasePriceInclVat').val(priceInclVat.toFixed(2));
+        $('#vehicleTaxBPM').val(bpm.toFixed(2));
+        $('#purchaseValueInclVatTax').val((priceInclVat + bpm).toFixed(2));
+        calcFieldsEur();
+    }
+    async function calcFieldsEur() {
         const vatPercentage = $('#poVatPercentage').val();
         let sum = 0;
         arrConversionFields.forEach(field => sum += (parseFloat($(`#${$(field).attr('data-target')}`).val()) || 0));
         const vatAmount = sum * (vatPercentage/100);
         const priceInclVat = sum + vatAmount;
-        $('#purchasePriceExclVat').val(sum.toFixed(2));
-        $('#vatMargin').val((vatAmount).toFixed(2));
-        $('#purchasePriceInclVat').val(priceInclVat.toFixed(2));
-        $('#purchaseValueInclVatTax').val((priceInclVat + (parseFloat($('#vehicleTaxBPM').val()) || 0)).toFixed(2));
+        $('#purchasePriceExclVatEur').val(sum.toFixed(2));
+        $('#vatMarginEur').val((vatAmount).toFixed(2));
+        $('#purchasePriceInclVatEur').val(priceInclVat.toFixed(2));
+        $('#purchaseValueInclVatTaxEur').val((priceInclVat + (parseFloat($('#vehicleTaxBPMEur').val()) || 0)).toFixed(2));
     }
-    calcFields();
+    
+    async function initialCalc() {
+        const rate = await getRate();
+        calcFields(rate);
+    }
+    initialCalc();
 
     $('[data-toggle-currency="true"]:not([readonly])').on('focusin', removeCurrencyFormat);
     $('[data-toggle-currency="true"]:not([readonly])').on('focusout', addCurrencyFormat);
@@ -3062,4 +3081,79 @@ window.addEventListener('DOMContentLoaded', (event) => {
     $('#vat_deposit').change(() => $("#vatPercentage").prop('disabled', ($('#vat_deposit').val() == 2)));
     $('#down_payment').change(() => $("#downPaymentAmount").prop('disabled', ($('#down_payment').val() == 2)));
     $('#po_exchange').change(() => $("#poExchange").prop('disabled', ($('#po_exchange').val() == 2)));
+});
+
+// show_po page functions
+window.addEventListener('DOMContentLoaded', (event) => {
+    $('#show_po_table tbody').on('click', 'tr', showLinesOnPOTableClick);
+
+    async function showLinesOnPOTableClick(e) {
+        const target = e.currentTarget;
+        const order_id = $(target).attr('order_id');
+        if(!order_id)   return;
+
+        const trCount = $(`tr[data-for-order="${order_id}"]`).length;
+        if(trCount > 0) {
+            if(trCount > 1 || !$(`tr[data-for-order="${order_id}"] td`).hasClass('dataTables_empty')) $(`tr[data-for-order="${order_id}"]`).toggle(100);
+            return;
+        }
+
+        const tr = document.createElement('tr');
+        tr.setAttribute('data-for-order', order_id);
+        tr.style.display = 'none';
+        const td = document.createElement('td');
+        td.setAttribute('colspan', 10000);
+
+        const table = document.createElement('table');
+        table.classList = 'table table-sm table-striped table-condensed table-bordered table-hover bg-white dataTable no-footer';
+        table.id = `show_po_lines_inner${order_id}`;
+
+        $(table).append(`<thead>
+        <th class="text-center">PL ID</th>
+            <th class="text-center">Pre-order</th>
+            <th style="white-space: nowrap">Vehicle ID</th>
+            <th style="white-space: nowrap">Make</th>
+            <th style="white-space: nowrap">Model</th>
+            <th style="white-space: nowrap">Variant</th>
+            <th style="white-space: nowrap">Engine</th>
+            <th style="white-space: nowrap">VAT/Margin</th>
+            <th style="white-space: nowrap">Expected delivery date*</th>
+            <th style="white-space: nowrap">VAT deposit</th>
+            <th class="text-center">KM at delivery*</th>
+            <th style="white-space: nowrap">Transport by supplier</th>
+            <th style="white-space: nowrap">Purchase value</th>
+            <th style="white-space: nowrap">Fee int. Supplier</th>
+            <th style="white-space: nowrap">Transport Costs</th>
+            <th style="white-space: nowrap">VAT</th>
+            <th style="white-space: nowrap">Vehicle tax/bpm</th>
+            <th style="white-space: nowrap">Down payment amount</th>
+        </thead>
+        <tbody></tbody>`);
+
+        $(td).append(table);
+        $(tr).append(td);
+        $(target).after(tr);
+        $(target).after(`<tr style="display: none;"><td style="display: none;"></td></tr>`);
+
+        $(`#${table.id}`).dataTable({
+            "bprocessing": true,
+            "bserverSide": true,
+            "sServerMethod": "POST",
+            "sAjaxSource": `./data/data-purchase-show-lines.php?order_id=${order_id}`,
+            stateSave: true,
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+
+            initComplete: function() {
+                document.querySelector("[type='search']").style = "min-width:150px";
+
+                if($(`#${table.id} tbody tr`).length > 1 || ($(`#${table.id} tbody tr`).length == 1 && !$(`#${table.id} tbody tr td`).hasClass('dataTables_empty'))) {
+                    $(`tr[data-for-order="${order_id}"]`).toggle(300);
+                }
+            }
+
+        });
+    }
 });

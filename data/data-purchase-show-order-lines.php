@@ -8,7 +8,7 @@ $config = include("../config.php");
 /* Array of database columns which should be read and sent back to DataTables. Use a space where
  * you want to insert a non-database field (for example a counter or static image)
  */
-$aColumns = array('pl_id', 'pl_vehicle_id as file', 'car_preorder', 'conv.conversion_name as type', 'pl_id as purchase_type', 'pl_vehicle_id', 'car_vat_marge', 'cm.cmake_name', 'cmod.cmodel_name', 'cmu_name', 'cmotor.cmotor_name', 'pl_expected_delivery', 'pl_km_delivery', 'purchase_price_netto', 'pl_purchase_price_incl_vat', 'pl_accident_free', 'pl_expected_damage_amount', 'pl_extra_set_of_wheels', 'pl_deposit', 'cd_vin', 'cd_conf_number', 'cd_komm_number', 'cd_nl_registration_number');
+$aColumns = array('pl_id', 'pl_vehicle_id as file', 'car_preorder', 'conv.conversion_name as type', 'pl_id as purchase_type', 'pl_vehicle_id', 'car_vat_marge', 'cm.cmake_name', 'cmod.cmodel_name', 'cmu_name', 'cmotor.cmotor_name', 'pl_expected_delivery', 'pl_km_delivery', 'purchase_price_netto', 'pl_accident_free', 'pl_expected_damage_amount', 'pl_extra_set_of_wheels', 'pl_deposit', 'cd_vin', 'cd_conf_number', 'cd_komm_number', 'cd_nl_registration_number', 'pl_purchase_id');
 /* Indexed column (used for fast and accurate table cardinality) */
 //$sIndexColumn = "c.car_id as number";
 /* DB table to use */
@@ -211,7 +211,7 @@ while ($aRow = mysqli_fetch_array($rResult)) {
     $row = array();
     for ($i = 0; $i < count($aColumns); $i++) {
         if ($aColumns[$i] == 'pl_id') {
-            $row[] = '<center style="display:flex;">' . sprintf("PL%'.07d\n", $aRow[$i]) . '</center>';
+            $row[] = '<center style="display:flex;"><a href="create_pol?order_id='.$aRow[22].'&line='.$aRow[$i].'">' . sprintf("PL%'.07d\n", $aRow[$i]) . '</a></center>';
         } elseif ($aColumns[$i] == 'conv.conversion_name as type') {
             $row[] = '<center style="display:flex;">' . $_SESSION['lang'][$aRow[$i]] . '</center>';
         } elseif ($aColumns[$i] == 'car_preorder') {

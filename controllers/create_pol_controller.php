@@ -35,12 +35,12 @@ class create_pol extends view
 			exit;
 		}
 
-		if(!isset($_REQUEST['po']) || !isset($_REQUEST['line'])) {
+		if(!isset($_REQUEST['order_id']) || !isset($_REQUEST['line'])) {
 			header("Location: /login ");
 			exit;
 		}
 
-		$po = $_REQUEST['po'];
+		$po = $_REQUEST['order_id'];
 
 		if(isset($_POST['add_order_lines'])) {
 			foreach ($_POST['add_purchase_line'] as $car_id) {
@@ -84,7 +84,7 @@ class create_pol extends view
 				$current_line_num = $i;
 		}
 		if($current_line_num === null) {
-			$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/create_pol?po=$po&line={$poLines[0]['pl_id']}";
+			$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/create_pol?order_id=$po&line={$poLines[0]['pl_id']}";
 			header("Location: $url");
 			exit;
 		}

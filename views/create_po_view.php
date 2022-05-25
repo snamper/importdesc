@@ -25,6 +25,9 @@ $data['poSums'] = $data['poSums'][0];
                         <input type="file" name="upload_document[]" multiple id="uploadCarDocument">
                     </div>
                 </div>
+                <div class="col-12 col-md-4 text-right">
+                    <?php echo "Status: {$_SESSION['lang'][$data['purch_order']['status_label']]}"; ?>
+                </div>
             </div>
 
             <?php
@@ -37,7 +40,7 @@ $data['poSums'] = $data['poSums'][0];
 
             <div class="custom-row" id="create_nav">
 
-                <?php if (!isset($_GET['order_id']) && !isset($_POST['update_order']) && $data['purch_order']['po_status'] < 2) : ?>
+                <?php if (!isset($_GET['order_id']) && !isset($_POST['update_order']) && ($data['purch_order']['po_status'] == 1 || $data['purch_order']['po_status'] == 2 || $data['purch_order']['po_status'] == 6)) : ?>
                     <div class="custom-col">
                         <a href="/create_po" class="btn btn-danger" onclick="return confirm('Are you sure?');"><?php echo $_SESSION['lang']['car_start_page_4'] ?></a>
                     </div>

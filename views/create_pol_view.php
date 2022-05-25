@@ -73,7 +73,7 @@ $rest_bpm_float = floatval(str_replace(' ', '', str_replace(',', '', str_replace
                                 <
                             </a>
                             <?php else: ?>
-                            <a href="<?php echo "create_pol?po={$pol_data['pl_purchase_id']}&line={$data['prev_pol_id'][0]}"; ?>" class="btn btn-primary mr-2">
+                            <a href="<?php echo "create_pol?order_id={$pol_data['pl_purchase_id']}&line={$data['prev_pol_id'][0]}"; ?>" class="btn btn-primary mr-2">
                                 <
                             </a>
                             <?php endif; ?>
@@ -83,7 +83,7 @@ $rest_bpm_float = floatval(str_replace(' ', '', str_replace(',', '', str_replace
                                 >
                             </a>
                             <?php else: ?>
-                            <a href="<?php echo "create_pol?po={$pol_data['pl_purchase_id']}&line={$data['next_pol_id'][0]}"; ?>" class="btn btn-primary mr-2">
+                            <a href="<?php echo "create_pol?order_id={$pol_data['pl_purchase_id']}&line={$data['next_pol_id'][0]}"; ?>" class="btn btn-primary mr-2">
                                 >
                             </a>
                             <?php endif; ?>
@@ -307,7 +307,7 @@ $rest_bpm_float = floatval(str_replace(' ', '', str_replace(',', '', str_replace
                     <div class="row" style="padding: 0 0.35rem;">
                         <div class="col-12 col-md-12 mt-4 notes_container">
                             <p class="container_header">Internal Notes (POL):</p>
-                            <?php echo nl2br($pol_data['pl_internal_notes']); ?>
+                            <textarea><?php echo $pol_data['pl_internal_notes']; ?></textarea>
                         </div>
                     </div>
 
@@ -378,10 +378,10 @@ $rest_bpm_float = floatval(str_replace(' ', '', str_replace(',', '', str_replace
                             <span>Purchase price excl. VAT</span>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="text" name="pl_purchase_price_excl_vat" id="purchasePriceExclVat" value="0.00" readonly>
+                            <input class="form-control" type="text" id="purchasePriceExclVatEur" value="0.00" readonly>
                         </div>
                         <div class="col-12 col-md-2">
-                            -
+                            <input class="form-control" type="text" id="purchasePriceExclVat" value="0.00" readonly>
                         </div>
                     </div>
 
@@ -390,10 +390,10 @@ $rest_bpm_float = floatval(str_replace(' ', '', str_replace(',', '', str_replace
                             <span>VAT</span>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="text" name="pl_vat_margin" id="vatMargin" value="0.00" readonly>
+                            <input class="form-control" type="text" id="vatMarginEur" value="0.00" readonly>
                         </div>
                         <div class="col-12 col-md-2">
-                            -
+                            <input class="form-control" type="text" id="vatMargin" value="0.00" readonly>
                         </div>
                     </div>
 
@@ -402,10 +402,10 @@ $rest_bpm_float = floatval(str_replace(' ', '', str_replace(',', '', str_replace
                             <span>Purchase price incl. VAT</span>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="number" name="pl_purchase_price_incl_vat" id="purchasePriceInclVat" value="0.00" readonly>
+                            <input class="form-control" type="number" id="purchasePriceInclVatEur" value="0.00" readonly>
                         </div>
                         <div class="col-12 col-md-2">
-                            -
+                            <input class="form-control" type="number" id="purchasePriceInclVat" value="0.00" readonly>
                         </div>
                     </div>
 
@@ -414,10 +414,10 @@ $rest_bpm_float = floatval(str_replace(' ', '', str_replace(',', '', str_replace
                             <span>Vehicle tax/BPM</span>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="number" id="vehicleTaxBPM" value="<?php echo $rest_bpm_float ? $rest_bpm_float : '0.00'; ?>" readonly>
+                            <input class="form-control" type="number" id="vehicleTaxBPMEur" value="<?php echo $rest_bpm_float ? $rest_bpm_float : '0.00'; ?>" readonly>
                         </div>
                         <div class="col-12 col-md-2">
-                            -
+                            <input class="form-control" type="number" id="vehicleTaxBPM" value="0.00" readonly>
                         </div>
                     </div>
 
@@ -426,10 +426,10 @@ $rest_bpm_float = floatval(str_replace(' ', '', str_replace(',', '', str_replace
                             <span>Purchase value incl VAT/tax</span>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="number" name="pl_purchase_incl_vat_tax" id="purchaseValueInclVatTax" value="0.00" readonly>
+                            <input class="form-control" type="number" id="purchaseValueInclVatTaxEur" value="0.00" readonly>
                         </div>
                         <div class="col-12 col-md-2">
-                            -
+                            <input class="form-control" type="number" id="purchaseValueInclVatTax" value="0.00" readonly>
                         </div>
                     </div>
 
@@ -441,6 +441,36 @@ $rest_bpm_float = floatval(str_replace(' ', '', str_replace(',', '', str_replace
 
     </form>
     <br/>
+
+    <div class="container-fluid">
+            <div class="row">
+                <div class="table-responsive">
+                    <table id="<?php echo "tableShowPoLines" ?>" class="table table-sm table-striped table-condensed table-bordered table-hover bg-white">
+                        <thead>
+                            <th class="text-center">PL ID</th>
+                            <th class="text-center">Pre-order</th>
+                            <th style="white-space: nowrap">Vehicle ID</th>
+                            <th style="white-space: nowrap">Make</th>
+                            <th style="white-space: nowrap">Model</th>
+                            <th style="white-space: nowrap">Variant</th>
+                            <th style="white-space: nowrap">Engine</th>
+                            <th style="white-space: nowrap">VAT/Margin</th>
+                            <th style="white-space: nowrap">Expected delivery date*</th>
+                            <th style="white-space: nowrap">VAT deposit</th>
+                            <th class="text-center">KM at delivery*</th>
+                            <th style="white-space: nowrap">Transport by supplier</th>
+                            <th style="white-space: nowrap">Purchase value</th>
+                            <th style="white-space: nowrap">Fee int. Supplier</th>
+                            <th style="white-space: nowrap">Transport Costs</th>
+                            <th style="white-space: nowrap">VAT</th>
+                            <th style="white-space: nowrap">Vehicle tax/bpm</th>
+                            <th style="white-space: nowrap">Down payment amount</th>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
 </div>
 

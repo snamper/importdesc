@@ -16,6 +16,11 @@ class show_po extends view
 			exit;
 		}
 
+		if(isset($_POST['show_po_get_lines'])) {
+			echo json_encode($this->base->getPOLines($_POST['show_po_get_lines']));
+			exit;
+		}
+
 		if (isset($_GET['delete_order'])) {
 
 			$this->base->deletePO($_GET['delete_order']);
