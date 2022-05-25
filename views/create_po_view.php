@@ -466,14 +466,14 @@ $data['poSums'] = $data['poSums'][0];
 
 
                         <div class="row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-5">
 
                             </div>
                             <div class="col-12 col-md-3 text-center">
                                 EUR
                             </div>
                             <div class="col-12 col-md-3 text-center" id="currencyText">
-                                <?php echo $data['purch_order']['po_currency']; ?>
+                                <?php echo (empty($data['purch_order']['po_currency']) ? "AED" : $data['purch_order']['po_currency']); ?>
                             </div>
                         </div>
 
@@ -507,10 +507,10 @@ $data['poSums'] = $data['poSums'][0];
                             <div class="col-12 col-md-5">
                                 <span>Total transport costs</span>
                             </div>
-                            <div class="col-12 col-md-">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="text" id="transportCostEur" value="<?php echo number_format($data['converted_values'][0]['total_transport_cost_eur'], 2); ?>" readonly>
                             </div>
-                            <div class="col-12 col-md-">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="text" name="total_transport_cost" id="totalTransportCost" data-target="transportCostEur" value="<?php echo ($data['poSums']['total_transport_cost'] ? str_replace('€ ', '', $data['poSums']['total_transport_cost']) : '0.00'); ?>" readonly>
                             </div>
                         </div>
@@ -519,10 +519,10 @@ $data['poSums'] = $data['poSums'][0];
                             <div class="col-12 col-md-5">
                                 <span>Total purchase price excl. VAT</span>
                             </div>
-                            <div class="col-12 col-md-">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="text" name="pl_purchase_price_excl_vat" id="totalPurchasePriceExclVat" value="0.00" readonly>
                             </div>
-                            <div class="col-12 col-md-">
+                            <div class="col-12 col-md-3">
                                 -
                             </div>
                         </div>
@@ -531,10 +531,10 @@ $data['poSums'] = $data['poSums'][0];
                             <div class="col-12 col-md-5">
                                 <span>Total VAT</span>
                             </div>
-                            <div class="col-12 col-md-">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="text" name="pl_vat_margin" id="purchaseVatMargin" value="0.00" readonly>
                             </div>
-                            <div class="col-12 col-md-">
+                            <div class="col-12 col-md-3">
                                 -
                             </div>
                         </div>
@@ -543,10 +543,10 @@ $data['poSums'] = $data['poSums'][0];
                             <div class="col-12 col-md-5">
                                 <span>Total Purchase price incl. VAT</span>
                             </div>
-                            <div class="col-12 col-md-">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="number" name="pl_purchase_price_incl_vat" id="totalPurchasePriceInclVat" value="0.00" readonly>
                             </div>
-                            <div class="col-12 col-md-">
+                            <div class="col-12 col-md-3">
                                 -
                             </div>
                         </div>
@@ -555,10 +555,10 @@ $data['poSums'] = $data['poSums'][0];
                             <div class="col-12 col-md-5">
                                 <span>Total Vehicle tax/BPM</span>
                             </div>
-                            <div class="col-12 col-md-">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="number" id="PurchaseVehicleTaxBPM" value="<?php echo number_format($data['converted_values'][0]['total_vehicle_bpm_eur'], 2); ?>" readonly>
                             </div>
-                            <div class="col-12 col-md-">
+                            <div class="col-12 col-md-3">
                                 -
                             </div>
                         </div>
@@ -567,10 +567,10 @@ $data['poSums'] = $data['poSums'][0];
                             <div class="col-12 col-md-5">
                                 <span>Total Purchase value incl VAT/tax</span>
                             </div>
-                            <div class="col-12 col-md-">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="number" id="totalPurchaseValueInclVatTax" value="0.00" readonly>
                             </div>
-                            <div class="col-12 col-md-">
+                            <div class="col-12 col-md-3">
                                 -
                             </div>
                         </div>
@@ -579,10 +579,10 @@ $data['poSums'] = $data['poSums'][0];
                             <div class="col-12 col-md-5">
                                 <span>Total Down Payment Amount</span>
                             </div>
-                            <div class="col-12 col-md-">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="number" id="totalDownPaymentAmount" value="0.00" readonly>
                             </div>
-                            <div class="col-12 col-md-">
+                            <div class="col-12 col-md-3">
                                 -
                             </div>
                         </div>
@@ -591,10 +591,10 @@ $data['poSums'] = $data['poSums'][0];
                             <div class="col-12 col-md-5">
                                 <span>Total VAT Deposit</span>
                             </div>
-                            <div class="col-12 col-md-">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="number" id="totalVatDeposit" value="0.00" readonly>
                             </div>
-                            <div class="col-12 col-md-">
+                            <div class="col-12 col-md-3">
                                 -
                             </div>
                         </div>
