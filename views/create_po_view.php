@@ -304,10 +304,10 @@ $data['poSums'] = $data['poSums'][0];
                         </div>
                         <!-- Rows  -->
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span>Invoice, from (suppl. - interm.)</span>
                             </div>
-                            <div class="col-12 col-md-8">
+                            <div class="col-12 col-md-6">
 
                                 <select class="form-control" name="po_invoice" id="po_invoice" class="col-12 col-md-12">
                                     <option value="1" <?php echo $data['purch_order']['po_invoice'] == 1 ? 'selected' : '' ?>>Supplier
@@ -319,10 +319,10 @@ $data['poSums'] = $data['poSums'][0];
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span>Payment in Currency*</span>
                             </div>
-                            <div class="col-12 col-md-8">
+                            <div class="col-12 col-md-6">
                                 <select required class="form-control" name="po_currency" id="po_currency" class="col-12 col-md-12">
                                     <?php foreach($data['all_currencies'][0]as $curr): ?>
                                         <option value="<?php echo $curr['code']; ?>" <?php echo $data['purch_order']['po_currency'] == $curr['code'] ? 'selected' : '' ?>><?php echo $curr['code']; ?></option>
@@ -333,10 +333,10 @@ $data['poSums'] = $data['poSums'][0];
 
 
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span>Purchase Type*</span>
                             </div>
-                            <div class="col-12 col-md-8">
+                            <div class="col-12 col-md-6">
                                 <select required class="form-control" name="po_purchase_type" id="po_purchase_type" class="col-12 col-md-12">
                                     <option value="1" <?php echo $data['purch_order']['po_purchase_type'] == 1 ? 'selected' : '' ?>>EU
                                     </option>
@@ -350,16 +350,16 @@ $data['poSums'] = $data['poSums'][0];
 
 
                         <div class="row" style="height: 50px;">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span class="font-weight-bold">VAT Deposit</span>
                             </div>
                         </div>
                         <!-- Rows  -->
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span>VAT Deposit</span>
                             </div>
-                            <div class="col-12 col-md-8">
+                            <div class="col-12 col-md-6">
                                 <select class="form-control" name="po_vat_deposit" id="vat_deposit" class="col-12 col-md-12">
                                     <option value="1" <?php echo $data['purch_order']['po_vat_deposit'] == 1 ? 'selected' : '' ?>>Yes
                                     </option>
@@ -370,10 +370,10 @@ $data['poSums'] = $data['poSums'][0];
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span>VAT Percentage</span>
                             </div>
-                            <div class="col-12 col-md-8">
+                            <div class="col-12 col-md-6">
                                 <select class="form-control" name="po_vat_percentage" id="vatPercentage" class="col-12 col-md-12" <?php if ($data['purch_order']['po_vat_deposit'] == 2) {
                                                                                                                                         echo "disabled='true'";
                                                                                                                                     } ?>>
@@ -396,16 +396,16 @@ $data['poSums'] = $data['poSums'][0];
                         </div>
 
                         <div class="row" style="height: 50px;">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span class="font-weight-bold">Downpayment</span>
                             </div>
                         </div>
                         <!-- Rows  -->
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span>Down payment</span>
                             </div>
-                            <div class="col-12 col-md-8">
+                            <div class="col-12 col-md-6">
 
                                 <select class="form-control" name="po_down_payment" id="down_payment" class="col-12 col-md-12">
                                     <option value="1" <?php echo $data['purch_order']['po_down_payment'] == 1 ? 'selected' : '' ?>>Yes
@@ -418,10 +418,10 @@ $data['poSums'] = $data['poSums'][0];
 
 
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span>Down payment amount</span>
                             </div>
-                            <div class="col-12 col-md-8">
+                            <div class="col-12 col-md-6">
                                 <input class="form-control" <?php if ($data['purch_order']['po_down_payment'] == 2) {
                                                                 echo "disabled='true'";
                                                             } ?> type="text" id="downPaymentAmount" name="po_down_payment_amount" value="<?php echo $data['purch_order']['po_down_payment_amount']; ?>" />
@@ -431,16 +431,16 @@ $data['poSums'] = $data['poSums'][0];
 
 
                         <div class="row" style="height: 50px;">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span class="font-weight-bold">PO Financial</span>
                             </div>
                         </div>
                         <!-- Rows  -->
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span>Fixed / Live Exchange</span>
                             </div>
-                            <div class="col-12 col-md-8">
+                            <div class="col-12 col-md-6">
 
 
                                 <select class="form-control" name="po_exchange" id="po_exchange" class="col-12 col-md-12">
@@ -453,10 +453,10 @@ $data['poSums'] = $data['poSums'][0];
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span>Currency Rate</span>
                             </div>
-                            <div class="col-12 col-md-8">
+                            <div class="col-12 col-md-6">
 
                                 <input class="form-control" <?php echo ($data['purch_order']['po_exchange'] == 2) ? "disabled='true'" : ""; ?> type="text" id="poExchange" name="po_currency_rate" value="<?php echo $data['purch_order']['po_currency_rate']; ?>" />
                             </div>
@@ -469,22 +469,22 @@ $data['poSums'] = $data['poSums'][0];
                             <div class="col-12 col-md-6">
 
                             </div>
-                            <div class="col-12 col-md-2 text-center">
+                            <div class="col-12 col-md-3 text-center">
                                 EUR
                             </div>
-                            <div class="col-12 col-md-2 text-center" id="currencyText">
+                            <div class="col-12 col-md-3 text-center" id="currencyText">
                                 <?php echo $data['purch_order']['po_currency']; ?>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span>Total Purchase Amount</span>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="text" id="totalPurchaseValueEur" value="<?php echo number_format($data['converted_values'][0]['total_purchase_value_eur'], 2); ?>" readonly>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="text" name="total_purchase_value" id="totalPurchaseValue" data-target="totalPurchaseValueEur" value="<?php echo ($data['poSums']['total_purchase_value'] ? str_replace('€ ', '', $data['poSums']['total_purchase_value']) : '0.00'); ?>" readonly>
                             </div>
                         </div>
@@ -492,109 +492,109 @@ $data['poSums'] = $data['poSums'][0];
 
 
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span>Total fee intermediate supplier</span>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="text" id="totalFeeIntermediateSupplierEur" value="<?php echo number_format($data['converted_values'][0]['total_fee_intermediate_supplier_eur'], 2); ?>" readonly>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="text" name="total_fee_intermediate_supplier" id="totalFeeIntermediateSupplier" data-target="totalFeeIntermediateSupplierEur" value="<?php echo ($data['poSums']['total_fee_intermediate_supplier'] ? str_replace('€ ', '', $data['poSums']['total_fee_intermediate_supplier']) : '0.00'); ?>" readonly>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span>Total transport costs</span>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="text" id="transportCostEur" value="<?php echo number_format($data['converted_values'][0]['total_transport_cost_eur'], 2); ?>" readonly>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="text" name="total_transport_cost" id="totalTransportCost" data-target="transportCostEur" value="<?php echo ($data['poSums']['total_transport_cost'] ? str_replace('€ ', '', $data['poSums']['total_transport_cost']) : '0.00'); ?>" readonly>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span>Total purchase price excl. VAT</span>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="text" name="pl_purchase_price_excl_vat" id="totalPurchasePriceExclVat" value="0.00" readonly>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 -
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span>Total VAT</span>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="text" name="pl_vat_margin" id="purchaseVatMargin" value="0.00" readonly>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 -
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span>Total Purchase price incl. VAT</span>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="number" name="pl_purchase_price_incl_vat" id="totalPurchasePriceInclVat" value="0.00" readonly>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 -
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span>Total Vehicle tax/BPM</span>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="number" id="PurchaseVehicleTaxBPM" value="<?php echo number_format($data['converted_values'][0]['total_vehicle_bpm_eur'], 2); ?>" readonly>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 -
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span>Total Purchase value incl VAT/tax</span>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="number" id="totalPurchaseValueInclVatTax" value="0.00" readonly>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 -
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span>Total Down Payment Amount</span>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="number" id="totalDownPaymentAmount" value="0.00" readonly>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 -
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-6">
                                 <span>Total VAT Deposit</span>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 <input class="form-control" type="number" id="totalVatDeposit" value="0.00" readonly>
                             </div>
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3">
                                 -
                             </div>
                         </div>
