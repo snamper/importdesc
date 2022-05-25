@@ -1,6 +1,7 @@
 <?php
 $data['purch_order'] = $data['purch_order'][0];
 $data['poSums'] = $data['poSums'][0];
+
 ?>
 
 
@@ -194,7 +195,7 @@ $data['poSums'] = $data['poSums'][0];
                             <div class="row ml-1 mt-2">Created by</div>
                         </div>
                         <div class="col-12 col-md-8">
-                            <div class="row ml-1 mt-2">Joël Pinna (10-3-2022 11:55)</div>
+                            <div class="row ml-1 mt-2"><?php echo $data['purch_order']['created_by_name'];?></div>
                         </div>
                     </div>
 
@@ -203,7 +204,7 @@ $data['poSums'] = $data['poSums'][0];
                             <div class="row ml-1 mt-2">Last edited by</div>
                         </div>
                         <div class="col-12 col-md-8">
-                            <div class="row ml-1 mt-2">Joël Pinna (10-3-2022 11:55)</div>
+                            <div class="row ml-1 mt-2"><?php echo $data['purch_order']['updated_by_username'];?></div>
                         </div>
                     </div>
 
@@ -212,7 +213,7 @@ $data['poSums'] = $data['poSums'][0];
                             <div class="row ml-1 mt-2">Last Submitted by</div>
                         </div>
                         <div class="col-12 col-md-8">
-                            <div class="row ml-1 mt-2">-</div>
+                            <div class="row ml-1 mt-2"><?php echo $data['purch_order']['last_submitted_by'];?></div>
                         </div>
                     </div>
 
@@ -222,7 +223,9 @@ $data['poSums'] = $data['poSums'][0];
                             <div class="row ml-1 mt-2">Approved by</div>
                         </div>
                         <div class="col-12 col-md-8">
-                            <div class="row ml-1 mt-2">-</div>
+                            <div class="row ml-1 mt-2">
+                                <?php echo $data['purch_order']['approved_by'];?>
+                            </div>
                         </div>
                     </div>
 
@@ -231,7 +234,7 @@ $data['poSums'] = $data['poSums'][0];
                             <div class="row ml-1 mt-2">Rejected By</div>
                         </div>
                         <div class="col-12 col-md-8">
-                            <div class="row ml-1 mt-2">-</div>
+                            <div class="row ml-1 mt-2"><?php echo $data['purch_order']['rejected_by'];?></div>
                         </div>
                     </div>
 
@@ -472,7 +475,7 @@ $data['poSums'] = $data['poSums'][0];
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-4">
                                 <span>Total Purchase Amount</span>
                             </div>
                             <div class="col-12 col-md-2">
@@ -486,7 +489,7 @@ $data['poSums'] = $data['poSums'][0];
 
 
                         <div class="row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-4">
                                 <span>Total fee intermediate supplier</span>
                             </div>
                             <div class="col-12 col-md-2">
@@ -498,7 +501,7 @@ $data['poSums'] = $data['poSums'][0];
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-4">
                                 <span>Total transport costs</span>
                             </div>
                             <div class="col-12 col-md-2">
@@ -510,7 +513,7 @@ $data['poSums'] = $data['poSums'][0];
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-4">
                                 <span>Total purchase price excl. VAT</span>
                             </div>
                             <div class="col-12 col-md-2">
@@ -522,7 +525,7 @@ $data['poSums'] = $data['poSums'][0];
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-4">
                                 <span>Total VAT</span>
                             </div>
                             <div class="col-12 col-md-2">
@@ -534,7 +537,7 @@ $data['poSums'] = $data['poSums'][0];
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-4">
                                 <span>Total Purchase price incl. VAT</span>
                             </div>
                             <div class="col-12 col-md-2">
@@ -546,7 +549,7 @@ $data['poSums'] = $data['poSums'][0];
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-4">
                                 <span>Total Vehicle tax/BPM</span>
                             </div>
                             <div class="col-12 col-md-2">
@@ -558,7 +561,7 @@ $data['poSums'] = $data['poSums'][0];
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-4">
                                 <span>Total Purchase value incl VAT/tax</span>
                             </div>
                             <div class="col-12 col-md-2">
@@ -570,7 +573,7 @@ $data['poSums'] = $data['poSums'][0];
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-4">
                                 <span>Total Down Payment Amount</span>
                             </div>
                             <div class="col-12 col-md-2">
@@ -582,7 +585,7 @@ $data['poSums'] = $data['poSums'][0];
                         </div>
 
                         <div class="row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-4">
                                 <span>Total VAT Deposit</span>
                             </div>
                             <div class="col-12 col-md-2">
@@ -713,3 +716,4 @@ $data['poSums'] = $data['poSums'][0];
         }
     }
 </script>
+

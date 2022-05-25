@@ -130,6 +130,8 @@ class create_po extends view
 
 		if (isset($_POST['save_order'])) {
 
+
+
 			// IF UPDATE ORDER 
 			if (isset($_POST['update_order'])) {
 				$this->base->updateOrder($_POST);
@@ -147,6 +149,7 @@ class create_po extends view
 
 			// ELSE IF CREATE ORDER
 			$order_id = $this->base->createNewOrder($_POST);
+
 
 			foreach ($_POST['purchase_lines'] as $car_id) {
 				$car_info = $this->base->getSingleCar($car_id);
@@ -188,7 +191,12 @@ class create_po extends view
 			'po_remarks',
 			'po_created_by_id',
 			'po_status',
-			'status_label'
+			'status_label',
+			'created_by_name',
+			'updated_by_username',
+			'last_submitted_by',
+			'approved_by',
+			'rejected_by'
 		];
 		$arr = [];
 
@@ -224,6 +232,9 @@ class create_po extends view
 		}
 		$this->setData('all_currencies', $this->base->getAllCurrencies());
 		$this->setData('purch_order', $arr);
+
+
+		
 
 
 		if (isset($_SESSION['user'])) parent::__construct('create_po_view.php');
