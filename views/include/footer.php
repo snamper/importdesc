@@ -203,6 +203,9 @@
                 [10, 25, 50, -1],
                 [10, 25, 50, "All"]
             ],
+            'createdRow': function( row, data, dataIndex ) {
+                $(row).attr('order_id', data[0]);
+            },
 
             initComplete: function() {
 

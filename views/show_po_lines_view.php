@@ -37,7 +37,6 @@
                 <th class="select-filter" style="white-space: nowrap">Engine</th>
                 <th style="white-space: nowrap">Expected delivery date</th>
                 <th class="select-filter" style="white-space: nowrap">KM at delivery</th>
-                <th class="select-filter" class="text-center">Purchase price incl. VAT</th>
                 <th style="white-space: nowrap">Accident fee</th>
                 <th style="white-space: nowrap">Expected damage amount</th>
                 <th style="white-space: nowrap">Extra set of wheels</th>
