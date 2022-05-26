@@ -28,95 +28,52 @@ class create_po extends view
 
 		$this->base = $_SESSION['base'];
 
-		$order_id = 0;
-		if (isset($_GET['order_id'])) {
-			$order_id = $_GET['order_id'];
-		} elseif (isset($_POST['update_order'])) {
-			$order_id = $_POST['update_order'];
-		}
-
-		if (isset($_GET['delete_po_document'])) {
-			$this->base->deletePoDocument($_GET['delete_po_document']);
-			exit;
-		}
-
-		if (isset($_POST['update_order_submit'])) {
-
-			if ($order_id > 0) {
-				// IF UPDATE ORDER 
-				if (isset($_POST['update_order'])) {
-					$this->base->updateOrder($_POST);
-					foreach ($_POST['purchase_lines'] as $car_id) {
-						$car_info = $this->base->getSingleCar($car_id);
-						//if(!$this->base->checkCarInPOLine($car_id)) {
-							$this->base->addPoLines($car_info, $order_id);
-						//}
-					}
-					header('location: /create_po?order_id=' . $order_id);
-					exit;
-				}
-			} else {
-				// ELSE IF CREATE ORDER
-				$order_id = $this->base->createNewOrder($_POST);
-
-				foreach ($_POST['purchase_lines'] as $car_id) {
-					$car_info = $this->base->getSingleCar($car_id);
-					//if(!$this->base->checkCarInPOLine($car_id)) {
-						$this->base->addPoLines($car_info, $order_id);
-					//}
-				}
-
-				header('location: /create_po?order_id=' . $order_id);
-				exit;
-			}
-		}
-
-		$po_documents = $this->base->getPODocuments($order_id);
-		$this->setData("po_documents", $po_documents);
-
-		$poSums = $this->base->getPOSums($order_id);
-		$this->setData("poSums", $poSums);
-
-		if (isset($_POST['clickable-table-post'])) {
-
-			echo $this->base->changePurchaseTableCol($_POST);
+		if(isset($_POST['convert_to_eur'])) {
+			echo $this->base->getEurConversion($_POST['convert_to_eur']);
 			exit;
 		}
 
 		if (isset($_GET['delete_line'])) {
 			$this->base->deletePoLine($_GET['delete_line']);
+		}
 
-			header("Location: $_SESSION[last_page]");
+		$order_id = $_REQUEST['order_id'] ?? 0;
+		$line = $_REQUEST['line'] ?? 0;
+
+		if(isset($_POST['delete_order'])) {
+			$this->base->deletePO($order_id);
+			header("location: /create_po");
 			exit;
 		}
 
-
-		if (isset($_POST['save_changes_line']) && $order_id > 0) {
-
-			foreach ($_POST['add_purchase_line'] as $car_id) {
-				$car_info = $this->base->getSingleCar($car_id);
-				//if(!$this->base->checkCarInPOLine($car_id)) {
-					$this->base->addPoLines($car_info, $order_id);
-				//}
-			}
-
-			unset($_POST['add_purchase_line']);
+		if (isset($_POST['clickable-table-post'])) {
+			echo $this->base->changePurchaseTableCol($_POST);
+			exit;
 		}
-
 
 		if (isset($_POST['add_purchase_line'])) {
 
-			$lines_array = [];
-			$lines_array = array_merge($lines_array, $_POST['add_purchase_line']);
-
-
-			if (isset($_POST['purchase_lines'])) {
-				$lines_array = array_merge($lines_array, $_POST['purchase_lines']);
+			if($order_id > 0) {
+				foreach ($_POST['add_purchase_line'] as $car_id) {
+					$car_info = $this->base->getSingleCar($car_id);
+					//if(!$this->base->checkCarInPOLine($car_id)) {
+						$this->base->addPoLines($car_info, $order_id);
+					//}
+				}
+				unset($_POST['add_purchase_line']);
 			}
+			else {
+				$lines_array = [];
+				$lines_array = array_merge($lines_array, $_POST['add_purchase_line']);
 
-			$lines_array = array_unique($lines_array);
+				if (isset($_POST['purchase_lines'])) {
+					$lines_array = array_merge($lines_array, $_POST['purchase_lines']);
+				}
 
-			$this->setData("purchase_lines", $lines_array);
+				$lines_array = array_unique($lines_array);
+
+				$this->setData("purchase_lines", $lines_array);
+			}
 		} else if (isset($_POST['purchase_lines'])) {
 			$this->setData("purchase_lines", $_POST['purchase_lines']);
 		}
@@ -124,118 +81,131 @@ class create_po extends view
 			$this->setData("purchase_lines", []);
 		}
 
-
-
 		if (isset($_POST['save_order'])) {
-
-
-
-			// IF UPDATE ORDER 
-			if (isset($_POST['update_order'])) {
-				$this->base->updateOrder($_POST);
-				
-				foreach ($_POST['purchase_lines'] as $car_id) {
-					$car_info = $this->base->getSingleCar($car_id);
-					//if($this->base->checkCarInPOLine($car_id)) {
-						$this->base->addPoLines($car_info, $order_id);
-					//}
+			if ($order_id > 0) {
+				$status = $this->base->getOrderStatus($order_id);
+				if($status && $status != 2) {
+					$this->updateOrder($order_id, $line);
+					$this->base->updateOrderStatus($order_id, $_POST['save_order']);
 				}
-
-				header('location: /create_po?order_id=' . $order_id);
+				header("location: /create_po?order_id=$order_id&line=$line");
 				exit;
 			}
-
-			// ELSE IF CREATE ORDER
-			$order_id = $this->base->createNewOrder($_POST);
-
-
-			foreach ($_POST['purchase_lines'] as $car_id) {
-				$car_info = $this->base->getSingleCar($car_id);
-				//if($this->base->checkCarInPOLine($car_id)) {
-					$this->base->addPoLines($car_info, $order_id);
-				//}
-			}
-
-			header('location: /create_po?order_id=' . $order_id);
+			$order_id = $this->createOrder();
+			header("location: /create_po?order_id=$order_id&line=$line");
 			exit;
 		}
 
+		$this->setData('po_documents', $this->base->getDocuments('order', $order_id));
 
-		$arr_items = [
-			'po_number',
-			'po_reference',
-			'po_supplier',
-			'po_date',
-			'po_intermediary_supplier',
-			'po_contact_person',
-			'po_source_supplier',
-			'po_contact_person_source',
-			'po_purchasing_entity',
-			'po_buyer',
-			'po_currency',
-			'po_vat_deposit',
-			'po_vat_percentage',
-			'po_down_payment',
-			'po_down_payment_amount',
-			'po_exchange',
-			'po_invoice',
-			'po_currency_rate',
-			'po_purchase_type',
-			'po_internal_reference_custom',
-			'po_external_order_number',
-			'po_payment_terms',
-			'po_prepayment_amount',
-			'po_expected_invoice_date',
-			'po_remarks',
-			'po_created_by_id',
-			'po_status',
-			'status_label',
-			'created_by_name',
-			'updated_by_username',
-			'last_submitted_by',
-			'approved_by',
-			'rejected_by'
-		];
-		$arr = [];
+		$poSums = $this->base->getPOSums($order_id);
+		$this->setData("poSums", $poSums);
 
 		if ($order_id > 0) {
-			$singleOrder = $this->base->getSinglePurchaseOrder($order_id);
-			foreach ($arr_items as $item) {
-				$arr[$item] = isset($singleOrder[$item]) ? $singleOrder[$item] : '';
+
+			if(isset($_POST['update_status'])) {
+				$this->base->updateOrderStatus($order_id, $_POST['update_status']);
 			}
 
-			$useCurrency = 0;
-			if($singleOrder['po_exchange'] == 1) {
-				$useCurrency = $singleOrder['po_currency_rate'];
+			$singleOrder = $this->base->getSinglePurchaseOrder($order_id);
+			$this->setData('purch_order', $singleOrder);
+
+			$useCurrency = floatval(($singleOrder['po_exchange'] == 1) ? $singleOrder['po_currency_rate'] : $this->base->getEurConversion($singleOrder['po_currency']));
+
+			$poLines = $this->base->getPOLines($order_id);
+
+			if(!empty($poLines)) {
+				$current_line_num = null;
+				$pol_count = count($poLines);
+				for($i = 0; $i < $pol_count; $i++) {
+					if($poLines[$i]['pl_id'] == $line)
+						$current_line_num = $i;
+				}
+				if($current_line_num === null) {
+					$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/create_po?order_id=$order_id&line={$poLines[0]['pl_id']}";
+					header("Location: $url");
+					exit;
+				}
+				
+				$this->setData('current_pol_num', $current_line_num+1);
+				$this->setData('pol_data', $poLines[$current_line_num]);
+				$this->setData('count_pol', $pol_count);
+				$this->setData('prev_pol_id', ($current_line_num-1 < 0) ? null : $poLines[$current_line_num-1]['pl_id']);
+				$this->setData('next_pol_id', ($current_line_num+1 >= $pol_count) ? null : $poLines[$current_line_num+1]['pl_id']);
+
+				if($singleOrder['po_exchange'] == 1) {
+					$currencyFixedRate = $singleOrder['po_currency_rate'];
+					$this->setData('pl_converted_values', [
+						'purchase_value_eur' => round($poLines[$current_line_num]['pl_purchase_value'] * $currencyFixedRate, 2),
+						'fee_intermediate_supplier_eur' => round($poLines[$current_line_num]['pl_fee_intermediate_supplier'] * $currencyFixedRate, 2),
+						'transport_cost_eur' => round($poLines[$current_line_num]['pl_transport_cost'] * $currencyFixedRate, 2)
+					]);
+				}
+				else {
+					$currencyLiveRate = $this->base->getEurConversion($singleOrder['po_currency']);
+					$this->setData('pl_converted_values', [
+						'purchase_value_eur' => round($poLines[$current_line_num]['pl_purchase_value'] * $currencyLiveRate, 2),
+						'fee_intermediate_supplier_eur' => round($poLines[$current_line_num]['pl_fee_intermediate_supplier'] * $currencyLiveRate, 2),
+						'transport_cost_eur' => round($poLines[$current_line_num]['pl_transport_cost'] * $currencyLiveRate, 2)
+					]);
+				}
+				$this->setData('line_documents', $this->base->getDocuments('line', $poLines[$current_line_num]['pl_id']));
 			}
 			else {
-				$useCurrency = $this->base->getEurConversion($singleOrder['po_currency']);
+				$this->setData('current_pol_num', 0);
+				$this->setData('count_pol', 0);
 			}
-			$this->setData('converted_values', [
-				'total_purchase_value_eur' => round($poSums['total_purchase_value'] * $useCurrency, 2),
-				'total_fee_intermediate_supplier_eur' => round($poSums['total_fee_intermediate_supplier'] * $useCurrency, 2),
-				'total_transport_cost_eur' => round($poSums['total_transport_cost'] * $useCurrency, 2),
-				'total_vehicle_bpm_eur' => round($poSums['total_vehicle_bpm'] * $useCurrency, 2)
+
+			$this->setData('po_converted_values', [
+				'total_purchase_value_eur' => round(floatval($poSums['total_purchase_value']) * $useCurrency, 2),
+				'total_fee_intermediate_supplier_eur' => round(floatval($poSums['total_fee_intermediate_supplier']) * $useCurrency, 2),
+				'total_transport_cost_eur' => round(floatval($poSums['total_transport_cost']) * $useCurrency, 2),
+				'total_vehicle_bpm_converted' => round(($useCurrency ? floatval($poSums['total_vehicle_bpm']) / $useCurrency : 0), 2)
 			]);
 		} else {
-			foreach ($arr_items as $item) {
-				$arr[$item] = '';
-			}
-			$this->setData('converted_values', [
+			$this->setData('current_pol_num', 0);
+			$this->setData('count_pol', 0);
+
+			$this->setData('po_converted_values', [
 				'total_purchase_value_eur' => 0,
 				'total_fee_intermediate_supplier_eur' => 0,
 				'total_transport_cost_eur' => 0,
-				'total_vehicle_bpm_eur' => 0
+				'total_vehicle_bpm_converted' => 0
 			]);
 		}
 		$this->setData('all_currencies', $this->base->getAllCurrencies());
-		$this->setData('purch_order', $arr);
+		$this->setData('suppliers_list', $this->base->getAllSuppliersList());
 
-
-		
 
 
 		if (isset($_SESSION['user'])) parent::__construct('create_po_view.php');
 		else parent::__construct('login_view.php');
+	}
+
+	public function updateOrder($order_id, $line) {
+		$this->base->updateOrder($order_id, $_POST);
+		
+		if($line > 0) {
+			$this->base->updatePoLine($line);
+		}
+
+		foreach ($_POST['purchase_lines'] as $car_id) {
+			$car_info = $this->base->getSingleCar($car_id);
+			//if($this->base->checkCarInPOLine($car_id)) {
+				$this->base->addPoLines($car_info, $order_id);
+			//}
+		}
+	}
+
+	public function createOrder() {
+		$order_id = $this->base->createNewOrder($_POST);
+
+		foreach ($_POST['purchase_lines'] as $car_id) {
+			$car_info = $this->base->getSingleCar($car_id);
+			//if(!$this->base->checkCarInPOLine($car_id)) {
+				$this->base->addPoLines($car_info, $order_id);
+			//}
+		}
+		return $order_id;
 	}
 }

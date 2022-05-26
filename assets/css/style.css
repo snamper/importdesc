@@ -11035,6 +11035,9 @@ input::-webkit-input-placeholder {
 	outline: none;
 	resize: none;
 }
+.notes_container textarea:disabled {
+	background: unset;
+}
 
 p.container_header {
 	font-size: 0.6rem;

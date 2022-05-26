@@ -211,7 +211,7 @@ while ($aRow = mysqli_fetch_array($rResult)) {
     $row = array();
     for ($i = 0; $i < count($aColumns); $i++) {
         if ($aColumns[$i] == 'pl_id') {
-            $row[] = '<center style="display:flex;"><a href="create_pol?order_id='.$aRow[22].'&line='.$aRow[$i].'">' . sprintf("PL%'.07d\n", $aRow[$i]) . '</a></center>';
+            $row[] = '<center style="display:flex;"><a href="create_po?order_id='.$aRow[22].'&line='.$aRow[$i].'">' . sprintf("PL%'.07d\n", $aRow[$i]) . '</a></center>';
         } elseif ($aColumns[$i] == 'conv.conversion_name as type') {
             $row[] = '<center style="display:flex;">' . $_SESSION['lang'][$aRow[$i]] . '</center>';
         } elseif ($aColumns[$i] == 'car_preorder') {

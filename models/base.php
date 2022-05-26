@@ -305,13 +305,6 @@ class base
 		$_post['po_date'] = date("Y-m-d", strtotime($_post['po_date']));
 		$_post['po_expected_invoice_date'] = date("Y-m-d", strtotime($_post['po_expected_invoice_date']));
 
-
-		// echo '<pre>';
-		// var_dump($_post);
-		// echo '</pre>';
-		// exit;
-
-
 		$query = "INSERT INTO purchase_order
         (
 			po_number,
@@ -343,17 +336,9 @@ class base
 			po_prepayment_amount,
 			po_expected_invoice_date,
 			po_remarks,
-			po_created_by_id,
-			po_updated_by_id,
-			po_last_submitted,
-			po_approved_by,
-			po_rejected_by
+			po_created_by_id
         )
             VALUES (
-				?,
-				?,
-				?,
-				?,
 				?,
 				?,
 				?,
@@ -414,7 +399,7 @@ class base
 				$_post['po_purchase_type'],
 				$_post['po_internal_reference_custom'],
 				$_post['po_external_order_number'],
-				$_post['update_order_submit'],
+				$_post['save_order'],
 				$_post['po_number_vehicles'],
 				$_post['po_total_purchase_excl_vat'],
 				$_post['po_total_purchase_incl_vat'],
@@ -422,20 +407,16 @@ class base
 				$_post['po_prepayment_amount'],
 				$_post['po_expected_invoice_date'],
 				$_post['po_remarks'],
-				$_SESSION['user'][0]['expo_users_ID'],
-				$_SESSION['user'][0]['expo_users_ID'],
-				$_SESSION['user'][0]['expo_users_ID'],
-				$_SESSION['user'][0]['expo_users_ID'],
 				$_SESSION['user'][0]['expo_users_ID']
 			]
 		);
 
-		if (isset($_post['po_documents'])) {
+		// if (isset($_post['po_documents'])) {
 
-			foreach ($_post['po_documents'] as $key => $doc) {
-				$this->insertPODocument($doc, $_post['update_order']);
-			}
-		}
+		// 	foreach ($_post['po_documents'] as $key => $doc) {
+		// 		$this->insertPODocument($doc, $_post['update_order']);
+		// 	}
+		// }
 
 		$inserted_order_id = $dbDriver->dbCon->lastInsertId();
 
@@ -458,7 +439,7 @@ class base
 		$stmt->execute([$docId]);
 	}
 
-	public function updateOrder($_post)
+	public function updateOrder($order_id, $_post)
 	{
 
 		$_post['po_date'] = date("Y-m-d", strtotime($_post['po_date']));
@@ -488,7 +469,6 @@ class base
 			po_purchase_type=?,
 			po_internal_reference_custom =?,
 			po_external_order_number =?,
-			po_status =?,
 			po_number_vehicles =?,
 			po_total_purchase_excl_vat =?,
 			po_total_purchase_incl_vat =?,
@@ -496,10 +476,7 @@ class base
 			po_prepayment_amount =?,
 			po_expected_invoice_date =?,
 			po_remarks =?,
-			po_updated_by_id =?,
-			po_last_submitted=?,
-			po_approved_by =?,
-			po_rejected_by =?
+			po_updated_by_id =?
 			WHERE po_id = ?";
 
 
@@ -530,7 +507,6 @@ class base
 			$_post['po_purchase_type'],
 			$_post['po_internal_reference_custom'],
 			$_post['po_external_order_number'],
-			$_post['update_order_submit'],
 			$_post['po_number_vehicles'],
 			$_post['po_total_purchase_excl_vat'],
 			$_post['po_total_purchase_incl_vat'],
@@ -539,18 +515,44 @@ class base
 			$_post['po_expected_invoice_date'],
 			$_post['po_remarks'],
 			$_SESSION['user'][0]['expo_users_ID'],
-			$_SESSION['user'][0]['expo_users_ID'],
-			$_SESSION['user'][0]['expo_users_ID'],
-			$_SESSION['user'][0]['expo_users_ID'],
-			$_post['update_order']
+			$order_id
 		]);
 
-		if (isset($_post['po_documents'])) {
+		//$this->insertHiddenDocuments('order', $ooder_id, $_post['hidden_documents']);
+	}
 
-			foreach ($_post['po_documents'] as $key => $doc) {
-				$this->insertPODocument($doc, $_post['update_order']);
+	public function updateOrderStatus($po_id, $status)
+	{
+		if(!$status) return;
+		$update_id = '';
+		$update_at = '';
+		switch($status) {
+			case 2: {
+				$update_id = "po_updated_by_id";
+				$update_at = "po_updated_at";
+				break;
+			}
+			case 3: {
+				$update_id = "po_submitted_by_id";
+				$update_at = "po_submitted_at";
+				break;
+			}
+			case 4: {
+				$update_id = "po_approved_by_id";
+				$update_at = "po_approved_at";
+				break;
+			}
+			case 5: {
+				$update_id = "po_rejected_by_id";
+				$update_at = "po_rejected_at";
+				break;
 			}
 		}
+
+		$dbDriver = new db_driver();
+		$query = "UPDATE purchase_order SET po_status = ?, $update_id = ?, $update_at = CURRENT_TIMESTAMP() WHERE po_id = ?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$status, $_SESSION['user'][0]['expo_users_ID'], $po_id]);
 	}
 
 	public function deletePO($po_id)
@@ -684,7 +686,8 @@ class base
 		pl_extra_set_of_wheels = ?,
 		pl_purchase_value = ?,
 		pl_fee_intermediate_supplier = ?,
-		pl_transport_cost = ?
+		pl_transport_cost = ?,
+		pl_internal_notes = ?
 		WHERE pl_id = ?";
 
 		$stmt = $dbDriver->dbCon->prepare($query);
@@ -706,6 +709,7 @@ class base
 			$_POST['pl_purchase_value'],
 			$_POST['pl_fee_intermediate_supplier'],
 			$_POST['pl_transport_cost'],
+			$_POST['pl_internal_notes'],
 			$line_id
 		]);
 	}
@@ -750,15 +754,19 @@ class base
 
 		$dbDriver = new db_driver();
 
-		$query = "SELECT purchase_order.*, conversion_name as status_label, eu.expo_users_name as created_by_name, eu_update.expo_users_name as updated_by_username, eu_last.expo_users_name as last_submitted_by,
-		eu_approved.expo_users_name as approved_by, eu_rejected.expo_users_name as rejected_by
+		$query = "SELECT purchase_order.*, conversion_name as status_label,
+		eu.expo_users_name as created_by_name,
+		eu_update.expo_users_name as updated_by_username,
+		eu_last.expo_users_name as last_submitted_by,
+		eu_approved.expo_users_name as approved_by,
+		eu_rejected.expo_users_name as rejected_by
 		FROM purchase_order
 
-		LEFT JOIN expo_users as eu on eu.expo_users_ID = po_created_by_id 
-		LEFT JOIN expo_users as eu_update on eu_update.expo_users_ID = po_updated_by_id 
-		LEFT JOIN expo_users as eu_last on eu_last.expo_users_ID = po_last_submitted   
-		LEFT JOIN expo_users as eu_approved on eu_approved.expo_users_ID = po_approved_by   
-		LEFT JOIN expo_users as eu_rejected on eu_rejected.expo_users_ID = po_rejected_by   
+		LEFT JOIN expo_users as eu on eu.expo_users_ID = po_created_by_id
+		LEFT JOIN expo_users as eu_update on eu_update.expo_users_ID = po_updated_by_id
+		LEFT JOIN expo_users as eu_last on eu_last.expo_users_ID = po_submitted_by_id
+		LEFT JOIN expo_users as eu_approved on eu_approved.expo_users_ID = po_approved_by_id
+		LEFT JOIN expo_users as eu_rejected on eu_rejected.expo_users_ID = po_rejected_by_id
 		LEFT JOIN conversions on conversion_type = 'po_status' AND conversion_sort = purchase_order.po_status
 		WHERE po_id = ?";
 
@@ -766,6 +774,15 @@ class base
 		$stmt->execute([$purchase_order_id]);
 
 		return $stmt->fetch(PDO::FETCH_ASSOC);
+	}
+
+	public function getOrderStatus($order_id)
+	{
+		$dbDriver = new db_driver();
+		$query = "SELECT po_status FROM purchase_order WHERE po_id = ?";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([$order_id]);
+		return $stmt->fetch(PDO::FETCH_ASSOC)['po_status'] ?? null;
 	}
 
 	public function getAllCurrencies()
@@ -2359,7 +2376,15 @@ class base
 		$query = "SELECT * FROM documents WHERE doc_sort = ? AND doc_target_id = ?";
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$sort, $target_id]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    	return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	public function getAllSuppliersList()
+	{
+		$dbDriver = new db_driver();
+		$query = "SELECT organisatie_afas_table_ID, Name_afas FROM organisatie_afas";
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([]);
+    	return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
 }

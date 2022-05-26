@@ -2894,7 +2894,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             p.appendChild(a);
             p.appendChild(trash);
 
-            $("#documentsContainer p:first-child").after(p);
+            $(`[data-documents-container][data-sort="${sort}"] p:first-child`).after(p);
             hiddenInput = document.createElement("input");
             hiddenInput.type = 'hidden';
             hiddenInput.name = 'documents[]';
@@ -2925,11 +2925,143 @@ window.addEventListener('DOMContentLoaded', (event) => {
         else
             p.remove();
     }
-    $('#documentsContainer p span.ti-trash').click(documentTrashBtnClick);
+
+    $(`[data-documents-container] p span.ti-trash`).click(documentTrashBtnClick);
 });
 
-// create_pol page functions
+async function getCurrencyConversion(currency) {
+    const fd = new FormData();
+    fd.append('convert_to_eur', currency);
+
+    const response = await $.ajax({
+        url: 'create_po',
+        type: 'post',
+        data: fd,
+        contentType: false,
+        processData: false
+    });
+
+    return response ? JSON.parse(response) : 0;
+}
+
+// create_po page functions
 window.addEventListener('DOMContentLoaded', (event) => {
+    const arrPOConversionFields = ['#totalPurchaseValue', '#totalFeeIntermediateSupplier', '#totalTransportCost'];
+    const arrPOLConversionFields = ['#purchaseValue', '#feeIntermediateSupplier', '#transportCost'];
+    ['#totalPurchaseValue', '#totalFeeIntermediateSupplier', '#totalTransportCost', '#poDownPayment', '#poCurrenyRate', '#poCurrency','#vatPercentage','#poDownPaymentAmount','#poCurrencyRate'].forEach(field => $(field).change(updateCalculations));
+
+    arrPOLConversionFields.forEach(field => $(field).change((e) => {
+        const difference = parseFloat($(e.currentTarget).val()) - parseFloat($(e.currentTarget).attr('old-value'));
+        switch($(e.currentTarget).attr('id')) {
+            case 'purchaseValue': {
+                $('#totalPurchaseValue').val((parseFloat($('#totalPurchaseValue').val()) + difference).toFixed(2));
+                $('#totalPurchaseValue').change();
+                break;
+            }
+            case 'feeIntermediateSupplier': {
+                $('#totalFeeIntermediateSupplier').val((parseFloat($('#totalFeeIntermediateSupplier').val()) + difference).toFixed(2));
+                $('#totalFeeIntermediateSupplier').change();
+                break;
+            }
+            case 'transportCost': {
+                $('#totalTransportCost').val((parseFloat($('#totalTransportCost').val()) + difference).toFixed(2));
+                $('#totalTransportCost').change();
+                break;
+            }
+        }
+        setCurrencyAmount(e.currentTarget);
+        $(e.currentTarget).attr('old-value', $(e.currentTarget).val());
+    }));
+
+    async function updateCalculations(e) {
+        arrPOLConversionFields.forEach(field => setCurrencyAmount(field));
+        arrPOConversionFields.forEach(field => setCurrencyAmount(field));
+    }
+
+    async function getRate() {
+        return $('#poCurrenyRate').val() == 1 ? Number($('#poCurrencyRate').val()) : Number(await getCurrencyConversion($('#poCurrency').val()));
+    }
+    
+    async function setCurrencyAmount(selector) {
+        const rate = await getRate();
+        const value = $(selector).val();
+        if(!value || isNaN(value))  return;
+        $(`#${$(selector).attr('data-target')}`).val((value * rate).toFixed(2));
+        calcPOLFields(rate);
+    }
+
+    async function calcPOFields(rate) {
+        const vatPercentage = parseFloat($('#poVatPercentage').val().replace('%', ''));
+        let sum = 0;
+        arrPOConversionFields.forEach(field => sum += (parseFloat($(field).val()) || 0));
+        const vatAmount = sum * (vatPercentage/100);
+        const priceInclVat = sum + vatAmount;
+        const totalPurchaseValueInclVatTax = priceInclVat + (parseFloat($('#totalVehicleTaxBPM').val()) || 0);
+        const downPayment = $('#poDownPayment').val() == 1 ? parseFloat($('#poDownPaymentAmount').val() || 0) : 0.00;
+        $('#totalPurchasePriceExclVat').val(sum.toFixed(2));
+        $('#totalVat').val((vatAmount).toFixed(2));
+        $('#totalPurchasePriceInclVat').val(priceInclVat.toFixed(2));
+        $('#totalPurchaseValueInclVatTax').val((totalPurchaseValueInclVatTax).toFixed(2));
+        $('#totalDownPaymentAmount').val(downPayment.toFixed(2));
+        $('#totalVatDeposit').val((totalPurchaseValueInclVatTax + downPayment).toFixed(2));
+        calcPOFieldsEur(rate);
+    }
+    async function calcPOFieldsEur(rate) {
+        const vatPercentage = parseFloat($('#poVatPercentage').val().replace('%', ''));
+        let sum = 0;
+        arrPOConversionFields.forEach(field => sum += (parseFloat($(`#${$(field).attr('data-target')}`).val()) || 0));
+        const vatAmount = sum * (vatPercentage/100);
+        const priceInclVat = sum + vatAmount;
+        const totalPurchaseValueInclVatTax = priceInclVat + (parseFloat($('#totalVehicleTaxBPMEur').val()) || 0);
+        const downPayment = $('#poDownPayment').val() == 1 ? parseFloat($('#poDownPaymentAmount').val() || 0) : 0.00;
+        $('#totalPurchasePriceExclVatEur').val(sum.toFixed(2));
+        $('#totalVatEur').val((vatAmount).toFixed(2));
+        $('#totalPurchasePriceInclVatEur').val(priceInclVat.toFixed(2));
+        $('#totalPurchaseValueInclVatTaxEur').val((totalPurchaseValueInclVatTax).toFixed(2));
+        $('#totalDownPaymentAmountEur').val((downPayment * rate).toFixed(2));
+        $('#totalVatDepositEur').val((totalPurchaseValueInclVatTax + downPayment).toFixed(2));
+    }
+
+    async function calcPOLFields(rate) {
+        const vatPercentage = parseFloat($('#poVatPercentage').val().replace('%', ''));
+        let sum = 0;
+        arrPOLConversionFields.forEach(field => sum += (parseFloat($(field).val()) || 0));
+        const vatAmount = sum * (vatPercentage/100);
+        const priceInclVat = sum + vatAmount;
+        const bpm = rate ? ((parseFloat($('#vehicleTaxBPMEur').val()) || 0) / rate) : 0;
+        $('#purchasePriceExclVat').val(sum.toFixed(2));
+        $('#vatMargin').val((vatAmount).toFixed(2));
+        $('#purchasePriceInclVat').val(priceInclVat.toFixed(2));
+        $('#vehicleTaxBPM').val(bpm.toFixed(2));
+        $('#purchaseValueInclVatTax').val((priceInclVat + bpm).toFixed(2));
+        calcPOLFieldsEur(rate);
+    }
+    async function calcPOLFieldsEur(rate) {
+        const vatPercentage = parseFloat($('#poVatPercentage').val().replace('%'));
+        let sum = 0;
+        arrPOLConversionFields.forEach(field => sum += (parseFloat($(`#${$(field).attr('data-target')}`).val()) || 0));
+        const vatAmount = sum * (vatPercentage/100);
+        const priceInclVat = sum + vatAmount;
+        $('#purchasePriceExclVatEur').val(sum.toFixed(2));
+        $('#vatMarginEur').val((vatAmount).toFixed(2));
+        $('#purchasePriceInclVatEur').val(priceInclVat.toFixed(2));
+        $('#purchaseValueInclVatTaxEur').val((priceInclVat + (parseFloat($('#vehicleTaxBPMEur').val()) || 0)).toFixed(2));
+        calcPOFields(rate);
+    }
+    
+    async function initialCalc() {
+        const rate = await getRate();
+        calcPOLFields(rate);
+    }
+    initialCalc();
+
+    $('#poCurrency').change((e) => $('[data-currency-text]').html(e.currentTarget.value));
+
+    $('#poVatDeposit').change(() => $("#vatPercentage").prop('disabled', ($('#poVatDeposit').val() == 2)));
+    $('#poDownPayment').change(() => $("#poDownPaymentAmount").prop('disabled', ($('#poDownPayment').val() == 2)));
+    $('#poCurrenyRate').change(() => $("#poCurrencyRate").prop('disabled', ($('#poCurrenyRate').val() == 2)));
+
+    // po line functions
     $('#togglePolExtraInfo').click((e) => $('#polExtraInfo').slideToggle(100));
 
     $('#expectedProdDate').datepicker({
@@ -2958,129 +3090,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
         $('#expectedDeliveryDate').val(expectedDate.join('-'));
     }
 
-    const currency = $('#poCurrency').val();
-
-    const arrConversionFields = ['#purchaseValue', '#feeIntermediateSupplier', '#transportCost'];
-    arrConversionFields.forEach(field => $(field).change((e) => setCurrencyAmount(e.currentTarget)));
-
-    // Making a cache obj so we call the rate exchange api no more than once every 5 seconds.
-    let rateCache = {
-        time: new Date().getTime(),
-        rate: 0
-    }
-    async function getRate() {
-        const time = new Date().getTime();
-        if(rateCache.time > time + 5000)    return rateCache.rate;
-        rateCache.rate = currency ? Number(await getCurrencyConversion(currency)) : Number($('#poCurrencyRate').val());
-        return rateCache.rate;
-    }
-    
-    async function setCurrencyAmount(selector) {
-        const rate = await getRate();
-        const value = $(selector).val();
-        if(!value || isNaN(value))  return;
-        $(`#${$(selector).attr('data-target')}`).val((value * rate).toFixed(2));
-        calcFields(rate);
-    }
-
-    async function calcFields(rate) {
-        const vatPercentage = $('#poVatPercentage').val();
-        let sum = 0;
-        arrConversionFields.forEach(field => sum += (parseFloat($(field).val()) || 0));
-        const vatAmount = sum * (vatPercentage/100);
-        const priceInclVat = sum + vatAmount;
-        const bpm = (parseFloat($('#vehicleTaxBPMEur').val()) || 0) / rate;
-        $('#purchasePriceExclVat').val(sum.toFixed(2));
-        $('#vatMargin').val((vatAmount).toFixed(2));
-        $('#purchasePriceInclVat').val(priceInclVat.toFixed(2));
-        $('#vehicleTaxBPM').val(bpm.toFixed(2));
-        $('#purchaseValueInclVatTax').val((priceInclVat + bpm).toFixed(2));
-        calcFieldsEur();
-    }
-    async function calcFieldsEur() {
-        const vatPercentage = $('#poVatPercentage').val();
-        let sum = 0;
-        arrConversionFields.forEach(field => sum += (parseFloat($(`#${$(field).attr('data-target')}`).val()) || 0));
-        const vatAmount = sum * (vatPercentage/100);
-        const priceInclVat = sum + vatAmount;
-        $('#purchasePriceExclVatEur').val(sum.toFixed(2));
-        $('#vatMarginEur').val((vatAmount).toFixed(2));
-        $('#purchasePriceInclVatEur').val(priceInclVat.toFixed(2));
-        $('#purchaseValueInclVatTaxEur').val((priceInclVat + (parseFloat($('#vehicleTaxBPMEur').val()) || 0)).toFixed(2));
-    }
-    
-    async function initialCalc() {
-        const rate = await getRate();
-        calcFields(rate);
-    }
-    initialCalc();
-
     $('[data-toggle-currency="true"]:not([readonly])').on('focusin', removeCurrencyFormat);
     $('[data-toggle-currency="true"]:not([readonly])').on('focusout', addCurrencyFormat);
 
     $('#repairedDamage').change((e) => {
         $('#repairedDamageAmount').prop('readonly', ($(e.currentTarget).val() == 0));
     });
-});
-
-async function getCurrencyConversion(currency) {
-    const fd = new FormData();
-    fd.append('convert_to_eur', currency);
-
-    const response = await $.ajax({
-        url: 'create_pol',
-        type: 'post',
-        data: fd,
-        contentType: false,
-        processData: false
-    });
-
-    return response ? JSON.parse(response) : 0;
-}
-
-// create_po page functions
-window.addEventListener('DOMContentLoaded', (event) => {
-    const arrConversionFields = ['#totalPurchaseValue', '#totalFeeIntermediateSupplier', '#totalTransportCost'];
-    ['#totalPurchaseValue', '#totalFeeIntermediateSupplier', '#totalTransportCost', '#down_payment', '#po_exchange', '#po_currency','#vatPercentage','#downPaymentAmount','#poExchange'].forEach(field => $(field).change(updateCalculations));
-
-    async function updateCalculations(e) {
-        arrConversionFields.forEach(field => setCurrencyAmount(field));
-    }
-    async function getRate() {
-        return $('#po_exchange').val() == 1 ? Number($('#poExchange').val()) : Number(await getCurrencyConversion($('#po_currency').val()));
-    }
-    
-    async function setCurrencyAmount(selector) {
-        const rate = await getRate();
-        const value = $(selector).val();
-        if(!value || isNaN(value))  return;
-        $(`#${$(selector).attr('data-target')}`).val((value * rate).toFixed(2));
-        calcFields();
-    }
-
-
-    async function calcFields() {
-        const vatPercentage = $('#vatPercentage').val();
-        let sum = 0;
-        arrConversionFields.forEach(field => sum += (parseFloat($(`#${$(field).attr('data-target')}`).val()) || 0));
-        const vatAmount = sum * (vatPercentage/100);
-        const priceInclVat = sum + vatAmount;
-        const totalPurchaseValueInclVatTax = priceInclVat + (parseFloat($('#PurchaseVehicleTaxBPM').val()) || 0);
-        const downPayment = $('#down_payment').val() == 1 ? parseFloat($('#downPaymentAmount').val() || 0) : 0.00;
-        $('#totalPurchasePriceExclVat').val(sum.toFixed(2));
-        $('#purchaseVatMargin').val((vatAmount).toFixed(2));
-        $('#totalPurchasePriceInclVat').val(priceInclVat.toFixed(2));
-        $('#totalPurchaseValueInclVatTax').val((totalPurchaseValueInclVatTax).toFixed(2));
-        $('#totalDownPaymentAmount').val(downPayment.toFixed(2));
-        $('#totalVatDeposit').val((totalPurchaseValueInclVatTax + downPayment).toFixed(2));
-    }
-    calcFields();
-
-    $('#po_currency').change((e) => $('#currencyText').html(e.currentTarget.value));
-
-    $('#vat_deposit').change(() => $("#vatPercentage").prop('disabled', ($('#vat_deposit').val() == 2)));
-    $('#down_payment').change(() => $("#downPaymentAmount").prop('disabled', ($('#down_payment').val() == 2)));
-    $('#po_exchange').change(() => $("#poExchange").prop('disabled', ($('#po_exchange').val() == 2)));
 });
 
 // show_po page functions
