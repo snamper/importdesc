@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 include_once 'views/view.php';
 class element
 {
@@ -50,9 +48,9 @@ class create_po extends view
 					$this->base->updateOrder($_POST);
 					foreach ($_POST['purchase_lines'] as $car_id) {
 						$car_info = $this->base->getSingleCar($car_id);
-						if(!$this->base->checkCarInPOLine($car_id)) {
+						//if(!$this->base->checkCarInPOLine($car_id)) {
 							$this->base->addPoLines($car_info, $order_id);
-						}
+						//}
 					}
 					header('location: /create_po?order_id=' . $order_id);
 					exit;
@@ -63,9 +61,9 @@ class create_po extends view
 
 				foreach ($_POST['purchase_lines'] as $car_id) {
 					$car_info = $this->base->getSingleCar($car_id);
-					if(!$this->base->checkCarInPOLine($car_id)) {
+					//if(!$this->base->checkCarInPOLine($car_id)) {
 						$this->base->addPoLines($car_info, $order_id);
-					}
+					//}
 				}
 
 				header('location: /create_po?order_id=' . $order_id);
@@ -97,9 +95,9 @@ class create_po extends view
 
 			foreach ($_POST['add_purchase_line'] as $car_id) {
 				$car_info = $this->base->getSingleCar($car_id);
-				if(!$this->base->checkCarInPOLine($car_id)) {
+				//if(!$this->base->checkCarInPOLine($car_id)) {
 					$this->base->addPoLines($car_info, $order_id);
-				}
+				//}
 			}
 
 			unset($_POST['add_purchase_line']);
@@ -138,9 +136,9 @@ class create_po extends view
 				
 				foreach ($_POST['purchase_lines'] as $car_id) {
 					$car_info = $this->base->getSingleCar($car_id);
-					if($this->base->checkCarInPOLine($car_id)) {
+					//if($this->base->checkCarInPOLine($car_id)) {
 						$this->base->addPoLines($car_info, $order_id);
-					}
+					//}
 				}
 
 				header('location: /create_po?order_id=' . $order_id);
@@ -153,9 +151,9 @@ class create_po extends view
 
 			foreach ($_POST['purchase_lines'] as $car_id) {
 				$car_info = $this->base->getSingleCar($car_id);
-				if($this->base->checkCarInPOLine($car_id)) {
+				//if($this->base->checkCarInPOLine($car_id)) {
 					$this->base->addPoLines($car_info, $order_id);
-				}
+				//}
 			}
 
 			header('location: /create_po?order_id=' . $order_id);
