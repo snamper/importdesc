@@ -579,6 +579,9 @@ class base
 
 	public function addPoLines($car_info, $purchase_id)
 	{
+		$transport_costs = number_format(floatval(str_replace(' ', '', str_replace(',', '', str_replace('€ ', '', $car_info['transport_international'])))) + floatval(str_replace(' ', '', str_replace(',', '', str_replace('€ ', '', $car_info['transport_national'])))), 2);
+		$fee_intermediate_supplier = number_format(floatval(str_replace(' ', '', str_replace(',', '', str_replace('€ ', '', $car_info['fee_intermediate_supplier'])))), 2);
+		$purchase_price_netto = number_format(floatval(str_replace(' ', '', str_replace(',', '', str_replace('€ ', '', $car_info['purchase_price_netto'])))), 2);
 
 		$dbDriver = new db_driver();
 		$query = "INSERT INTO purchase_order_lines (
@@ -589,8 +592,14 @@ class base
 			pl_make,
 			pl_model,
 			pl_variant,
-			pl_engine
+			pl_engine,
+			pl_purchase_value,
+			pl_fee_intermediate_supplier,
+			pl_transport_cost
 		) VALUES (
+			?,
+			?,
+			?,
 			?,
 			?,
 			?,
@@ -611,7 +620,10 @@ class base
 			$car_info['cmake_id'],
 			$car_info['car_model'],
 			$car_info['car_variant'],
-			$car_info['cd_motor']
+			$car_info['cd_motor'],
+			$purchase_price_netto,
+			$fee_intermediate_supplier,
+			$transport_costs
 		]);
 	}
 
@@ -907,9 +919,17 @@ class base
 
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([]);
-		$result = $stmt->fetchAll();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
 
-		return $result;
+	public function getAllEmployees()
+	{
+		$dbDriver = new db_driver();
+		$query = "SELECT * FROM employees";
+
+		$stmt = $dbDriver->dbCon->prepare($query);
+		$stmt->execute([]);
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	public function getFuelAllFuelTypes()
@@ -2376,15 +2396,6 @@ class base
 		$query = "SELECT * FROM documents WHERE doc_sort = ? AND doc_target_id = ?";
 		$stmt = $dbDriver->dbCon->prepare($query);
 		$stmt->execute([$sort, $target_id]);
-    	return $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-	public function getAllSuppliersList()
-	{
-		$dbDriver = new db_driver();
-		$query = "SELECT organisatie_afas_table_ID, Name_afas FROM organisatie_afas";
-		$stmt = $dbDriver->dbCon->prepare($query);
-		$stmt->execute([]);
     	return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 }

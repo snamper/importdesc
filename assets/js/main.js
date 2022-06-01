@@ -2948,7 +2948,7 @@ async function getCurrencyConversion(currency) {
 window.addEventListener('DOMContentLoaded', (event) => {
     const arrPOConversionFields = ['#totalPurchaseValue', '#totalFeeIntermediateSupplier', '#totalTransportCost'];
     const arrPOLConversionFields = ['#purchaseValue', '#feeIntermediateSupplier', '#transportCost'];
-    ['#totalPurchaseValue', '#totalFeeIntermediateSupplier', '#totalTransportCost', '#poDownPayment', '#poCurrenyRate', '#poCurrency','#vatPercentage','#poDownPaymentAmount','#poCurrencyRate'].forEach(field => $(field).change(updateCalculations));
+    ['#totalPurchaseValue', '#totalFeeIntermediateSupplier', '#totalTransportCost', '#poDownPayment', '#poCurrencyType', '#poCurrency','#vatPercentage','#poDownPaymentAmount','#poCurrencyRate'].forEach(field => $(field).change(updateCalculations));
 
     arrPOLConversionFields.forEach(field => $(field).change((e) => {
         const difference = parseFloat($(e.currentTarget).val()) - parseFloat($(e.currentTarget).attr('old-value'));
@@ -2979,7 +2979,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 
     async function getRate() {
-        return $('#poCurrenyRate').val() == 1 ? Number($('#poCurrencyRate').val()) : Number(await getCurrencyConversion($('#poCurrency').val()));
+        return $('#poCurrencyType').val() == 1 ? Number($('#poCurrencyRate').val()) : Number(await getCurrencyConversion($('#poCurrency').val()));
     }
     
     async function setCurrencyAmount(selector) {
@@ -3059,7 +3059,20 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     $('#poVatDeposit').change(() => $("#vatPercentage").prop('disabled', ($('#poVatDeposit').val() == 2)));
     $('#poDownPayment').change(() => $("#poDownPaymentAmount").prop('disabled', ($('#poDownPayment').val() == 2)));
-    $('#poCurrenyRate').change(() => $("#poCurrencyRate").prop('disabled', ($('#poCurrenyRate').val() == 2)));
+    $('#poCurrencyType').change((e) => $("#poCurrencyRate").prop('disabled', ($(e.currentTarget).val() == 2)));
+    $('#poCurrencyType, #poCurrency').change(async () => {
+        const rate = await getRate();
+        $("#poCurrencyRate").val(rate.toFixed(2));
+    });
+    $('#poCurrencyRate').change((e) => {
+        if(!e.currentTarget.value || parseFloat(e.currentTarget.value) < 0.01) {
+            $(e.currentTarget).val($(e.currentTarget).attr('old-value'));
+            alert(`Can't have a exchange rate less than 0.01`);
+        }
+        else {
+            $(e.currentTarget).attr('old-value', $(e.currentTarget).val());
+        }
+    });
 
     // po line functions
     $('#togglePolExtraInfo').click((e) => $('#polExtraInfo').slideToggle(100));

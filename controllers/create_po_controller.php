@@ -84,8 +84,10 @@ class create_po extends view
 		if (isset($_POST['save_order'])) {
 			if ($order_id > 0) {
 				$status = $this->base->getOrderStatus($order_id);
-				if($status && $status != 2) {
-					$this->updateOrder($order_id, $line);
+				if($status) {
+					if($status != 2) {
+						$this->updateOrder($order_id, $line);
+					}
 					$this->base->updateOrderStatus($order_id, $_POST['save_order']);
 				}
 				header("location: /create_po?order_id=$order_id&line=$line");
@@ -136,17 +138,17 @@ class create_po extends view
 				if($singleOrder['po_exchange'] == 1) {
 					$currencyFixedRate = $singleOrder['po_currency_rate'];
 					$this->setData('pl_converted_values', [
-						'purchase_value_eur' => round($poLines[$current_line_num]['pl_purchase_value'] * $currencyFixedRate, 2),
-						'fee_intermediate_supplier_eur' => round($poLines[$current_line_num]['pl_fee_intermediate_supplier'] * $currencyFixedRate, 2),
-						'transport_cost_eur' => round($poLines[$current_line_num]['pl_transport_cost'] * $currencyFixedRate, 2)
+						'purchase_value_converted' => round($poLines[$current_line_num]['pl_purchase_value'] / $currencyFixedRate, 2),
+						'fee_intermediate_supplier_converted' => round($poLines[$current_line_num]['pl_fee_intermediate_supplier'] / $currencyFixedRate, 2),
+						'transport_cost_converted' => round($poLines[$current_line_num]['pl_transport_cost'] / $currencyFixedRate, 2)
 					]);
 				}
 				else {
 					$currencyLiveRate = $this->base->getEurConversion($singleOrder['po_currency']);
 					$this->setData('pl_converted_values', [
-						'purchase_value_eur' => round($poLines[$current_line_num]['pl_purchase_value'] * $currencyLiveRate, 2),
-						'fee_intermediate_supplier_eur' => round($poLines[$current_line_num]['pl_fee_intermediate_supplier'] * $currencyLiveRate, 2),
-						'transport_cost_eur' => round($poLines[$current_line_num]['pl_transport_cost'] * $currencyLiveRate, 2)
+						'purchase_value_converted' => round($poLines[$current_line_num]['pl_purchase_value'] / $currencyLiveRate, 2),
+						'fee_intermediate_supplier_converted' => round($poLines[$current_line_num]['pl_fee_intermediate_supplier'] / $currencyLiveRate, 2),
+						'transport_cost_converted' => round($poLines[$current_line_num]['pl_transport_cost'] / $currencyLiveRate, 2)
 					]);
 				}
 				$this->setData('line_documents', $this->base->getDocuments('line', $poLines[$current_line_num]['pl_id']));
@@ -157,9 +159,9 @@ class create_po extends view
 			}
 
 			$this->setData('po_converted_values', [
-				'total_purchase_value_eur' => round(floatval($poSums['total_purchase_value']) * $useCurrency, 2),
-				'total_fee_intermediate_supplier_eur' => round(floatval($poSums['total_fee_intermediate_supplier']) * $useCurrency, 2),
-				'total_transport_cost_eur' => round(floatval($poSums['total_transport_cost']) * $useCurrency, 2),
+				'total_purchase_value_converted' => round(floatval($poSums['total_purchase_value']) / $useCurrency, 2),
+				'total_fee_intermediate_supplier_converted' => round(floatval($poSums['total_fee_intermediate_supplier']) / $useCurrency, 2),
+				'total_transport_cost_converted' => round(floatval($poSums['total_transport_cost']) / $useCurrency, 2),
 				'total_vehicle_bpm_converted' => round(($useCurrency ? floatval($poSums['total_vehicle_bpm']) / $useCurrency : 0), 2)
 			]);
 		} else {
@@ -167,14 +169,15 @@ class create_po extends view
 			$this->setData('count_pol', 0);
 
 			$this->setData('po_converted_values', [
-				'total_purchase_value_eur' => 0,
-				'total_fee_intermediate_supplier_eur' => 0,
-				'total_transport_cost_eur' => 0,
+				'total_purchase_value_converted' => 0,
+				'total_fee_intermediate_supplier_converted' => 0,
+				'total_transport_cost_converted' => 0,
 				'total_vehicle_bpm_converted' => 0
 			]);
 		}
 		$this->setData('all_currencies', $this->base->getAllCurrencies());
-		$this->setData('suppliers_list', $this->base->getAllSuppliersList());
+		$this->setData('creditors_list', $this->base->getAllCreditors());
+		$this->setData('employees_list', $this->base->getAllEmployees());
 
 
 

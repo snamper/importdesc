@@ -159,8 +159,8 @@ $disable_pl = ($po_data['po_status'] == 2 || !$has_pol) ? 'disabled' : '';
                         <div class="col-12 col-md-7">
                             <select class="form-control" name="po_supplier" <?php echo $disable_po; ?>>
                                 <?php
-                                foreach ($data['suppliers_list'][0] as $supplier) {
-                                    echo "<option value='{$supplier['organisatie_afas_table_ID']}' " . ($po_data['po_supplier'] == $supplier['organisatie_afas_table_ID'] ? "selected" : "") . ">{$supplier['Name_afas']}</option>";
+                                foreach ($data['creditors_list'][0] as $creditor) {
+                                    echo "<option value='{$creditor['creditor_table_ID']}' " . ($po_data['po_supplier'] == $creditor['creditor_table_ID'] ? "selected" : "") . ">{$creditor['CreditorName']}</option>";
                                 }
                                 ?>
                             </select>
@@ -200,7 +200,13 @@ $disable_pl = ($po_data['po_status'] == 2 || !$has_pol) ? 'disabled' : '';
                             <span>Purchasing entity*</span>
                         </div>
                         <div class="col-12 col-md-7">
-                            <input <?php echo $disable_po; ?> required class="form-control" required type="text" name="po_purchasing_entity" value="<?php echo $po_data['po_purchasing_entity']; ?>" />
+                            <select class="form-control" name="po_purchasing_entity" <?php echo $disable_po; ?>>
+                                <?php
+                                foreach ($data['creditors_list'][0] as $creditor) {
+                                    echo "<option value='{$creditor['creditor_table_ID']}' " . ($po_data['po_purchasing_entity'] == $creditor['creditor_table_ID'] ? "selected" : "") . ">{$creditor['CreditorName']}</option>";
+                                }
+                                ?>
+                            </select>
                         </div>
                     </div>
 
@@ -210,7 +216,13 @@ $disable_pl = ($po_data['po_status'] == 2 || !$has_pol) ? 'disabled' : '';
                             <span>Buyer*</span>
                         </div>
                         <div class="col-12 col-md-7">
-                            <input <?php echo $disable_po; ?> required class="form-control" required type="text" name="po_buyer" value="<?php echo $po_data['po_buyer']; ?>" />
+                            <select class="form-control" name="po_buyer" <?php echo $disable_po; ?>>
+                                <?php
+                                foreach ($data['employees_list'][0] as $employe) {
+                                    echo "<option value='{$employe['PersonId']}' " . ($po_data['po_buyer'] == $employe['PersonId'] ? "selected" : "") . ">{$employe['BirthName']}</option>";
+                                }
+                                ?>
+                            </select>
                         </div>
                     </div>
 
@@ -465,7 +477,7 @@ $disable_pl = ($po_data['po_status'] == 2 || !$has_pol) ? 'disabled' : '';
                             <span>Fixed / Live Exchange</span>
                         </div>
                         <div class="col-12 col-md-4">
-                            <select class="form-control" name="po_exchange" id="poCurrenyRate" class="col-12 col-md-12" <?php echo $disable_po; ?>>
+                            <select class="form-control" name="po_exchange" id="poCurrencyType" class="col-12 col-md-12" <?php echo $disable_po; ?>>
                                 <option value="1" <?php echo  $po_data['po_exchange'] == 1 ? 'selected' : '' ?>>Fixed</option>
                                 <option value="2" <?php echo  $po_data['po_exchange'] == 2 ? 'selected' : '' ?>>Live</option>
                             </select>
@@ -478,7 +490,7 @@ $disable_pl = ($po_data['po_status'] == 2 || !$has_pol) ? 'disabled' : '';
                         </div>
                         <div class="col-12 col-md-4">
 
-                            <input class="form-control" <?php echo ($po_data['po_exchange'] == 2) ? "disabled" : $disable_po; ?> type="text" id="poCurrencyRate" name="po_currency_rate" value="<?php echo $po_data['po_currency_rate']; ?>" />
+                            <input class="form-control" <?php echo ($po_data['po_exchange'] == 2) ? "disabled" : $disable_po; ?> type="text" id="poCurrencyRate" name="po_currency_rate" old-value="<?php echo (empty($po_data['po_currency_rate']) || number_format($po_data['po_currency_rate'], 2) < 0.01) ? '1' : $po_data['po_currency_rate']; ?>" value="<?php echo (empty($po_data['po_currency_rate']) || number_format($po_data['po_currency_rate'], 2) < 0.01) ? '1' : $po_data['po_currency_rate']; ?>" />
                         </div>
                     </div>
                     </br>
@@ -502,10 +514,10 @@ $disable_pl = ($po_data['po_status'] == 2 || !$has_pol) ? 'disabled' : '';
                             <span>Total Purchase Amount</span>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="text" id="totalPurchaseValueEur" value="<?php echo number_format($data['po_converted_values'][0]['total_purchase_value_eur'], 2); ?>" readonly>
+                            <input class="form-control" type="text" id="totalPurchaseValueEur" value="<?php echo number_format($data['poSums']['total_purchase_value'], 2); ?>" readonly>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="text" name="total_purchase_value" id="totalPurchaseValue" data-target="totalPurchaseValueEur" value="<?php echo ($data['poSums']['total_purchase_value'] ? str_replace('€ ', '', $data['poSums']['total_purchase_value']) : '0.00'); ?>" readonly>
+                            <input class="form-control" type="text" name="total_purchase_value_converted" id="totalPurchaseValue" data-target="totalPurchaseValueEur" value="<?php echo ($data['po_converted_values'][0]['total_purchase_value_converted'] ? str_replace('€ ', '', $data['po_converted_values'][0]['total_purchase_value_converted']) : '0.00'); ?>" readonly>
                         </div>
                     </div>
 
@@ -516,10 +528,10 @@ $disable_pl = ($po_data['po_status'] == 2 || !$has_pol) ? 'disabled' : '';
                             <span>Total fee intermediate supplier</span>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="text" id="totalFeeIntermediateSupplierEur" value="<?php echo number_format($data['po_converted_values'][0]['total_fee_intermediate_supplier_eur'], 2); ?>" readonly>
+                            <input class="form-control" type="text" id="totalFeeIntermediateSupplierEur" value="<?php echo number_format($data['poSums']['total_fee_intermediate_supplier'], 2); ?>" readonly>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="text" name="total_fee_intermediate_supplier" id="totalFeeIntermediateSupplier" data-target="totalFeeIntermediateSupplierEur" value="<?php echo ($data['poSums']['total_fee_intermediate_supplier'] ? str_replace('€ ', '', $data['poSums']['total_fee_intermediate_supplier']) : '0.00'); ?>" readonly>
+                            <input class="form-control" type="text" name="total_fee_intermediate_supplier_converted" id="totalFeeIntermediateSupplier" data-target="totalFeeIntermediateSupplierEur" value="<?php echo ($data['po_converted_values'][0]['total_fee_intermediate_supplier_converted'] ? str_replace('€ ', '', $data['po_converted_values'][0]['total_fee_intermediate_supplier_converted']) : '0.00'); ?>" readonly>
                         </div>
                     </div>
 
@@ -528,10 +540,10 @@ $disable_pl = ($po_data['po_status'] == 2 || !$has_pol) ? 'disabled' : '';
                             <span>Total transport costs</span>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="text" id="totaltransportCostEur" value="<?php echo number_format($data['po_converted_values'][0]['total_transport_cost_eur'], 2); ?>" readonly>
+                            <input class="form-control" type="text" id="totaltransportCostEur" value="<?php echo number_format($data['poSums']['total_transport_cost'], 2); ?>" readonly>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="text" name="total_transport_cost" id="totalTransportCost" data-target="totaltransportCostEur" value="<?php echo ($data['poSums']['total_transport_cost'] ? str_replace('€ ', '', $data['poSums']['total_transport_cost']) : '0.00'); ?>" readonly>
+                            <input class="form-control" type="text" name="total_transport_cost_converted" id="totalTransportCost" data-target="totaltransportCostEur" value="<?php echo ($data['po_converted_values'][0]['total_transport_cost_converted'] ? str_replace('€ ', '', $data['po_converted_values'][0]['total_transport_cost_converted']) : '0.00'); ?>" readonly>
                         </div>
                     </div>
 
@@ -733,10 +745,10 @@ $disable_pl = ($po_data['po_status'] == 2 || !$has_pol) ? 'disabled' : '';
 
                     <div class="row">
                         <div class="col-12 col-md-5">
-                            <span>KM at delivery*</span>
+                            <span>KM at delivery</span>
                         </div>
                         <div class="col-12 col-md-7">
-                            <input <?php echo $disable_pl; ?> class="form-control" <?php echo $has_pol ? 'required' : ''; ?> type="text" name="pl_km_delivery" value="<?php echo $pol_data['pl_km_delivery']; ?>" />
+                            <input <?php echo $disable_pl; ?> class="form-control" type="text" name="pl_km_delivery" value="<?php echo $pol_data['pl_km_delivery']; ?>" />
                         </div>
                     </div>
 
@@ -755,7 +767,7 @@ $disable_pl = ($po_data['po_status'] == 2 || !$has_pol) ? 'disabled' : '';
                         </div>
                     </div>
 
-                    <div id="polExtraInfo" class="mt-2">
+                    <div id="polExtraInfo" class="mt-2" style="display: none;">
                         <div class="row">
                             <div class="col-12 col-md-5">
                                 <span>Transport by supplier*</span>
@@ -941,10 +953,10 @@ $disable_pl = ($po_data['po_status'] == 2 || !$has_pol) ? 'disabled' : '';
                             <span>Purchase value</span>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="text" id="purchaseValueEur" value="<?php echo number_format($data['pl_converted_values'][0]['purchase_value_eur'], 2); ?>" readonly>
+                            <input class="form-control" type="text" id="purchaseValueEur" name="pl_purchase_value" value="<?php echo number_format(str_replace('€ ', '', $pol_data['pl_purchase_value']), 2); ?>" readonly>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input <?php echo $disable_pl; ?> class="form-control" type="text" name="pl_purchase_value" id="purchaseValue" data-target="purchaseValueEur" old-value="<?php echo ($pol_data['pl_purchase_value'] ? str_replace('€ ', '', $pol_data['pl_purchase_value']) : 0); ?>" value="<?php echo ($pol_data['pl_purchase_value'] ? number_format(str_replace('€ ', '', $pol_data['pl_purchase_value']), 2) : '0.00'); ?>">
+                            <input <?php echo $disable_pl; ?> class="form-control" type="text" id="purchaseValue" data-target="purchaseValueEur" old-value="<?php echo ($data['pl_converted_values'][0]['purchase_value_converted'] ? str_replace('€ ', '', $data['pl_converted_values'][0]['purchase_value_converted']) : 0); ?>" value="<?php echo ($data['pl_converted_values'][0]['purchase_value_converted'] ? number_format(str_replace('€ ', '', $data['pl_converted_values'][0]['purchase_value_converted']), 2) : '0.00'); ?>">
                         </div>
                     </div>
 
@@ -953,10 +965,10 @@ $disable_pl = ($po_data['po_status'] == 2 || !$has_pol) ? 'disabled' : '';
                             <span>Fee intermediate supplier</span>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="text" id="feeIntermediateSupplierEur" value="<?php echo number_format($data['pl_converted_values'][0]['fee_intermediate_supplier_eur'], 2); ?>" readonly>
+                            <input class="form-control" type="text" id="feeIntermediateSupplierEur" value="<?php echo number_format(str_replace('€ ', '', $pol_data['pl_fee_intermediate_supplier']), 2); ?>" readonly>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input <?php echo $disable_pl; ?> class="form-control" type="text" name="pl_fee_intermediate_supplier" id="feeIntermediateSupplier" old-value="<?php echo ($pol_data['pl_fee_intermediate_supplier'] ? str_replace('€ ', '', $pol_data['pl_fee_intermediate_supplier']) : 0); ?>" data-target="feeIntermediateSupplierEur" value="<?php echo ($pol_data['pl_fee_intermediate_supplier'] ? number_format(str_replace('€ ', '', $pol_data['pl_fee_intermediate_supplier']), 2) : '0.00'); ?>">
+                            <input <?php echo $disable_pl; ?> class="form-control" type="text" name="pl_fee_intermediate_supplier" id="feeIntermediateSupplier" old-value="<?php echo ($data['pl_converted_values'][0]['fee_intermediate_supplier_converted'] ? str_replace('€ ', '', $data['pl_converted_values'][0]['fee_intermediate_supplier_converted']) : 0); ?>" data-target="feeIntermediateSupplierEur" value="<?php echo ($data['pl_converted_values'][0]['fee_intermediate_supplier_converted'] ? number_format(str_replace('€ ', '', $data['pl_converted_values'][0]['fee_intermediate_supplier_converted']), 2) : '0.00'); ?>">
                         </div>
                     </div>
 
@@ -965,10 +977,10 @@ $disable_pl = ($po_data['po_status'] == 2 || !$has_pol) ? 'disabled' : '';
                             <span>Transport costs</span>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input class="form-control" type="text" id="transportCostEur" value="<?php echo number_format($data['pl_converted_values'][0]['transport_cost_eur'], 2); ?>" readonly>
+                            <input class="form-control" type="text" id="transportCostEur" value="<?php echo number_format(str_replace('€ ', '', $pol_data['pl_transport_cost']), 2); ?>" readonly>
                         </div>
                         <div class="col-12 col-md-2">
-                            <input <?php echo $disable_pl; ?> class="form-control" type="text" name="pl_transport_cost" id="transportCost" data-target="transportCostEur" old-value="<?php echo ($pol_data['pl_transport_cost'] ? str_replace('€ ', '', $pol_data['pl_transport_cost']) : 0); ?>" value="<?php echo ($pol_data['pl_transport_cost'] ? number_format(str_replace('€ ', '', $pol_data['pl_transport_cost']), 2) : '0.00'); ?>">
+                            <input <?php echo $disable_pl; ?> class="form-control" type="text" name="pl_transport_cost" id="transportCost" data-target="transportCostEur" old-value="<?php echo ($data['pl_converted_values'][0]['transport_cost_converted'] ? str_replace('€ ', '', $data['pl_converted_values'][0]['transport_cost_converted']) : 0); ?>" value="<?php echo ($data['pl_converted_values'][0]['transport_cost_converted'] ? number_format($data['pl_converted_values'][0]['transport_cost_converted'], 2) : '0.00'); ?>">
                         </div>
                     </div>
 
